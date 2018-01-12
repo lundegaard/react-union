@@ -6,7 +6,7 @@ Extendable and configurable set of scripts for building and running your React a
 
 ## Main features
 
-* **simple to use** - just add dependency to your `package.json` and roll
+* **simple to use** - just add the dependency to your `package.json` and roll
 * **use multiple entry points in one project** - useful for theming or for splitting your code to optimize bundle size
 * **designed for large codebase** - multiple entry points, splitting a code, async loading of JavaScript modules
 
@@ -24,7 +24,7 @@ npm install --save-dev react-union-scripts
 
 ## Usage
 
-**TL;DR;** You can use one of our [#](examples) as a boilerplate for the project instead.
+**TL;DR;** You can use one of our [https://github.com/lundegaard/react-union/tree/master/packages/react-union-boilerplate-basic](examples) as a boilerplate for the project instead.
 
 1. Create `union.config.js` in root of your project
 
@@ -46,7 +46,7 @@ module.exports = {
 
 ```
 
-2. For development simulate output of your server
+2. Simulate output of your server in development
 
 Create `<project root>/public/YourAppName/index.ejs`:
 
@@ -64,7 +64,7 @@ Create `<project root>/public/YourAppName/index.ejs`:
 </html>
 ```
 
-For details how to write a template see [https://github.com/jantimon/html-webpack-plugin](html-webpack-plugin).
+For details, how to write a template, see [https://github.com/jantimon/html-webpack-plugin](html-webpack-plugin).
 
 3. To your `package.json` add scripts:
 
@@ -77,19 +77,19 @@ For details how to write a template see [https://github.com/jantimon/html-webpac
 
 4. Run your project
 
-** Development server **
+**Development server**
 
 ```
 yarn start --app YourAppName
 ```
 
-** Start proxy server **
+**Start proxy server**
 
 ```
 yarn start --app --proxy YourAppName
 ```
 
-** Production build **
+**Production build**
 
 Build all of registered apps.
 
@@ -103,7 +103,7 @@ or build one
 yarn build --app YourAppName --release
 ```
 
-** Analyze build **
+**Analyze build**
 
 ```
 yarn build --app YourAppName --analyze
@@ -178,7 +178,7 @@ Create your .ejs template at `/public/<YourAppName>/index.ejs`.
 If there is a file with suffix ".widget.js" than that module is loaded by [bundle-loader](https://github.com/webpack-contrib/bundle-loader). Bundle-loader is the better alternative to both [`require.ensure`](https://webpack.github.io/docs/code-splitting.html) and [`import()`];
 Every async module is splitted into individual chunk.
 
-** Example **
+**Example**
 
 ```
 // MyWidget.widget.js
