@@ -1,0 +1,22 @@
+{
+  "name": "eslint-config-react-union",
+  "version": "1.0.0-alpha.1",
+  "description": "ESLint for React Union",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {},
+  "peerDependencies": {
+    "eslint": "4.7.2",
+    "babel-eslint": "8.0.1",
+    "eslint-plugin-babel": "4.1.2",
+    "eslint-plugin-react": "7.4.0",
+    "eslint-plugin-import": "2.7.0"
+  },
+  "devDependencies": {
+    "eslint": "4.7.2",
+    "babel-eslint": "8.0.1",
+    "eslint-plugin-babel": "4.1.2",
+    "eslint-plugin-react": "7.4.0",
+    "eslint-plugin-import": "2.7.0"
+  }
+}

@@ -1,0 +1,10 @@
+language: node_js
+cache:
+  yarn: true
+  directories:
+    - node_modules
+    - packages/react-union/node_modules
+    - packages/react-union-scripts/node_modules
+node_js:
+  - "node"
+  - "8"

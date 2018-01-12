@@ -1,0 +1,13 @@
+{
+  "lerna": "2.2.0",
+  "version": "independent",
+  "command": {
+    "init": {
+      "exact": true
+    },
+    "bootstrap": {
+      "npmClient": "yarn",
+      "useWorkspaces": true
+    }
+  }
+}

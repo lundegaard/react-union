@@ -1,0 +1,23 @@
+{
+  "private": true,
+  "name": "react-union-project",
+  "version": "1.0.0-alpha.1",
+  "contributors": [
+    "Tomas Konrady <tomas.konrady@lundegaard.eu>"
+  ],
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "eslint": "4.3.0",
+    "lerna": "2.2.0",
+    "rimraf": "2.6.2"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "bootstrap": "yarn config set workspaces-experimental true && lerna bootstrap && rimraf yarn.lock",
+    "start": "cd ./packages/react-union-boilerplate-basic && yarn start"
+  },
+  "main": "index.js",
+  "author": "Tomas Konrady <tomas.konrady@lundegaard.eu>"
+}
