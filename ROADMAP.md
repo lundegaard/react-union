@@ -1,11 +1,12 @@
 # Roadmap to v1.0.0
+
 Breaking Changes:
 - store arg is not in route.getComponent
 - START_SCAN, END_SCAN instead of START_BOOT, END_BOOT
 - diffrent run of scan - Using Union component
 
-next: Union component
 
+```
 [*] Monorepo with Yarn workspaces
 [ ] Prettier
 [*] Readmes
@@ -34,3 +35,5 @@ next: Union component
 		[ ] repository
 		[ ] authors
 		[ ] VIVO to keywords?
+
+```

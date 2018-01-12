@@ -24,7 +24,7 @@ npm install --save-dev react-union-scripts
 
 ## Usage
 
-**TL;DR;** You can use one of our [https://github.com/lundegaard/react-union/tree/master/packages/react-union-boilerplate-basic](examples) as a boilerplate for the project instead.
+**TL;DR;** You can use one of our [examples](https://github.com/lundegaard/react-union/tree/master/packages/react-union-boilerplate-basic) as a boilerplate for your project instead.
 
 1. Create `union.config.js` in root of your project
 
@@ -173,7 +173,7 @@ MyApp uses port `3330` for proxy and MySecondApp uses `3333`.
 Create your .ejs template at `/public/<YourAppName>/index.ejs`.
 `YourAppName` refers to application registered within `union.config.js`.
 
-### Async loading of modules
+### Asynchronous loading of modules
 
 If there is a file with suffix ".widget.js" than that module is loaded by [bundle-loader](https://github.com/webpack-contrib/bundle-loader). Bundle-loader is the better alternative to both [`require.ensure`](https://webpack.github.io/docs/code-splitting.html) and [`import()`];
 Every async module is splitted into individual chunk.
