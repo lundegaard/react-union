@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "module": "es/index.js",
   "jsnext:main": "es/index.js",
-  "description": "Bootstraping tool for React-union.",
+  "description": "Component for assembling distributed HTML fragments into one logic React application",
   "engines": {
     "node": ">=6.5",
     "npm": ">=3.10"
