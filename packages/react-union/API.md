@@ -4,15 +4,15 @@
 
 ## Content
 
-* Usage
-* Components
-* DOM-mark
-* Route
-* Utilities
+* [Usage](#usage)
+* [Components](#components)
+* [DOM-mark](#dom-mark)
+* [Route](#route)
+* [Utilities](#utilities)
 
 ## Usage
 
-Firstly we will assume that code bellow is part of your server output.
+Firstly we will assume that code below is part of your server output.
 
 ```html
 <main>
@@ -35,12 +35,12 @@ Firstly we will assume that code bellow is part of your server output.
 </main>
 ```
 
-As you can see above output within the static content there is the empty `div` with `id` `hero-container`. This is the HTML element where we want to render widget called `hero`.
+As you can see above, output within the static content there is the empty `div` with `id` `hero-container`. This is the HTML element where we want to render widget called `hero`.
 To do so we must create the *DOM-mark*.
 
-DOM-mark is the JSON that is placed inside the `<script>` tag that contains `data-union-widget` attribute. The mark above tells to React-union that if there is a widget called `hero` than it should be rendered into `hero-container` and pass him the data `{"username": "reactlover"}`.
+DOM-mark is the JSON that is placed inside the `<script>` tag that contains `data-union-widget` attribute. The mark above tells to React-union that if there is a widget called `hero` then it should be rendered into `hero-container` and pass him the data `{"username": "reactlover"}`.
 
-Next we will write the code for widget `Hero.js`. Widget must be always a React component.
+Next, we will write the code for widget `Hero.js`. The widget must be always a React component.
 
 ```js
 // Hero.js
@@ -53,7 +53,7 @@ export default Hero;
 
 The widget simply renders the `username` passed through the DOM mark.
 
-Next React-union needs to know where is the code for widget we marked as `hero`.
+Next, React-union needs to know where is the code for the widget we marked as `hero`.
 So we will write simple object called `route` (in our case `HeroRoute`):
 
 ```js
@@ -69,11 +69,11 @@ export default {
 };
 ```
 
-Route contains just two properties.
-We say than if there is the DOM-mark with name `hero`,
+The route contains just two properties.
+We say if there is the DOM-mark with name `hero`,
 than return React component passed as the argument of the callback `done` inside `getComponent`.
 
-*NOTE*: For simplicity we are using static import of `Hero` component. But you can use dynamic import (e. g. by `require.ensure`).
+*NOTE*: For simplicity, we are using static import of `Hero` component. But you can use dynamic import (e. g. by `require.ensure`).
 *NOTE*: If you know React-router than the route format should be familiar.
 
 And lastly we can define our component, that is responsible to render your widgets based on the provided routes and found *DOM-mark*s.
@@ -91,14 +91,14 @@ const Root = ({ store }) => (
 export default Root;
 ```
 
-We just use Union component and pass it array of supported routes. In our case just `HeroRoute`.
+We just use Union component and pass it an array of supported routes. In our case just `HeroRoute`.
 
 When `<Union />` is mounted the `scan` process of HTML starts.
 
-Scan process founds the DOM-marks according which the `<Union />` renders appropriate Widgets.
-Scan is lanunched if either  `Union` is mounted or reference to routes change.
+The scan process founds the DOM-marks according which the `<Union />` renders appropriate Widgets.
+The scan is launched if either  `Union` is mounted or reference to routes changes.
 
-So in case above, the array of routes is made every render and it impacts the performance.
+So in the case above, the array of routes is made every render and it impacts the performance.
 If there is no need for generating routes dynamically we can refactor above example to:
 
 ```html
@@ -120,7 +120,7 @@ export default Root;
 
 ### `<Union />`
 
-Renderes your widgets according to found *DOM-marks* and passed *routes*. Widgets are encapsulated in one virtual DOM even though widgets are distrubted over the HTML in different parts.
+Renders your widgets according to found *DOM-marks* and passed *routes*. Widgets are encapsulated in one virtual DOM even though widgets are distributed over the HTML in different parts.
 
 #### Properties
 
@@ -142,8 +142,8 @@ Firstly, there must be the `<script>` tag with data attribute `data-union-widget
 
 ### Properties
 * [`name`]\(*string*) `required` -  Name of widget that is used to pair the route with the DOM mark. `path` of the route must equal to the `name` of the DOM mark to be paired.
-* [`container`]\(*string*) - `id` attribute of HTML element in which the widget returned by route will be rendered. `container` should be unique within scope of found DOM marks.
-* [`namespace`]\(*string*) - String that can replace the unique code of *DOM-mark*. By default the value of `namespace` is set to value within `container`.
+* [`container`]\(*string*) - `id` attribute of HTML element in which the widget returned by route will be rendered. `container` should be unique within the scope of found DOM marks.
+* [`namespace`]\(*string*) - String that can replace the unique code of *DOM-mark*. By default, the value of `namespace` is set to value within `container`.
 * [`name`]\(*object*) - Any data that should be passed to the instance of a widget.
 
 *NOTE:* At least one of properties `namespace` or `container` must be specified.
@@ -152,7 +152,7 @@ Firstly, there must be the `<script>` tag with data attribute `data-union-widget
 
 **Simple**
 
-It renderes the widget returned by the route with the path `my-widget` to element with id `my-widget-root`.
+It renders the widget returned by the route with the path `my-widget` to element with id `my-widget-root`.
 
 ```
 <div id="my-widget-root"></div>
@@ -167,7 +167,7 @@ It renderes the widget returned by the route with the path `my-widget` to elemen
 
 **With `namespace`**
 
-It renderes the widget returned by the route with the path `my-widget` to element with id `my-widget-root`. Internally the instance is saved under the key `unique-string` (provided by `namespace`).
+It renders the widget returned by the route with the path `my-widget` to the element with id `my-widget-root`. Internally the instance is saved under the key `unique-string` (provided by `namespace`).
 
 ```
 <div id="my-widget-root"></div>
@@ -225,12 +225,12 @@ If you need to just provide a data to your application that there is no need to 
 
 
 ## Route
-Object that is used for pairing a DOM mark with Widget.
+The object that is used for pairing a DOM mark with Widget.
 
 ### Properties:
 * [`path`]\(*string*) if there is the *DOM-mark* with `name` that equals to `path` than the route is used
 * [`getComponents(done: function): undefined`]\(*function*) If `path` and `name` are matching, than the `getComponents` is called after `<Union />` finishes scan of the DOM.
-`getComponents` has one argument `done`. You should call it after the load of your widget is done. You must pass the main React component of your widget as the argument of the `done`:
+`getComponents` has one argument `done`. You should call it after a load of your widget is done. You must pass the main React component of your widget as the argument of the `done`:
 
 ```js
 // routeForMyWidget.js
@@ -244,7 +244,7 @@ export default {
 }
 ```
 
-**note:** In the example above we use `require.ensure`. However if you use React-union-scripts than there is a better way to async load your components. See `react-union-boilerplate-basic`.
+**note:** In the example above we use `require.ensure`. However, if you use React-union-scripts than there is a better way to async load your components. See `react-union-boilerplate-basic`.
 
 
 ## Utilities
