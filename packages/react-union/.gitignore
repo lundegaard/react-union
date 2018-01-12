@@ -1,6 +1,9 @@
 node_modules/
 npm-debug.log*
-build/
+build
+es
+dist
+lib
 coverage
 stats.js
 

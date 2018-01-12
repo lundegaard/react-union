@@ -15,9 +15,8 @@
     "packages/*"
   ],
   "scripts": {
-    "bootstrap": "yarn config set workspaces-experimental true && lerna bootstrap && rimraf yarn.lock",
+    "bootstrap": "yarn config set workspaces-experimental true && lerna bootstrap",
     "start": "cd ./packages/react-union-boilerplate-basic && yarn start"
   },
-  "main": "index.js",
   "author": "Tomas Konrady <tomas.konrady@lundegaard.eu>"
 }
