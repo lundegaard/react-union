@@ -8,8 +8,14 @@ Breaking Changes:
 
 ```
 [*] Monorepo with Yarn workspaces
+[ ] Travis build/release
 [ ] Prettier
-[*] Readmes
+[ ] Husky
+[ ] union-scripts init
+	[ ] new widget
+	[ ] new project from boilerplate
+[*] READMEs
+[ ] union-scripts test
 [ ] Detailed documentation
 	[ ] Github Wiki or Web docs
 [ ] Examples/Recipes
@@ -20,20 +26,17 @@ Breaking Changes:
 	[ ] Other CMS - Wordpress, Joomla, KeystoneJS, ...
 [ ] Tests
 [ ] Own repos for:
-	[ ] union-scoped-keymirror
-	[ ] injectableStore
+	[ ] R.injectableStore
 [ ] union.config.js validator
 	[ ] missing options
 	[ ] name of the module cannot contain special characters
-[ ] Generators to Scripts
-	[ ] new widget
-	[ ] new project from boilerplate
 [ ] Minor tasks
 	[*] Fix hardcoded webpack resolver for eslint import plugin
-	[ ] Generate .gitignore
+	[ ] Update babel
 	[ ] Fill in "package.json"s
 		[ ] repository
 		[ ] authors
 		[ ] VIVO to keywords?
+	[ ] Possible integrations "xo"
 
 ```
