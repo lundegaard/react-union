@@ -48,6 +48,8 @@
     "eslint-plugin-react": "7.4.0",
     "jest": "21.2.1",
     "prettier": "1.8.2",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "rollup": "0.52.0",
     "rollup-plugin-babel": "3.0.2",
     "rollup-plugin-commonjs": "8.2.6",
