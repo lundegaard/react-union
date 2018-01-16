@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "react-union-project",
-  "version": "1.0.0-alpha.1",
+  "version": "0.1.0",
   "description": "The project React-union is the collection of tools that allows you to build modern React applications that run on specific server-side environments such as Content Management Systems or Portals",
   "keywords": [
     "react",

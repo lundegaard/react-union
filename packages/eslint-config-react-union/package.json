@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-react-union",
-  "version": "1.0.0-alpha.1",
+  "version": "0.1.0",
   "description": "ESLint for React Union",
   "main": "index.js",
   "license": "MIT",

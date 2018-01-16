@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-alpha.1",
+  "version": "0.1.0",
   "name": "react-union-scripts",
   "description": "Provides scripts for building JS web apps targeted on either CMS or Portal solutions.",
   "license": "MIT",
