@@ -8,7 +8,7 @@ The project React-union is the collection of tools that allows you to build mode
 * [eslint-config-react-union](https://github.com/lundegaard/react-union/tree/master/packages/eslint-config-react-union) - ESLint configuration that is used within the React-union project.
 
 ## Examples
-* [Basic boilerplate](https://github.com/lundegaard/react-union/tree/master/packages/react-union-boilerplate-basic) - Shows projects [React-union-scripts](https://github.com/lundegaard/react-union/tree/master/packages/react-union-scripts) and [React-union](https://github.com/lundegaard/react-union/tree/master/packages/react-union) component in simple React application.
+* [Basic boilerplate](https://github.com/lundegaard/react-union/tree/master/boilerplates/react-union-boilerplate-basic) - Shows projects [React-union-scripts](https://github.com/lundegaard/react-union/tree/master/packages/react-union-scripts) and [React-union](https://github.com/lundegaard/react-union/tree/master/packages/react-union) component in simple React application.
 
 More examples are coming! See the [roadmap](https://github.com/lundegaard/react-union/blob/master/ROADMAP.md).
 

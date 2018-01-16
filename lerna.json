@@ -5,9 +5,13 @@
     "init": {
       "exact": true
     },
-    "bootstrap": {
-      "npmClient": "yarn",
-      "useWorkspaces": true
+    "publish": {
+      "ignore": [
+        "*.md",
+        "test/**"
+      ]
     }
-  }
+  },
+  "npmClient": "yarn",
+  "useWorkspaces": true
 }

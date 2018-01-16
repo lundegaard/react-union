@@ -36,7 +36,7 @@
   ],
   "scripts": {
     "bootstrap": "yarn config set workspaces-experimental true && lerna bootstrap",
-    "start": "cd ./packages/react-union-boilerplate-basic && yarn start"
+    "example:basic": "cd ./boilerplates/react-union-boilerplate-basic && yarn start"
   },
   "author": "Tomas Konrady <tomas.konrady@lundegaard.eu>"
 }

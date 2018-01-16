@@ -16,7 +16,9 @@
   },
   "files": [
     "src",
-    "lib"
+    "lib",
+    "es",
+    "dist"
   ],
   "dependencies": {
     "prop-types": "15.6.0",
