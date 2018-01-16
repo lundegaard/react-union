@@ -4,8 +4,6 @@ coverage
 stats.js
 node_modules/
 build/
-packages/react-union-boilerplate-redux/
-
 
 # Exclude IDE project folders
 .idea
