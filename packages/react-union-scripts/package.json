@@ -3,6 +3,7 @@
   "name": "react-union-scripts",
   "description": "Provides scripts for building JS web apps targeted on either CMS or Portal solutions.",
   "license": "MIT",
+  "repository": "https://github.com/lundegaard/react-union",
   "files": [
     "scripts",
     "bin",

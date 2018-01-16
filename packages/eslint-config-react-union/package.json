@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "ESLint for React Union",
   "main": "index.js",
+  "repository": "https://github.com/lundegaard/react-union",
+  "contributors": [
+    "Tomas Konrady <tomas.konrady@lundegaard.eu>"
+  ],
   "license": "MIT",
   "dependencies": {},
   "peerDependencies": {

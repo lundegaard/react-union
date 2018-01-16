@@ -2,9 +2,13 @@
   "name": "react-union",
   "version": "0.1.0",
   "license": "MIT",
-  "main": "./lib/index.js",
+  "main": "lib/index.js",
   "module": "es/index.js",
   "jsnext:main": "es/index.js",
+  "repository": "https://github.com/lundegaard/react-union",
+  "contributors": [
+    "Tomas Konrady <tomas.konrady@lundegaard.eu>"
+  ],
   "description": "Component for assembling distributed HTML fragments into one logic React application",
   "engines": {
     "node": ">=6.5",

@@ -6,6 +6,7 @@
   "contributors": [
     "Tomas Konrady <tomas.konrady@lundegaard.eu>"
   ],
+  "repository": "https://github.com/lundegaard/react-union",
   "description": "",
   "keywords": [
     "react",
