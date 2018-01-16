@@ -1,8 +1,9 @@
-node_modules/
 npm-debug.log*
-build/
+lerna-debug.log*
 coverage
 stats.js
+node_modules/
+build/
 
 # Exclude IDE project folders
 .idea
@@ -12,5 +13,3 @@ jsconfig.json
 
 # OS files
 .DS_STORE
-
-#!/build/public/kz/

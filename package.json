@@ -24,6 +24,7 @@
   "contributors": [
     "Tomas Konrady <tomas.konrady@lundegaard.eu>"
   ],
+  "repository": "https://github.com/lundegaard/react-union",
   "license": "UNLICENSED",
   "devDependencies": {
     "eslint": "4.3.0",

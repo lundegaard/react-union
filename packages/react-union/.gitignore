@@ -1,17 +1,5 @@
-node_modules/
-npm-debug.log*
 build/
 es/
 dist/
 lib/
 coverage
-stats.js
-
-# Exclude IDE project folders
-.idea
-*.sublime-project
-*.sublime-workspace
-jsconfig.json
-
-# OS files
-.DS_STORE
