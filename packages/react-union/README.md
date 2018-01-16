@@ -166,4 +166,4 @@ And make sure you have React 16.0.0 or greater.
 ## Reference
 
 * [API reference](https://github.com/lundegaard/react-union/blob/master/packages/react-union/API.md) - Work in progress
-* [React-union-boilerplate-basic](https://github.com/lundegaard/react-union/tree/master/packages/react-union-boilerplate-basic) - Example of project with React-union and React-union-scripts
+* [React-union-boilerplate-basic](https://github.com/lundegaard/react-union/tree/master/boilerplates/react-union-boilerplate-basic) - Example of project with React-union and React-union-scripts
