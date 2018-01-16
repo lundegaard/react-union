@@ -119,7 +119,7 @@ File exports objects with following properties.
 
 ### `generateVendorBundle`
 
-['generateVendorBundle']\(boolean) If true, generates separate vendor chunk. Vendors are all dependencies from your `package.json`. Defaults to `true`.
+[`generateVendorBundle`]\(boolean) If true, generates separate vendor chunk. Vendors are all dependencies from your `package.json`. Defaults to `true`.
 
 ### `vendorBlackList`
 
@@ -127,11 +127,15 @@ File exports objects with following properties.
 
 ### `proxy`
 [`proxy.port`]\(number): port of proxy server
+
 [`proxy.target`]\(string): target of proxy
+
 [`proxy.publicPath`]\(string): Public path of the application. See [webpack](https://github.com/webpack/docs/wiki/configuration#outputpublicpath). Required if you want to run proxy.
 
 ### `devServer`
+
 [`devServer.port`]\(number): port of proxy server
+
 [`devServer.baseDir`]\(string): baseDir for server. Defaults to `buildDir`
 
 ### `apps`
