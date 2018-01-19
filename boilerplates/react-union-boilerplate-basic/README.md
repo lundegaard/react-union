@@ -59,18 +59,21 @@ Make sure you have Yarn v1.3.1 or higher and Node v8 or higher.
 ## Using the Boilerplate
 
 ### Starting develop server
+
 ```sh
 yarn start
 ```
 
 
 ### Starting proxy
+
 ```sh
 yarn start --proxy
 ```
 
 
 ### Production build
+
 ```sh
 yarn build --release
 ```
@@ -78,12 +81,14 @@ yarn build --release
 **Note:** Runs test, lint and then builds with Webpack.
 
 ### Running unit tests in watch mode
+
 ```sh
-yarn test:watch
+yarn test
 ```
 
 
 ### Analyze build
+
 ```sh
 yarn build --release --analyze
 ```

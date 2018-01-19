@@ -22,6 +22,7 @@ console.log(`Debug: ${DEBUG ? 'yes' : 'no'}`);
 
 const GLOBALS = {
 	'process.env.NODE_ENV': DEBUG ? '"development"' : '"production"',
+	'process.env.BABEL_ENV': DEBUG ? '"development"' : '"production"',
 	'process.env.BROWSER': true,
 	__DEV__: DEBUG,
 };

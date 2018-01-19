@@ -103,11 +103,29 @@ or build one
 yarn build --app YourAppName --release
 ```
 
+**Running Jest tests**
+
+Run in watch mode
+
+```
+yarn test
+```
+
+or run just once
+
+```
+yarn test --release
+```
+
+
 **Analyze build**
+
+Runs [`webpack-bundle-analyzer`](https://github.com/th0r/webpack-bundle-analyzer).
 
 ```
 yarn build --app YourAppName --analyze
 ```
+
 
 
 ## `union.config.js`
