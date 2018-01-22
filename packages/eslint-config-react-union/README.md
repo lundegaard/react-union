@@ -4,11 +4,11 @@ The package provides React Unions's .eslintrc as an extensible shared config.
 
 ## Usage
 
-We export two ESLint configurations for your usage.
+There are two ESLint configurations for you to use.
 
 ### eslint-config-react-union
 
-Our default export contains all of our ESLint rules, including ECMAScript 6+ and React. It requires `eslint`, `babel-eslint`, `eslint-plugin-babel`, `eslint-plugin-import` and `eslint-plugin-react`.
+The default export contains all of our ESLint rules, including ECMAScript 6+ and React. It requires `eslint`, `babel-eslint`, `eslint-plugin-babel`, `eslint-plugin-import` and `eslint-plugin-react`.
 
 ### Installation
 
@@ -25,6 +25,7 @@ yarn add eslint-config-react-union eslint@4.7.2 babel-eslint@8.0.1 eslint-plugin
 And add `"extends": "union"` to your .eslintrc.
 
 ### eslint-config-react-union/base
+
 The eslint-config-react-union without excluding rules for React.
 
 Add `"extends": "eslint-config-react-union/base"` to your .eslintrc
