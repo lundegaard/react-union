@@ -76,7 +76,7 @@ yarn start --proxy
 yarn build --release
 ```
 
-**Note:** Runs test, lint and then builds with Webpack.
+**Note:** Creates production bundles.
 
 ### Running unit tests in watch mode
 

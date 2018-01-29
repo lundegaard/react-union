@@ -27,8 +27,7 @@
     "skin-deep": "1.2.0"
   },
   "scripts": {
-    "build": "yarn test && yarn build:js",
-    "build:js": "union-scripts build",
+    "build": "union-scripts build",
     "start": "union-scripts start --app SampleApp",
     "test": "yarn lint && yarn test:js",
     "test:js": "union-scripts test",
