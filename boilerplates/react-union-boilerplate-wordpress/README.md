@@ -67,17 +67,17 @@ Open file ```react-union-boilerplate-wordpress/union.config.js``` and change pro
 
 Build your app
 ```sh
-    yarn build —proxy —release 
+    yarn build --proxy --release 
 ```
 
 Copy built files from ```react-union-boilerplate-wordpress/build/public/assets/SampleApp/``` to your Wordpress installation ```wp-content/themes/ACTIVE_THEME_NAME/assets/js ```. This path should match with the public path we set in ```union.config.js```
 
-Update Wordpress file ```functions.php``` in your active theme directory to load React-Union scrips (in this case we put it to the end of function twentyseventeen_scripts() )
+Update Wordpress file ```functions.php``` in your active theme directory to load React-Union scrips (in this case we put it to the end of ```function twentyseventeen_scripts()``` )
 ```sh
-    	wp_enqueue_script( 'react-union-vendor', get_theme_file_uri( '/assets/js/vendor.bundle.js' ), null , '1.0.0', true ); 
-    	wp_enqueue_script( 'react-union-sample-app', get_theme_file_uri( '/assets/js/SampleApp.bundle.js' ), null , 		'1.0.0', true ); 
+   wp_enqueue_script( 'react-union-vendor', get_theme_file_uri( '/assets/js/vendor.bundle.js' ), null , '1.0.0', true ); 
+   wp_enqueue_script( 'react-union-sample-app', get_theme_file_uri( '/assets/js/SampleApp.bundle.js' ), null , 		'1.0.0', true ); 
 ```
-  
+
 Place Union DOM-marks where you want to display your React-Union widget (be careful to use unique IDs, that were not used already). We used ```template-parts/post/content.php``` in our example. Wordpress loads bundled React-Union scripts which will automatically look for DOM-marks in document and then load and display appropriate components.
 
 ```sh
@@ -104,31 +104,7 @@ Place Union DOM-marks where you want to display your React-Union widget (be care
 Finally, run your Wordpress instance and you should see React-Union in action.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Using the Boilerplate
-
-### Starting develop server
-
-```sh
-yarn start
-```
 
 ### Starting proxy
 
@@ -139,9 +115,9 @@ yarn start --proxy
 ### Production build
 
 ```sh
-yarn build --release
+yarn build --release --proxy
 ```
-
+ 
 **Note:** Runs test, lint and then builds with Webpack.
 
 ### Running unit tests in watch mode

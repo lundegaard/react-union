@@ -11,7 +11,7 @@ module.exports = {
 			name: 'SampleApp',
 			path: path.resolve(__dirname, './src/apps/SampleApp'),
 			proxy: {
-				publicPath: '/wpunion/wp-content/themes/twentysixteen/js/',
+				publicPath: '/wpunion/wp-content/themes/twentyseventeen/assets/js/',
 				target: 'http://localhost:80/wpunion',
 			},
 		},
