@@ -1,6 +1,6 @@
 # React Union - Basic boilerplate
 
-This project can be either used as the example of react-union and react-union-scripts working together or as the base of your project.
+This project can either be used as the example of react-union and react-union-scripts working together or as the base of your project.
 
 ## Project structure
 
@@ -64,13 +64,11 @@ Make sure you have Yarn v1.3.1 or higher and Node v8 or higher.
 yarn start
 ```
 
-
 ### Starting proxy
 
 ```sh
 yarn start --proxy
 ```
-
 
 ### Production build
 
@@ -85,7 +83,6 @@ yarn build --release
 ```sh
 yarn test
 ```
-
 
 ### Analyze build
 

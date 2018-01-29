@@ -2,13 +2,13 @@
 
 # React-union-scripts
 
-Extendable and configurable set of scripts for building and running your React applications that are designed for not a typical Node environments such as Content Management Systems (CMS) or Java Portals.
+Extendable and configurable set of scripts for building and running your React applications that is designed for not a typical Node environments such as Content Management Systems (CMS) or Java Portals.
 
 ## Main features
 
 * **simple to use** - just add the dependency to your `package.json` and roll
 * **use multiple entry points in one project** - useful for theming or for splitting your code to optimize bundle size
-* **designed for large codebase** - multiple entry points, splitting a code, async loading of JavaScript modules
+* **designed for large codebase** - multiple entry points, splitting code, async loading of JavaScript modules
 
 ## Installation
 
@@ -29,21 +29,20 @@ npm install --save-dev react-union-scripts
 1. Create `union.config.js` in root of your project
 
 ```js
-const path = require('path');
+const path = require("path");
 
 module.exports = {
-	devServer: {
-		port: 3300,
-		baseDir: path.resolve(__dirname, './build/public'),
-	},
-	apps: [
-		{
-			name: 'YourAppName',
-			path: path.resolve(__dirname, './src/apps/YourAppName')
-		},
-	],
+  devServer: {
+    port: 3300,
+    baseDir: path.resolve(__dirname, "./build/public")
+  },
+  apps: [
+    {
+      name: "YourAppName",
+      path: path.resolve(__dirname, "./src/apps/YourAppName")
+    }
+  ]
 };
-
 ```
 
 2. Simulate output of your server in development
@@ -64,14 +63,14 @@ Create `<project root>/public/YourAppName/index.ejs`:
 </html>
 ```
 
-For details, how to write a template, see [https://github.com/jantimon/html-webpack-plugin](html-webpack-plugin).
+For details how to write a template, see [https://github.com/jantimon/html-webpack-plugin](html-webpack-plugin).
 
 3. To your `package.json` add scripts:
 
 ```json
 {
-	"start": "union-scripts start --app YourAppName",
-	"build": "union-scripts build"
+  "start": "union-scripts start --app YourAppName",
+  "build": "union-scripts build"
 }
 ```
 
@@ -91,13 +90,13 @@ yarn start --app --proxy YourAppName
 
 **Production build**
 
-Build all of registered apps.
+Build all registered apps.
 
 ```
 yarn build --release
 ```
 
-or build one
+or build just one
 
 ```
 yarn build --app YourAppName --release
@@ -117,7 +116,6 @@ or run just once
 yarn test --release
 ```
 
-
 **Analyze build**
 
 Runs [`webpack-bundle-analyzer`](https://github.com/th0r/webpack-bundle-analyzer).
@@ -126,9 +124,8 @@ Runs [`webpack-bundle-analyzer`](https://github.com/th0r/webpack-bundle-analyzer
 yarn build --app YourAppName --analyze
 ```
 
-
-
 ## `union.config.js`
+
 File exports objects with following properties.
 
 ### `buildDir`
@@ -141,9 +138,10 @@ File exports objects with following properties.
 
 ### `vendorBlackList`
 
-['vendorBlackList']\(array[string]) List of depenedencies that should not be included withing vendor chunk. Defaults to `[]`.
+['vendorBlackList']\(array[string]) List of depenedencies that should not be included within vendor chunk. Defaults to `[]`.
 
 ### `proxy`
+
 [`proxy.port`]\(number): port of proxy server
 
 [`proxy.target`]\(string): target of proxy
@@ -157,6 +155,7 @@ File exports objects with following properties.
 [`devServer.baseDir`]\(string): baseDir for server. Defaults to `buildDir`
 
 ### `apps`
+
 Array of configurations for your applications. Every configuration is merged with above properties. You can rewrite them separately for every application.
 
 For example:
@@ -180,7 +179,6 @@ module.exports = {
 		},
 	],
 }
-
 ```
 
 MyApp uses port `3330` for proxy and MySecondApp uses `3333`.
@@ -197,8 +195,8 @@ Create your .ejs template at `/public/<YourAppName>/index.ejs`.
 
 ### Asynchronous loading of modules
 
-If there is a file with suffix ".widget.js" than that module is loaded by [bundle-loader](https://github.com/webpack-contrib/bundle-loader). Bundle-loader is the better alternative to both [`require.ensure`](https://webpack.github.io/docs/code-splitting.html) and [`import()`];
-Every async module is splitted into individual chunk.
+If there is a file with suffix ".widget.js" it is loaded by [bundle-loader](https://github.com/webpack-contrib/bundle-loader). Bundle-loader is better alternative to both [`require.ensure`](https://webpack.github.io/docs/code-splitting.html) and [`import()`];
+Every async module is splitted up into individual chunks.
 
 **Example**
 
