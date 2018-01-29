@@ -5538,12 +5538,13 @@ react-test-renderer@16.2.0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react-union-scripts@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/react-union-scripts/-/react-union-scripts-0.1.1.tgz#27374de07520e83c1ad0e02a2940769b39296630"
+react-union-scripts@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/react-union-scripts/-/react-union-scripts-0.1.5.tgz#05bcfc4aaf9daa6c71c3ce53e4895dd140514328"
   dependencies:
     babel-cli "6.23.0"
     babel-core "6.23.1"
+    babel-jest "21.2.0"
     babel-loader "6.4.0"
     babel-plugin-transform-class-properties "6.23.0"
     babel-plugin-transform-object-rest-spread "6.23.0"
@@ -5574,6 +5575,7 @@ react-union-scripts@^0.1.1:
     node-sass "^4.5.3"
     ramda "0.25.0"
     raw-loader "^0.5.1"
+    react-test-renderer "16.2.0"
     resolve-url-loader "^2.1.0"
     sass-loader "^6.0.6"
     style-loader "0.18.2"
