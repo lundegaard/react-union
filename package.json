@@ -32,7 +32,8 @@
     "rimraf": "2.6.2"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*", 
+    "boilerplates/*"
   ],
   "scripts": {
     "bootstrap": "yarn config set workspaces-experimental true && lerna bootstrap",
