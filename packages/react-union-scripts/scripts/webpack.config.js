@@ -153,11 +153,11 @@ const getWebpackConfig_ = ({
 			// `vendors` to standalone chunk
 			...(generateVendorBundle
 				? [
-						new webpack.optimize.CommonsChunkPlugin({
-							name: 'vendor',
-							minChunks: Infinity,
-						}),
-					]
+					new webpack.optimize.CommonsChunkPlugin({
+						name: 'vendor',
+						minChunks: Infinity,
+					}),
+				]
 				: []),
 			// Create HTML file for development without proxy
 			...(!PROXY
@@ -172,24 +172,24 @@ const getWebpackConfig_ = ({
 				[]),
 			...(!DEBUG
 				? [
-						new webpack.optimize.UglifyJsPlugin({
-							compress: {
-								warnings: VERBOSE,
-							},
-							output: {
-								comments: true,
-								// https://github.com/facebookincubator/create-react-app/issues/2488
-								ascii_only: true,
-							},
-							sourceMap: true,
-						}),
-						// new webpack.optimize.AggressiveMergingPlugin(),
-					]
+					new webpack.optimize.UglifyJsPlugin({
+						compress: {
+							warnings: VERBOSE,
+						},
+						output: {
+							comments: true,
+							// https://github.com/facebookincubator/create-react-app/issues/2488
+							ascii_only: true,
+						},
+						sourceMap: true,
+					}),
+					// new webpack.optimize.AggressiveMergingPlugin(),
+				]
 				: []),
 			...(!DEBUG ? [
 				new ManifestPlugin({
 					fileName: 'assetManifest.json',
-				})
+				}),
 			] : []),
 			...(ANALYZE ? [new BundleAnalyzerPlugin()] : []),
 		],
