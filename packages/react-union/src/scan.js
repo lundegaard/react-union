@@ -24,8 +24,13 @@ const loadRouteComponent = route => new Promise(resolve => route.getComponent(re
 const selectDescriptors = parent => parent.querySelectorAll('[data-union-widget]');
 const parseJsonContent = o(unary(JSON.parse), path(['innerHTML']));
 
-// describes the structure of a descriptor that we work with in JS (as opposed to the DOM structure)
-// each method shall receive the HTML element (the widget descriptor)
+/**
+ * Describes the structure of a descriptor that we work with in JS (as opposed to the DOM structure).
+ * Each value represents a key and a transformer function expecting a DOM element (the widget descriptor).
+ * The results of calling the functions with the DOM element are set at the appropriate keys.
+ *
+ * @type {Object.<string, Function>}
+ */
 const elementTransformersByKey = {
 	name: path(['dataset', 'unionWidget']),
 	container: path(['dataset', 'unionContainer']),
