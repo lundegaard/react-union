@@ -160,10 +160,10 @@ Array of configurations for your applications. Every configuration is merged wit
 
 For example:
 
-```
+```js
 module.exports = {
 	proxy: {
-		port:3333,
+		port: 3333,
 	},
 	apps: [
 		{
@@ -175,10 +175,10 @@ module.exports = {
 		},
 		{
 			name: 'MySecondApp',
-			path: path.resolve(__dirname, './src/apps/MySecondApp')
+			path: path.resolve(__dirname, './src/apps/MySecondApp'),
 		},
 	],
-}
+};
 ```
 
 MyApp uses port `3330` for proxy and MySecondApp uses `3333`.
@@ -200,17 +200,17 @@ Every async module is splitted up into individual chunks.
 
 **Example**
 
-```
+```js
 // MyWidget.widget.js
 
-const MyWidget = (props) => {
+const MyWidget = props => {
 	// Your React component
-}
+};
 
 export default MyWidget;
 ```
 
-```
+```js
 // MyWidgetRoute.js
 
 import loadMyWidget from './MyWidget.widget';
@@ -218,7 +218,7 @@ import loadMyWidget from './MyWidget.widget';
 export default {
 	path: 'my-widget',
 	getComponent(done) {
-		loadWidget((module) => done(module.default));
-	}
+		loadWidget(mod => done(mod.default));
+	},
 };
 ```
