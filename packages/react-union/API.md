@@ -38,7 +38,7 @@ A _Widget descriptor_ is a JSON script element that contains the `data-union-wid
 
 Next, we will write code for the widget `Hero.js`. The widget must always be a React component.
 
-```js
+```jsx
 // Hero.js
 
 // Main component of your Hero widget
@@ -73,7 +73,7 @@ _NOTE_: If you know React-router, the route format should be familiar to you.
 
 Finally, we can define our component responsible for rendering your widgets based on the provided routes and *widget descriptor*s.
 
-```js
+```jsx
 // Root.js
 
 import { Union } from 'react-union';
@@ -94,7 +94,7 @@ The scan is launched if either `Union` is mounted or reference to routes changes
 So in the case above, the array of routes is made with every render and it impacts the performance.
 If there is no need for generating routes dynamically we can refactor above example to:
 
-```js
+```jsx
 // Root.js
 
 import { Union } from 'react-union';

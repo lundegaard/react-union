@@ -200,7 +200,7 @@ Every async module is splitted up into individual chunks.
 
 **Example**
 
-```js
+```jsx
 // MyWidget.widget.js
 
 const MyWidget = props => {
