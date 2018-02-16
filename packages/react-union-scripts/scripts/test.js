@@ -7,7 +7,8 @@ const { resolveSymlink } = require('./lib/utils');
 const hasWatch = any(anyPass([equals('--watchAll'), equals('--watch')]));
 const hasCoverage = any(equals('--coverage'));
 
-const filePattern = '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$';
+const filePattern =
+	'\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$';
 
 const getConfig = () => ({
 	automock: false,

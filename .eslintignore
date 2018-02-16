@@ -1,0 +1,6 @@
+packages/*/node_modules
+packages/*/dist
+packages/*/es
+packages/*/lib
+boilerplates/*/node_modules
+node_modules

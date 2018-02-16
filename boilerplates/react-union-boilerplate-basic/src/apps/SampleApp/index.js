@@ -5,11 +5,12 @@ import { AppContainer } from 'react-hot-loader';
 import './scss/front.scss';
 import Root from './Root';
 
-const render = (Component) => justRender(
-	<AppContainer errorReporter={__DEV__ ? require('redbox-react').default : null}>
-		<Component />
-	</AppContainer>
-);
+const render = Component =>
+	justRender(
+		<AppContainer errorReporter={__DEV__ ? require('redbox-react').default : null}>
+			<Component />
+		</AppContainer>
+	);
 
 render(Root);
 

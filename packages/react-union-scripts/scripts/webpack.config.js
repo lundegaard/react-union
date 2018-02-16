@@ -13,7 +13,6 @@ const { resolveSymlink, getUnionConfig, getAppConfig } = require('./lib/utils');
 
 const appPkg = require(resolveSymlink(process.cwd(), './package.json'));
 
-
 /** if true, we are building bundles for all of the modules in 'configs' */
 const buildingAll = !APP;
 
@@ -72,7 +71,6 @@ const commonConfig = {
 						options: {
 							sourceMap: true,
 						},
-
 					},
 					{
 						loader: require.resolve('sass-loader'),
@@ -117,10 +115,9 @@ const getWebpackConfig_ = ({
 		context: path.resolve(path.join(process.cwd(), './src')),
 		entry: {
 			// entry for vendor deps
-			...(generateVendorBundle ?
-				{ vendor: R.o(R.reject(inVendorBlackList), R.keys)(appPkg.dependencies) } :
-				{}
-			),
+			...(generateVendorBundle
+				? { vendor: R.o(R.reject(inVendorBlackList), R.keys)(appPkg.dependencies) }
+				: {}),
 			[appName]: [
 				require.resolve('babel-polyfill'),
 				...(DEBUG && !NO_HMR ? ['react-hot-loader/patch', 'webpack-hot-middleware/client'] : []),
@@ -153,44 +150,46 @@ const getWebpackConfig_ = ({
 			// `vendors` to standalone chunk
 			...(generateVendorBundle
 				? [
-					new webpack.optimize.CommonsChunkPlugin({
-						name: 'vendor',
-						minChunks: Infinity,
-					}),
-				]
+						new webpack.optimize.CommonsChunkPlugin({
+							name: 'vendor',
+							minChunks: Infinity,
+						}),
+					]
 				: []),
 			// Create HTML file for development without proxy
 			...(!PROXY
 				? [
-					new HtmlWebpackPlugin({
-						title: appName,
-						// relative to output folder
-						filename: '../../index.html',
-						template: path.resolve(process.cwd(), `./public/${appName}/index.ejs`),
-					}),
-				] :
-				[]),
+						new HtmlWebpackPlugin({
+							title: appName,
+							// relative to output folder
+							filename: '../../index.html',
+							template: path.resolve(process.cwd(), `./public/${appName}/index.ejs`),
+						}),
+					]
+				: []),
 			...(!DEBUG
 				? [
-					new webpack.optimize.UglifyJsPlugin({
-						compress: {
-							warnings: VERBOSE,
-						},
-						output: {
-							comments: true,
-							// https://github.com/facebookincubator/create-react-app/issues/2488
-							ascii_only: true,
-						},
-						sourceMap: true,
-					}),
-					// new webpack.optimize.AggressiveMergingPlugin(),
-				]
+						new webpack.optimize.UglifyJsPlugin({
+							compress: {
+								warnings: VERBOSE,
+							},
+							output: {
+								comments: true,
+								// https://github.com/facebookincubator/create-react-app/issues/2488
+								ascii_only: true,
+							},
+							sourceMap: true,
+						}),
+						// new webpack.optimize.AggressiveMergingPlugin(),
+					]
 				: []),
-			...(!DEBUG ? [
-				new ManifestPlugin({
-					fileName: 'assetManifest.json',
-				}),
-			] : []),
+			...(!DEBUG
+				? [
+						new ManifestPlugin({
+							fileName: 'assetManifest.json',
+						}),
+					]
+				: []),
 			...(ANALYZE ? [new BundleAnalyzerPlugin()] : []),
 		],
 		output: {
@@ -214,7 +213,6 @@ const getWebpackConfig_ = ({
 		module: commonConfig.module,
 	};
 };
-
 
 const buildSingle_ = () => {
 	const config = getAppConfig(APP);
