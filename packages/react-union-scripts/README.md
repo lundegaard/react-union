@@ -29,19 +29,19 @@ npm install --save-dev react-union-scripts
 1. Create `union.config.js` in root of your project
 
 ```js
-const path = require("path");
+const path = require('path');
 
 module.exports = {
-  devServer: {
-    port: 3300,
-    baseDir: path.resolve(__dirname, "./build/public")
-  },
-  apps: [
-    {
-      name: "YourAppName",
-      path: path.resolve(__dirname, "./src/apps/YourAppName")
-    }
-  ]
+	devServer: {
+		port: 3300,
+		baseDir: path.resolve(__dirname, './build/public'),
+	},
+	apps: [
+		{
+			name: 'YourAppName',
+			path: path.resolve(__dirname, './src/apps/YourAppName'),
+		},
+	],
 };
 ```
 
@@ -69,8 +69,8 @@ For details how to write a template, see [https://github.com/jantimon/html-webpa
 
 ```json
 {
-  "start": "union-scripts start --app YourAppName",
-  "build": "union-scripts build"
+	"start": "react-union-scripts start --app YourAppName",
+	"build": "react-union-scripts build"
 }
 ```
 

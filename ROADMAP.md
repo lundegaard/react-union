@@ -1,21 +1,21 @@
 # Roadmap to v1.0.0
 
 Breaking Changes:
-- store arg is not in route.getComponent
-- START_SCAN, END_SCAN instead of START_BOOT, END_BOOT
-- diffrent run of scan - Using Union component
 
+* store arg is not in route.getComponent
+* START_SCAN, END_SCAN instead of START_BOOT, END_BOOT
+* diffrent run of scan - Using Union component
 
 ```
 [*] Monorepo with Yarn workspaces
 [ ] Travis build/release
 [ ] Prettier
 [ ] Husky
-[ ] union-scripts init
+[ ] react-union-scripts init
 	[ ] new widget
 	[ ] new project from boilerplate
 [*] READMEs
-[ ] union-scripts test
+[ ] react-union-scripts test
 [ ] Detailed documentation
 	[ ] Github Wiki or Web docs
 [ ] Examples/Recipes
@@ -38,5 +38,4 @@ Breaking Changes:
 		[ ] authors
 		[ ] VIVO to keywords?
 	[ ] Possible integrations "xo"
-
 ```
