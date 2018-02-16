@@ -216,15 +216,15 @@ The object that is used for pairing a widget descriptor with a widget.
 ### Properties:
 
 * [`path`]\(_string_) if there is a _widget descriptor_ with `name` that equals to `path` then the route is used
-* [`getComponents(done: function): undefined`]\(_function_) If `path` and `name` are matching, then the `getComponents` is called after `<Union />` finishes scan of the DOM.
-  `getComponents` has one argument `done`. You should call it after loading of your widget is done. You must pass the main React component of your widget as the argument of the `done`:
+* [`getComponent(done: function): undefined`]\(_function_) If `path` and `name` are matching, then the `getComponent` is called after `<Union />` finishes scan of the DOM.
+  `getComponent` has one argument `done`. You should call it after loading of your widget is done. You must pass the main React component of your widget as the argument of the `done`:
 
 ```js
 // routeForMyWidget.js
 
 export default {
 	name: 'my-widget',
-	getComponents(done) {
+	getComponent(done) {
 		require.ensure('./MyWidget').then(MyWidget => done(MyWidget));
 	},
 };

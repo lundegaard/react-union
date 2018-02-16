@@ -19,11 +19,13 @@ import validateDescriptors from './validateDescriptors';
 const flipContains = flip(contains);
 const getPath = path(['path']);
 const mapName = map(path(['name']));
-const routeP = route => new Promise(resolve => route.getComponents(resolve));
+const loadRouteComponent = route => new Promise(resolve => route.getComponent(resolve));
 
 const selectDescriptors = parent => parent.querySelectorAll('[data-union-widget]');
 const parseJsonContent = o(unary(JSON.parse), path(['innerHTML']));
 
+// describes the structure of a descriptor that we work with in JS (as opposed to the DOM structure)
+// each method shall receive the HTML element (the widget descriptor)
 const elementTransformersByKey = {
 	name: path(['dataset', 'unionWidget']),
 	container: path(['dataset', 'unionContainer']),
@@ -32,6 +34,7 @@ const elementTransformersByKey = {
 };
 
 const pairArrayWithDescriptorKeys = zipObj(keys(elementTransformersByKey));
+// zipObj is a binary function but converge expects a variadic function
 const pairArgsWithDescriptorKeys = unapply(pairArrayWithDescriptorKeys);
 
 const parseDescriptor = converge(pairArgsWithDescriptorKeys, values(elementTransformersByKey));
@@ -39,22 +42,20 @@ const getDescriptors = o(map(parseDescriptor), selectDescriptors);
 
 const getDescriptorsByName = o(fromPairs, map(x => [x.name, x]));
 
-const getComponents = (routes, widgetDescriptors) => {
-	const paths = mapName(widgetDescriptors);
+const loadConfigs = (routes, widgetDescriptors) => {
+	const descriptorNames = mapName(widgetDescriptors);
+	const descriptorsByName = getDescriptorsByName(widgetDescriptors);
 
-	const descriptorsByName_ = getDescriptorsByName(widgetDescriptors);
-
-	const pairComponentWithDescriptor_ = route => component => ({
+	const pairComponentWithDescriptor = route => component => ({
 		component,
-		descriptor: path([route.path], descriptorsByName_),
+		descriptor: path([route.path], descriptorsByName),
 	});
 
-	const loadFoundComponents_ = o(
-		map(route => routeP(route).then(pairComponentWithDescriptor_(route))),
-		filter(o(flipContains(paths), getPath))
-	);
+	const filterMatchedRoutes = filter(o(flipContains(descriptorNames), getPath));
+	const loadRouteConfig = route =>
+		loadRouteComponent(route).then(pairComponentWithDescriptor(route));
 
-	return loadFoundComponents_(routes);
+	return o(map(loadRouteConfig), filterMatchedRoutes)(routes);
 };
 
 /**
@@ -81,9 +82,9 @@ const scan = (routes, parent) => {
 
 	validateDescriptors(descriptors);
 
-	const components = getComponents(routes, descriptors);
+	const configs = loadConfigs(routes, descriptors);
 
-	return Promise.all(components);
+	return Promise.all(configs);
 };
 
 export default scan;
