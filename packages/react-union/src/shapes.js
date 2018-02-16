@@ -6,7 +6,7 @@ export const RouteShape = {
 };
 
 export const ConfigShape = {
-	mark: PropTypes.shape({
+	descriptor: PropTypes.shape({
 		name: PropTypes.string.isRequired,
 		container: PropTypes.string,
 		namespace: PropTypes.string,

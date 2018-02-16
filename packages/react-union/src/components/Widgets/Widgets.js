@@ -14,7 +14,9 @@ import WidgetPortal from '../WidgetPortal';
 const renderUnionWidget = ifElse(
 	isNil,
 	noop,
-	map(config => <WidgetPortal key={config.mark.namespace || config.mark.container} {...config} />)
+	map(config => (
+		<WidgetPortal key={config.descriptor.namespace || config.descriptor.container} {...config} />
+	))
 );
 
 /**
