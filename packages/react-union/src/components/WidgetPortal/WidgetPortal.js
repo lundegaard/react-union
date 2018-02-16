@@ -8,14 +8,14 @@ import WidgetProvider from '../WidgetProvider';
 
 /**
  * Internal component of `Union`.
- * It renders React portals according to `mark` and `component`.
+ * It renders React portals according to `descriptor` and `component`.
  *
- * Provides context to the `component` with mark informations.
+ * Provides context to the `component` with widget descriptor information.
  *
  * @See `WidgetProvider`.
  */
-const WidgetPortal = ({ component: WidgetComponent, mark }) => {
-	const { name, container, namespace, data } = mark;
+const WidgetPortal = ({ component: WidgetComponent, descriptor }) => {
+	const { name, container, namespace, data } = descriptor;
 	const resolvedNamespace = namespace || container;
 
 	invariant(

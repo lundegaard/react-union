@@ -10,7 +10,7 @@
     "cli.js"
   ],
   "bin": {
-    "union-scripts": "./bin/union-scripts.js"
+    "react-union-scripts": "./bin/react-union-scripts.js"
   },
   "engines": {
     "node": ">=8"

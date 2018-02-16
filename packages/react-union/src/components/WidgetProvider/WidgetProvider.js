@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Component, Children } from 'react';
 
 /**
- * Adds the context to the component with `mark` key `widget`.
+ * Adds the supplied widget data and namespace to the React context.
  */
 class WidgetProvider extends Component {
 	static childContextTypes = {
@@ -14,11 +14,11 @@ class WidgetProvider extends Component {
 
 	static propTypes = {
 		/**
-		 * Renders children.
+		 * Renders children
 		 */
 		children: PropTypes.node.isRequired,
 		/**
-		 * Data passed through DOM-mark
+		 * Data passed in the widget descriptor
 		 */
 		data: PropTypes.object,
 		/**

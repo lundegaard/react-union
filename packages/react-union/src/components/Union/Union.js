@@ -8,9 +8,9 @@ import scan from '../../scan';
 import Widgets from '../Widgets';
 
 /**
- * Renderes your widgets according to found DOM-marks and passed `routes`.
- * Widgets are encapsulated in one virtual DOM
- * even though widgets are distrubted over the HTML in different parts.
+ * Renders your widgets according to found widget descriptors and passed `routes`.
+ * Widgets are encapsulated in a single virtual DOM even though they may be spread out
+ * in the actual mark-up.
  */
 class Union extends Component {
 	static propTypes = {
@@ -21,15 +21,15 @@ class Union extends Component {
 		/**
 		 * Called after the scan of the HTML is done.
 		 */
-		onEndScan: PropTypes.func,
+		onScanEnd: PropTypes.func,
 		/**
 		 *  Called when there is an error while scanning of the HTML.
 		 */
-		onErrorScan: PropTypes.func,
+		onScanError: PropTypes.func,
 		/**
 		 * Called before the scan of the HTML
 		 */
-		onStartScan: PropTypes.func,
+		onScanStart: PropTypes.func,
 		/**
 		 * Element in which the scan is running. By default `document.body`.
 		 */
@@ -41,9 +41,9 @@ class Union extends Component {
 	};
 
 	static defaultProps = {
-		onEndScan: noop,
-		onErrorScan: noop,
-		onStartScan: noop,
+		onScanEnd: noop,
+		onScanError: noop,
+		onScanStart: noop,
 	};
 
 	state = {
@@ -61,18 +61,18 @@ class Union extends Component {
 	}
 
 	scan(props) {
-		const { onStartScan, onEndScan, onErrorScan, parent, routes } = props;
+		const { onScanStart, onScanEnd, onScanError, parent, routes } = props;
 
-		onStartScan();
+		onScanStart();
 
 		const domParent = parent || document.body;
 
 		scan(routes, domParent).then(
 			configs => {
-				onEndScan(configs);
+				onScanEnd(configs);
 				this.setState({ configs });
 			},
-			error => onErrorScan(error)
+			error => onScanError(error)
 		);
 	}
 
