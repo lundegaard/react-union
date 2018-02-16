@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Widgets from './Widgets';
 
 import { noop } from '../../utils';
 import { RouteShape } from '../../shapes';
 import scan from '../../scan';
+
+import Widgets from '../Widgets';
 
 /**
  * Renderes your widgets according to found DOM-marks and passed `routes`.

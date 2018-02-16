@@ -1,10 +1,4 @@
-const {
-	always,
-	compose,
-	equals,
-	findIndex,
-	ifElse,
-} = require('ramda');
+const { always, compose, equals, findIndex, ifElse } = require('ramda');
 
 const { pascalize } = require('humps');
 
@@ -23,10 +17,8 @@ const { pascalize } = require('humps');
  * 			]
  * 		) // "AppName"
  */
-const getArgValue = (arg, program) => compose(
-	ifElse(equals(-1), always(null), (x) => program[x + 1]),
-	findIndex(equals(arg))
-)(program);
+const getArgValue = (arg, program) =>
+	compose(ifElse(equals(-1), always(null), x => program[x + 1]), findIndex(equals(arg)))(program);
 
 const program = process.argv;
 

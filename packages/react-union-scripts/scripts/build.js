@@ -13,7 +13,7 @@ function build() {
 
 				resolve();
 			}
-	 	});
+		});
 	});
 }
 

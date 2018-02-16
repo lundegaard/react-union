@@ -9,7 +9,7 @@ import ifElse from 'ramda/src/ifElse';
 import { noop } from '../../utils';
 import { ConfigShape } from '../../shapes';
 
-import WidgetPortal from './WidgetPortal';
+import WidgetPortal from '../WidgetPortal';
 
 const renderUnionWidget = ifElse(
 	isNil,

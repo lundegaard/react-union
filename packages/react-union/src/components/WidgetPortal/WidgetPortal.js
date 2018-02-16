@@ -26,20 +26,18 @@ const WidgetPortal = ({ component: WidgetComponent, mark }) => {
 	const widgetProps = { namespace: resolvedNamespace, data };
 	const el = document.getElementById(container);
 
-	warning(el, `HTML container with id "${container}" is not found for widget wtih name "${name}"`);
+	warning(el, `HTML container with id "${container}" was not found for widget with name "${name}"`);
 
 	return WidgetComponent && el
 		? createPortal(
-			<WidgetProvider {...widgetProps}>
-				<WidgetComponent {...widgetProps} />
-			</WidgetProvider>,
-			el
-		)
+				<WidgetProvider {...widgetProps}>
+					<WidgetComponent {...widgetProps} />
+				</WidgetProvider>,
+				el
+			)
 		: null;
 };
 
-WidgetPortal.propTypes = {
-	...ConfigShape,
-};
+WidgetPortal.propTypes = ConfigShape;
 
 export default WidgetPortal;
