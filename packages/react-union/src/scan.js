@@ -1,10 +1,9 @@
 import o from 'ramda/src/o';
 import unary from 'ramda/src/unary';
 import path from 'ramda/src/path';
+import prop from 'ramda/src/prop';
 import map from 'ramda/src/map';
 import fromPairs from 'ramda/src/fromPairs';
-import contains from 'ramda/src/contains';
-import filter from 'ramda/src/filter';
 import flip from 'ramda/src/flip';
 import zipObj from 'ramda/src/zipObj';
 import converge from 'ramda/src/converge';
@@ -14,78 +13,78 @@ import always from 'ramda/src/always';
 import keys from 'ramda/src/keys';
 import values from 'ramda/src/values';
 
-import validateDescriptors from './validateDescriptors';
+import { validateDescriptorStructures, validateRoutesWithDescriptors } from './validate';
 
-const flipContains = flip(contains);
-const getPath = path(['path']);
-const mapName = map(path(['name']));
 const loadRouteComponent = route => new Promise(resolve => route.getComponent(resolve));
 
 const selectDescriptors = parent => parent.querySelectorAll('[data-union-widget]');
-const parseJsonContent = o(unary(JSON.parse), path(['innerHTML']));
+const parseJsonContent = o(unary(JSON.parse), prop('innerHTML'));
 
 /**
  * Describes the structure of a descriptor that we work with in JS (as opposed to the DOM structure).
- * Each value represents a key and a transformer function expecting a DOM element (the widget descriptor).
+ * Each record represents a key and a transformation function expecting a DOM element - the widget descriptor.
  * The results of calling the functions with the DOM element are set at the appropriate keys.
  *
  * @type {Object.<string, Function>}
  */
-const elementTransformersByKey = {
+const elementTransformationsByKey = {
 	name: path(['dataset', 'unionWidget']),
 	container: path(['dataset', 'unionContainer']),
 	namespace: path(['dataset', 'unionNamespace']),
 	data: tryCatch(parseJsonContent, always({})),
 };
 
-const pairArrayWithDescriptorKeys = zipObj(keys(elementTransformersByKey));
+const pairArrayWithDescriptorKeys = zipObj(keys(elementTransformationsByKey));
 // zipObj is a binary function but converge expects a variadic function
 const pairArgsWithDescriptorKeys = unapply(pairArrayWithDescriptorKeys);
+const parseDescriptor = converge(pairArgsWithDescriptorKeys, values(elementTransformationsByKey));
 
-const parseDescriptor = converge(pairArgsWithDescriptorKeys, values(elementTransformersByKey));
 const getDescriptors = o(map(parseDescriptor), selectDescriptors);
+const getRoutesByPath = o(fromPairs, map(route => [route.path, route]));
 
-const getDescriptorsByName = o(fromPairs, map(x => [x.name, x]));
+const loadConfigs = (routes, descriptors) => {
+	const routesByPath = getRoutesByPath(routes);
+	const findRouteByPath = flip(prop)(routesByPath);
+	const findRouteByDescriptor = o(findRouteByPath, prop('name'));
 
-const loadConfigs = (routes, widgetDescriptors) => {
-	const descriptorNames = mapName(widgetDescriptors);
-	const descriptorsByName = getDescriptorsByName(widgetDescriptors);
-
-	const pairComponentWithDescriptor = route => component => ({
+	const pairDescriptorWithComponent = descriptor => component => ({
 		component,
-		descriptor: path([route.path], descriptorsByName),
+		descriptor,
 	});
 
-	const filterMatchedRoutes = filter(o(flipContains(descriptorNames), getPath));
-	const loadRouteConfig = route =>
-		loadRouteComponent(route).then(pairComponentWithDescriptor(route));
+	const loadRouteComponentByDescriptor = o(loadRouteComponent, findRouteByDescriptor);
 
-	return o(map(loadRouteConfig), filterMatchedRoutes)(routes);
+	const loadDescriptorConfig = descriptor =>
+		loadRouteComponentByDescriptor(descriptor)
+			.then(pairDescriptorWithComponent(descriptor))
+			.catch(console.error);
+
+	return map(loadDescriptorConfig, descriptors);
 };
 
 /**
- * Function finds widget descriptors in `parent`
- * and pairs them with components returned by correspoding `routes`.
+ * Finds widget descriptors in `parent` and pairs them with components returned by correspoding `routes`.
  *
- * @param  {Array} routes [description]
- * @param  {DOM Element} parent 	The root DOM element where to find the widget descriptors.
- * @return {Promise}        		Resolves with array of widget descriptors and corresponding component:
+ * @param  {Array} routes Route configurations.
+ * @param  {Element} parent The root DOM element where to find the widget descriptors.
+ * @return {Promise} Resolves with array of widget descriptors and corresponding component:
  *
- *                                   	[{
- *                                   		component,
- *                                   		descriptor: {
- *                                   			name,
- * 																				container,
- *  	                                   	namespace,
- *																				data
- *                                   		}
- *                                   	}, ...]
+ *											[{
+ *												component,
+ *												descriptor: {
+ *													name,
+ *													container,
+ *  										 		namespace,
+ *													data
+ * 												}
+ * 											}, ...]
  *
  */
 const scan = (routes, parent) => {
 	const descriptors = getDescriptors(parent);
 
-	validateDescriptors(descriptors);
+	validateDescriptorStructures(descriptors);
+	validateRoutesWithDescriptors(routes, descriptors);
 
 	const configs = loadConfigs(routes, descriptors);
 
