@@ -3,8 +3,8 @@ import unary from 'ramda/src/unary';
 import path from 'ramda/src/path';
 import prop from 'ramda/src/prop';
 import map from 'ramda/src/map';
-import fromPairs from 'ramda/src/fromPairs';
-import flip from 'ramda/src/flip';
+import find from 'ramda/src/find';
+import whereEq from 'ramda/src/whereEq';
 import zipObj from 'ramda/src/zipObj';
 import converge from 'ramda/src/converge';
 import unapply from 'ramda/src/unapply';
@@ -40,12 +40,9 @@ const pairArgsWithDescriptorKeys = unapply(pairArrayWithDescriptorKeys);
 const parseDescriptor = converge(pairArgsWithDescriptorKeys, values(elementTransformationsByKey));
 
 const getDescriptors = o(map(parseDescriptor), selectDescriptors);
-const getRoutesByPath = o(fromPairs, map(route => [route.path, route]));
 
 const loadConfigs = (routes, descriptors) => {
-	const routesByPath = getRoutesByPath(routes);
-	const findRouteByPath = flip(prop)(routesByPath);
-	const findRouteByDescriptor = o(findRouteByPath, prop('name'));
+	const findRouteByDescriptor = ({ name }) => find(whereEq({ path: name }), routes);
 
 	const pairDescriptorWithComponent = descriptor => component => ({
 		component,
