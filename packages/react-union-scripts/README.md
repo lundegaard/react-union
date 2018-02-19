@@ -24,7 +24,7 @@ npm install --save-dev react-union-scripts
 
 ## Usage
 
-**TL;DR;** You can use one of our [examples](https://github.com/lundegaard/react-union/tree/master/packages/react-union-boilerplate-basic) as a boilerplate for your project instead.
+**TL;DR** You can use one of our [examples](https://github.com/lundegaard/react-union/tree/master/packages/react-union-boilerplate-basic) as a boilerplate for your project instead.
 
 1. Create `union.config.js` in root of your project
 
