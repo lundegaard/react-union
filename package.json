@@ -29,7 +29,6 @@
   "devDependencies": {
     "babel-eslint": "8.0.1",
     "eslint": "4.17.0",
-    "prettier": "1.10.2",
     "eslint-config-prettier": "2.9.0",
     "eslint-config-react-union": "0.1.3",
     "eslint-import-resolver-webpack": "0.8.3",
@@ -37,7 +36,9 @@
     "eslint-plugin-import": "2.7.0",
     "eslint-plugin-prettier": "2.6.0",
     "eslint-plugin-react": "7.4.0",
+    "husky": "0.14.3",
     "lerna": "2.2.0",
+    "prettier": "1.10.2",
     "rimraf": "2.6.2"
   },
   "workspaces": [
@@ -48,7 +49,9 @@
     "bootstrap": "yarn config set workspaces-experimental true && lerna bootstrap",
     "example:basic": "cd ./boilerplates/react-union-boilerplate-basic && yarn start",
     "lint": "eslint \"packages/**/*.js\" \"boilerplates/**/*.js\" --cache",
-    "lint:fix": "yarn lint --fix"
+    "lint:fix": "yarn lint --fix",
+    "precommit": "yarn lint:fix",
+    "prepush": "yarn lint:fix"
   },
   "author": "Tomas Konrady <tomas.konrady@lundegaard.eu>"
 }
