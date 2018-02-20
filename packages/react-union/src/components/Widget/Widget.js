@@ -3,18 +3,19 @@ import { createPortal } from 'react-dom';
 
 import { warning, invariant } from '../../utils';
 import { ConfigShape } from '../../shapes';
+import { withErrorBoundary } from '../../decorators';
 
 import WidgetProvider from '../WidgetProvider';
 
 /**
- * Internal component of `Union`.
- * It renders React portals according to `descriptor` and `component`.
+ * An internal component of `Union`.
  *
+ * It renders a widget based on `descriptor` and `component` using React portals.
  * Provides context to the `component` with widget descriptor information.
  *
- * @See `WidgetProvider`.
+ * @see WidgetProvider
  */
-const WidgetPortal = ({ component: WidgetComponent, descriptor }) => {
+const Widget = ({ component: WidgetComponent, descriptor }) => {
 	const { name, container, namespace, data } = descriptor;
 	const resolvedNamespace = namespace || container;
 
@@ -24,20 +25,20 @@ const WidgetPortal = ({ component: WidgetComponent, descriptor }) => {
 	);
 
 	const widgetProps = { namespace: resolvedNamespace, data };
-	const el = document.getElementById(container);
+	const element = document.getElementById(container);
 
-	warning(el, `HTML container with id "${container}" was not found for widget with name "${name}"`);
+	warning(element, `HTML element with ID "${container}" not found for widget "${name}"`);
 
-	return WidgetComponent && el
+	return WidgetComponent && element
 		? createPortal(
 				<WidgetProvider {...widgetProps}>
 					<WidgetComponent {...widgetProps} />
 				</WidgetProvider>,
-				el
+				element
 			)
 		: null;
 };
 
-WidgetPortal.propTypes = ConfigShape;
+Widget.propTypes = ConfigShape;
 
-export default WidgetPortal;
+export default withErrorBoundary(Widget);

@@ -5,7 +5,7 @@ import { noop } from '../../utils';
 import { RouteShape } from '../../shapes';
 import scan from '../../scan';
 
-import Widgets from '../Widgets';
+import Widget from '../Widget';
 
 /**
  * Renders your widgets according to found widget descriptors and passed `routes`.
@@ -60,7 +60,7 @@ class Union extends Component {
 		}
 	}
 
-	scan(props) {
+	scan = props => {
 		const { onScanStart, onScanEnd, onScanError, parent, routes } = props;
 
 		onScanStart();
@@ -74,13 +74,17 @@ class Union extends Component {
 			},
 			error => onScanError(error)
 		);
-	}
+	};
+
+	renderWidget = config => (
+		<Widget key={config.descriptor.namespace || config.descriptor.container} {...config} />
+	);
 
 	render() {
 		return (
 			<div>
 				{this.props.children}
-				<Widgets configs={this.state.configs} />
+				{this.state.configs.map(this.renderWidget)}
 			</div>
 		);
 	}

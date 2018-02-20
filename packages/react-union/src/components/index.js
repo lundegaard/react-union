@@ -1,4 +1,3 @@
 export { default as Union } from './Union';
-export { default as WidgetPortal } from './WidgetPortal';
+export { default as Widget } from './Widget';
 export { default as WidgetProvider } from './WidgetProvider';
-export { default as Widgets } from './Widgets';
