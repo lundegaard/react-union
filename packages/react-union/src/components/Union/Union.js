@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import { noop } from '../../utils';
 import { RouteShape } from '../../shapes';
 import scan from '../../scan';
 
-import Widgets from '../Widgets';
+import Widget from '../Widget';
 
 /**
  * Renders your widgets according to found widget descriptors and passed `routes`.
@@ -78,10 +78,12 @@ class Union extends Component {
 
 	render() {
 		return (
-			<div>
+			<Fragment>
 				{this.props.children}
-				<Widgets configs={this.state.configs} />
-			</div>
+				{this.state.configs.map(config => (
+					<Widget key={config.descriptor.namespace || config.descriptor.container} {...config} />
+				))}
+			</Fragment>
 		);
 	}
 }
