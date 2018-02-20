@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 
 import { warning, invariant } from '../../utils';
 import { ConfigShape } from '../../shapes';
+import { withErrorBoundary } from '../../decorators';
 
 import WidgetProvider from '../WidgetProvider';
 
@@ -40,4 +41,4 @@ const Widget = ({ component: WidgetComponent, descriptor }) => {
 
 Widget.propTypes = ConfigShape;
 
-export default Widget;
+export default withErrorBoundary(Widget);

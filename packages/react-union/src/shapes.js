@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 export const RouteShape = {
-	container: PropTypes.string,
+	getComponent: PropTypes.func.isRequired,
 	path: PropTypes.string.isRequired,
 };
 
@@ -10,6 +10,7 @@ export const ConfigShape = {
 		name: PropTypes.string.isRequired,
 		container: PropTypes.string,
 		namespace: PropTypes.string,
-	}),
-	component: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+	}).isRequired,
+	// covers both class and functional components
+	component: PropTypes.func.isRequired,
 };

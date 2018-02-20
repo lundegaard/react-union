@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 import { noop } from '../../utils';
 import { RouteShape } from '../../shapes';
@@ -60,7 +60,7 @@ class Union extends Component {
 		}
 	}
 
-	scan(props) {
+	scan = props => {
 		const { onScanStart, onScanEnd, onScanError, parent, routes } = props;
 
 		onScanStart();
@@ -74,17 +74,14 @@ class Union extends Component {
 			},
 			error => onScanError(error)
 		);
-	}
+	};
+
+	renderWidget = config => (
+		<Widget key={config.descriptor.namespace || config.descriptor.container} {...config} />
+	);
 
 	render() {
-		return (
-			<Fragment>
-				{this.props.children}
-				{this.state.configs.map(config => (
-					<Widget key={config.descriptor.namespace || config.descriptor.container} {...config} />
-				))}
-			</Fragment>
-		);
+		return [this.props.children, this.state.configs.map(this.renderWidget)];
 	}
 }
 
