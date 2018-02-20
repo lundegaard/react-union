@@ -3,6 +3,8 @@ import path from 'ramda/src/path';
 
 import { ConfigShape } from '../../shapes';
 
+const getName = path(['props', 'descriptor', 'name']);
+
 const withErrorBoundary = WrappedComponent => {
 	class UnionWidgetErrorBoundary extends Component {
 		static propTypes = ConfigShape;
@@ -16,7 +18,7 @@ const withErrorBoundary = WrappedComponent => {
 		}
 
 		render() {
-			const name = path(['props', 'descriptor', 'name'], this);
+			const name = getName(this);
 
 			if (this.state.hasError) {
 				// TODO: perhaps show some tips for common mistakes?
