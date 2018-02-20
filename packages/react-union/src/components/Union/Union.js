@@ -81,7 +81,12 @@ class Union extends Component {
 	);
 
 	render() {
-		return [this.props.children, this.state.configs.map(this.renderWidget)];
+		return (
+			<div>
+				{this.props.children}
+				{this.state.configs.map(this.renderWidget)}
+			</div>
+		);
 	}
 }
 
