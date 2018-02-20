@@ -1,6 +1,6 @@
 const path = require('path');
 
-module.exports = {
+module.exports = (cli) => ({
 	apps: [
 		{
 			name: 'SampleApp',
@@ -9,7 +9,11 @@ module.exports = {
 				publicPath: '/',
 				target: 'http://localhost:8080',
 			},
+			outputMapper: cli.target === 'liferay' ? {
+				css: 'staticss/css',
+			} : {},
+			webpackConfig: (c) => c,
 		},
 	],
-};
+});
 

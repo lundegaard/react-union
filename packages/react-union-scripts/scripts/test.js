@@ -1,7 +1,7 @@
 const jest = require('jest');
 const { any, anyPass, equals } = require('ramda');
 
-const { DEBUG } = require('./lib/cli');
+const { debug } = require('./lib/cli');
 const { resolveSymlink } = require('./lib/utils');
 
 const hasWatch = any(anyPass([equals('--watchAll'), equals('--watch')]));
@@ -31,7 +31,7 @@ function test() {
 	process.env.BABEL_ENV = 'test';
 	process.env.NODE_ENV = 'test';
 
-	const includeWatch = DEBUG && !hasWatch(options) && !hasCoverage(options);
+	const includeWatch = debug && !hasWatch(options) && !hasCoverage(options);
 	const jestOptions = [
 		...(includeWatch ? ['--watchAll'] : []),
 		...['--config', JSON.stringify(getConfig())],

@@ -8,25 +8,33 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const path = require('path');
 const R = require('ramda');
 
-const { DEBUG, VERBOSE, PROXY, NO_HMR, ANALYZE, APP } = require('./lib/cli');
-const { resolveSymlink, getUnionConfig, getAppConfig } = require('./lib/utils');
+const cli = require('./lib/cli');
+const {
+	resolveSymlink,
+	getUnionConfig,
+	getAppConfig,
+	trimSlashes,
+} = require('./lib/utils');
 
 const appPkg = require(resolveSymlink(process.cwd(), './package.json'));
 
-
 /** if true, we are building bundles for all of the modules in 'configs' */
-const buildingAll = !APP;
+const buildingAll = !cli.app;
 
-console.log(`Create for PROXY: ${PROXY ? 'yes' : 'no'}`);
-console.log(`Debug: ${DEBUG ? 'yes' : 'no'}`);
+if (cli.proxy) {
+	console.log('Starting proxy.');
+}
+
+console.log(`Optimizing for ${cli.debug ? 'development' : 'production'} mode.`);
 
 const GLOBALS = {
-	'process.env.NODE_ENV': DEBUG ? '"development"' : '"production"',
-	'process.env.BABEL_ENV': DEBUG ? '"development"' : '"production"',
+	__DEV__: cli.debug, //  alias for `process.env.NODE_ENV === 'development'
 	'process.env.BROWSER': true,
-	__DEV__: DEBUG,
+	'process.env.BABEL_ENV': cli.debug ? '"development"' : '"production"',
+	'process.env.NODE_ENV': cli.debug ? '"development"' : '"production"',
 };
-const commonConfig = {
+
+const getCommonConfig = ({ outputMapper }) => ({
 	module: {
 		rules: [
 			// All widgets are loaded asynchronously
@@ -64,20 +72,20 @@ const commonConfig = {
 						options: {
 							importLoaders: 1,
 							minimize: true,
-							sourceMap: DEBUG,
+							sourceMap: cli.debug,
 						},
 					},
 					{
 						loader: require.resolve('resolve-url-loader'),
 						options: {
+							// always true - needed for sass-loader
 							sourceMap: true,
 						},
-
 					},
 					{
 						loader: require.resolve('sass-loader'),
 						options: {
-							sourceMap: DEBUG,
+							sourceMap: cli.debug,
 						},
 					},
 				],
@@ -90,54 +98,82 @@ const commonConfig = {
 			{
 				test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,
 				include: [resolveSymlink(process.cwd(), './src')],
-				use: [require.resolve('url-loader')],
+				use: [
+					{
+						loader: require.resolve('url-loader'),
+						options: {
+							name: `${trimSlashes(outputMapper.media)}/[name].[ext]`,
+						},
+					},
+				],
 			},
 			{
 				test: /\.(eot|ttf|wav|mp3|otf)$/,
 				include: [resolveSymlink(process.cwd(), './src')],
-				use: [require.resolve('file-loader')],
+				use: [
+					{
+						loader: require.resolve('file-loader'),
+						options: {
+							name: `${trimSlashes(outputMapper.media)}/[name].[ext]`,
+						},
+					},
+				],
 			},
 		],
 	},
-};
+});
 
-const getWebpackConfig_ = ({
-	buildDir,
-	name: appName,
-	path: appPath,
-	proxy,
-	generateVendorBundle,
-	vendorBlackList,
-}) => {
+const getWebpackConfig_ = config => {
+	const {
+		buildDir,
+		name: appName,
+		path: appPath,
+		proxy,
+		generateVendorBundle,
+		vendorBlackList,
+		publicPath,
+		outputMapper,
+	} = config;
+
+	invariant(appName, "Property 'name' is not specified for one from the apps.");
+	invariant(appPath, "Property 'path' is not specified for one from the apps.");
+	invariant(buildDir, "Property 'buildDir' is not specified for one from the apps.");
+	invariant(outputMapper, "Property 'outputMapper' is not specified for one from the apps.");
+
+	const commonConfig = getCommonConfig(config);
+
 	const inVendorBlackList = R.flip(R.contains)(vendorBlackList);
-	const outputPath = path.join(buildDir, '/assets/', appName);
+	const hmr = cli.script === 'start' && cli.debug && !cli.noHmr;
+	const sanitizedPublicPath = trimSlashes(publicPath);
+	const outputPath = path.join(buildDir, sanitizedPublicPath, appName);
+	const outputFilename = cli.debug ? '[name].bundle.js' : '[name].[chunkhash:8].bundle.js';
+	const outputChunkname = cli.debug ? '[name].chunk.js' : '[name].[chunkhash:8].chunk.js';
 
 	return {
 		// base dir for the `entry`
 		context: path.resolve(path.join(process.cwd(), './src')),
 		entry: {
 			// entry for vendor deps
-			...(generateVendorBundle ?
-				{ vendor: R.o(R.reject(inVendorBlackList), R.keys)(appPkg.dependencies) } :
-				{}
-			),
+			...(generateVendorBundle
+				? { vendor: R.o(R.reject(inVendorBlackList), R.keys)(appPkg.dependencies) }
+				: {}),
 			[appName]: [
 				require.resolve('babel-polyfill'),
-				...(DEBUG && !NO_HMR ? ['react-hot-loader/patch', 'webpack-hot-middleware/client'] : []),
+				...(hmr ? ['react-hot-loader/patch', 'webpack-hot-middleware/client'] : []),
 				// adds the concrete module...
 				path.join(appPath, 'index'),
 			],
 		},
 		plugins: [
 			new webpack.LoaderOptionsPlugin({
-				debug: DEBUG,
+				debug: cli.debug,
 			}),
 			new CleanWebpackPlugin([outputPath], { root: process.cwd() }),
 			// these globals will be accesible within the code
 			new webpack.DefinePlugin(GLOBALS),
-			...(!DEBUG ? [new webpack.optimize.OccurrenceOrderPlugin()] : []),
+			...(!cli.debug ? [new webpack.optimize.OccurrenceOrderPlugin()] : []),
 			// for hot reloading ( eg. adds functionality through the `module.hot` in the code )
-			...(DEBUG && !NO_HMR ? [new webpack.HotModuleReplacementPlugin()] : []),
+			...(hmr ? [new webpack.HotModuleReplacementPlugin()] : []),
 			// stopping bundle when there is an error
 			new webpack.NoEmitOnErrorsPlugin(),
 			new webpack.optimize.CommonsChunkPlugin({
@@ -153,51 +189,52 @@ const getWebpackConfig_ = ({
 			// `vendors` to standalone chunk
 			...(generateVendorBundle
 				? [
-					new webpack.optimize.CommonsChunkPlugin({
-						name: 'vendor',
-						minChunks: Infinity,
-					}),
-				]
+						new webpack.optimize.CommonsChunkPlugin({
+							name: 'vendor',
+							minChunks: Infinity,
+						}),
+					]
 				: []),
 			// Create HTML file for development without proxy
-			...(!PROXY
+			...(!cli.proxy
 				? [
-					new HtmlWebpackPlugin({
-						title: appName,
-						// relative to output folder
-						filename: '../../index.html',
-						template: path.resolve(process.cwd(), `./public/${appName}/index.ejs`),
-					}),
-				] :
-				[]),
-			...(!DEBUG
-				? [
-					new webpack.optimize.UglifyJsPlugin({
-						compress: {
-							warnings: VERBOSE,
-						},
-						output: {
-							comments: true,
-							// https://github.com/facebookincubator/create-react-app/issues/2488
-							ascii_only: true,
-						},
-						sourceMap: true,
-					}),
-					// new webpack.optimize.AggressiveMergingPlugin(),
-				]
+						new HtmlWebpackPlugin({
+							title: appName,
+							filename: path.resolve(outputPath, outputMapper.index),
+							template: path.resolve(process.cwd(), `./public/${appName}/index.ejs`),
+						}),
+					]
 				: []),
-			...(!DEBUG ? [
-				new ManifestPlugin({
-					fileName: 'assetManifest.json',
-				}),
-			] : []),
-			...(ANALYZE ? [new BundleAnalyzerPlugin()] : []),
+			...(!cli.debug
+				? [
+						new webpack.optimize.UglifyJsPlugin({
+							compress: {
+								warnings: cli.verbose,
+							},
+							output: {
+								comments: false,
+								// https://github.com/facebookincubator/create-react-app/issues/2488
+								ascii_only: true,
+							},
+							sourceMap: true,
+						}),
+						// new webpack.optimize.AggressiveMergingPlugin(),
+					]
+				: []),
+			...(!cli.debug
+				? [
+						new ManifestPlugin({
+							fileName: 'assetManifest.json',
+						}),
+					]
+				: []),
+			...(cli.analyze ? [new BundleAnalyzerPlugin()] : []),
 		],
 		output: {
-			path: outputPath,
-			filename: DEBUG ? '[name].bundle.js' : '[name].[chunkhash:8].bundle.js',
-			chunkFilename: DEBUG ? '[name].chunk.js' : '[name].[chunkhash:8].chunk.js',
-			publicPath: PROXY ? proxy.publicPath : `/assets/${appName}/`,
+			path: path.resolve(outputPath),
+			filename: `${outputMapper.js}/${outputFilename}`,
+			chunkFilename: `${outputMapper.js}/${outputChunkname}`,
+			publicPath: cli.proxy ? proxy.publicPath : sanitizedPublicPath,
 			sourcePrefix: '  ',
 		},
 		resolve: {
@@ -210,15 +247,14 @@ const getWebpackConfig_ = ({
 			],
 			extensions: ['.webpack.js', '.web.js', '.js', '.json'],
 		},
-		devtool: DEBUG ? 'source-map' : false,
+		devtool: cli.debug ? 'source-map' : false,
 		module: commonConfig.module,
 	};
 };
 
-
 const buildSingle_ = () => {
-	const config = getAppConfig(APP);
-	invariant(config, `Missing configuration for the app called '${APP}'.`);
+	const config = getAppConfig(cli.app);
+	invariant(config, `Missing configuration for the app called '${cli.app}'.`);
 
 	return [getWebpackConfig_(config)];
 };

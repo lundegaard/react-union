@@ -4,6 +4,8 @@ const {
 	equals,
 	findIndex,
 	ifElse,
+	when,
+	nth,
 } = require('ramda');
 
 const { pascalize } = require('humps');
@@ -31,23 +33,25 @@ const getArgValue = (arg, program) => compose(
 const program = process.argv;
 
 /** optimize for development */
-const DEBUG = !program.includes('--release');
+const debug = !program.includes('--release');
 
 /** level of debugging messages */
-const VERBOSE = program.includes('--verbose');
+const verbose = program.includes('--verbose');
 
 /** if true, create proxy */
-const PROXY = program.includes('--proxy');
+const proxy = program.includes('--proxy');
 
 /** if true, do not suport HMR */
-const NO_HMR = !DEBUG || program.includes('--no-hmr');
+const noHmr = !debug || program.includes('--no-hmr');
 
 /** if true, runs analyze tool  */
-const ANALYZE = program.includes('--analyze');
-
-const app = getArgValue('--app', program);
+const analyze = program.includes('--analyze');
 
 /** if exist, runs single app. Value is converted from dash-case to PascalCase. */
-const APP = app ? pascalize(app) : null;
+const app = when(Boolean, pascalize)(getArgValue('--app', program));
 
-module.exports = { DEBUG, VERBOSE, PROXY, NO_HMR, ANALYZE, APP };
+const target = getArgValue('--target', program);
+
+const script = nth(3)(program);
+
+module.exports = { target, debug, verbose, proxy, noHmr, analyze, app };

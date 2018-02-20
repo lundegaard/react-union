@@ -28,7 +28,7 @@
     "skin-deep": "1.2.0"
   },
   "scripts": {
-    "build": "union-scripts build",
+    "build": "union-scripts build --target liferay",
     "start": "union-scripts start --app SampleApp",
     "test": "yarn lint && yarn test:js",
     "test:js": "union-scripts test",

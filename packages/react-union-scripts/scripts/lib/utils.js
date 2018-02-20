@@ -1,19 +1,22 @@
 /* eslint-disable import/no-dynamic-require */
 const R = require('ramda');
-const { VERBOSE } = require('./cli');
+const { verbose } = require('./cli');
 const invariant = require('invariant');
 const fs = require('fs');
 const path = require('path');
 
+const cli = require('./cli');
+
 const unionConfig = require(path.resolve(process.cwd(), './union.config')) || {};
 
-const defaultBuildDir = path.resolve(process.cwd(), './build/public');
+const defaultBuildDir = path.resolve(process.cwd(), './build');
 const defaultPort = 3300;
 
 const defaultUnionConfig = {
 	buildDir: defaultBuildDir,
 	generateVendorBundle: true,
 	vendorBlackList: [],
+	publicPath: '/',
 	devServer: {
 		port: defaultPort,
 		baseDir: defaultBuildDir,
@@ -23,14 +26,41 @@ const defaultUnionConfig = {
 		target: '',
 		publicPath: '/',
 	},
+	outputMapper: {
+		css: 'static/css',
+		js: 'static/js',
+		media: 'static/media',
+		index: 'index.html',
+	},
 };
 
-const getCommonUnionConfig = R.o(R.mergeDeepRight(defaultUnionConfig), R.omit(['apps']));
-const getAppsUnionConfig = R.path(['apps']);
+const stats = {
+	colors: true,
+	chunks: verbose,
+	reasons: verbose,
+	hash: verbose,
+	version: verbose,
+	timings: true,
+	chunkModules: verbose,
+	cached: verbose,
+	cachedAssets: verbose,
+};
+
+
+const extendOutputMapper_ = R.evolve({
+	outputMapper: R.flip(R.merge)(defaultUnionConfig.outputMapper),
+});
+
+const mergeCommonUnionConfig_ = R.o(R.mergeDeepRight(defaultUnionConfig), R.omit(['apps']));
+const getCommonUnionConfig_ = R.o(extendOutputMapper_, mergeCommonUnionConfig_);
+
+const getAppsUnionConfig_ = R.path(['apps']);
 
 const getUnionConfig = () => {
-	const common = getCommonUnionConfig(unionConfig);
-	const apps = getAppsUnionConfig(unionConfig);
+	const evaluatedUnionConfig = R.is(Function)(unionConfig) ? unionConfig(cli) : unionConfig;
+
+	const common = getCommonUnionConfig_(evaluatedUnionConfig);
+	const apps = getAppsUnionConfig_(evaluatedUnionConfig);
 
 	invariant(apps, "Missing property 'apps' in your union.config.js.");
 
@@ -38,20 +68,17 @@ const getUnionConfig = () => {
 };
 
 const getAppConfig = name => R.find(R.whereEq({ name }), getUnionConfig());
+
 const resolveSymlink = (...args) => fs.realpathSync(path.resolve(...args));
 
-module.exports.getAppConfig = getAppConfig;
-module.exports.getUnionConfig = getUnionConfig;
-module.exports.resolveSymlink = resolveSymlink;
+const equalsSlash_ = R.equals('/');
 
-module.exports.stats = {
-	colors: true,
-	chunks: VERBOSE,
-	reasons: VERBOSE,
-	hash: VERBOSE,
-	version: VERBOSE,
-	timings: true,
-	chunkModules: VERBOSE,
-	cached: VERBOSE,
-	cachedAssets: VERBOSE,
+const trimSlashes = R.o(R.dropWhile(equalsSlash_), R.dropLastWhile(equalsSlash_));
+
+module.exports = {
+	getAppConfig,
+	getUnionConfig,
+	resolveSymlink,
+	stats,
+	trimSlashes,
 };
