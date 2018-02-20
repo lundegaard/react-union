@@ -3,4 +3,5 @@ packages/*/dist
 packages/*/es
 packages/*/lib
 boilerplates/*/node_modules
+boilerplates/*/build
 node_modules
