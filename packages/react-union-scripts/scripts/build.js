@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-
+const fs = require('fs');
 const { stats } = require('./lib/utils');
 const configs = require('./webpack.config');
 
@@ -11,9 +11,18 @@ function build() {
 			} else {
 				console.log(buildStats.toString(stats));
 
+				copyPublicFolder(config);
+
 				resolve();
 			}
 	 	});
+	});
+}
+
+function copyPublicFolder(config) {
+	fs.copySync('public', config.output.path, {
+		dereference: true,
+		filter: file => file !== paths.appHtml,
 	});
 }
 

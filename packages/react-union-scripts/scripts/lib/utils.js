@@ -9,17 +9,16 @@ const cli = require('./cli');
 
 const unionConfig = require(path.resolve(process.cwd(), './union.config')) || {};
 
-const defaultBuildDir = path.resolve(process.cwd(), './build');
 const defaultPort = 3300;
 
 const defaultUnionConfig = {
-	buildDir: defaultBuildDir,
+	paths: {},
 	generateVendorBundle: true,
 	vendorBlackList: [],
 	publicPath: '/',
+	templateFilename: 'index.ejs',
 	devServer: {
 		port: defaultPort,
-		baseDir: defaultBuildDir,
 	},
 	proxy: {
 		port: defaultPort,
@@ -47,24 +46,48 @@ const stats = {
 };
 
 
+const getApps_ = R.path(['apps']);
+
+const computePaths_ = (config) => ({
+	...config,
+	paths: {
+		// path to build folder
+		build: path.resolve(process.cwd(), 'build', config.name),
+		// directory for resources and template
+		public: path.resolve(process.cwd(), 'public', config.name),
+		// path entry of the app
+		index: path.resolve(process.cwd(), 'src', 'apps', config.name, 'index'),
+		...config.paths,
+	},
+});
+
 const extendOutputMapper_ = R.evolve({
 	outputMapper: R.flip(R.merge)(defaultUnionConfig.outputMapper),
 });
 
-const mergeCommonUnionConfig_ = R.o(R.mergeDeepRight(defaultUnionConfig), R.omit(['apps']));
-const getCommonUnionConfig_ = R.o(extendOutputMapper_, mergeCommonUnionConfig_);
+const getCommonUnionConfig_ = R.o(R.mergeDeepRight(defaultUnionConfig), R.omit(['apps']));
 
-const getAppsUnionConfig_ = R.path(['apps']);
+const getAppConfig_ = R.o(computePaths_, extendOutputMapper_);
+
+const mergeAppAndCommonConfig_ = (common) => R.o(getAppConfig_, R.mergeDeepRight(common));
+
+const validateRawConfig_ = ({ apps }) => {
+	invariant(apps, "Missing property 'apps' in your union.config.js.");
+
+	R.forEach(({ name }) => {
+		invariant(name, 'Property \'name\' is not specified for one of the apps.');
+	})(apps);
+};
 
 const getUnionConfig = () => {
 	const evaluatedUnionConfig = R.is(Function)(unionConfig) ? unionConfig(cli) : unionConfig;
 
+	validateRawConfig_(evaluatedUnionConfig);
+
 	const common = getCommonUnionConfig_(evaluatedUnionConfig);
-	const apps = getAppsUnionConfig_(evaluatedUnionConfig);
+	const apps = getApps_(evaluatedUnionConfig);
 
-	invariant(apps, "Missing property 'apps' in your union.config.js.");
-
-	return R.map(R.mergeDeepRight(common), apps);
+	return R.map(mergeAppAndCommonConfig_(common), apps);
 };
 
 const getAppConfig = name => R.find(R.whereEq({ name }), getUnionConfig());

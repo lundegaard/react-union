@@ -125,9 +125,9 @@ const getCommonConfig = ({ outputMapper }) => ({
 
 const getWebpackConfig_ = config => {
 	const {
-		buildDir,
+		paths,
+		templateFilename,
 		name: appName,
-		path: appPath,
 		proxy,
 		generateVendorBundle,
 		vendorBlackList,
@@ -135,19 +135,16 @@ const getWebpackConfig_ = config => {
 		outputMapper,
 	} = config;
 
-	invariant(appName, "Property 'name' is not specified for one from the apps.");
-	invariant(appPath, "Property 'path' is not specified for one from the apps.");
-	invariant(buildDir, "Property 'buildDir' is not specified for one from the apps.");
-	invariant(outputMapper, "Property 'outputMapper' is not specified for one from the apps.");
-
 	const commonConfig = getCommonConfig(config);
 
 	const inVendorBlackList = R.flip(R.contains)(vendorBlackList);
 	const hmr = cli.script === 'start' && cli.debug && !cli.noHmr;
 	const sanitizedPublicPath = trimSlashes(publicPath);
-	const outputPath = path.join(buildDir, sanitizedPublicPath, appName);
+	const outputPath = path.join(paths.build, sanitizedPublicPath, appName);
+
 	const outputFilename = cli.debug ? '[name].bundle.js' : '[name].[chunkhash:8].bundle.js';
 	const outputChunkname = cli.debug ? '[name].chunk.js' : '[name].[chunkhash:8].chunk.js';
+	const template = `${paths.public}/${templateFilename}`;
 
 	return {
 		// base dir for the `entry`
@@ -160,9 +157,15 @@ const getWebpackConfig_ = config => {
 			[appName]: [
 				require.resolve('babel-polyfill'),
 				...(hmr ? ['react-hot-loader/patch', 'webpack-hot-middleware/client'] : []),
-				// adds the concrete module...
-				path.join(appPath, 'index'),
+				paths.index,
 			],
+		},
+		output: {
+			path: path.resolve(outputPath),
+			filename: `${outputMapper.js}/${outputFilename}`,
+			chunkFilename: `${outputMapper.js}/${outputChunkname}`,
+			publicPath: cli.proxy ? proxy.publicPath : sanitizedPublicPath,
+			sourcePrefix: '  ',
 		},
 		plugins: [
 			new webpack.LoaderOptionsPlugin({
@@ -201,7 +204,7 @@ const getWebpackConfig_ = config => {
 						new HtmlWebpackPlugin({
 							title: appName,
 							filename: path.resolve(outputPath, outputMapper.index),
-							template: path.resolve(process.cwd(), `./public/${appName}/index.ejs`),
+							template,
 						}),
 					]
 				: []),
@@ -230,13 +233,6 @@ const getWebpackConfig_ = config => {
 				: []),
 			...(cli.analyze ? [new BundleAnalyzerPlugin()] : []),
 		],
-		output: {
-			path: path.resolve(outputPath),
-			filename: `${outputMapper.js}/${outputFilename}`,
-			chunkFilename: `${outputMapper.js}/${outputChunkname}`,
-			publicPath: cli.proxy ? proxy.publicPath : sanitizedPublicPath,
-			sourcePrefix: '  ',
-		},
 		resolve: {
 			modules: [
 				path.resolve(__dirname, '../node_modules'),

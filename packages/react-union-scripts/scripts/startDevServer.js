@@ -21,7 +21,6 @@ function startDevServer() {
 
 
 	return new Promise((resolve) => {
-
 		const compiler = webpack(webpackConfig);
 		const handleCompilerComplete = () => {
 			const middleware = [
@@ -45,7 +44,7 @@ function startDevServer() {
 			} : {
 				port: unionConfig.devServer.port,
 				server: {
-					baseDir: unionConfig.devServer.baseDir || unionConfig.buildDir,
+					baseDir: unionConfig.paths.build,
 					middleware,
 				},
 			};
