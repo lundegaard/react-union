@@ -1,4 +1,4 @@
-module.exports = (cli) => ({
+module.exports = (cli) => (console.log(cli), {
 	apps: [
 		{
 			name: 'SampleApp',
@@ -7,7 +7,7 @@ module.exports = (cli) => ({
 				target: 'http://localhost:8080',
 			},
 			outputMapper: cli.target === 'liferay' ? {
-				css: 'staticss/css',
+				js: 'app/js',
 			} : {},
 			webpackConfig: (c) => c,
 		},

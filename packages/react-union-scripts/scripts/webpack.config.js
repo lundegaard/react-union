@@ -140,11 +140,12 @@ const getWebpackConfig_ = config => {
 	const inVendorBlackList = R.flip(R.contains)(vendorBlackList);
 	const hmr = cli.script === 'start' && cli.debug && !cli.noHmr;
 	const sanitizedPublicPath = trimSlashes(publicPath);
-	const outputPath = path.join(paths.build, sanitizedPublicPath, appName);
+	const outputPath = path.join(paths.build, sanitizedPublicPath);
 
 	const outputFilename = cli.debug ? '[name].bundle.js' : '[name].[chunkhash:8].bundle.js';
 	const outputChunkname = cli.debug ? '[name].chunk.js' : '[name].[chunkhash:8].chunk.js';
 	const template = `${paths.public}/${templateFilename}`;
+
 
 	return {
 		// base dir for the `entry`

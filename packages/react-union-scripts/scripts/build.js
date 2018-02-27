@@ -11,19 +11,19 @@ function build() {
 			} else {
 				console.log(buildStats.toString(stats));
 
-				copyPublicFolder(config);
+
 
 				resolve();
 			}
 	 	});
 	});
 }
-
+/*
 function copyPublicFolder(config) {
 	fs.copySync('public', config.output.path, {
 		dereference: true,
 		filter: file => file !== paths.appHtml,
 	});
 }
-
+*/
 module.exports = build;

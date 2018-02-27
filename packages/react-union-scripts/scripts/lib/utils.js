@@ -62,7 +62,7 @@ const computePaths_ = (config) => ({
 });
 
 const extendOutputMapper_ = R.evolve({
-	outputMapper: R.flip(R.merge)(defaultUnionConfig.outputMapper),
+	outputMapper: R.merge(defaultUnionConfig.outputMapper),
 });
 
 const getCommonUnionConfig_ = R.o(R.mergeDeepRight(defaultUnionConfig), R.omit(['apps']));
