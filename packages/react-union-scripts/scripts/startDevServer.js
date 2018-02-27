@@ -16,10 +16,10 @@ function startDevServer() {
 	const webpackConfig = configs[0];
 	const unionConfig = getAppConfig(app);
 
-	invariant(!proxy || unionConfig.proxy.port, 'Missing \'port\' for proxy in your union.config.');
-	invariant(!proxy || unionConfig.proxy.target, 'Missing \'target\' for proxy in your union.config');
+	invariant(!proxy || unionConfig.proxy.port, "Missing 'port' for proxy in your union.config.");
+	invariant(!proxy || unionConfig.proxy.target, "Missing 'target' for proxy in your union.config");
 
-	return new Promise((resolve) => {
+	return new Promise(resolve => {
 		const compiler = webpack(webpackConfig);
 		const handleCompilerComplete = () => {
 			const middleware = [
@@ -32,30 +32,30 @@ function startDevServer() {
 
 			const baseDirs = [webpackConfig.output.path, unionConfig.paths.public];
 
-			const config = proxy ? {
-				port: unionConfig.proxy.port,
-				proxy: {
-					target: unionConfig.proxy.target,
-					middleware,
-				},
-				serveStatic: baseDirs,
-			} : {
-				port: unionConfig.devServer.port,
-				server: {
-					baseDir: baseDirs,
-					middleware,
-				},
-			};
+			const config = proxy
+				? {
+						port: unionConfig.proxy.port,
+						proxy: {
+							target: unionConfig.proxy.target,
+							middleware,
+						},
+						serveStatic: baseDirs,
+					}
+				: {
+						port: unionConfig.devServer.port,
+						server: {
+							baseDir: baseDirs,
+							middleware,
+						},
+					};
 
-			browserSync
-				.create()
-				.init(
-					{
-						ui: false,
-						...config,
-					},
-					resolve
-				);
+			browserSync.create().init(
+				{
+					ui: false,
+					...config,
+				},
+				resolve
+			);
 		};
 
 		compiler.run(handleCompilerComplete);

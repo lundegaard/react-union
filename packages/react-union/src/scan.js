@@ -1,70 +1,91 @@
 import o from 'ramda/src/o';
 import unary from 'ramda/src/unary';
 import path from 'ramda/src/path';
+import prop from 'ramda/src/prop';
 import map from 'ramda/src/map';
-import fromPairs from 'ramda/src/fromPairs';
-import contains from 'ramda/src/contains';
-import filter from 'ramda/src/filter';
-import flip from 'ramda/src/flip';
+import find from 'ramda/src/find';
+import whereEq from 'ramda/src/whereEq';
+import zipObj from 'ramda/src/zipObj';
+import converge from 'ramda/src/converge';
+import unapply from 'ramda/src/unapply';
+import tryCatch from 'ramda/src/tryCatch';
+import always from 'ramda/src/always';
+import keys from 'ramda/src/keys';
+import values from 'ramda/src/values';
 
-import validateDomMarks from './validateDomMarks';
+import { validateDescriptorStructures, validateRoutesWithDescriptors } from './validate';
 
-const flipContains = flip(contains);
-const getPath = path(['path']);
-const mapName = map(path(['name']));
-const routeP = route => new Promise(resolve => route.getComponents(resolve));
+const loadRouteComponent = route => new Promise(resolve => route.getComponent(resolve));
 
-const selectDomMarks = parent => parent.querySelectorAll('[data-union-widget]');
-const parseDomMarks = o(unary(JSON.parse), path(['innerHTML']));
-const getDomMarks = o(map(parseDomMarks), selectDomMarks);
+const selectDescriptors = parent => parent.querySelectorAll('[data-union-widget]');
+const parseJsonContent = o(unary(JSON.parse), prop('innerHTML'));
 
-const getDomMarksByName = o(fromPairs, map(x => [x.name, x]));
+/**
+ * Describes the structure of a descriptor that we work with in JS (as opposed to the DOM structure).
+ * Each record represents a key and a transformation function expecting a DOM element - the widget descriptor.
+ * The results of calling the functions with the DOM element are set at the appropriate keys.
+ *
+ * @type {Object.<string, Function>}
+ */
+const elementTransformationsByKey = {
+	name: path(['dataset', 'unionWidget']),
+	container: path(['dataset', 'unionContainer']),
+	namespace: path(['dataset', 'unionNamespace']),
+	data: tryCatch(parseJsonContent, always({})),
+};
 
-const getComponents = (routes, domMarks) => {
-	const paths = mapName(domMarks);
+const pairArrayWithDescriptorKeys = zipObj(keys(elementTransformationsByKey));
+// zipObj is a binary function but converge expects a variadic function
+const pairArgsWithDescriptorKeys = unapply(pairArrayWithDescriptorKeys);
+const parseDescriptor = converge(pairArgsWithDescriptorKeys, values(elementTransformationsByKey));
 
-	const marksByName_ = getDomMarksByName(domMarks);
+const getDescriptors = o(map(parseDescriptor), selectDescriptors);
 
-	const pairComponentWithMark_ = route => component => ({
+const loadConfigs = (routes, descriptors) => {
+	const findRouteByDescriptor = ({ name }) => find(whereEq({ path: name }), routes);
+
+	const pairDescriptorWithComponent = descriptor => component => ({
 		component,
-		mark: path([route.path], marksByName_),
+		descriptor,
 	});
 
-	const loadFoundComponents_ = o(
-		map(route => routeP(route).then(pairComponentWithMark_(route))),
-		filter(o(flipContains(paths), getPath))
-	);
+	const loadRouteComponentByDescriptor = o(loadRouteComponent, findRouteByDescriptor);
 
-	return loadFoundComponents_(routes);
+	const loadDescriptorConfig = descriptor =>
+		loadRouteComponentByDescriptor(descriptor)
+			.then(pairDescriptorWithComponent(descriptor))
+			.catch(console.error);
+
+	return map(loadDescriptorConfig, descriptors);
 };
 
 /**
- * Function finds DOM marks in `parent`
- * and pairs them with components returned by correspoding `routes`.
+ * Finds widget descriptors in `parent` and pairs them with components returned by correspoding `routes`.
  *
- * @param  {Array} routes [description]
- * @param  {DOM Element} parent 	The root DOM element where to find DOM marks.
- * @return {Promise}        		Resolves with array of DOM marks and corresponding component:
+ * @param  {Array} routes Route configurations.
+ * @param  {Element} parent The root DOM element where to find the widget descriptors.
+ * @return {Promise} Resolves with array of widget descriptors and corresponding component:
  *
- *                                   	[{
- *                                   		component,
- *                                   		mark: {
- *                                   			name,
- *                                   			path,
- *                                   			namespace,
- *                                   			...
- *                                   		}
- *                                   	}, ...]
+ *											[{
+ *												component,
+ *												descriptor: {
+ *													name,
+ *													container,
+ *  										 		namespace,
+ *													data
+ * 												}
+ * 											}, ...]
  *
  */
 const scan = (routes, parent) => {
-	const domMarks = getDomMarks(parent);
+	const descriptors = getDescriptors(parent);
 
-	validateDomMarks(domMarks);
+	validateDescriptorStructures(descriptors);
+	validateRoutesWithDescriptors(routes, descriptors);
 
-	const components = getComponents(routes, domMarks);
+	const configs = loadConfigs(routes, descriptors);
 
-	return Promise.all(components);
+	return Promise.all(configs);
 };
 
 export default scan;

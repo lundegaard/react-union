@@ -1,5 +1,4 @@
 const webpack = require('webpack');
-const fs = require('fs');
 const { stats } = require('./lib/utils');
 const configs = require('./webpack.config');
 
@@ -11,14 +10,13 @@ function build() {
 			} else {
 				console.log(buildStats.toString(stats));
 
-
-
 				resolve();
 			}
-	 	});
+		});
 	});
 }
 /*
+const fs = require('fs');
 function copyPublicFolder(config) {
 	fs.copySync('public', config.output.path, {
 		dereference: true,

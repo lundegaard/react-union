@@ -9,12 +9,7 @@ const path = require('path');
 const R = require('ramda');
 
 const cli = require('./lib/cli');
-const {
-	resolveSymlink,
-	getUnionConfig,
-	getAppConfig,
-	trimSlashes,
-} = require('./lib/utils');
+const { resolveSymlink, getUnionConfig, getAppConfig, trimSlashes } = require('./lib/utils');
 
 const appPkg = require(resolveSymlink(process.cwd(), './package.json'));
 
@@ -145,7 +140,6 @@ const getWebpackConfig_ = config => {
 	const outputFilename = cli.debug ? '[name].bundle.js' : '[name].[chunkhash:8].bundle.js';
 	const outputChunkname = cli.debug ? '[name].chunk.js' : '[name].[chunkhash:8].chunk.js';
 	const template = `${paths.public}/${templateFilename}`;
-
 
 	return {
 		// base dir for the `entry`

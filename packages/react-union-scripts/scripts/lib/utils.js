@@ -45,10 +45,9 @@ const stats = {
 	cachedAssets: verbose,
 };
 
-
 const getApps_ = R.path(['apps']);
 
-const computePaths_ = (config) => ({
+const computePaths_ = config => ({
 	...config,
 	paths: {
 		// path to build folder
@@ -69,13 +68,13 @@ const getCommonUnionConfig_ = R.o(R.mergeDeepRight(defaultUnionConfig), R.omit([
 
 const getAppConfig_ = R.o(computePaths_, extendOutputMapper_);
 
-const mergeAppAndCommonConfig_ = (common) => R.o(getAppConfig_, R.mergeDeepRight(common));
+const mergeAppAndCommonConfig_ = common => R.o(getAppConfig_, R.mergeDeepRight(common));
 
 const validateRawConfig_ = ({ apps }) => {
 	invariant(apps, "Missing property 'apps' in your union.config.js.");
 
 	R.forEach(({ name }) => {
-		invariant(name, 'Property \'name\' is not specified for one of the apps.');
+		invariant(name, "Property 'name' is not specified for one of the apps.");
 	})(apps);
 };
 

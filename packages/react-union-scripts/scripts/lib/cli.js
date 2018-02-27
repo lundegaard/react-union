@@ -1,12 +1,4 @@
-const {
-	always,
-	compose,
-	equals,
-	findIndex,
-	ifElse,
-	when,
-	nth,
-} = require('ramda');
+const { always, compose, equals, findIndex, ifElse, when, nth } = require('ramda');
 
 const { pascalize } = require('humps');
 
@@ -25,10 +17,8 @@ const { pascalize } = require('humps');
  * 			]
  * 		) // "AppName"
  */
-const getArgValue = (arg, program) => compose(
-	ifElse(equals(-1), always(null), (x) => program[x + 1]),
-	findIndex(equals(arg))
-)(program);
+const getArgValue = (arg, program) =>
+	compose(ifElse(equals(-1), always(null), x => program[x + 1]), findIndex(equals(arg)))(program);
 
 const program = process.argv;
 
@@ -54,4 +44,4 @@ const target = getArgValue('--target', program);
 
 const script = nth(3)(program);
 
-module.exports = { target, debug, verbose, proxy, noHmr, analyze, app };
+module.exports = { script, target, debug, verbose, proxy, noHmr, analyze, app };
