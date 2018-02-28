@@ -1,3 +1,3 @@
-const Root = () => 'I am Root!';
+const Root = () => 'I am content.';
 
 export default Root;

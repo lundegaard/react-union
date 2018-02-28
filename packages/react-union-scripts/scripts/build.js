@@ -1,5 +1,10 @@
 const webpack = require('webpack');
-const { stats } = require('./lib/utils');
+const path = require('path');
+const fse = require('fs-extra');
+const { compose, map } = require('ramda');
+const { notEqual } = require('ramda-extension');
+
+const { getUnionConfig, stats } = require('./lib/utils');
 const configs = require('./webpack.config');
 
 function build() {
@@ -10,18 +15,19 @@ function build() {
 			} else {
 				console.log(buildStats.toString(stats));
 
+				copyPublicFolder(getUnionConfig());
+
 				resolve();
 			}
 		});
 	});
 }
-/*
-const fs = require('fs');
-function copyPublicFolder(config) {
-	fs.copySync('public', config.output.path, {
+
+const copyPublicFolder = map(config => {
+	fse.copySync(config.paths.public, config.paths.build, {
 		dereference: true,
-		filter: file => file !== paths.appHtml,
+		filter: compose(notEqual(config.templateFilename), path.basename),
 	});
-}
-*/
+});
+
 module.exports = build;

@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const configs = require('./webpack.config');
-const { app, proxy } = require('./lib/cli');
+const cli = require('./lib/cli');
 const { stats, getAppConfig } = require('./lib/utils');
 
 function startDevServer() {
@@ -14,10 +14,13 @@ function startDevServer() {
 	);
 
 	const webpackConfig = configs[0];
-	const unionConfig = getAppConfig(app);
+	const unionConfig = getAppConfig(cli.app);
 
-	invariant(!proxy || unionConfig.proxy.port, "Missing 'port' for proxy in your union.config.");
-	invariant(!proxy || unionConfig.proxy.target, "Missing 'target' for proxy in your union.config");
+	invariant(!cli.proxy || unionConfig.proxy.port, "Missing 'port' for proxy in your union.config.");
+	invariant(
+		!cli.proxy || unionConfig.proxy.target,
+		"Missing 'target' for proxy in your union.config"
+	);
 
 	return new Promise(resolve => {
 		const compiler = webpack(webpackConfig);
@@ -32,7 +35,7 @@ function startDevServer() {
 
 			const baseDirs = [webpackConfig.output.path, unionConfig.paths.public];
 
-			const config = proxy
+			const config = cli.proxy
 				? {
 						port: unionConfig.proxy.port,
 						proxy: {

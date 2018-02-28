@@ -30,8 +30,8 @@
     "skin-deep": "1.2.0"
   },
   "scripts": {
-    "build": "union-scripts build",
-    "start": "union-scripts start --app SampleApp",
+    "build": "react-union-scripts build",
+    "start": "react-union-scripts start --app SampleApp",
     "test": "yarn lint && yarn test:js",
     "test:js": "react-union-scripts test",
     "lint": "yarn lint:eslint",

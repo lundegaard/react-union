@@ -2,7 +2,6 @@ import React from 'react';
 import { justRender } from 'react-union';
 import { AppContainer } from 'react-hot-loader';
 
-import './assets/scss/front.scss';
 import Root from './components/Root';
 
 const render = Component =>

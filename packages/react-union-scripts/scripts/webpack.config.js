@@ -6,7 +6,8 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
-const R = require('ramda');
+const { o, reject, keys } = require('ramda');
+const { includes } = require('ramda-extension');
 
 const cli = require('./lib/cli');
 const { resolveSymlink, getUnionConfig, getAppConfig, trimSlashes } = require('./lib/utils');
@@ -132,7 +133,7 @@ const getWebpackConfig_ = config => {
 
 	const commonConfig = getCommonConfig(config);
 
-	const inVendorBlackList = R.flip(R.contains)(vendorBlackList);
+	const inVendorBlackList = includes(vendorBlackList);
 	const hmr = cli.script === 'start' && cli.debug && !cli.noHmr;
 	const sanitizedPublicPath = trimSlashes(publicPath);
 	const outputPath = path.join(paths.build, sanitizedPublicPath);
@@ -147,7 +148,7 @@ const getWebpackConfig_ = config => {
 		entry: {
 			// entry for vendor deps
 			...(generateVendorBundle
-				? { vendor: R.o(R.reject(inVendorBlackList), R.keys)(appPkg.dependencies) }
+				? { vendor: o(reject(inVendorBlackList), keys)(appPkg.dependencies) }
 				: {}),
 			[appName]: [
 				require.resolve('babel-polyfill'),

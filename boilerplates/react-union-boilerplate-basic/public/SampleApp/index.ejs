@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><%= htmlWebpackPlugin.options.title %></title>
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link href="/css/front.css" rel="stylesheet" type="text/css">
   </head>
   <body>
     <noscript>
@@ -12,19 +13,9 @@
     </noscript>
 
     <div id="hero"></div>
-    <script data-union-widget="" type="application/json">
-    {
-        "name": "hero",
-        "container": "hero"
-    }
-    </script>
+    <script data-union-widget="hero" data-union-container="hero" type="application/json"></script>
 
     <div id="content"></div>
-    <script data-union-widget="" type="application/json">
-    {
-        "name": "content",
-        "container": "content"
-    }
-    </script>
+    <script data-union-widget="content" data-union-container="content" type="application/json"></script>
   </body>
 </html>
