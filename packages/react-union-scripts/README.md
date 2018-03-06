@@ -24,24 +24,24 @@ npm install --save-dev react-union-scripts
 
 ## Usage
 
-**TL;DR;** You can use one of our [examples](https://github.com/lundegaard/react-union/tree/master/packages/react-union-boilerplate-basic) as a boilerplate for your project instead.
+**TL;DR** You can use one of our [examples](https://github.com/lundegaard/react-union/tree/master/packages/react-union-boilerplate-basic) as a boilerplate for your project instead.
 
 1. Create `union.config.js` in root of your project
 
 ```js
-const path = require("path");
+const path = require('path');
 
 module.exports = {
-  devServer: {
-    port: 3300,
-    baseDir: path.resolve(__dirname, "./build/public")
-  },
-  apps: [
-    {
-      name: "YourAppName",
-      path: path.resolve(__dirname, "./src/apps/YourAppName")
-    }
-  ]
+	devServer: {
+		port: 3300,
+		baseDir: path.resolve(__dirname, './build/public'),
+	},
+	apps: [
+		{
+			name: 'YourAppName',
+			path: path.resolve(__dirname, './src/apps/YourAppName'),
+		},
+	],
 };
 ```
 
@@ -69,8 +69,8 @@ For details how to write a template, see [https://github.com/jantimon/html-webpa
 
 ```json
 {
-  "start": "union-scripts start --app YourAppName",
-  "build": "union-scripts build"
+	"start": "react-union-scripts start --app YourAppName",
+	"build": "react-union-scripts build"
 }
 ```
 
@@ -160,10 +160,10 @@ Array of configurations for your applications. Every configuration is merged wit
 
 For example:
 
-```
+```js
 module.exports = {
 	proxy: {
-		port:3333,
+		port: 3333,
 	},
 	apps: [
 		{
@@ -175,10 +175,10 @@ module.exports = {
 		},
 		{
 			name: 'MySecondApp',
-			path: path.resolve(__dirname, './src/apps/MySecondApp')
+			path: path.resolve(__dirname, './src/apps/MySecondApp'),
 		},
 	],
-}
+};
 ```
 
 MyApp uses port `3330` for proxy and MySecondApp uses `3333`.
@@ -200,17 +200,17 @@ Every async module is splitted up into individual chunks.
 
 **Example**
 
-```
+```jsx
 // MyWidget.widget.js
 
-const MyWidget = (props) => {
+const MyWidget = props => {
 	// Your React component
-}
+};
 
 export default MyWidget;
 ```
 
-```
+```js
 // MyWidgetRoute.js
 
 import loadMyWidget from './MyWidget.widget';
@@ -218,7 +218,7 @@ import loadMyWidget from './MyWidget.widget';
 export default {
 	path: 'my-widget',
 	getComponent(done) {
-		loadWidget((module) => done(module.default));
-	}
+		loadWidget(mod => done(mod.default));
+	},
 };
 ```

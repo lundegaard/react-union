@@ -5,10 +5,8 @@ function format(time) {
 function run(fn, options) {
 	const task = typeof fn.default === 'undefined' ? fn : fn.default;
 	const start = new Date();
-	console.log(
-		`[${format(start)}] Starting '${task.name}${options ? `(${options})` : ''}'...`
-	);
-	return task(options).then((resolution) => {
+	console.log(`[${format(start)}] Starting '${task.name}${options ? `(${options})` : ''}'...`);
+	return task(options).then(resolution => {
 		const end = new Date();
 		const time = end.getTime() - start.getTime();
 		console.log(
@@ -27,7 +25,7 @@ if (require.main === module && process.argv.length > 2) {
 	// eslint-disable-next-line import/no-dynamic-require
 	const module = require(`./${process.argv[2]}.js`);
 
-	run(module).catch((err) => {
+	run(module).catch(err => {
 		console.error(err.stack);
 		process.exit(1);
 	});

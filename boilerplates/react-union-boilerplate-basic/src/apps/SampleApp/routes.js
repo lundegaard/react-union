@@ -1,4 +1,17 @@
-import HeroRoute from '../../widgets/Hero/route';
-import ContentRoute from '../../widgets/Content/route';
+import loadHeroWidget from '../../widgets/Hero/hero.widget';
+import loadContentWidget from '../../widgets/Content/content.widget';
 
-export default [HeroRoute, ContentRoute];
+export default [
+	{
+		path: 'hero',
+		getComponent: done => {
+			loadHeroWidget(mod => done(mod.default));
+		},
+	},
+	{
+		path: 'content',
+		getComponent: done => {
+			loadContentWidget(mod => done(mod.default));
+		},
+	},
+];

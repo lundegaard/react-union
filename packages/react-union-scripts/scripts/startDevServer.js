@@ -16,10 +16,10 @@ function startDevServer() {
 	const webpackConfig = configs[0];
 	const unionConfig = getAppConfig(APP);
 
-	invariant(!PROXY || unionConfig.proxy.port, 'Missing \'port\' for proxy in your union.config.');
-	invariant(!PROXY || unionConfig.proxy.target, 'Missing \'target\' for proxy in your union.config');
+	invariant(!PROXY || unionConfig.proxy.port, "Missing 'port' for proxy in your union.config.");
+	invariant(!PROXY || unionConfig.proxy.target, "Missing 'target' for proxy in your union.config");
 
-	return new Promise((resolve) => {
+	return new Promise(resolve => {
 		const compiler = webpack(webpackConfig);
 		const handleCompilerComplete = () => {
 			const middleware = [
@@ -30,37 +30,36 @@ function startDevServer() {
 				webpackHotMiddleware(compiler),
 			];
 
-			const config = PROXY ? {
-				port: unionConfig.proxy.port,
-				proxy: {
-					target: unionConfig.proxy.target,
-					middleware,
-				},
-				serveStatic: [{
-					route: webpackConfig.output.publicPath,
-					dir: webpackConfig.output.path,
-				}],
-			} : {
-				port: unionConfig.devServer.port,
-				server: {
-					baseDir: unionConfig.devServer.baseDir || unionConfig.buildDir,
-					middleware,
-				},
-			};
-
-			browserSync
-				.create()
-				.init(
-					{
-						ui: false,
-						files: [
-							'**/*.css',
-							'build/public/*.html',
+			const config = PROXY
+				? {
+						port: unionConfig.proxy.port,
+						proxy: {
+							target: unionConfig.proxy.target,
+							middleware,
+						},
+						serveStatic: [
+							{
+								route: webpackConfig.output.publicPath,
+								dir: webpackConfig.output.path,
+							},
 						],
-						...config,
-					},
-					resolve
-				);
+					}
+				: {
+						port: unionConfig.devServer.port,
+						server: {
+							baseDir: unionConfig.devServer.baseDir || unionConfig.buildDir,
+							middleware,
+						},
+					};
+
+			browserSync.create().init(
+				{
+					ui: false,
+					files: ['**/*.css', 'build/public/*.html'],
+					...config,
+				},
+				resolve
+			);
 		};
 
 		compiler.run(handleCompilerComplete);

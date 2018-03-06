@@ -4,6 +4,7 @@ module.exports = {
 			jsx: true,
 		},
 	},
+	extends: ['prettier/react'],
 	plugins: ['react'],
 	rules: {
 		'jsx-quotes': ['error', 'prefer-double'],
@@ -20,7 +21,6 @@ module.exports = {
 		],
 		'react/jsx-first-prop-new-line': ['error', 'multiline'],
 		'react/jsx-handler-names': 'error',
-		'react/jsx-indent': [2, 'tab'],
 		'react/jsx-indent-props': [2, 'tab'],
 		'react/jsx-max-props-per-line': [
 			'error',

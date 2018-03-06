@@ -1,5 +1,6 @@
 {
   "name": "react-union-boilerplate-basic",
+  "version": "0.0.0",
   "private": true,
   "license": "MIT",
   "repository": "https://github.com/lundegaard/react-union",
@@ -19,18 +20,20 @@
     "babel-eslint": "8.0.1",
     "babel-preset-react": "6.23.0",
     "eslint": "4.7.2",
-    "eslint-config-react-union": "^0.1.1",
+    "eslint-config-react-union": "0.1.3",
     "eslint-plugin-babel": "4.1.2",
     "eslint-plugin-import": "2.7.0",
+    "eslint-plugin-prettier": "2.6.0",
     "eslint-plugin-react": "7.4.0",
+    "prettier": "1.10.2",
     "react-union-scripts": "^0.1.5",
     "skin-deep": "1.2.0"
   },
   "scripts": {
-    "build": "union-scripts build",
-    "start": "union-scripts start --app SampleApp",
+    "build": "react-union-scripts build",
+    "start": "react-union-scripts start --app SampleApp",
     "test": "yarn lint && yarn test:js",
-    "test:js": "union-scripts test",
+    "test:js": "react-union-scripts test",
     "lint": "yarn lint:eslint",
     "lint:eslint": "eslint --ext .js ./"
   }
