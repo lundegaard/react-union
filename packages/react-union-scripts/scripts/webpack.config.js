@@ -98,7 +98,7 @@ const getCommonConfig = ({ outputMapper }) => ({
 					{
 						loader: require.resolve('url-loader'),
 						options: {
-							name: `${trimSlashes(outputMapper.media)}/[name].[ext]`,
+							name: `${outputMapper.media}/[name].[ext]`,
 						},
 					},
 				],
@@ -110,7 +110,7 @@ const getCommonConfig = ({ outputMapper }) => ({
 					{
 						loader: require.resolve('file-loader'),
 						options: {
-							name: `${trimSlashes(outputMapper.media)}/[name].[ext]`,
+							name: `${outputMapper.media}/[name].[ext]`,
 						},
 					},
 				],

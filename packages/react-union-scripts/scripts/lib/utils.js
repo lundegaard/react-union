@@ -26,7 +26,6 @@ const defaultUnionConfig = {
 		publicPath: '/',
 	},
 	outputMapper: {
-		css: 'static/css',
 		js: 'static/js',
 		media: 'static/media',
 		index: 'index.html',
@@ -45,6 +44,9 @@ const stats = {
 	cachedAssets: verbose,
 };
 
+const equalsSlash_ = R.equals('/');
+const trimSlashes = R.o(R.dropWhile(equalsSlash_), R.dropLastWhile(equalsSlash_));
+
 const getApps_ = R.path(['apps']);
 
 const computePaths_ = config => ({
@@ -61,7 +63,7 @@ const computePaths_ = config => ({
 });
 
 const extendOutputMapper_ = R.evolve({
-	outputMapper: R.merge(defaultUnionConfig.outputMapper),
+	outputMapper: R.o(R.map(trimSlashes), R.merge(defaultUnionConfig.outputMapper)),
 });
 
 const getCommonUnionConfig_ = R.o(R.mergeDeepRight(defaultUnionConfig), R.omit(['apps']));
@@ -92,10 +94,6 @@ const getUnionConfig = () => {
 const getAppConfig = name => R.find(R.whereEq({ name }), getUnionConfig());
 
 const resolveSymlink = (...args) => fs.realpathSync(path.resolve(...args));
-
-const equalsSlash_ = R.equals('/');
-
-const trimSlashes = R.o(R.dropWhile(equalsSlash_), R.dropLastWhile(equalsSlash_));
 
 module.exports = {
 	getAppConfig,

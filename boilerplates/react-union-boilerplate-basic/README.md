@@ -7,17 +7,24 @@ This project can either be used as the example of react-union and react-union-sc
 ```
 react-union-boilerplate
 ├── public 				- Contains templates for your application builds
-|	└── SampleApp		- Folder for application SampleApp
+|	└── SampleApp		- Folder stores static assets for application SampleApp
+|		└── css			- Shared CSS
+|			└── ...
+|		└── fonts		- Shared fonts
+|			└── ...
 |		└── index.ejs 	- Template for the html-webpack-plugin
+|		└── favicon.ico
 ├── src
 |	├── apps			- Each nested folder defines different application build
 |	|	└── SampleApp	- Folder for application SampleApp
 |	|		└── fonts
 |	|			└── ...
-|	|		└── scss
-|	|			└── front.scss - React Union scripts works with node-sass out of the box
+|	|		└── components
+|	|			└── Root
+|	|				└── Root.js
+|	|				└── Root.scss - React Union scripts works with node-sass out of the box
+|	|				└── index.js
 |	|		└── index.js
-|	|		└── Root.js
 |	|		└── routes.js
 |	├── widgets
 |	|	├── Content 	- Base folder for Content widget
