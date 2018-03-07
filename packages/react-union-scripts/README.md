@@ -202,7 +202,7 @@ Configuration file can eiher exports:
 
 To the function is passed object that describes flags derived from calling our CLI api:
 
-```
+```js
 // example of dynamic union.config.js
 module.exports = ({
 	target, // custom value
@@ -258,7 +258,7 @@ module.exports = {
 };
 ```
 
-will MyFirstApp use proxy port `5000` and MySecondApp will use common value `3333`.
+MyFirstApp will use proxy port `5000` and MySecondApp will use common value `3333`.
 
 [`apps[].name`]\(string): Name of your application that is used for both:
 - finding HTML template in `./public` directory and
