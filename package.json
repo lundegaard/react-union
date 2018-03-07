@@ -23,7 +23,8 @@
   ],
   "author": "Tomas Konrady <tomas.konrady@lundegaard.eu>",
   "contributors": [
-    "Tomas Konrady <tomas.konrady@lundegaard.eu>"
+    "Tomas Konrady <tomas.konrady@lundegaard.eu>",
+    "Vaclav Jancarik <vaclav.jancarik@lundegaard.eu>"
   ],
   "repository": "https://github.com/lundegaard/react-union",
   "license": "UNLICENSED",
