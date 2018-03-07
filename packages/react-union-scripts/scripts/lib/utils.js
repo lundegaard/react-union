@@ -1,27 +1,27 @@
 /* eslint-disable import/no-dynamic-require */
 const R = require('ramda');
-const { verbose } = require('./cli');
+const R_ = require('ramda-extension');
 const invariant = require('invariant');
 const fs = require('fs');
 const path = require('path');
 
+const utilsFs = require('./fs');
 const cli = require('./cli');
 
-const unionConfig = require(path.resolve(process.cwd(), './union.config')) || {};
-
-const defaultPort = 3300;
-
-const defaultUnionConfig = {
+const UNION_CONFIG_PATH = path.resolve(process.cwd(), './union.config');
+const DEFAULT_APP_DIR = path.resolve(process.cwd(), 'src', 'apps');
+const DEFAULT_PORT = 3300;
+const DEFAULT_UNION_CONFIG = {
 	paths: {},
 	generateVendorBundle: true,
 	vendorBlackList: [],
 	publicPath: '/',
 	templateFilename: 'index.ejs',
 	devServer: {
-		port: defaultPort,
+		port: DEFAULT_PORT,
 	},
 	proxy: {
-		port: defaultPort,
+		port: DEFAULT_PORT,
 		target: '',
 		publicPath: '/',
 	},
@@ -34,22 +34,25 @@ const defaultUnionConfig = {
 
 const stats = {
 	colors: true,
-	chunks: verbose,
-	reasons: verbose,
-	hash: verbose,
-	version: verbose,
+	chunks: cli.verbose,
+	reasons: cli.verbose,
+	hash: cli.verbose,
+	version: cli.verbose,
 	timings: true,
-	chunkModules: verbose,
-	cached: verbose,
-	cachedAssets: verbose,
+	chunkModules: cli.verbose,
+	cached: cli.verbose,
+	cachedAssets: cli.verbose,
 };
 
 const equalsSlash_ = R.equals('/');
+const nilOrEmpty_ = R.either(R.isNil, R.isEmpty);
+const whenNilOrEmpty_ = R.when(nilOrEmpty_);
+const whenIsFunction_ = R.when(R_.isFunction);
 const trimSlashes = R.o(R.dropWhile(equalsSlash_), R.dropLastWhile(equalsSlash_));
 
 const getApps_ = R.path(['apps']);
 
-const computePaths_ = config => ({
+const extendPaths_ = config => ({
 	...config,
 	paths: {
 		// path to build folder
@@ -57,47 +60,85 @@ const computePaths_ = config => ({
 		// directory for resources and template
 		public: path.resolve(process.cwd(), 'public', config.name),
 		// path entry of the app
-		index: path.resolve(process.cwd(), 'src', 'apps', config.name, 'index'),
+		index: path.resolve(DEFAULT_APP_DIR, config.name, 'index'),
 		...config.paths,
 	},
 });
 
 const extendOutputMapper_ = R.evolve({
-	outputMapper: R.o(R.map(trimSlashes), R.merge(defaultUnionConfig.outputMapper)),
+	outputMapper: R.o(R.map(trimSlashes), R.merge(DEFAULT_UNION_CONFIG.outputMapper)),
 });
 
-const getCommonUnionConfig_ = R.o(R.mergeDeepRight(defaultUnionConfig), R.omit(['apps']));
+const getCommonUnionConfig_ = R.omit(['apps']);
 
-const getAppConfig_ = R.o(computePaths_, extendOutputMapper_);
+const extendConfigs = R.map(
+	R.o(R.o(extendPaths_, extendOutputMapper_), R.mergeDeepRight(DEFAULT_UNION_CONFIG))
+);
 
-const mergeAppAndCommonConfig_ = common => R.o(getAppConfig_, R.mergeDeepRight(common));
+const validateConfig_ = R.forEach(({ name }) => {
+	invariant(name, "Property 'name' is not specified for one of the apps.");
+});
 
-const validateRawConfig_ = ({ apps }) => {
-	invariant(apps, "Missing property 'apps' in your union.config.js.");
+const fromArrayConfig_ = R.map(R.when(R_.isString, name => ({ name })));
+const fromObjectConfig_ = R.compose(
+	R.unless(R.isNil, config => {
+		const common = getCommonUnionConfig_(config);
+		const apps = getApps_(config);
 
-	R.forEach(({ name }) => {
-		invariant(name, "Property 'name' is not specified for one of the apps.");
-	})(apps);
-};
+		return R.map(R.mergeDeepRight(common), apps);
+	}),
+	R.evolve({ apps: fromArrayConfig_ })
+);
 
-const getUnionConfig = () => {
-	const evaluatedUnionConfig = R.is(Function)(unionConfig) ? unionConfig(cli) : unionConfig;
+/**
+ * Converts the passed config to normalized shape.
+ *
+ * @example
+ *
+ * 		normalizeConfig(["app"]) // [{ name: "app" }]
+ *
+ * 		normalizeConfig({ templateFilename: 'index.ejs', apps: ["app"]})
+ * 		// [{ name: "app", templateFilename: 'index.ejs', }]
+ *
+ * @see tests
+ */
+const normalizeConfig = R.cond([
+	[R_.isArray, fromArrayConfig_],
+	[R_.isObject, fromObjectConfig_],
+	[R.T, R_.noop],
+]);
 
-	validateRawConfig_(evaluatedUnionConfig);
+/**
+ * Returns evaluated unionConfig based on `union.config.js`.
+ *
+ * If no config is found or is empty,
+ * try to scan names of directories from default unionConfig.paths.app location.
+ *
+ */
+const getUnionConfig = () =>
+	R.pipe(
+		R.ifElse(fs.existsSync, x => require(x), R_.noop),
+		whenNilOrEmpty_(R.always(utilsFs.readDirs(DEFAULT_APP_DIR))),
+		whenIsFunction_(R.applyTo(cli)),
+		normalizeConfig,
+		R.tap(validateConfig_),
+		extendConfigs
+	)(UNION_CONFIG_PATH);
 
-	const common = getCommonUnionConfig_(evaluatedUnionConfig);
-	const apps = getApps_(evaluatedUnionConfig);
-
-	return R.map(mergeAppAndCommonConfig_(common), apps);
-};
-
+/**
+ * Return unionConfig for the `app`.
+ *
+ * @param {string} app Name of the app
+ */
 const getAppConfig = name => R.find(R.whereEq({ name }), getUnionConfig());
 
 const resolveSymlink = (...args) => fs.realpathSync(path.resolve(...args));
 
 module.exports = {
-	getAppConfig,
+	UNION_CONFIG_PATH,
+	normalizeConfig,
 	getUnionConfig,
+	getAppConfig,
 	resolveSymlink,
 	stats,
 	trimSlashes,

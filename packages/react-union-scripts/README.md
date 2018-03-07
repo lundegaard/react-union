@@ -26,15 +26,7 @@ npm install --save-dev react-union-scripts
 
 **TL;DR** You can use one of our [examples](https://github.com/lundegaard/react-union/tree/master/packages/react-union-boilerplate-basic) as a boilerplate for your project instead.
 
-1. Create `union.config.js` in root of your project
-
-```js
-module.exports = {
-	apps: [{ name: 'YourAppName' }],
-};
-```
-
-2. Simulate output of your server in development
+1. Simulate output of your server in development
 
 Create `<project root>/public/YourAppName/index.ejs`:
 
@@ -54,7 +46,7 @@ Create `<project root>/public/YourAppName/index.ejs`:
 
 For details how to write a template, see [https://github.com/jantimon/html-webpack-plugin](html-webpack-plugin).
 
-3. To your `package.json` add scripts:
+2. To your `package.json` add scripts:
 
 ```json
 {
@@ -63,13 +55,13 @@ For details how to write a template, see [https://github.com/jantimon/html-webpa
 }
 ```
 
-5. Create `<project root>/src/apps/YourAppName/index.js`:
+3. Create `<project root>/src/apps/YourAppName/index.js`:
 
 ```js
 console.log('Hello world!');
 ```
 
-6. Run your project
+4. Run your project
 
 **Development server**
 
@@ -202,7 +194,9 @@ react-union-scripts build --verbose
 
 ## `union.config.js`
 
-Configuration can eiher exports:
+Place the file into the root of your project if you want to configure react-union-scripts.
+
+Configuration file can eiher exports:
 - static JSON object or
 - function.
 

@@ -1,4 +1,6 @@
+const R = require('ramda');
 const fs = require('fs');
+const path = require('path');
 const mkdirp = require('mkdirp');
 
 const writeFile = (file, contents) =>
@@ -11,4 +13,11 @@ const makeDir = name =>
 		mkdirp(name, err => (err ? reject(err) : resolve()));
 	});
 
-module.exports = { writeFile, makeDir };
+const isDirectory = source => fs.lstatSync(source).isDirectory();
+
+const readDirs = dir =>
+	fs.existsSync(dir)
+		? R.compose(R.filter(name => isDirectory(path.join(dir, name))), fs.readdirSync)(dir)
+		: [];
+
+module.exports = { isDirectory, readDirs, writeFile, makeDir };

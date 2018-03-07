@@ -15,6 +15,10 @@
   "engines": {
     "node": ">=8"
   },
+  "scripts": {
+    "test": "jest ./lib",
+    "test:watch": "yarn test --watch"
+  },
   "dependencies": {
     "babel-cli": "6.23.0",
     "babel-core": "6.23.1",
