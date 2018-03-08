@@ -196,7 +196,7 @@ react-union-scripts build --verbose
 
 Place the file into the root of your project if you want to configure react-union-scripts.
 
-Configuration file can eiher exports:
+Configuration file can export either:
 - static JSON object or
 - function.
 

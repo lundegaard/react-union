@@ -52,7 +52,6 @@
     "example:basic": "cd ./boilerplates/react-union-boilerplate-basic && yarn start",
     "lint": "eslint \"packages/**/*.js\" \"boilerplates/**/*.js\" --cache",
     "lint:fix": "yarn lint --fix",
-    "pretty": "prettier --write",
     "precommit": "lint-staged",
     "prepush": "yarn lint"
   },
