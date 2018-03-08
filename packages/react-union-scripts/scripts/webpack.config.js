@@ -188,44 +188,44 @@ const getWebpackConfig_ = config => {
 			// `vendors` to standalone chunk
 			...(generateVendorBundle
 				? [
-						new webpack.optimize.CommonsChunkPlugin({
-							name: 'vendor',
-							minChunks: Infinity,
-						}),
-					]
+					new webpack.optimize.CommonsChunkPlugin({
+						name: 'vendor',
+						minChunks: Infinity,
+					}),
+				]
 				: []),
 			// Create HTML file for development without proxy
 			...(!cli.proxy
 				? [
-						new HtmlWebpackPlugin({
-							title: appName,
-							filename: path.resolve(outputPath, outputMapper.index),
-							template,
-						}),
-					]
+					new HtmlWebpackPlugin({
+						title: appName,
+						filename: path.resolve(outputPath, outputMapper.index),
+						template,
+					}),
+				]
 				: []),
 			...(!cli.debug
 				? [
-						new webpack.optimize.UglifyJsPlugin({
-							compress: {
-								warnings: cli.verbose,
-							},
-							output: {
-								comments: false,
-								// https://github.com/facebookincubator/create-react-app/issues/2488
-								ascii_only: true,
-							},
-							sourceMap: true,
-						}),
-						// new webpack.optimize.AggressiveMergingPlugin(),
-					]
+					new webpack.optimize.UglifyJsPlugin({
+						compress: {
+							warnings: cli.verbose,
+						},
+						output: {
+							comments: false,
+							// https://github.com/facebookincubator/create-react-app/issues/2488
+							ascii_only: true,
+						},
+						sourceMap: true,
+					}),
+					// new webpack.optimize.AggressiveMergingPlugin(),
+				]
 				: []),
 			...(!cli.debug
 				? [
-						new ManifestPlugin({
-							fileName: 'assetManifest.json',
-						}),
-					]
+					new ManifestPlugin({
+						fileName: 'assetManifest.json',
+					}),
+				]
 				: []),
 			...(cli.analyze ? [new BundleAnalyzerPlugin()] : []),
 		],

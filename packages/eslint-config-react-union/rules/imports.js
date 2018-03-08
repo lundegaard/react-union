@@ -199,7 +199,6 @@ module.exports = {
 		'import/no-named-default': 'error',
 
 		// Reports if a module's default export is unnamed
-		// https://github.com/benmosher/eslint-plugin-import/blob/d9b712ac7fd1fddc391f7b234827925c160d956f/docs/rules/no-anonymous-default-export.md
 		'import/no-anonymous-default-export': [
 			'off',
 			{

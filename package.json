@@ -53,7 +53,8 @@
     "lint": "eslint \"packages/**/*.js\" \"boilerplates/**/*.js\" --cache",
     "lint:fix": "yarn lint --fix",
     "precommit": "lint-staged",
-    "prepush": "yarn lint"
+    "prepush": "yarn lint",
+    "publishAll": "lerna publish"
   },
   "lint-staged": {
     "(packages|boilerplates)/**/*.js": [
