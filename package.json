@@ -21,8 +21,10 @@
     "magento",
     "adobe experience manager"
   ],
+  "author": "Tomas Konrady <tomas.konrady@lundegaard.eu>",
   "contributors": [
-    "Tomas Konrady <tomas.konrady@lundegaard.eu>"
+    "Tomas Konrady <tomas.konrady@lundegaard.eu>",
+    "Vaclav Jancarik <vaclav.jancarik@lundegaard.eu>"
   ],
   "repository": "https://github.com/lundegaard/react-union",
   "license": "UNLICENSED",
@@ -37,6 +39,7 @@
     "eslint-plugin-react": "7.4.0",
     "husky": "0.14.3",
     "lerna": "2.2.0",
+    "lint-staged": "7.0.0",
     "prettier": "1.10.2",
     "rimraf": "2.6.2"
   },
@@ -45,12 +48,17 @@
     "boilerplates/*"
   ],
   "scripts": {
-    "bootstrap": "yarn config set workspaces-experimental true && lerna bootstrap",
+    "bootstrap": "lerna bootstrap",
     "example:basic": "cd ./boilerplates/react-union-boilerplate-basic && yarn start",
     "lint": "eslint \"packages/**/*.js\" \"boilerplates/**/*.js\" --cache",
     "lint:fix": "yarn lint --fix",
-    "precommit": "yarn lint:fix",
-    "prepush": "yarn lint:fix"
+    "precommit": "lint-staged",
+    "prepush": "yarn lint"
   },
-  "author": "Tomas Konrady <tomas.konrady@lundegaard.eu>"
+  "lint-staged": {
+    "(packages|boilerplates)/**/*.js": [
+      "yarn lint:fix",
+      "git add"
+    ]
+  }
 }

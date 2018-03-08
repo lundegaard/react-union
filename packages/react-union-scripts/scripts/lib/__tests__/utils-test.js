@@ -1,0 +1,64 @@
+const R = require('ramda');
+const { normalizeConfig, UNION_CONFIG_PATH } = require('../utils');
+
+describe('normalizeConfig', () => {
+	describe('works with array', () => {
+		it("supports shorten syntax with string representing app's name", () => {
+			expect(normalizeConfig(['app', { name: 'app2' }])).toEqual([
+				{ name: 'app' },
+				{ name: 'app2' },
+			]);
+		});
+	});
+
+	describe('works with object', () => {
+		it("supports shorten syntax with string representing app's name", () => {
+			expect(normalizeConfig({ apps: ['app', { name: 'app2' }] })).toEqual([
+				{ name: 'app' },
+				{ name: 'app2' },
+			]);
+		});
+
+		it('copies config from config root to each app config', () => {
+			expect(normalizeConfig({ a: 1, apps: ['app', { name: 'app2', a: 2 }] })).toEqual([
+				{ name: 'app', a: 1 },
+				{ name: 'app2', a: 2 },
+			]);
+		});
+	});
+});
+
+describe('getUnionConfig', () => {
+	beforeEach(() => {
+		jest.resetModules();
+	});
+
+	const mockUnionConfig = (config, dirs) => {
+		jest.doMock('fs', () => ({ existsSync: R.always(true) }));
+		jest.doMock('../fs');
+
+		require('../fs').__setMockDirs(dirs);
+
+		const { getUnionConfig } = require('../utils');
+		jest.doMock(UNION_CONFIG_PATH, () => config, { virtual: true });
+
+		return getUnionConfig;
+	};
+
+	it('throws error when config is invalid', () => {
+		const getUnionConfig = mockUnionConfig([{}], null);
+
+		expect(() => {
+			getUnionConfig();
+		}).toThrowError("Property 'name' is not specified for one of the apps.");
+	});
+
+	it('when there is no config try to infered from paths.public directory', () => {
+		const getUnionConfig = mockUnionConfig({}, ['a']);
+
+		const result = getUnionConfig();
+
+		expect(R.length(result)).toBe(1);
+		expect(R.head(result).name).toBe('a');
+	});
+});

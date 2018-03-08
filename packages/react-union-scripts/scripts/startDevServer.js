@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const configs = require('./webpack.config');
-const { APP, PROXY } = require('./lib/cli');
+const cli = require('./lib/cli');
 const { stats, getAppConfig } = require('./lib/utils');
 
 function startDevServer() {
@@ -14,10 +14,13 @@ function startDevServer() {
 	);
 
 	const webpackConfig = configs[0];
-	const unionConfig = getAppConfig(APP);
+	const unionConfig = getAppConfig(cli.app);
 
-	invariant(!PROXY || unionConfig.proxy.port, "Missing 'port' for proxy in your union.config.");
-	invariant(!PROXY || unionConfig.proxy.target, "Missing 'target' for proxy in your union.config");
+	invariant(!cli.proxy || unionConfig.proxy.port, "Missing 'port' for proxy in your union.config.");
+	invariant(
+		!cli.proxy || unionConfig.proxy.target,
+		"Missing 'target' for proxy in your union.config"
+	);
 
 	return new Promise(resolve => {
 		const compiler = webpack(webpackConfig);
@@ -30,24 +33,21 @@ function startDevServer() {
 				webpackHotMiddleware(compiler),
 			];
 
-			const config = PROXY
+			const baseDirs = [webpackConfig.output.path, unionConfig.paths.public];
+
+			const config = cli.proxy
 				? {
 						port: unionConfig.proxy.port,
 						proxy: {
 							target: unionConfig.proxy.target,
 							middleware,
 						},
-						serveStatic: [
-							{
-								route: webpackConfig.output.publicPath,
-								dir: webpackConfig.output.path,
-							},
-						],
+						serveStatic: baseDirs,
 					}
 				: {
 						port: unionConfig.devServer.port,
 						server: {
-							baseDir: unionConfig.devServer.baseDir || unionConfig.buildDir,
+							baseDir: baseDirs,
 							middleware,
 						},
 					};
@@ -55,7 +55,6 @@ function startDevServer() {
 			browserSync.create().init(
 				{
 					ui: false,
-					files: ['**/*.css', 'build/public/*.html'],
 					...config,
 				},
 				resolve
