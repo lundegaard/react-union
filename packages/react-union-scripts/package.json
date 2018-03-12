@@ -63,5 +63,9 @@
     "webpack-dev-middleware": "1.12.0",
     "webpack-hot-middleware": "2.19.1",
     "webpack-manifest-plugin": "1.3.2"
+  },
+  "devDependecies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
   }
 }

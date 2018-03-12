@@ -13,13 +13,13 @@ Extendable and configurable set of scripts for building and running your React a
 ## Installation
 
 ```sh
-yarn add react-union-scripts --dev
+yarn add react react-dom && yarn add react-union-scripts --dev
 ```
 
 or
 
 ```sh
-npm install --save-dev react-union-scripts
+npm install react react-dom && npm install --save-dev react-union-scripts
 ```
 
 ## Usage
@@ -50,15 +50,20 @@ For details how to write a template, see [https://github.com/jantimon/html-webpa
 
 ```json
 {
-	"start": "react-union-scripts start --app YourAppName",
-	"build": "react-union-scripts build"
+	"scripts": {
+		"start": "react-union-scripts start --app YourAppName",
+		"build": "react-union-scripts build"
+	}
 }
 ```
 
 3. Create `<project root>/src/apps/YourAppName/index.js`:
 
-```js
-console.log('Hello world!');
+```jsx
+import React from 'react';
+import { render } from 'react-dom';
+
+render('Hello World', document.getElementById('root'));
 ```
 
 4. Run your project
