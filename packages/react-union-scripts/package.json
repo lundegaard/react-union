@@ -53,6 +53,7 @@
     "ramda": "0.25.0",
     "ramda-extension": "0.3.1",
     "raw-loader": "0.5.1",
+    "react-hot-loader": "^4.0.0",
     "resolve-url-loader": "2.1.0",
     "sass-loader": "6.0.6",
     "style-loader": "0.18.2",
