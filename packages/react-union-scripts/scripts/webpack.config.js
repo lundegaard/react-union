@@ -51,11 +51,7 @@ const getCommonConfig = ({ outputMapper }) => ({
 			},
 			{
 				test: /\.jsx?$/,
-				include: [
-					resolveSymlink(process.cwd(), './src'),
-					// TODO: remove
-					resolveSymlink(__dirname, '../../../node_modules/react-union'),
-				],
+				include: [resolveSymlink(process.cwd(), './src')],
 				use: [require.resolve('babel-loader')],
 			},
 			{
@@ -152,7 +148,12 @@ const getWebpackConfig_ = config => {
 				: {}),
 			[appName]: [
 				require.resolve('babel-polyfill'),
-				...(hmr ? ['react-hot-loader/patch', 'webpack-hot-middleware/client'] : []),
+				...(hmr
+					? [
+							require.resolve('react-hot-loader/patch'),
+							require.resolve('webpack-hot-middleware/client'),
+						]
+					: []),
 				paths.index,
 			],
 		},

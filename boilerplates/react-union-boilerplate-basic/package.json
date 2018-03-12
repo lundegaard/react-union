@@ -31,7 +31,7 @@
   },
   "scripts": {
     "build": "react-union-scripts build",
-    "start": "react-union-scripts start --app SampleApp --target lifery",
+    "start": "react-union-scripts start --app SampleApp",
     "test": "yarn lint && yarn test:js",
     "test:js": "react-union-scripts test",
     "lint": "yarn lint:eslint",
