@@ -53,12 +53,32 @@ describe('getUnionConfig', () => {
 		}).toThrowError("Property 'name' is not specified for one of the apps.");
 	});
 
-	it('when there is no config try to infered from paths.public directory', () => {
-		const getUnionConfig = mockUnionConfig({}, ['a']);
+	describe('defaulting app names from `paths.public` directory should work when', () => {
+		it('there is no config', () => {
+			const getUnionConfig = mockUnionConfig(null, ['a']);
 
-		const result = getUnionConfig();
+			const result = getUnionConfig();
 
-		expect(R.length(result)).toBe(1);
-		expect(R.head(result).name).toBe('a');
+			expect(R.length(result)).toBe(1);
+			expect(R.head(result).name).toBe('a');
+		});
+
+		it('config file is an empty array', () => {
+			const getUnionConfig = mockUnionConfig([], ['a']);
+
+			const result = getUnionConfig();
+
+			expect(R.length(result)).toBe(1);
+			expect(R.head(result).name).toBe('a');
+		});
+
+		it('config file is an object without `apps` property', () => {
+			const getUnionConfig = mockUnionConfig({ foo: 'bar' }, ['a']);
+
+			const result = getUnionConfig();
+
+			expect(R.length(result)).toBe(1);
+			expect(R.head(result).name).toEqual('a');
+		});
 	});
 });
