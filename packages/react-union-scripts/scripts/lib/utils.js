@@ -8,7 +8,7 @@ const path = require('path');
 const utilsFs = require('./fs');
 const cli = require('./cli');
 
-const UNION_CONFIG_PATH = path.resolve(process.cwd(), './union.config');
+const UNION_CONFIG_PATH = path.resolve(process.cwd(), './union.config.js');
 const DEFAULT_APP_DIR = path.resolve(process.cwd(), 'src', 'apps');
 const DEFAULT_PORT = 3300;
 const DEFAULT_UNION_CONFIG = {
@@ -46,7 +46,6 @@ const stats = {
 
 const equalsSlash_ = R.equals('/');
 const nilOrEmpty_ = R.either(R.isNil, R.isEmpty);
-const whenNilOrEmpty_ = R.when(nilOrEmpty_);
 const whenIsFunction_ = R.when(R_.isFunction);
 const trimSlashes = R.o(R.dropWhile(equalsSlash_), R.dropLastWhile(equalsSlash_));
 
@@ -83,7 +82,7 @@ const fromArrayConfig_ = R.map(R.when(R_.isString, name => ({ name })));
 const fromObjectConfig_ = R.compose(
 	R.unless(R.isNil, config => {
 		const common = getCommonUnionConfig_(config);
-		const apps = getApps_(config);
+		const apps = R.o(R.defaultTo({}), getApps_)(config);
 
 		return R.map(R.mergeDeepRight(common), apps);
 	}),
@@ -95,7 +94,7 @@ const fromObjectConfig_ = R.compose(
  *
  * @example
  *
- * 		normalizeConfig(["app"]) // [{ name: "app" }]
+ * 		normalizeConfig(["app", { name: "app2" }]) // [{ name: "app" }, { name: "app2" }]
  *
  * 		normalizeConfig({ templateFilename: 'index.ejs', apps: ["app"]})
  * 		// [{ name: "app", templateFilename: 'index.ejs', }]
@@ -108,6 +107,15 @@ const normalizeConfig = R.cond([
 	[R.T, R_.noop],
 ]);
 
+const setAppsIfMissing_ = R.curry((defaultDirs, config) =>
+	R.cond([
+		[nilOrEmpty_, R.always(defaultDirs)],
+		[R_.isArray, R.identity],
+		[c => !c.apps, c => R.mergeDeepRight(c, { apps: defaultDirs })],
+		[R.T, R.identity],
+	])(config)
+);
+
 /**
  * Returns evaluated unionConfig based on `union.config.js`.
  *
@@ -118,8 +126,8 @@ const normalizeConfig = R.cond([
 const getUnionConfig = () =>
 	R.pipe(
 		R.ifElse(fs.existsSync, x => require(x), R_.noop),
-		whenNilOrEmpty_(R.always(utilsFs.readDirs(DEFAULT_APP_DIR))),
 		whenIsFunction_(R.applyTo(cli)),
+		setAppsIfMissing_(utilsFs.readDirs(DEFAULT_APP_DIR)),
 		normalizeConfig,
 		R.tap(validateConfig_),
 		extendConfigs
