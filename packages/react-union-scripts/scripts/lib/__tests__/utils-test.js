@@ -33,8 +33,9 @@ describe('getUnionConfig', () => {
 		jest.resetModules();
 	});
 
-	const mockUnionConfig = (config, dirs) => {
+	const mockUnionConfig = (config, dirs, cli = {}) => {
 		jest.doMock('fs', () => ({ existsSync: R.always(true) }));
+		jest.doMock('../cli', () => cli);
 		jest.doMock('../fs');
 
 		require('../fs').__setMockDirs(dirs);
@@ -51,6 +52,24 @@ describe('getUnionConfig', () => {
 		expect(() => {
 			getUnionConfig();
 		}).toThrowError("Property 'name' is not specified for one of the apps.");
+	});
+
+	describe('supports union.config to export function', () => {
+		it('evaluates function', () => {
+			const getUnionConfig = mockUnionConfig(() => ['a']);
+			const result = getUnionConfig();
+
+			expect(R.length(result)).toBe(1);
+			expect(R.head(result).name).toBe('a');
+		});
+
+		it('evaluates function with console params', () => {
+			const mockCli = {};
+			const mockConfig = cli => (expect(cli).toBe(mockCli), ['a']);
+			const getUnionConfig = mockUnionConfig(mockConfig, undefined, mockCli);
+
+			getUnionConfig();
+		});
 	});
 
 	describe('defaulting app names from `paths.public` directory should work when', () => {

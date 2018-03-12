@@ -31,11 +31,11 @@ const Widget = ({ component: WidgetComponent, descriptor }) => {
 
 	return WidgetComponent && element
 		? createPortal(
-			<WidgetProvider {...widgetProps}>
-				<WidgetComponent {...widgetProps} />
-			</WidgetProvider>,
-			element
-		)
+				<WidgetProvider {...widgetProps}>
+					<WidgetComponent {...widgetProps} />
+				</WidgetProvider>,
+				element
+			)
 		: null;
 };
 
