@@ -149,5 +149,4 @@ module.exports = {
 	getAppConfig,
 	resolveSymlink,
 	stats,
-	trimSlashes,
 };
