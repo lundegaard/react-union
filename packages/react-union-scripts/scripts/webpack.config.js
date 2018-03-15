@@ -10,7 +10,7 @@ const { o, reject, keys } = require('ramda');
 const { includes } = require('ramda-extension');
 
 const cli = require('./lib/cli');
-const { resolveSymlink, getUnionConfig, getAppConfig, trimSlashes } = require('./lib/utils');
+const { resolveSymlink, getUnionConfig, getAppConfig } = require('./lib/utils');
 
 const appPkg = require(resolveSymlink(process.cwd(), './package.json'));
 
@@ -131,8 +131,7 @@ const getWebpackConfig_ = config => {
 
 	const inVendorBlackList = includes(vendorBlackList);
 	const hmr = cli.script === 'start' && cli.debug && !cli.noHmr;
-	const sanitizedPublicPath = trimSlashes(publicPath);
-	const outputPath = path.join(paths.build, sanitizedPublicPath);
+	const outputPath = path.join(paths.build, publicPath);
 
 	const outputFilename = cli.debug ? '[name].bundle.js' : '[name].[chunkhash:8].bundle.js';
 	const outputChunkname = cli.debug ? '[name].chunk.js' : '[name].[chunkhash:8].chunk.js';
@@ -161,7 +160,7 @@ const getWebpackConfig_ = config => {
 			path: path.resolve(outputPath),
 			filename: `${outputMapper.js}/${outputFilename}`,
 			chunkFilename: `${outputMapper.js}/${outputChunkname}`,
-			publicPath: cli.proxy ? proxy.publicPath : sanitizedPublicPath,
+			publicPath: cli.proxy ? proxy.publicPath : publicPath,
 			sourcePrefix: '  ',
 		},
 		plugins: [
