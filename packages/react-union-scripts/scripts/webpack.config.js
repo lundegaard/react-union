@@ -89,7 +89,7 @@ const getCommonConfig = ({ outputMapper }) => ({
 			},
 			{
 				test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,
-				include: [resolveSymlink(process.cwd(), './src')],
+				include: [resolveSymlink(process.cwd(), './src'), resolveSymlink(process.cwd(), './node_modules')],
 				use: [
 					{
 						loader: require.resolve('url-loader'),
