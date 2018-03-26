@@ -30,6 +30,7 @@ const DEFAULT_UNION_CONFIG = {
 		media: 'static/media',
 		index: 'index.html',
 	},
+	mergeWebpackConfig: R.identity,
 };
 
 const stats = {

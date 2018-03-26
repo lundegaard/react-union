@@ -125,6 +125,7 @@ const getWebpackConfig_ = config => {
 		vendorBlackList,
 		publicPath,
 		outputMapper,
+		mergeWebpackConfig,
 	} = config;
 
 	const commonConfig = getCommonConfig(config);
@@ -137,7 +138,7 @@ const getWebpackConfig_ = config => {
 	const outputChunkname = cli.debug ? '[name].chunk.js' : '[name].[chunkhash:8].chunk.js';
 	const template = `${paths.public}/${templateFilename}`;
 
-	return {
+	return mergeWebpackConfig({
 		// base dir for the `entry`
 		context: path.resolve(path.join(process.cwd(), './src')),
 		entry: {
@@ -241,7 +242,7 @@ const getWebpackConfig_ = config => {
 		},
 		devtool: cli.debug ? 'source-map' : false,
 		module: commonConfig.module,
-	};
+	});
 };
 
 const buildSingle_ = () => {
