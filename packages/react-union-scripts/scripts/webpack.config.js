@@ -89,7 +89,10 @@ const getCommonConfig = ({ outputMapper }) => ({
 			},
 			{
 				test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,
-				include: [resolveSymlink(process.cwd(), './src'), resolveSymlink(process.cwd(), './node_modules')],
+				include: [
+					resolveSymlink(process.cwd(), './src'),
+					resolveSymlink(process.cwd(), './node_modules'),
+				],
 				use: [
 					{
 						loader: require.resolve('url-loader'),
@@ -150,9 +153,9 @@ const getWebpackConfig_ = config => {
 				require.resolve('babel-polyfill'),
 				...(hmr
 					? [
-						require.resolve('react-hot-loader/patch'),
-						require.resolve('webpack-hot-middleware/client'),
-					]
+							require.resolve('react-hot-loader/patch'),
+							require.resolve('webpack-hot-middleware/client'),
+						]
 					: []),
 				paths.index,
 			],
@@ -189,44 +192,44 @@ const getWebpackConfig_ = config => {
 			// `vendors` to standalone chunk
 			...(generateVendorBundle
 				? [
-					new webpack.optimize.CommonsChunkPlugin({
-						name: 'vendor',
-						minChunks: Infinity,
-					}),
-				]
+						new webpack.optimize.CommonsChunkPlugin({
+							name: 'vendor',
+							minChunks: Infinity,
+						}),
+					]
 				: []),
 			// Create HTML file for development without proxy
 			...(!cli.proxy
 				? [
-					new HtmlWebpackPlugin({
-						title: appName,
-						filename: path.resolve(outputPath, outputMapper.index),
-						template,
-					}),
-				]
+						new HtmlWebpackPlugin({
+							title: appName,
+							filename: path.resolve(outputPath, outputMapper.index),
+							template,
+						}),
+					]
 				: []),
 			...(!cli.debug
 				? [
-					new webpack.optimize.UglifyJsPlugin({
-						compress: {
-							warnings: cli.verbose,
-						},
-						output: {
-							comments: false,
-							// https://github.com/facebookincubator/create-react-app/issues/2488
-							ascii_only: true,
-						},
-						sourceMap: true,
-					}),
-					// new webpack.optimize.AggressiveMergingPlugin(),
-				]
+						new webpack.optimize.UglifyJsPlugin({
+							compress: {
+								warnings: cli.verbose,
+							},
+							output: {
+								comments: false,
+								// https://github.com/facebookincubator/create-react-app/issues/2488
+								ascii_only: true,
+							},
+							sourceMap: true,
+						}),
+						// new webpack.optimize.AggressiveMergingPlugin(),
+					]
 				: []),
 			...(!cli.debug
 				? [
-					new ManifestPlugin({
-						fileName: 'assetManifest.json',
-					}),
-				]
+						new ManifestPlugin({
+							fileName: 'assetManifest.json',
+						}),
+					]
 				: []),
 			...(cli.analyze ? [new BundleAnalyzerPlugin()] : []),
 		],
