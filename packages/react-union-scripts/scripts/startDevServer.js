@@ -34,11 +34,11 @@ function startDevServer() {
 				webpackHotMiddleware(compiler),
 				...(!cli.proxy && unionConfig.devServer.historyApiFallback
 					? [
-							historyApiFallback({
-								disableDotRule: true,
-								htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
-							}),
-						]
+						historyApiFallback({
+							disableDotRule: true,
+							htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
+						}),
+					]
 					: []),
 			];
 
@@ -46,20 +46,20 @@ function startDevServer() {
 
 			const config = cli.proxy
 				? {
-						port: unionConfig.proxy.port,
-						proxy: {
-							target: unionConfig.proxy.target,
-							middleware,
-						},
-						serveStatic: baseDirs,
-					}
+					port: unionConfig.proxy.port,
+					proxy: {
+						target: unionConfig.proxy.target,
+						middleware,
+					},
+					serveStatic: baseDirs,
+				}
 				: {
-						port: unionConfig.devServer.port,
-						server: {
-							baseDir: baseDirs,
-							middleware,
-						},
-					};
+					port: unionConfig.devServer.port,
+					server: {
+						baseDir: baseDirs,
+						middleware,
+					},
+				};
 
 			browserSync.create().init(
 				{
