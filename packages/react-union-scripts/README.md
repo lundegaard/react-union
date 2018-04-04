@@ -227,11 +227,12 @@ Resulting configuration can redefine following properties.
 
 ### `devServer`
 
-[`devServer.port`]\(number): port of proxy server
+[`devServer.port`]\(number): port of proxy server. Defaults to `3300`.
+[`devServer.historyApiFallback`]\(boolean): If `true`, then add [connect-history-api-fallback](https://github.com/bripkens/connect-history-api-fallback) middleware. Defaults to `true`.
 
 ### `proxy`
 
-[`proxy.port`]\(number): port of proxy server
+[`proxy.port`]\(number): port of proxy server. Defaults to `3300`.
 
 [`proxy.target`]\(string): target of proxy
 

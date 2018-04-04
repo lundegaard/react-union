@@ -18,6 +18,7 @@ const DEFAULT_UNION_CONFIG = {
 	publicPath: '/',
 	templateFilename: 'index.ejs',
 	devServer: {
+		historyApiFallback: true,
 		port: DEFAULT_PORT,
 	},
 	proxy: {
