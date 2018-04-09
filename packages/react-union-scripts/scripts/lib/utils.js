@@ -32,6 +32,7 @@ const DEFAULT_UNION_CONFIG = {
 		index: 'index.html',
 	},
 	mergeWebpackConfig: R.identity,
+	asyncSuffix: 'widget',
 };
 
 const stats = {

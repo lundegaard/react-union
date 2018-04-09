@@ -6,9 +6,8 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
-const { o, reject, keys } = require('ramda');
-const pathR = require('ramda').path;
-const { includes } = require('ramda-extension');
+const { o, reject, join, keys, cond } = require('ramda');
+const { constructRegExp, includes, isString, isArray } = require('ramda-extension');
 
 const cli = require('./lib/cli');
 const { resolveSymlink, getUnionConfig, getAppConfig } = require('./lib/utils');
@@ -119,19 +118,11 @@ const getCommonConfig = ({ asyncSuffix, outputMapper }) => ({
 	},
 });
 
-const resolveAsyncSuffix = (asyncSuffix) => {
-	const instanceOf = pathR(['constructor', 'name'], asyncSuffix);
-	switch (instanceOf) {
-		case 'RegExp':
-			return asyncSuffix;
-		case 'String':
-			return new RegExp(`.${asyncSuffix}.js$`);
-		case 'Array':
-			return new RegExp(`.(${asyncSuffix.toString().replace(/,/g, '|')}).js$`);
-		default:
-			return /\.widget\.js$/;
-	}
-};
+const resolveAsyncSuffix = cond([
+	[isString, (asyncSuffix) => constructRegExp(`\.${asyncSuffix}\.js$`, 'i')],
+	[isArray, (asyncSuffix) => constructRegExp(`\.(${join(asyncSuffix, '|')})\.js$`, 'i')],
+	[constructRegExp, (asyncSuffix) => asyncSuffix],
+]);
 
 const getWebpackConfig_ = config => {
 	const {
