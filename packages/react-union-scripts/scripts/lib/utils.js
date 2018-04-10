@@ -32,6 +32,7 @@ const DEFAULT_UNION_CONFIG = {
 		index: 'index.html',
 	},
 	mergeWebpackConfig: R.identity,
+	asyncSuffix: 'widget',
 };
 
 const stats = {
@@ -144,11 +145,20 @@ const getAppConfig = name => R.find(R.whereEq({ name }), getUnionConfig());
 
 const resolveSymlink = (...args) => fs.realpathSync(path.resolve(...args));
 
+const resolveAsyncSuffix = R.cond([
+	[R.is(RegExp), R.identity],
+	[R_.isString, (asyncSuffix) => R_.constructRegExp(`\.${asyncSuffix}\.js$`, 'i')],
+	[R_.isArray, (asyncSuffix) => R_.constructRegExp(`\.(${R.join('|', asyncSuffix)})\.js$`, 'i')],
+	[R.T, () => invariant(false, 'Invalid property \'asyncSuffix\'. It should be string or list of strings.')],
+]);
+
+
 module.exports = {
 	UNION_CONFIG_PATH,
 	normalizeConfig,
 	getUnionConfig,
 	getAppConfig,
+	resolveAsyncSuffix,
 	resolveSymlink,
 	stats,
 };

@@ -6,11 +6,11 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
-const { o, reject, keys } = require('ramda');
+const { keys, o, reject } = require('ramda');
 const { includes } = require('ramda-extension');
 
 const cli = require('./lib/cli');
-const { resolveSymlink, getUnionConfig, getAppConfig } = require('./lib/utils');
+const { resolveSymlink, getUnionConfig, getAppConfig, resolveAsyncSuffix } = require('./lib/utils');
 
 const appPkg = require(resolveSymlink(process.cwd(), './package.json'));
 
@@ -30,12 +30,12 @@ const GLOBALS = {
 	'process.env.NODE_ENV': cli.debug ? '"development"' : '"production"',
 };
 
-const getCommonConfig = ({ outputMapper }) => ({
+const getCommonConfig = ({ asyncSuffix, outputMapper }) => ({
 	module: {
 		rules: [
 			// All widgets are loaded asynchronously
 			{
-				test: /\.widget\.js$/,
+				test: resolveAsyncSuffix(asyncSuffix),
 				include: [resolveSymlink(process.cwd(), './src')],
 				exclude: /node_modules/,
 				use: [
