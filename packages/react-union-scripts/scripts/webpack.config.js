@@ -6,11 +6,11 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
-const { o, reject, join, keys, cond } = require('ramda');
-const { constructRegExp, includes, isString, isArray } = require('ramda-extension');
+const { keys, o, reject } = require('ramda');
+const { includes } = require('ramda-extension');
 
 const cli = require('./lib/cli');
-const { resolveSymlink, getUnionConfig, getAppConfig } = require('./lib/utils');
+const { resolveSymlink, getUnionConfig, getAppConfig, resolveAsyncSuffix } = require('./lib/utils');
 
 const appPkg = require(resolveSymlink(process.cwd(), './package.json'));
 
@@ -35,7 +35,7 @@ const getCommonConfig = ({ asyncSuffix, outputMapper }) => ({
 		rules: [
 			// All widgets are loaded asynchronously
 			{
-				test: asyncSuffix,
+				test: resolveAsyncSuffix(asyncSuffix),
 				include: [resolveSymlink(process.cwd(), './src')],
 				exclude: /node_modules/,
 				use: [
@@ -118,12 +118,6 @@ const getCommonConfig = ({ asyncSuffix, outputMapper }) => ({
 	},
 });
 
-const resolveAsyncSuffix = cond([
-	[isString, (asyncSuffix) => constructRegExp(`\.${asyncSuffix}\.js$`, 'i')],
-	[isArray, (asyncSuffix) => constructRegExp(`\.(${join(asyncSuffix, '|')})\.js$`, 'i')],
-	[constructRegExp, (asyncSuffix) => asyncSuffix],
-]);
-
 const getWebpackConfig_ = config => {
 	const {
 		paths,
@@ -135,13 +129,9 @@ const getWebpackConfig_ = config => {
 		publicPath,
 		outputMapper,
 		mergeWebpackConfig,
-		asyncSuffix,
 	} = config;
 
-	const commonConfig = getCommonConfig({
-		...config,
-		asyncSuffix: resolveAsyncSuffix(asyncSuffix),
-	});
+	const commonConfig = getCommonConfig(config);
 
 	const inVendorBlackList = includes(vendorBlackList);
 	const hmr = cli.script === 'start' && cli.debug && !cli.noHmr;
