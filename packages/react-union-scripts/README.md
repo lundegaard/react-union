@@ -300,6 +300,11 @@ Defaults to `<project root>/public/[ApplicationName]`.
 
 ['asyncSuffix']\(string, array[string], RegExp) Suffix for files to load chunks async. Defaults to `widget`.
 
+### `copyToPublicIgnore`
+
+['copyToPublicIgnore']\(RegExp) Pattern for files that should not be copied from `public` folder in build process. Defaults to `/\.ejs$/`.
+
+
 ## Recipes
 
 ### Extending `webpack.config`
