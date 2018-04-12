@@ -49,9 +49,10 @@
   ],
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "example:basic": "cd ./boilerplates/react-union-boilerplate-basic && yarn start",
+    "example:basic": "cd boilerplates/react-union-boilerplate-basic && yarn start",
     "lint": "eslint \"packages/**/*.js\" \"boilerplates/**/*.js\" --cache",
     "lint:fix": "yarn lint --fix",
+    "postinstall": "cd packages/react-union && yarn build",
     "precommit": "lint-staged",
     "prepush": "yarn lint",
     "publishAll": "lerna publish"
