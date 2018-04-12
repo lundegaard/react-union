@@ -124,6 +124,7 @@ const getWebpackConfig_ = config => {
 		templateFilename,
 		name: appName,
 		proxy,
+		generateTemplate,
 		generateVendorBundle,
 		vendorBlackList,
 		publicPath,
@@ -166,6 +167,7 @@ const getWebpackConfig_ = config => {
 			chunkFilename: `${outputMapper.js}/${outputChunkname}`,
 			publicPath: cli.proxy ? proxy.publicPath : publicPath,
 			sourcePrefix: '  ',
+			pathinfo: cli.debug,
 		},
 		plugins: [
 			new webpack.LoaderOptionsPlugin({
@@ -199,7 +201,7 @@ const getWebpackConfig_ = config => {
 				]
 				: []),
 			// Create HTML file for development without proxy
-			...(!cli.proxy
+			...(generateTemplate
 				? [
 					new HtmlWebpackPlugin({
 						title: appName,

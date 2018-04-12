@@ -2,7 +2,6 @@
 
 This project can either be used as the example of react-union and react-union-scripts working together or as the base of your project.
 
-
 ## Project structure
 
 ```
@@ -48,7 +47,8 @@ react-union-boilerplate
 ├── .gitignore
 ├── jest.config.js 		- Jest's config for unit testing
 ├── package.json
-└── README.md
+├── README.md
+└── union.config.js 	- React Union scripts confiration
 ```
 
 ## Running the example
@@ -56,7 +56,7 @@ react-union-boilerplate
 ```sh
 git clone https://github.com/lundegaard/react-union.git
 
-cd react-union/boilerplates/react-union-boilerplate-basic
+cd react-union/boilerplates/react-union-boilerplate-liferay-basic
 
 yarn && yarn start
 ```
@@ -71,19 +71,25 @@ Make sure you have Yarn v1.3.1 or higher and Node v8 or higher.
 yarn start
 ```
 
-### Starting proxy
+### Starting proxy over Liferay
 
 ```sh
-yarn start --proxy
+yarn start:proxy
 ```
 
 ### Production build
 
 ```sh
-yarn build --release
+yarn build
 ```
 
-**Note:** Creates production bundles.
+
+### Production build and deploy to Liferay themes
+
+```sh
+yarn build:liferay
+```
+
 
 ### Running unit tests in watch mode
 

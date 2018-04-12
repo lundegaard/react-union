@@ -284,6 +284,10 @@ Defaults to `<project root>/public/[ApplicationName]`.
 
 [`templateFilename`]\(string): Name of the HTML template. Defaults to `index.ejs`.
 
+### `generateTemplate`
+
+[`generateTemplate`]\(boolean) If true, generates template by using html-webpack-plugin. Defaults to `true`.
+
 ### `generateVendorBundle`
 
 [`generateVendorBundle`]\(boolean) If true, generates separate vendor chunk. Vendors are all dependencies from your `package.json`. Defaults to `true`.

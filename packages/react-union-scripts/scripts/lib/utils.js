@@ -14,6 +14,7 @@ const DEFAULT_PORT = 3300;
 const DEFAULT_UNION_CONFIG = {
 	paths: {},
 	generateVendorBundle: true,
+	generateTemplate: true,
 	vendorBlackList: [],
 	publicPath: '/',
 	templateFilename: 'index.ejs',
