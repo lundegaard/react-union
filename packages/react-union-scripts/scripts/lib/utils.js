@@ -18,6 +18,7 @@ const DEFAULT_UNION_CONFIG = {
 	vendorBlackList: [],
 	publicPath: '/',
 	templateFilename: 'index.ejs',
+	copyToPublicIgnore: /\.ejs$/,
 	devServer: {
 		historyApiFallback: true,
 		port: DEFAULT_PORT,

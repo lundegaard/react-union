@@ -1,8 +1,6 @@
 const webpack = require('webpack');
-const path = require('path');
 const fse = require('fs-extra');
-const { compose, map } = require('ramda');
-const { notEqual } = require('ramda-extension');
+const { map, test, complement } = require('ramda');
 
 const { getUnionConfig, stats } = require('./lib/utils');
 const configs = require('./webpack.config');
@@ -26,7 +24,7 @@ function build() {
 const copyPublicFolder = map(config => {
 	fse.copySync(config.paths.public, config.paths.build, {
 		dereference: true,
-		filter: compose(notEqual(config.templateFilename), path.basename),
+		filter: complement(test(config.copyToPublicIgnore)),
 	});
 });
 

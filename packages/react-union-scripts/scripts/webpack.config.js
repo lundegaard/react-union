@@ -136,7 +136,7 @@ const getWebpackConfig_ = config => {
 
 	const inVendorBlackList = includes(vendorBlackList);
 	const hmr = cli.script === 'start' && cli.debug && !cli.noHmr;
-	const outputPath = path.join(paths.build, publicPath);
+	const outputPath = paths.build;
 
 	const outputFilename = cli.debug ? '[name].bundle.js' : '[name].[chunkhash:8].bundle.js';
 	const outputChunkname = cli.debug ? '[name].chunk.js' : '[name].[chunkhash:8].chunk.js';
