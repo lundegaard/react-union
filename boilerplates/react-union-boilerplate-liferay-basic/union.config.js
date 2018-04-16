@@ -1,25 +1,31 @@
 const path = require('path');
 
-module.exports = ({ target }) => {
-	return target === 'liferay' ? {
-		outputMapper: {
-			// move JS form react-union to `widgets` folder in Liferay theme
-			js: 'js/widgets',
-			// generate FTL template for Liferay theme that is placed to header
-			index: './templates/union.ftl',
-		},
-		apps: [{
-			name: 'SampleApp',
-			publicPath: '/o/your-liferay-theme/',
-			proxy: {
-				target: 'http://localhost:8080',
-				publicPath: '/o/your-liferay-theme/',
+module.exports = ({ target }) =>
+	target === 'liferay'
+		? {
+			outputMapper: {
+				// move JS form react-union to `widgets` folder in Liferay theme
+				js: 'js/widgets',
+				// generate FTL template for Liferay theme that is placed to the <head />
+				index: './templates/union.ftl',
 			},
-			// path to empty template
-			templateFilename: 'union.ejs',
-			paths: {
-				build: path.resolve(__dirname, 'path-to-your-liferay-theme/src'),
-			},
-		}],
-	} : {};
-};
+			apps: [
+				{
+					name: 'SampleApp',
+					// setup your public path of your Liferay theme
+					publicPath: '/o/liferay-theme/',
+					paths: {
+						// setup path for `src` folder of your liferay theme
+						build: path.resolve(__dirname, './liferay-theme/src'),
+					},
+					proxy: {
+						// setup the URL of your locally running Liferay
+						target: 'http://localhost:8080',
+						// setup public path of your Liferay theme
+						publicPath: '/o/liferay-theme/',
+					},
+					templateFilename: 'union.ejs',
+				},
+			],
+		}
+		: {};
