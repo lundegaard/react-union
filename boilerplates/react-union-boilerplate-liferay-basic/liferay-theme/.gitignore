@@ -4,5 +4,7 @@ dist
 liferay-theme.json
 .web_bundle_build
 .yo-rc.json
-js/widgets
-templates/union.ftl
+
+src/js/widgets
+src/templates/union.ftl
+yarn-error.log

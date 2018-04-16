@@ -245,6 +245,13 @@ Output mapper makes possible further customization of the folder structure that 
 [`outputMapper.js`]\(string): Path of JavaScript assets. Defaults to `static/js`.
 [`outputMapper.media`]\(string): Path of media assets. Defaults to `static/media`.
 
+### `clean`
+
+
+[`outputMapper.paths`]\(string): Paths to clean before build. By default equals to `[paths.build]`
+[`outputMapper.oprions`]\(object): See [clean-webpack-plugin](https://github.com/johnagan/clean-webpack-plugin)
+
+
 ### `apps`
 
 Array of configurations for your applications. Every configuration is merged with above properties. You can rewrite them separately for every application.
