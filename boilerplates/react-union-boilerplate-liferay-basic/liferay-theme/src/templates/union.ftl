@@ -1,1 +1,0 @@
-<script type="text/javascript" src="/o/liferay-theme/js/widgets/vendor.062807b6.bundle.js"></script><script type="text/javascript" src="/o/liferay-theme/js/widgets/SampleApp.f57fe415.bundle.js"></script>
