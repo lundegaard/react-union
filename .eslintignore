@@ -1,7 +1,14 @@
+node_modules
+
 packages/*/node_modules
 packages/*/dist
 packages/*/es
 packages/*/lib
 boilerplates/*/node_modules
 boilerplates/*/build
-node_modules
+boilerplates/*/dist
+boilerplates/*/*/node_modules
+boilerplates/*/*/build
+boilerplates/*/*/dist
+boilerplates/react-union-boilerplate-liferay-basic/liferay-theme
+

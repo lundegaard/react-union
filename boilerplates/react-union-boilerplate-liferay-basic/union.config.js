@@ -18,6 +18,10 @@ module.exports = ({ target }) =>
 						// setup path for `src` folder of your liferay theme
 						build: path.resolve(__dirname, './liferay-theme/src'),
 					},
+					clean: {
+						// clean just js bundle, leave Liferay files
+						paths: [path.resolve(__dirname, './liferay-theme/src/js/widgets')],
+					},
 					proxy: {
 						// setup the URL of your locally running Liferay
 						target: 'http://localhost:8080',

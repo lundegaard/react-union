@@ -130,8 +130,8 @@ const getWebpackConfig_ = config => {
 		publicPath,
 		outputMapper,
 		mergeWebpackConfig,
+		clean,
 	} = config;
-
 	const commonConfig = getCommonConfig(config);
 
 	const inVendorBlackList = includes(vendorBlackList);
@@ -173,7 +173,7 @@ const getWebpackConfig_ = config => {
 			new webpack.LoaderOptionsPlugin({
 				debug: cli.debug,
 			}),
-			new CleanWebpackPlugin([outputPath], { root: process.cwd() }),
+			new CleanWebpackPlugin(clean.paths, clean.options),
 			// these globals will be accesible within the code
 			new webpack.DefinePlugin(GLOBALS),
 			...(!cli.debug ? [new webpack.optimize.OccurrenceOrderPlugin()] : []),
