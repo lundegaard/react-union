@@ -12,8 +12,12 @@ const UNION_CONFIG_PATH = path.resolve(process.cwd(), './union.config.js');
 const DEFAULT_APP_DIR = path.resolve(process.cwd(), 'src', 'apps');
 const DEFAULT_PORT = 3300;
 const DEFAULT_UNION_CONFIG = {
+	// computed in `extendPaths_`
 	paths: {},
+	// computed in `extendsClean_`
+	clean: { paths: [], options: {} },
 	generateVendorBundle: true,
+	generateTemplate: true,
 	vendorBlackList: [],
 	publicPath: '/',
 	templateFilename: 'index.ejs',
@@ -55,6 +59,18 @@ const trimSlashes = R.o(R.dropWhile(equalsSlash_), R.dropLastWhile(equalsSlash_)
 
 const getApps_ = R.path(['apps']);
 
+const extendsClean_ = config => ({
+	...config,
+	clean: {
+		paths: [config.paths.build],
+		...config.clean,
+		options: {
+			root: process.cwd(),
+			...config.clean.options,
+		},
+	},
+});
+
 const extendPaths_ = config => ({
 	...config,
 	paths: {
@@ -75,7 +91,10 @@ const extendOutputMapper_ = R.evolve({
 const getCommonUnionConfig_ = R.omit(['apps']);
 
 const extendConfigs = R.map(
-	R.o(R.o(extendPaths_, extendOutputMapper_), R.mergeDeepRight(DEFAULT_UNION_CONFIG))
+	R.o(
+		R.compose(extendsClean_, extendPaths_, extendOutputMapper_),
+		R.mergeDeepRight(DEFAULT_UNION_CONFIG)
+	)
 );
 
 const validateConfig_ = R.forEach(({ name }) => {
@@ -148,11 +167,14 @@ const resolveSymlink = (...args) => fs.realpathSync(path.resolve(...args));
 
 const resolveAsyncSuffix = R.cond([
 	[R.is(RegExp), R.identity],
-	[R_.isString, (asyncSuffix) => R_.constructRegExp(`\.${asyncSuffix}\.js$`, 'i')],
-	[R_.isArray, (asyncSuffix) => R_.constructRegExp(`\.(${R.join('|', asyncSuffix)})\.js$`, 'i')],
-	[R.T, () => invariant(false, 'Invalid property \'asyncSuffix\'. It should be string or list of strings.')],
+	[R_.isString, asyncSuffix => R_.constructRegExp(`\.${asyncSuffix}\.js$`, 'i')],
+	[R_.isArray, asyncSuffix => R_.constructRegExp(`\.(${R.join('|', asyncSuffix)})\.js$`, 'i')],
+	[
+		R.T,
+		() =>
+			invariant(false, "Invalid property 'asyncSuffix'. It should be string or list of strings."),
+	],
 ]);
-
 
 module.exports = {
 	UNION_CONFIG_PATH,

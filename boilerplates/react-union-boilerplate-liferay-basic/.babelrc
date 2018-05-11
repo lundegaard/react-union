@@ -1,0 +1,35 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "ie": 9
+        },
+        "uglify": true,
+        "useBuiltIns": false
+      }
+    ],
+    "stage-1",
+    "react"
+  ],
+  "plugins": [
+    "transform-class-properties",
+    "transform-object-rest-spread",
+    "transform-react-constant-elements",
+    [
+      "transform-regenerator",
+      {
+        "async": false
+      }
+    ],
+    [
+      "transform-runtime",
+      {
+        "helpers": false,
+        "polyfill": false,
+        "regenerator": true
+      }
+    ]
+  ]
+}
