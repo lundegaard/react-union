@@ -1,4 +1,4 @@
-## Getting started
+## Contributing
 
 Create a new branch from an up to date master branch on your fork.
 
