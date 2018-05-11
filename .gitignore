@@ -1,6 +1,7 @@
 lerna-debug.log*
 stats.js
 build/
+packages/react-union-boilerplate-redux/
 
 # Created by https://www.gitignore.io/api/code,node,linux,macos,windows,webstorm,sublimetext
 

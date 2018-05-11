@@ -2,7 +2,6 @@
 
 This project can either be used as the example of react-union and react-union-scripts working together or as the base of your project.
 
-
 ## Project structure
 
 ```
@@ -48,7 +47,8 @@ react-union-boilerplate
 ├── .gitignore
 ├── jest.config.js 		- Jest's config for unit testing
 ├── package.json
-└── README.md
+├── README.md
+└── union.config.js 	- React Union scripts confiration
 ```
 
 ## Running the example
