@@ -124,19 +124,18 @@ const getWebpackConfig_ = config => {
 		templateFilename,
 		name: appName,
 		proxy,
-		generateTemplate,
 		generateVendorBundle,
 		vendorBlackList,
 		publicPath,
 		outputMapper,
 		mergeWebpackConfig,
-		clean,
 	} = config;
+
 	const commonConfig = getCommonConfig(config);
 
 	const inVendorBlackList = includes(vendorBlackList);
 	const hmr = cli.script === 'start' && cli.debug && !cli.noHmr;
-	const outputPath = paths.build;
+	const outputPath = path.join(paths.build, publicPath);
 
 	const outputFilename = cli.debug ? '[name].bundle.js' : '[name].[chunkhash:8].bundle.js';
 	const outputChunkname = cli.debug ? '[name].chunk.js' : '[name].[chunkhash:8].chunk.js';
@@ -167,13 +166,12 @@ const getWebpackConfig_ = config => {
 			chunkFilename: `${outputMapper.js}/${outputChunkname}`,
 			publicPath: cli.proxy ? proxy.publicPath : publicPath,
 			sourcePrefix: '  ',
-			pathinfo: cli.debug,
 		},
 		plugins: [
 			new webpack.LoaderOptionsPlugin({
 				debug: cli.debug,
 			}),
-			new CleanWebpackPlugin(clean.paths, clean.options),
+			new CleanWebpackPlugin([outputPath], { root: process.cwd() }),
 			// these globals will be accesible within the code
 			new webpack.DefinePlugin(GLOBALS),
 			...(!cli.debug ? [new webpack.optimize.OccurrenceOrderPlugin()] : []),
@@ -201,7 +199,7 @@ const getWebpackConfig_ = config => {
 				]
 				: []),
 			// Create HTML file for development without proxy
-			...(generateTemplate
+			...(!cli.proxy
 				? [
 					new HtmlWebpackPlugin({
 						title: appName,
