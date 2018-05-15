@@ -1,7 +1,7 @@
 package eu.reactunion.boilerplate.constants;
 
 /**
- * @author roman.srom
+ * @author Roman Srom (roman.srom@lundegaard.eu)
  */
 public class HeroPortletKeys {
 
