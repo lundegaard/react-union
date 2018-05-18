@@ -16,6 +16,9 @@ node {
     download = true
 }
 
+// build first react-app
+gulp_build.dependsOn(rootProject.tasks.build)
+
 // makes sure on each build that gulp is installed
 gulp_build.dependsOn 'installGulp'
 
