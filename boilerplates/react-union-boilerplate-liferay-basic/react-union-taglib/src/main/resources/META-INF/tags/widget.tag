@@ -1,19 +1,15 @@
 <%--
 Renders widget's snippet with init data stored in request attribute 'reactWidgetInitData_${unionWidget}'.
 Init data attribute can be set by initDataAttr.
-
-Attributes:
-
-unionWidget - widget's name
-unionContainer - id of div element that is used as the widget's container
-initDataAttr - name of request attribute with init data
-initData - widget's init data. It has preference before initDataAttr
-
 --%>
-<%@attribute name="unionWidget" required="true" type="java.lang.String"%>
-<%@attribute name="unionContainer" required="false" type="java.lang.String"%>
-<%@attribute name="initData" required="false" type="java.lang.Object"%>
-<%@attribute name="initDataAttr" required="false" type="java.lang.String"%>
+<%@attribute name="unionWidget" required="true" type="java.lang.String"
+             description="widget's name" %>
+<%@attribute name="unionContainer" required="false" type="java.lang.String"
+             description="id of div element that is used as the widget's container" %>
+<%@attribute name="initData" required="false" type="java.lang.Object"
+             description="name of request attribute with init data" %>
+<%@attribute name="initDataAttr" required="false" type="java.lang.String"
+             description="widget's init data. It has preference before initDataAttr" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
