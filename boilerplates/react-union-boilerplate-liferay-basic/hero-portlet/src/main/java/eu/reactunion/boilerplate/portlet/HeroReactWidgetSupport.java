@@ -7,6 +7,8 @@ import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
 import eu.reactunion.boilerplate.configuration.HeroConfiguration;
+import eu.reactunion.boilerplate.portlet.data.InitData;
+import eu.reactunion.boilerplate.portlet.data.Textation;
 import org.osgi.service.component.annotations.Component;
 
 import eu.lundegaard.reactunion.support.ReactWidgetSupport;
@@ -16,13 +18,13 @@ import eu.lundegaard.reactunion.support.ReactWidgetSupport;
  */
 @Component(
         immediate = true,
-        service = ReactWidgetSupport.class
+        service = HeroReactWidgetSupport.class
 )
 public class HeroReactWidgetSupport extends ReactWidgetSupport {
 
 //    @Override
 //    public Map<String, Object> getWidgetsInitData(RenderRequest request) {
-//        Map<String, Object> initData = new HashMap<>();
+//        Map<String, Object> initDataMap = new HashMap<>();
 //
 //        final ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 //        if (themeDisplay != null) {
@@ -30,18 +32,15 @@ public class HeroReactWidgetSupport extends ReactWidgetSupport {
 //            HeroConfiguration heroConfiguration = null;
 //            try {
 //                heroConfiguration = portletDisplay.getPortletInstanceConfiguration(HeroConfiguration.class);
-//                initData.put("content", "{\n" +
-//                        "        \"textation\": {\n" +
-//                        "            \"heading\": \"" + heroConfiguration.heading() + "\",\n" +
-//                        "            \"content\": \"" + heroConfiguration.content() + "\"\n" +
-//                        "        }\n" +
-//                        "    }");
+//                InitData initData = new InitData();
+//                initData.setTextation(new Textation(heroConfiguration.heading(), heroConfiguration.content()));
+//                initDataMap.put("content", initData);
 //            } catch (ConfigurationException e) {
 //                throw new RuntimeException("Configuration error", e);
 //            }
 //        }
 //
-//        return initData;
+//        return initDataMap;
 //    }
 
     @Override
@@ -52,12 +51,9 @@ public class HeroReactWidgetSupport extends ReactWidgetSupport {
             HeroConfiguration heroConfiguration = null;
             try {
                 heroConfiguration = portletDisplay.getPortletInstanceConfiguration(HeroConfiguration.class);
-                return "{\n" +
-                        "        \"textation\": {\n" +
-                        "            \"heading\": \"" + heroConfiguration.heading() + "\",\n" +
-                        "            \"content\": \"" + heroConfiguration.content() + "\"\n" +
-                        "        }\n" +
-                        "    }";
+                InitData initData = new InitData();
+                initData.setTextation(new Textation(heroConfiguration.heading(), heroConfiguration.content()));
+                return initData;
             } catch (ConfigurationException e) {
                 throw new RuntimeException("Configuration error", e);
             }

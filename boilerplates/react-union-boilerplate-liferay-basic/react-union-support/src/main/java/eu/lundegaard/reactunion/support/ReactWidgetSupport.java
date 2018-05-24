@@ -8,10 +8,14 @@ import javax.portlet.RenderRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+import eu.lundegaard.reactunion.support.jackson.ReactDataMapper;
+
 import static eu.lundegaard.reactunion.support.ReactUnionConstants.*;
 
 /**
  * Support class for the work with a React widget.
+ * You must either override {@link #getWidgetsInitData(RenderRequest)} or
+ * ({@link #getWidgetInitData(RenderRequest)} and {@link #getWidgetName()}).
  *
  * @author Roman Srom (roman.srom@lundegaard.eu)
  */
@@ -27,15 +31,17 @@ public abstract class ReactWidgetSupport implements ReactWidgetAware {
     public void setWidgetsInitData(RenderRequest request) {
         final Map<String, Object> widgetsInitData = getWidgetsInitData(request);
         if (widgetsInitData != null) {
+            ReactDataMapper reactDataMapper = new ReactDataMapper();
             widgetsInitData.forEach((widgetName, widgetData) ->
-                    request.setAttribute(ATTR_WIDGET_INIT_DATA_PREFIX + widgetName, widgetData));
+                    request.setAttribute(ATTR_WIDGET_INIT_DATA_PREFIX + widgetName,
+                            reactDataMapper.getJson(widgetData)));
         }
     }
 
     @Override
     public Map<String, Object> getWidgetsInitData(RenderRequest request) {
-        final Object widgetInitData = getWidgetInitData(request);
         Map<String, Object> widgetsInitData = new HashMap<>();
+        final Object widgetInitData = getWidgetInitData(request);
         widgetsInitData.put(getWidgetName(), widgetInitData);
         return widgetsInitData;
     }

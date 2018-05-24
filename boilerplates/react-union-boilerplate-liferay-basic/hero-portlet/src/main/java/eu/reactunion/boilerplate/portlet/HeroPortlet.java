@@ -12,8 +12,6 @@ import eu.reactunion.boilerplate.constants.HeroPortletKeys;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import eu.lundegaard.reactunion.support.ReactWidgetSupport;
-
 /**
  * @author Roman Srom (roman.srom@lundegaard.eu)
  */
@@ -37,7 +35,7 @@ public class HeroPortlet extends MVCPortlet {
 	private ConfigurationProvider configurationProvider;
 
 	@Reference
-	private ReactWidgetSupport reactWidgetSupport;
+	private HeroReactWidgetSupport reactWidgetSupport;
 
 	@Override
 	public void render(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
