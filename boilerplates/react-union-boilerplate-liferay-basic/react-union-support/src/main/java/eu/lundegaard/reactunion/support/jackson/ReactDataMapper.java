@@ -6,6 +6,8 @@ package eu.lundegaard.reactunion.support.jackson;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.lundegaard.reactunion.support.exception.ReactSupportException;
 
@@ -14,10 +16,14 @@ import eu.lundegaard.reactunion.support.exception.ReactSupportException;
  */
 public class ReactDataMapper {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ReactDataMapper.class);
+
     public String getJson(Object object) {
         ObjectMapper objectMapper = getObjectMapper();
         try {
-            return objectMapper.writeValueAsString(object);
+            final String json = objectMapper.writeValueAsString(object);
+            LOG.debug("Serialized object {} to json {}", object, json);
+            return json;
         } catch (JsonProcessingException e) {
             throw new ReactSupportException("Serialization to json error", e);
         }

@@ -8,6 +8,9 @@ import javax.portlet.RenderRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.lundegaard.reactunion.support.jackson.ReactDataMapper;
 
 import static eu.lundegaard.reactunion.support.ReactUnionConstants.*;
@@ -21,6 +24,8 @@ import static eu.lundegaard.reactunion.support.ReactUnionConstants.*;
  */
 public abstract class ReactWidgetSupport implements ReactWidgetAware {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ReactWidgetSupport.class);
+
     public static final String UNKNOWN_WIDGET = "unknownWidget";
 
     /**
@@ -32,9 +37,11 @@ public abstract class ReactWidgetSupport implements ReactWidgetAware {
         final Map<String, Object> widgetsInitData = getWidgetsInitData(request);
         if (widgetsInitData != null) {
             ReactDataMapper reactDataMapper = new ReactDataMapper();
-            widgetsInitData.forEach((widgetName, widgetData) ->
-                    request.setAttribute(ATTR_WIDGET_INIT_DATA_PREFIX + widgetName,
-                            reactDataMapper.getJson(widgetData)));
+            widgetsInitData.forEach((widgetName, widgetData) -> {
+                LOG.debug("Setting init data for widget {}", widgetName);
+                request.setAttribute(ATTR_WIDGET_INIT_DATA_PREFIX + widgetName,
+                        reactDataMapper.getJson(widgetData));
+            });
         }
     }
 
