@@ -1,0 +1,10 @@
+Bundle-Name: React Union Taglib
+Bundle-SymbolicName: eu.lundegaard.reactunion.taglib
+Bundle-Version: 1.0.0
+Export-Package: eu.lundegaard.reactunion.taglib
+Provide-Capability:\
+	osgi.extender;\
+		osgi.extender="jsp.taglib";\
+		uri="http://lundegaard.eu/tld/react-union";\
+		version:Version="${Bundle-Version}"
+Web-ContextPath: /react-union-taglib

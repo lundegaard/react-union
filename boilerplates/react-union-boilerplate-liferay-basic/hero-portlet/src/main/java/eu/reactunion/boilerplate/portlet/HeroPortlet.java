@@ -6,13 +6,13 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import java.io.IOException;
 
-import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
-import eu.reactunion.boilerplate.configuration.HeroConfigurationUtil;
 import eu.reactunion.boilerplate.constants.HeroPortletKeys;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+
+import eu.lundegaard.reactunion.support.ReactWidgetSupport;
 
 /**
  * @author Roman Srom (roman.srom@lundegaard.eu)
@@ -36,13 +36,12 @@ public class HeroPortlet extends MVCPortlet {
 	@Reference
 	private ConfigurationProvider configurationProvider;
 
+	@Reference
+	private ReactWidgetSupport reactWidgetSupport;
+
 	@Override
 	public void render(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
-		try {
-			HeroConfigurationUtil.addConfigurationContext(renderRequest);
-		} catch (ConfigurationException e) {
-			throw new PortletException("Configuration error", e);
-		}
+		reactWidgetSupport.setWidgetsInitData(renderRequest);
 
 		super.render(renderRequest, renderResponse);
 	}
