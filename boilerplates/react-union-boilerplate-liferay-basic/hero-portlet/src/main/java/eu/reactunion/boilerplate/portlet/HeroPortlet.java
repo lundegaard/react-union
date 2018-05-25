@@ -20,7 +20,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Roman Srom (roman.srom@lundegaard.eu)
  */
 @Component(
-	configurationPid = "eu.reactunion.boilerplate.configuration.HeroConfiguration",
+	configurationPid = HeroPortletKeys.CONFIGURATION,
 	immediate = true,
 	property = {
 		"com.liferay.portlet.display-category=category.sample",

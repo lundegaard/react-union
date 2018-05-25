@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.util.ParamUtil;
+import eu.reactunion.boilerplate.constants.HeroConstants;
 import eu.reactunion.boilerplate.constants.HeroPortletKeys;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
@@ -22,7 +23,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Roman Srom (roman.srom@lundegaard.eu)
  */
 @Component(
-    configurationPid = "eu.reactunion.boilerplate.configuration.HeroConfiguration",
+    configurationPid = HeroPortletKeys.CONFIGURATION,
     configurationPolicy = ConfigurationPolicy.OPTIONAL,
     immediate = true,
     property = {
@@ -37,10 +38,10 @@ public class HeroConfigurationAction extends DefaultConfigurationAction {
 
     @Override
     public void processAction(PortletConfig portletConfig, ActionRequest actionRequest, ActionResponse actionResponse) throws Exception {
-        String heading = ParamUtil.getString(actionRequest, "heading");
-        setPreference(actionRequest, "heading", heading);
-        String content = ParamUtil.getString(actionRequest, "content");
-        setPreference(actionRequest, "content", content);
+        String heading = ParamUtil.getString(actionRequest, HeroConstants.PARAM_HEADING);
+        setPreference(actionRequest, HeroConstants.PARAM_HEADING, heading);
+        String content = ParamUtil.getString(actionRequest, HeroConstants.PARAM_CONTENT);
+        setPreference(actionRequest, HeroConstants.PARAM_CONTENT, content);
 
         super.processAction(portletConfig, actionRequest, actionResponse);
     }
