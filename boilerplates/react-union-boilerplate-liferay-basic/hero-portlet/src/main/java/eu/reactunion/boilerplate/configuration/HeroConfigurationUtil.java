@@ -11,10 +11,18 @@ import com.liferay.portal.kernel.util.WebKeys;
 import static eu.reactunion.boilerplate.constants.HeroConstants.*;
 
 /**
+ * Util class containing useful methods for the work with the portlet configuration.
+ *
  * @author Roman Srom (roman.srom@lundegaard.eu)
  */
 public class HeroConfigurationUtil {
 
+    /**
+     * Adds configuration properties to a render request as the attributes.
+     *
+     * @param request render request
+     * @throws ConfigurationException if the portlet configuration can't be retrieved
+     */
     public static void addConfigurationContext(RenderRequest request) throws ConfigurationException {
         final ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         if (themeDisplay != null) {
@@ -26,6 +34,12 @@ public class HeroConfigurationUtil {
         }
     }
 
+    /**
+     * Adds configuration properties to a servlet request as the attributes.
+     *
+     * @param request servlet request
+     * @throws ConfigurationException if the portlet configuration can't be retrieved
+     */
     public static void addConfigurationContext(HttpServletRequest request) throws ConfigurationException {
         final ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         if (themeDisplay != null) {

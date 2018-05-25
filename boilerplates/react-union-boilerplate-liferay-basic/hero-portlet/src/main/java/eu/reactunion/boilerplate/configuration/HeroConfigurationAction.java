@@ -16,6 +16,9 @@ import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Reference;
 
 /**
+ * The configuration action class enables Configuration item in the portlet's menu with gear icon.
+ * Configuration.jsp is used to render the UI.
+ *
  * @author Roman Srom (roman.srom@lundegaard.eu)
  */
 @Component(

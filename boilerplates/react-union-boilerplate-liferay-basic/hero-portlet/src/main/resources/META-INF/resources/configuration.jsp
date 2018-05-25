@@ -1,3 +1,6 @@
+<%--
+JSP for the configuration class and configuration action.
+--%>
 <%@ include file="./init.jsp" %>
 
 <%@ page import="com.liferay.portal.kernel.util.Constants" %>

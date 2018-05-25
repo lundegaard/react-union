@@ -15,6 +15,8 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
+ * Controller of Hero Portlet, it renders view.jsp with the React widgets.
+ *
  * @author Roman Srom (roman.srom@lundegaard.eu)
  */
 @Component(

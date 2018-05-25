@@ -4,6 +4,8 @@ import aQute.bnd.annotation.metatype.Meta;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 
 /**
+ * Configuration class of the Hero portlet.
+ *
  * @author Roman Srom (roman.srom@lundegaard.eu)
  */
 @ExtendedObjectClassDefinition(

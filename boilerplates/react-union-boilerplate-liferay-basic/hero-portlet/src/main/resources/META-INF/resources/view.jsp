@@ -1,3 +1,6 @@
+<%--
+Renders React widgets.
+--%>
 <%@ include file="./init.jsp" %>
 
 <div id="${ns}hero"></div>
