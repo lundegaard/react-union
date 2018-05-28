@@ -26,8 +26,7 @@ public class HeroConfigurationUtil {
     public static void addConfigurationContext(RenderRequest request) throws ConfigurationException {
         final ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         if (themeDisplay != null) {
-            final PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
-            HeroConfiguration heroConfiguration = portletDisplay.getPortletInstanceConfiguration(HeroConfiguration.class);
+            HeroConfiguration heroConfiguration = getHeroConfiguration(themeDisplay);
 
             request.setAttribute(ATTR_HEADING, heroConfiguration.heading());
             request.setAttribute(ATTR_CONTENT, heroConfiguration.content());
@@ -43,11 +42,16 @@ public class HeroConfigurationUtil {
     public static void addConfigurationContext(HttpServletRequest request) throws ConfigurationException {
         final ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         if (themeDisplay != null) {
-            final PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
-            HeroConfiguration heroConfiguration = portletDisplay.getPortletInstanceConfiguration(HeroConfiguration.class);
+            HeroConfiguration heroConfiguration = getHeroConfiguration(themeDisplay);
 
             request.setAttribute(ATTR_HEADING, heroConfiguration.heading());
             request.setAttribute(ATTR_CONTENT, heroConfiguration.content());
         }
     }
+
+    private static HeroConfiguration getHeroConfiguration(ThemeDisplay themeDisplay) throws ConfigurationException {
+        final PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
+        return portletDisplay.getPortletInstanceConfiguration(HeroConfiguration.class);
+    }
+
 }
