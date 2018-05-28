@@ -1,3 +1,6 @@
+<%--
+Renders React widgets.
+--%>
 <%@ include file="./init.jsp" %>
 
 <react-union:widget unionWidget="hero" />
