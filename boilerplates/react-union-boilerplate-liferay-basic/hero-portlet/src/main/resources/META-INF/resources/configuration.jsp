@@ -21,9 +21,9 @@ JSP for the configuration class and configuration action.
 
     <aui:fieldset>
         <aui:input name="preferences--heading--" label="form.heading" type="text"
-                   value="${heading}" />
+                   value="${heading}" required="true" />
         <aui:input name="preferences--content--" label="form.content" type="text"
-                   value="${content}" />
+                   value="${content}" required="true" />
     </aui:fieldset>
     <aui:button-row>
         <aui:button type="submit"></aui:button>

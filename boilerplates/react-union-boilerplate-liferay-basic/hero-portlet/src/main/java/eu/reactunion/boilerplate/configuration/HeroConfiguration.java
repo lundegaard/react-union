@@ -16,15 +16,13 @@ import eu.reactunion.boilerplate.constants.HeroPortletKeys;
 @Meta.OCD(id = HeroPortletKeys.CONFIGURATION)
 public interface HeroConfiguration {
 
-    // required true doesn't work, it doesn't find default values. Probably bug.
     @Meta.AD(
-            required = false
+            required = true
     )
     String heading();
 
-    // required true doesn't work, it doesn't find default values. Probably bug.
     @Meta.AD(
-            required = false
+            required = true
     )
     String content();
 
