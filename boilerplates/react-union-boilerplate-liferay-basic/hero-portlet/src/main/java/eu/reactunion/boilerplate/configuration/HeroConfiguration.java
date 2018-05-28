@@ -10,7 +10,7 @@ import eu.reactunion.boilerplate.constants.HeroPortletKeys;
  * @author Roman Srom (roman.srom@lundegaard.eu)
  */
 @ExtendedObjectClassDefinition(
-        category = "ReactUnion",
+        category = "foundation",
         scope = ExtendedObjectClassDefinition.Scope.PORTLET_INSTANCE
 )
 @Meta.OCD(id = HeroPortletKeys.CONFIGURATION)
