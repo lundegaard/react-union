@@ -7,12 +7,10 @@ import javax.portlet.RenderResponse;
 import java.io.IOException;
 
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
-import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import eu.reactunion.boilerplate.configuration.HeroConfigurationUtil;
 import eu.reactunion.boilerplate.constants.HeroPortletKeys;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * Controller of Hero Portlet, it renders view.jsp with the React widgets.
@@ -34,9 +32,6 @@ import org.osgi.service.component.annotations.Reference;
 	service = Portlet.class
 )
 public class HeroPortlet extends MVCPortlet {
-
-	@Reference
-	private ConfigurationProvider configurationProvider;
 
 	@Override
 	public void render(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {

@@ -1,6 +1,7 @@
 package eu.reactunion.boilerplate.configuration;
 
 import com.liferay.portal.kernel.settings.definition.ConfigurationBeanDeclaration;
+import org.osgi.service.component.annotations.Component;
 
 /**
  * Registers the configuration class {@link HeroConfiguration}. It enables the system to keep track of any
@@ -8,6 +9,7 @@ import com.liferay.portal.kernel.settings.definition.ConfigurationBeanDeclaratio
  *
  * @author Roman Srom (roman.srom@lundegaard.eu)
  */
+@Component
 public class HeroConfigurationBeanDeclaration implements ConfigurationBeanDeclaration {
 
     /**
