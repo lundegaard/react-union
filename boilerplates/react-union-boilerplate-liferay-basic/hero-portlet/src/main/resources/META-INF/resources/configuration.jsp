@@ -20,9 +20,9 @@ JSP for the configuration class and configuration action.
                value="${configurationRenderURL}" />
 
     <aui:fieldset>
-        <aui:input name="heading" label="form.heading" type="text"
+        <aui:input name="preferences--heading--" label="form.heading" type="text"
                    value="${heading}" />
-        <aui:input name="content" label="form.content" type="text"
+        <aui:input name="preferences--content--" label="form.content" type="text"
                    value="${content}" />
     </aui:fieldset>
     <aui:button-row>
