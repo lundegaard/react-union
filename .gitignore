@@ -8,6 +8,7 @@ build/
 # Visual Studio Code - https://code.visualstudio.com/
 .settings/
 .vscode/
+.history
 tsconfig.json
 jsconfig.json
 
