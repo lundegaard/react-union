@@ -24,8 +24,8 @@
   "author": "Tomas Konrady <tomas.konrady@lundegaard.eu>",
   "contributors": [
     "Tomas Konrady <tomas.konrady@lundegaard.eu>",
-	"Vaclav Jancarik <vaclav.jancarik@lundegaard.eu>",
-	"Lukas Sulik <lukas.sulik@lundegaard.eu>"
+	  "Vaclav Jancarik <vaclav.jancarik@lundegaard.eu>",
+	  "Lukas Sulik <lukas.sulik@lundegaard.eu>"
   ],
   "repository": "https://github.com/lundegaard/react-union",
   "license": "UNLICENSED",
@@ -49,7 +49,6 @@
     "boilerplates/*"
   ],
   "scripts": {
-    "bootstrap": "lerna bootstrap",
     "example:basic": "cd boilerplates/react-union-boilerplate-basic && yarn start",
     "lint": "eslint \"packages/**/*.js\" \"boilerplates/**/*.js\"",
     "lint:fix": "yarn lint --fix",
