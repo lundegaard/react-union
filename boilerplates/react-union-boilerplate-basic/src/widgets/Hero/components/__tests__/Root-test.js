@@ -11,6 +11,6 @@ describe('Root', () => {
 	it('should render static text content', () => {
 		const tree = sd.shallowRender(<Root />);
 
-		expect(tree.text()).toBe('I am Hero!');
+		expect(tree.type).toBe('img');
 	});
 });
