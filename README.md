@@ -1,5 +1,7 @@
 # React-union project
 
+[![build status](https://img.shields.io/travis/lundegaard/react-union/master.svg?style=flat-square)](https://travis-ci.org/lundegaard/react-union)
+
 The project React-union is a collection of tools that allows you to build modern React applications which run on specific server-side environments such as Content Management Systems or Portals.
 
 ## Tools and libraries
