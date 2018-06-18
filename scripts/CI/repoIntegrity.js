@@ -120,7 +120,7 @@ const cleanup = verdaccio => {
 			logTask('running test&lint');
 			execCommandInProject('yarn test --release');
 			logTask('webpack build');
-			const webpackOut = execCommandInProject('yarn build --relase');
+			const webpackOut = execCommandInProject('yarn build --release');
 			console.log('@webpack stdout', webpackOut);
 			if (webpackOut.includes('ERROR') | webpackOut.includes('WARNING')) {
 				throw new Error('webpack compilation error');
