@@ -22,7 +22,7 @@ const withErrorBoundary = WrappedComponent => {
 
 			if (this.state.hasError) {
 				// TODO: perhaps show some tips for common mistakes?
-				return `An error has occured in widget "${name}". See the console output for more details.`;
+				return `An error has occurred in widget "${name}". See the console output for more details.`;
 			}
 
 			return <WrappedComponent {...this.props} />;
