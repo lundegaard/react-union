@@ -70,6 +70,45 @@ const Root = () => <Union routes={[route]} />;
 export default Root;
 ```
 
+## Widget context
+
+Every widget will get it's initial data and namespace to the Root component of widget.
+
+```jsx
+// react-union-boilerplate-basic/src/widgets/Content/Components/Root.js
+import React from 'react';
+
+const Root = ({ namespace, data }) => (
+	<div>
+		I am widget Content. With namespace: <b>{namespace}</b> and initial data:
+		<b>{JSON.stringify(data)}</b>
+	</div>
+);
+
+export default Root;
+```
+
+But sometimes can be handy to access these data from nested components. To avoid passing down these props, we provide a WidgetContext.
+
+```jsx
+// react-union-boilerplate-basic/src/widgets/Content/Components/NestedComponent.js
+import React from 'react';
+import { WidgetContext } from 'react-union';
+
+const NestedComponent = () => (
+	<WidgetContext.Consumer>
+		{({ namespace, data }) => (
+			<div>
+				Im nested component of Content. I have also namespace: <b>{namespace}</b> and initial data:
+				<b>{JSON.stringify(data)}</b>. But taken from context :p.
+			</div>
+		)}
+	</WidgetContext.Consumer>
+);
+
+export default NestedComponent;
+```
+
 # FAQ
 
 ## _Why should I use it?_
