@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, StrictMode, Fragment } from 'react';
 
 import { noop } from '../../utils';
 import { RouteShape } from '../../shapes';
@@ -38,12 +38,17 @@ class Union extends Component {
 		 *  Array of routes that are supported by your application.
 		 */
 		routes: PropTypes.arrayOf(PropTypes.shape(RouteShape)).isRequired,
+		/**
+		 * Enable React.Strict mode. By default `true`
+		 */
+		strictMode: PropTypes.bool,
 	};
 
 	static defaultProps = {
 		onScanEnd: noop,
 		onScanError: noop,
 		onScanStart: noop,
+		strictMode: true,
 	};
 
 	state = {
@@ -80,12 +85,14 @@ class Union extends Component {
 		<Widget key={config.descriptor.namespace || config.descriptor.container} {...config} />
 	);
 
+	resolveStrictMode = union => (this.props.strictMode ? <StrictMode>{union}</StrictMode> : union);
+
 	render() {
-		return (
-			<div>
+		return this.resolveStrictMode(
+			<Fragment>
 				{this.props.children}
 				{this.state.configs.map(this.renderWidget)}
-			</div>
+			</Fragment>
 		);
 	}
 }

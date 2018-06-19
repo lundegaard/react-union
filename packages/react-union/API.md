@@ -125,6 +125,7 @@ Renders your widgets based on provided _routes_ and the _widget descriptors_ in 
 * [`onScanStart`]\(_function_) - Called before the scan of the HTML.
 * [`parent`]\(_DOM element_) - Element in which the scan is running. The default value is `document.body`.
 * [`routes`]\(_array of Route_) - Array of routes that are supported by your application. See section _Route_.
+* [`strictMode`]\(_boolean_) - Enable React.Strict mode. By default `true`.
 
 ## Widget descriptor
 
