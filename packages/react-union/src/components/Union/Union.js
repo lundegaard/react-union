@@ -54,9 +54,9 @@ class Union extends Component {
 		this.scan(this.props);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.routes !== this.props.routes) {
-			this.scan(nextProps);
+	componentDidUpdate(prevProps) {
+		if (prevProps.routes !== this.props.routes) {
+			this.scan(prevProps);
 		}
 	}
 
