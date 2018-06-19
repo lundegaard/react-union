@@ -22,7 +22,7 @@
     "dist"
   ],
   "dependencies": {
-    "prop-types": "15.6.0",
+    "prop-types": "15.6.1",
     "ramda": "0.25.0"
   },
   "devDependencies": {
@@ -43,8 +43,8 @@
     "cross-env": "5.1.1",
     "eslint": "4.17.0",
     "jest": "21.2.1",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
     "rollup": "0.52.0",
     "rollup-plugin-babel": "3.0.2",
     "rollup-plugin-commonjs": "8.2.6",
@@ -53,8 +53,8 @@
     "rollup-plugin-uglify": "2.0.1"
   },
   "peerDependencies": {
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1"
   },
   "scripts": {
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
