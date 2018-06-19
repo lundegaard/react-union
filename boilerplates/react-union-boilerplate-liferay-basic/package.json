@@ -9,19 +9,19 @@
   },
   "dependencies": {
     "classnames": "2.2.5",
-    "document-ready": "^2.0.1",
+    "document-ready": "2.0.1",
     "prop-types": "15.6.0",
-    "react": "16.2.0",
-    "react-dom": "16.2.0",
-    "react-hot-loader": "^4.3.3",
+    "react": "16.4.1",
+    "react-dom": "16.4.1",
+    "react-hot-loader": "4.3.3",
     "react-union": "0.2.0",
-    "redbox-react": "1.5.0"
+    "redbox-react": "1.6.0"
   },
   "devDependencies": {
     "babel-eslint": "8.0.1",
     "babel-preset-react": "6.23.0",
     "eslint": "4.7.2",
-    "eslint-config-prettier": "^2.9.0",
+    "eslint-config-prettier": "2.9.0",
     "eslint-config-react-union": "0.2.0",
     "eslint-plugin-babel": "4.1.2",
     "eslint-plugin-import": "2.7.0",

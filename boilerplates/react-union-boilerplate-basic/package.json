@@ -9,12 +9,12 @@
   },
   "dependencies": {
     "classnames": "2.2.5",
-    "prop-types": "15.6.0",
-    "react": "16.0.0",
-    "react-dom": "16.0.0",
-    "react-hot-loader": "^4.3.3",
+    "prop-types": "15.6.1",
+    "react": "16.4.1",
+    "react-dom": "16.4.1",
+    "react-hot-loader": "4.3.3",
     "react-union": "0.2.0",
-    "redbox-react": "1.5.0"
+    "redbox-react": "1.6.0"
   },
   "devDependencies": {
     "babel-eslint": "8.0.1",
