@@ -79,25 +79,24 @@ React-union makes features such as Hot Module Reloading possible for systems suc
 ```jsx
 // index.js
 import React from 'react';
-import { render } from 'react-dom';
+import { justRender } from 'react-union';
 import { AppContainer } from 'react-hot-loader';
 
-import Root from './Root';
+import Root from './components/Root';
 
-const renderComponent = Component =>
-	render(
-		<AppContainer>
+const render = Component =>
+	justRender(
+		<AppContainer errorReporter={__DEV__ ? require('redbox-react').default : null}>
 			<Component />
-		</AppContainer>,
-		document.getElementById('root')
+		</AppContainer>
 	);
 
-renderComponent(Root);
+render(Root);
 
 if (module.hot) {
-	module.hot.accept(['./Root'], () => {
-		const NextRoot = require('./Root').default;
-		renderComponent(NextRoot);
+	module.hot.accept(['./components/Root'], () => {
+		const NextRoot = require('./components/Root').default;
+		render(NextRoot);
 	});
 }
 ```
