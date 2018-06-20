@@ -8,8 +8,15 @@ const path = require('path');
 const utilsFs = require('./fs');
 const cli = require('./cli');
 
+const isMonoRepo = (() => {
+	const rootPackage = JSON.parse(
+		fs.readFileSync(path.join(process.cwd(), 'package.json'), { encoding: 'utf8' })
+	);
+	return rootPackage.private && rootPackage.workspaces;
+})();
+
 const UNION_CONFIG_PATH = path.resolve(process.cwd(), './union.config.js');
-const DEFAULT_APP_DIR = path.resolve(process.cwd(), 'src', 'apps');
+const DEFAULT_APP_DIR = path.resolve(process.cwd(), isMonoRepo ? '' : 'src', 'apps');
 const DEFAULT_PORT = 3300;
 const DEFAULT_UNION_CONFIG = {
 	// computed in `extendPaths_`
@@ -176,6 +183,9 @@ const resolveAsyncSuffix = R.cond([
 	],
 ]);
 
+const mergeWhen = (condition, fn, ...fnArgs) => (condition ? fn(...fnArgs) : {});
+const getForMode = (debug, prod) => (cli.debug ? debug : prod);
+
 module.exports = {
 	UNION_CONFIG_PATH,
 	normalizeConfig,
@@ -184,4 +194,7 @@ module.exports = {
 	resolveAsyncSuffix,
 	resolveSymlink,
 	stats,
+	isMonoRepo,
+	mergeWhen,
+	getForMode,
 };
