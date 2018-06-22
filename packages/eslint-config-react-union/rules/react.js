@@ -4,7 +4,6 @@ module.exports = {
 			jsx: true,
 		},
 	},
-	extends: ['prettier/react'],
 	plugins: ['react'],
 	rules: {
 		'jsx-quotes': ['error', 'prefer-double'],

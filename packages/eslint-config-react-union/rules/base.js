@@ -11,12 +11,10 @@ module.exports = {
 		jest: true,
 		node: true,
 	},
-	extends: ['prettier'],
-	plugins: ['babel', 'prettier', 'import'],
+	plugins: ['babel', 'import'],
 	rules: {
 		'array-bracket-spacing': ['error', 'never'],
 		'arrow-spacing': 'error',
-		// prettier
 		'arrow-parens': 'off',
 		'babel/new-cap': 'error',
 		'block-spacing': ['error', 'always'],
@@ -77,23 +75,12 @@ module.exports = {
 		'no-var': 'error',
 		'object-shorthand': 'error',
 		'one-var': ['error', 'never'],
-		// prettier
+
 		'operator-linebreak': 'off',
 		'padded-blocks': ['error', 'never'],
 		'prefer-arrow-callback': 'off',
 		'prefer-const': 'error',
 		'prefer-template': 'error',
-		'prettier/prettier': [
-			1,
-			{
-				printWidth: 100,
-				semi: true,
-				singleQuote: true,
-				tabWidth: 2,
-				trailingComma: 'es5',
-				useTabs: true,
-			},
-		],
 		quotes: ['error', 'single', 'avoid-escape'],
 		semi: ['error', 'always'],
 		'space-before-blocks': ['error', 'always'],
