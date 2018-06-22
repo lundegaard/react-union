@@ -3062,6 +3062,10 @@ eslint-config-react-union@0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/eslint-config-react-union/-/eslint-config-react-union-0.1.3.tgz#1188b5806f47285f4b7555c4dfbd3d171e0fd6eb"
 
+eslint-config-react-union@^0.3.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-react-union/-/eslint-config-react-union-0.2.0.tgz#5c3dadadfe2f50de4fb1b9b3f2b6a31732c633d0"
+
 eslint-import-resolver-node@^0.3.1:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/eslint-import-resolver-node/-/eslint-import-resolver-node-0.3.2.tgz#58f15fb839b8d0576ca980413476aab2472db66a"
