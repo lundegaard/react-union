@@ -70,6 +70,45 @@ const Root = () => <Union routes={[route]} />;
 export default Root;
 ```
 
+## Widget context
+
+Every widget will get it's initial data and namespace to the Root component of widget.
+
+```jsx
+// react-union-boilerplate-basic/src/widgets/Content/Components/Root.js
+import React from 'react';
+
+const Root = ({ namespace, data }) => (
+	<div>
+		I am widget Content. With namespace: <b>{namespace}</b> and initial data:
+		<b>{JSON.stringify(data)}</b>
+	</div>
+);
+
+export default Root;
+```
+
+But sometimes can be handy to access these data from nested components. To avoid passing down these props, we provide a WidgetContext.
+
+```jsx
+// react-union-boilerplate-basic/src/widgets/Content/Components/NestedComponent.js
+import React from 'react';
+import { WidgetContext } from 'react-union';
+
+const NestedComponent = () => (
+	<WidgetContext.Consumer>
+		{({ namespace, data }) => (
+			<div>
+				Im nested component of Content. I have also namespace: <b>{namespace}</b> and initial data:
+				<b>{JSON.stringify(data)}</b>. But taken from context :p.
+			</div>
+		)}
+	</WidgetContext.Consumer>
+);
+
+export default NestedComponent;
+```
+
 # FAQ
 
 ## _Why should I use it?_
@@ -79,25 +118,24 @@ React-union makes features such as Hot Module Reloading possible for systems suc
 ```jsx
 // index.js
 import React from 'react';
-import { render } from 'react-dom';
+import { justRender } from 'react-union';
 import { AppContainer } from 'react-hot-loader';
 
-import Root from './Root';
+import Root from './components/Root';
 
-const renderComponent = Component =>
-	render(
-		<AppContainer>
+const render = Component =>
+	justRender(
+		<AppContainer errorReporter={__DEV__ ? require('redbox-react').default : null}>
 			<Component />
-		</AppContainer>,
-		document.getElementById('root')
+		</AppContainer>
 	);
 
-renderComponent(Root);
+render(Root);
 
 if (module.hot) {
-	module.hot.accept(['./Root'], () => {
-		const NextRoot = require('./Root').default;
-		renderComponent(NextRoot);
+	module.hot.accept(['./components/Root'], () => {
+		const NextRoot = require('./components/Root').default;
+		render(NextRoot);
 	});
 }
 ```

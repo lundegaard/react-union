@@ -8,6 +8,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const path = require('path');
 const { keys, o, reject } = require('ramda');
 const { includes } = require('ramda-extension');
+const UglifyWebpackPlugin = require('uglifyjs-webpack-plugin');
 
 const cli = require('./lib/cli');
 const { resolveSymlink, getUnionConfig, getAppConfig, resolveAsyncSuffix } = require('./lib/utils');
@@ -143,6 +144,7 @@ const getWebpackConfig_ = config => {
 	const template = `${paths.public}/${templateFilename}`;
 
 	return mergeWebpackConfig({
+		mode: cli.debug ? 'development' : 'production',
 		// base dir for the `entry`
 		context: path.resolve(path.join(process.cwd(), './src')),
 		entry: {
@@ -152,12 +154,7 @@ const getWebpackConfig_ = config => {
 				: {}),
 			[appName]: [
 				require.resolve('babel-polyfill'),
-				...(hmr
-					? [
-						require.resolve('react-hot-loader/patch'),
-						require.resolve('webpack-hot-middleware/client'),
-					]
-					: []),
+				...(hmr ? [require.resolve('webpack-hot-middleware/client')] : []),
 				paths.index,
 			],
 		},
@@ -176,30 +173,8 @@ const getWebpackConfig_ = config => {
 			new CleanWebpackPlugin(clean.paths, clean.options),
 			// these globals will be accesible within the code
 			new webpack.DefinePlugin(GLOBALS),
-			...(!cli.debug ? [new webpack.optimize.OccurrenceOrderPlugin()] : []),
 			// for hot reloading ( eg. adds functionality through the `module.hot` in the code )
 			...(hmr ? [new webpack.HotModuleReplacementPlugin()] : []),
-			// stopping bundle when there is an error
-			new webpack.NoEmitOnErrorsPlugin(),
-			new webpack.optimize.CommonsChunkPlugin({
-				// `name` have to be equal to the entry
-				name: appName,
-				// enables to split the code and asynchrounosly load the chunks
-				// through `require.ensure` or `bundle-loader`
-				async: true,
-				children: true,
-				minSize: 0,
-				minChunks: 2,
-			}),
-			// `vendors` to standalone chunk
-			...(generateVendorBundle
-				? [
-					new webpack.optimize.CommonsChunkPlugin({
-						name: 'vendor',
-						minChunks: Infinity,
-					}),
-				]
-				: []),
 			// Create HTML file for development without proxy
 			...(generateTemplate
 				? [
@@ -212,7 +187,31 @@ const getWebpackConfig_ = config => {
 				: []),
 			...(!cli.debug
 				? [
-					new webpack.optimize.UglifyJsPlugin({
+					new ManifestPlugin({
+						fileName: 'assetManifest.json',
+					}),
+				]
+				: []),
+			...(cli.analyze ? [new BundleAnalyzerPlugin()] : []),
+		],
+		optimization: {
+			...(generateVendorBundle
+				? {
+					splitChunks: {
+						cacheGroups: {
+							vendor: {
+								chunks: 'initial',
+								name: 'vendor',
+								test: 'vendor',
+								enforce: true,
+							},
+						},
+					},
+				}
+				: {}),
+			minimizer: [
+				new UglifyWebpackPlugin({
+					uglifyOptions: {
 						compress: {
 							warnings: cli.verbose,
 						},
@@ -221,20 +220,11 @@ const getWebpackConfig_ = config => {
 							// https://github.com/facebookincubator/create-react-app/issues/2488
 							ascii_only: true,
 						},
-						sourceMap: true,
-					}),
-					// new webpack.optimize.AggressiveMergingPlugin(),
-				]
-				: []),
-			...(!cli.debug
-				? [
-					new ManifestPlugin({
-						fileName: 'assetManifest.json',
-					}),
-				]
-				: []),
-			...(cli.analyze ? [new BundleAnalyzerPlugin()] : []),
-		],
+					},
+					sourceMap: true,
+				}),
+			],
+		},
 		resolve: {
 			modules: [
 				path.resolve(__dirname, '../node_modules'),
@@ -247,6 +237,9 @@ const getWebpackConfig_ = config => {
 		},
 		devtool: cli.debug ? 'source-map' : false,
 		module: commonConfig.module,
+		performance: {
+			hints: false,
+		},
 	});
 };
 

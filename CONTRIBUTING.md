@@ -12,6 +12,7 @@ git clone git@github.com:<yourname>/react-union.git
 git checkout -b my-topic-branch`
 ```
 4. Make your changes, lint, test, then push to to GitHub with `git push origin my-topic-branch`.
+    - Make one or more atomic commits. Use interactive rebase or amend if necessary.
 5. Visit GitHub and make your pull request.
 
 For synchronizing master branch between fork and lundegaard repository:
