@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 
 const { debug } = require('./lib/cli');
-const { resolveSymlink } = require('./lib/utils');
+const { resolveSymlink } = require('./lib/fs');
 
 const hasWatch = any(anyPass([equals('--watchAll'), equals('--watch')]));
 const hasCoverage = any(equals('--coverage'));

@@ -15,7 +15,7 @@ function startDevServer() {
 	);
 
 	const webpackConfig = configs[0];
-	const unionConfig = getAppConfig(cli.app);
+	const unionConfig = getAppConfig();
 
 	invariant(!cli.proxy || unionConfig.proxy.port, "Missing 'port' for proxy in your union.config.");
 	invariant(

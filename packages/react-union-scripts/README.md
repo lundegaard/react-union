@@ -24,7 +24,7 @@ npm install react react-dom && npm install --save-dev react-union-scripts
 
 ## Usage
 
-**TL;DR** You can use one of our [examples](https://github.com/lundegaard/react-union/tree/master/packages/react-union-boilerplate-basic) as a boilerplate for your project instead.
+**TL;DR** You can use one of our [examples](https://github.com/lundegaard/react-union/tree/master/boilerplates/react-union-boilerplate-basic) as a boilerplate for your project instead.
 
 1. Simulate output of your server in development
 
@@ -115,6 +115,16 @@ Runs [`webpack-bundle-analyzer`](https://github.com/th0r/webpack-bundle-analyzer
 ```
 yarn start --app YourAppName --analyze
 ```
+
+## Monorepo Usage
+
+**TL;DR** You can use our mono repo example [examples](https://github.com/lundegaard/react-union/tree/master/boilerplates/react-union-boilerplate-monorepo) as a boilerplate for your project instead.
+
+Usage is mostly same as in uni repo, but it has a few differences.
+	* There are two types of packages - `widgets` and `apps`.
+		* The are distinguished by pattern .*union-app.* and .*union-widget.*. Patter can be changed in config.
+	* App name must reflect folder name and must be in dash-case. `YourAppName > union-app-your-app-name`
+	* You can use as many workspaces as you want. Eg. ['packages/*'] or ['apps/*', 'widgets/*'].
 
 ## CLI
 
@@ -333,6 +343,14 @@ For custom cofiguration use `jest` key withing your main `package.json`. We are 
 **Note:** If you need [`setupTestFrameworkScriptFile`](http://jestjs.io/docs/en/configuration#setuptestframeworkscriptfile-string) configuration option, just create `testsSetup.js` file inside your root folder.
 
 See jest [configuration options](http://jestjs.io/docs/en/configuration).
+
+### `workspaces`
+
+Workspaces can rewrite default patterns for monorepo matching.
+
+[`workspaces.widgetPattern`]\(string, array[string], RegExp): Pattern for the widget packages. Defaults to `union-widget`.
+[`workspaces.appPattern`]\(string, array[string], RegExp): Patter for the app packages. Defaults to `union-app`.
+
 
 ## Recipes
 
