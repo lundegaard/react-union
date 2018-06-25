@@ -3,14 +3,11 @@ const { keys, o, reject } = require('ramda');
 const { includes } = require('ramda-extension');
 const path = require('path');
 
-const { resolveSymlink } = require('../lib/utils');
-
-const vendorBundle = ({ vendorBlackList }) => {
-	const appPkg = require(resolveSymlink(process.cwd(), './package.json'));
+const vendorBundle = ({ vendorBlackList }, dependencies) => {
 	const inVendorBlackList = includes(vendorBlackList);
 	return {
 		entry: {
-			vendor: o(reject(inVendorBlackList), keys)(appPkg.dependencies),
+			vendor: o(reject(inVendorBlackList), keys)(dependencies),
 		},
 		optimization: {
 			splitChunks: {
@@ -27,15 +24,9 @@ const vendorBundle = ({ vendorBlackList }) => {
 	};
 };
 
-const resolve = () => ({
+const resolve = modules => ({
 	resolve: {
-		modules: [
-			path.resolve(__dirname, '../node_modules'),
-			path.resolve(process.cwd(), './src'),
-			path.resolve(process.cwd(), './node_modules'),
-			path.resolve(process.cwd(), '../../node_modules'), // in case of monorepo
-			// 'node_modules',
-		],
+		modules,
 		extensions: ['.webpack.js', '.web.js', '.js', '.json'],
 	},
 });

@@ -1,4 +1,4 @@
-const { always, compose, equals, findIndex, ifElse, when, nth } = require('ramda');
+const { always, compose, equals, findIndex, ifElse, when, nth, identity } = require('ramda');
 const { toPascalCase, includes, notInclude } = require('ramda-extension');
 
 /**
@@ -41,8 +41,11 @@ const analyze = programIncludes('--analyze');
 /** if exist, runs single app. Value is converted from dash-case to PascalCase. */
 const app = when(Boolean, toPascalCase)(getArgValue('--app', program));
 
+/** if exist, runs single app. Value is provided as is in original form */
+const appOriginal = when(Boolean, identity)(getArgValue('--app', program));
+
 const target = getArgValue('--target', program);
 
 const script = nth(2)(program);
 
-module.exports = { script, target, debug, verbose, proxy, noHmr, analyze, app };
+module.exports = { script, target, debug, verbose, proxy, noHmr, analyze, app, appOriginal };

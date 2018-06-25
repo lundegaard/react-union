@@ -1,11 +1,11 @@
-const { resolveSymlink, resolveAsyncSuffix } = require('../lib/utils');
+const { resolveAsyncSuffix } = require('../lib/utils');
 
-const loadAsyncModules = ({ asyncSuffix }) => ({
+const loadAsyncModules = include => ({ asyncSuffix }) => ({
 	module: {
 		rules: [
 			{
 				test: resolveAsyncSuffix(asyncSuffix),
-				include: [resolveSymlink(process.cwd(), './src')],
+				include,
 				exclude: /node_modules/,
 				use: [
 					require.resolve('babel-loader'),
@@ -22,24 +22,24 @@ const loadAsyncModules = ({ asyncSuffix }) => ({
 	},
 });
 
-const loadBabel = () => ({
+const loadBabel = include => () => ({
 	module: {
 		rules: [
 			{
 				test: /\.jsx?$/,
-				include: [resolveSymlink(process.cwd(), './src')],
+				include,
 				use: [require.resolve('babel-loader')],
 			},
 		],
 	},
 });
 
-const loadScss = debug => ({
+const loadScss = include => debug => ({
 	module: {
 		rules: [
 			{
 				test: /\.scss$/,
-				include: [resolveSymlink(process.cwd(), './src')],
+				include,
 				use: [
 					require.resolve('style-loader'),
 					{
@@ -69,27 +69,24 @@ const loadScss = debug => ({
 	},
 });
 
-const loadCss = () => ({
+const loadCss = include => () => ({
 	module: {
 		rules: [
 			{
 				test: /\.css$/,
-				include: [resolveSymlink(process.cwd(), './src')],
+				include,
 				use: [require.resolve('style-loader'), require.resolve('css-loader')],
 			},
 		],
 	},
 });
 
-const loadImages = ({ outputMapper }) => ({
+const loadImages = include => ({ outputMapper }) => ({
 	module: {
 		rules: [
 			{
 				test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,
-				include: [
-					resolveSymlink(process.cwd(), './src'),
-					resolveSymlink(process.cwd(), './node_modules'),
-				],
+				include,
 				use: [
 					{
 						loader: require.resolve('url-loader'),
@@ -103,12 +100,12 @@ const loadImages = ({ outputMapper }) => ({
 	},
 });
 
-const loadFiles = ({ outputMapper }) => ({
+const loadFiles = include => ({ outputMapper }) => ({
 	module: {
 		rules: [
 			{
 				test: /\.(eot|ttf|wav|mp3|otf)$/,
-				include: [resolveSymlink(process.cwd(), './src')],
+				include,
 				use: [
 					{
 						loader: require.resolve('file-loader'),

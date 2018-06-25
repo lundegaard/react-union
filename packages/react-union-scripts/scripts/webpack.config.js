@@ -2,17 +2,18 @@
 const invariant = require('invariant');
 const merge = require('webpack-merge');
 const path = require('path');
+const R = require('ramda');
 
 const cli = require('./lib/cli');
-const { getUnionConfig, getAppConfig, mergeWhen, getForMode } = require('./lib/utils');
+const { getUnionConfig, getAppConfig, mergeWhen, getForMode, isMonoRepo } = require('./lib/utils');
 const {
-	loadAsyncModules,
-	loadBabel,
-	loadCss,
-	loadScss,
-	loadImages,
-	loadFiles,
-} = require('./webpack/loaders.parts');
+	resolveSymlink,
+	getAllWorkspacesWithFullPathSuffixed,
+	getAppPackageJSON,
+	resolveWorkspacesPackagePattern,
+	readPackagesJSONOnPathsTransducer,
+} = require('./lib/fs');
+const loaders = require('./webpack/loaders.parts');
 const {
 	loaderOptionsPlugin,
 	definePlugin,
@@ -24,6 +25,8 @@ const {
 	cleanPlugin,
 } = require('./webpack/plugins.parts');
 const { resolve, vendorBundle, performanceHints, context } = require('./webpack/common.parts');
+
+const dependenciesP = R.prop('dependencies');
 
 const buildMode = getForMode('development', 'production');
 const buildModeString = getForMode('"development"', '"production"');
@@ -44,6 +47,34 @@ const GLOBALS = {
 	'process.env.NODE_ENV': buildModeString,
 };
 
+const addPathsToLoaders = srcs =>
+	R.map(value => {
+		if (value === loaders.loadImages) {
+			const nodeModulesPath = resolveSymlink(process.cwd(), './node_modules');
+			return value([...srcs, nodeModulesPath]);
+		}
+		return value(srcs);
+	}, loaders);
+
+const appsWidgetList = ({ name: appName, workspaces: { widgetPattern } }) => {
+	return R.pipe(
+		dependenciesP,
+		R.keys,
+		R.filter(R.test(resolveWorkspacesPackagePattern(widgetPattern)))
+	)(getAppPackageJSON(appName));
+};
+
+const getUsedPackagesForApp = config => {
+	const widgetList = appsWidgetList(config);
+	const withApp = [config.name, ...widgetList];
+	return pkg => R.find(R.contains(R.__, pkg), withApp);
+};
+
+const getPackagesPath = R.useWith(R.filter, [
+	getUsedPackagesForApp,
+	getAllWorkspacesWithFullPathSuffixed,
+]);
+
 const getWebpackConfig_ = config => {
 	const {
 		paths,
@@ -56,12 +87,54 @@ const getWebpackConfig_ = config => {
 		mergeWebpackConfig,
 	} = config;
 
+	const getPackagesPathForSuffix = getPackagesPath(config);
+
 	const hmr = cli.script === 'start' && cli.debug && !cli.noHmr;
 
 	const outputPath = paths.build;
 
 	const outputFilename = getForMode('[name].bundle.js', '[name].[chunkhash:8].bundle.js');
 	const outputChunkname = getForMode('[name].chunk.js', '[name].[chunkhash:8].chunk.js');
+
+	const loadersForUniRepo = () => [resolveSymlink(process.cwd(), './src')];
+
+	const loadersForMonoRepo = () => getPackagesPathForSuffix('src');
+
+	const {
+		loadAsyncModules,
+		loadBabel,
+		loadCss,
+		loadScss,
+		loadImages,
+		loadFiles,
+	} = addPathsToLoaders(isMonoRepo ? loadersForMonoRepo() : loadersForUniRepo());
+
+	const uniRepoDeps = () => require(resolveSymlink(process.cwd(), './package.json')).dependencies;
+	const monoRepoDeps = () =>
+		R.pipe(
+			R.into(
+				[],
+				R.compose(
+					R.filter(R.or(R.contains(appName), getUsedPackagesForApp(config))),
+					readPackagesJSONOnPathsTransducer,
+					R.map(dependenciesP)
+				)
+			),
+			R.mergeAll
+		)(getAllWorkspacesWithFullPathSuffixed('package.json'));
+
+	const uniRepoResolve = () => [
+		path.resolve(__dirname, '../node_modules'),
+		path.resolve(process.cwd(), './src'),
+		path.resolve(process.cwd(), './node_modules'),
+		path.resolve(process.cwd(), '../../node_modules'),
+	];
+
+	const monoRepoResolve = () => [
+		path.resolve(process.cwd(), './node_modules'),
+		...getPackagesPathForSuffix('src'),
+		...getPackagesPathForSuffix('node_modules'),
+	];
 
 	const commonConfig = merge(
 		{ mode: buildMode },
@@ -90,11 +163,16 @@ const getWebpackConfig_ = config => {
 		loadFiles(config),
 		definePlugin(GLOBALS),
 		cleanPlugin(config),
-		resolve(),
+		resolve(isMonoRepo ? monoRepoResolve() : uniRepoResolve()),
 		context(),
 		performanceHints,
 		mergeWhen(cli.analyze, analyzeBundlePlugin),
-		mergeWhen(generateVendorBundle, vendorBundle, config)
+		mergeWhen(
+			generateVendorBundle,
+			vendorBundle,
+			config,
+			isMonoRepo ? monoRepoDeps() : uniRepoDeps()
+		)
 	);
 
 	const devWebpack = () =>
@@ -114,7 +192,7 @@ const getWebpackConfig_ = config => {
 };
 
 const buildSingle_ = () => {
-	const config = getAppConfig(cli.app);
+	const config = getAppConfig();
 	invariant(config, `Missing configuration for the app called '${cli.app}'.`);
 
 	return [getWebpackConfig_(config)];
