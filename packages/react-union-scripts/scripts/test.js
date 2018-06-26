@@ -54,13 +54,11 @@ create "testsSetup.js" file in root of your project.`
 	const sanitizedConfig = pickSupported(jestConfig);
 
 	return {
-		automock: false,
-		bail: false,
+		testPathIgnorePatterns: ['/node_modules/', '/.history/'],
 		cacheDirectory: '/tmp/jest_cache',
 		globals: {
 			__DEV__: true,
 		},
-		moduleFileExtensions: ['js', 'json', 'jsx', 'node'],
 		transform: {
 			'^.+\\.jsx?$': require.resolve('babel-jest'),
 			'^.+\\.s?css$': resolveSymlink(__dirname, 'jest/scssTransformer.js'),
