@@ -37,8 +37,9 @@
     "eslint-plugin-babel": "4.1.2",
     "eslint-plugin-import": "2.7.0",
     "eslint-plugin-react": "7.4.0",
-    "lerna": "2.2.0",
     "husky": "^0.14.3",
+    "jest": "^23.2.0",
+    "lerna": "2.2.0",
     "lint-staged": "^7.2.0",
     "prettier": "^1.13.5",
     "rimraf": "2.6.2"
@@ -51,6 +52,8 @@
     "example:basic": "cd boilerplates/react-union-boilerplate-basic && yarn start",
     "lint": "eslint \"packages/*.js\" \"packages/**/*.js\" \"boilerplates/**/*.js\"",
     "lint:fix": "yarn lint --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "postinstall": "cd packages/react-union && yarn build",
     "precommit": "lint-staged",
     "prepush": "yarn lint",
@@ -64,5 +67,9 @@
       "yarn lint:fix",
       "git add"
     ]
+  },
+  "jest": {
+    "testPathIgnorePatterns": ["/node_modules/", "/.history/", "packages/react-union-scripts/scripts/test.js"],
+    "rootDir": "./packages"
   }
 }
