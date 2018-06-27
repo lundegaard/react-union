@@ -315,6 +315,24 @@ Defaults to `<project root>/public/[ApplicationName]`.
 
 ['copyToPublicIgnore']\(RegExp) Pattern for files that should not be copied from `public` folder in build process. Defaults to `/\.ejs$/`.
 
+## Testing
+We are currently using Jest as the main tesing framework.
+How to add your favourite React testing framework see [recipe](#tesing-with-enzyme).
+
+For custom cofiguration use `jest` key withing your main `package.json`. We are currently supporting following keys:
+
+```js
+	'collectCoverageFrom',
+	'coverageReporters',
+	'coverageThreshold',
+	'resetMocks',
+	'resetModules',
+	'snapshotSerializers',
+	'watchPathIgnorePatterns'
+```
+**Note:** If you need [`setupTestFrameworkScriptFile`](http://jestjs.io/docs/en/configuration#setuptestframeworkscriptfile-string) configuration option, just create `testsSetup.js` file inside your root folder.
+
+See jest [configuration options](http://jestjs.io/docs/en/configuration).
 
 ## Recipes
 
@@ -409,3 +427,22 @@ export default {
 	},
 };
 ```
+
+### Tesing with Enzyme
+
+Add `enzyme` to your project:
+
+```sh
+yarn add -D enzyme enzyme-adapter-react-16
+```
+
+Create file `testsSetup.js` in root your project and paste following code:
+
+```jsx
+import { configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+configure({ adapter: new Adapter() });
+```
+
+
