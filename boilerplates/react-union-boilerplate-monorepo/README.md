@@ -1,4 +1,4 @@
-# React Union - Basic boilerplate
+# React Union - Basic boilerplate for Monorepo
 
 This project can either be used as the example of react-union and react-union-scripts working together or as the base of your project.
 
@@ -6,49 +6,45 @@ This project can either be used as the example of react-union and react-union-sc
 ## Project structure
 
 ```
-react-union-boilerplate
-├── public 				- Contains templates for your application builds
-|	└── SampleApp		- Folder stores static assets for application SampleApp
-|		└── css			- Shared CSS
-|			└── ...
-|		└── fonts		- Shared fonts
-|			└── ...
-|		└── index.ejs 	- Template for the html-webpack-plugin
-|		└── favicon.ico
-├── src
-|	├── apps			- Each nested folder defines different application build
-|	|	└── SampleApp	- Folder for application SampleApp
-|	|		└── fonts
-|	|			└── ...
+react-union-boilerplate-monorepo
+├── packages 			- Yarn workspaces packages
+|   ├── union-app-sample-app
+|   |   ├── package.json
+|	|   └── public		- Folder stores static assets for application union-app-sample-app
+|	|   |   └── css			- Shared CSS
+|	|   |	    └── ...
+|	|   |   └── fonts		- Shared fonts
+|	|   |	    └── ...
+|	|   |   └── index.ejs 	- Template for the html-webpack-plugin
+|	|   |   └── favicon.ico
+|   |	└── src
 |	|		└── components
-|	|			└── Root
-|	|				└── Root.js
-|	|				└── Root.scss - React Union scripts works with node-sass out of the box
-|	|				└── index.js
+|	|		|	└── Root
+|	|		|		└── Root.js
+|	|		|		└── Root.scss - React Union scripts works with node-sass out of the box
+|	|		|		└── index.js
 |	|		└── index.js
 |	|		└── routes.js
-|	├── widgets
-|	|	├── Content 	- Base folder for Content widget
-|	|	|	└── components
-|	|	|		└── ...
-|	|	|	└── content.widget.js - Files with *.widget.js are loaded async when requested
-|	|	|	└── route.js - Exports the React Union's route for the widget
-|	|	└── Hero		- Base folder for Hero widget
+|   ├── union-widget-content
+|   |   ├── package.json
+|   |   └── src
 |	|		└── components
 |	|			└── ...
-|	|		└── hero.widget.js
-|	|		└── route.js
-|	└──	test
-|		└──	stubs
-|			└──	scssStub.js - Stubs used for by Jest
+|	|		└── content.widget.js - Files with *.widget.js are loaded async when requested
+|   └── union-widget-hero
+|       ├── package.json
+|       └── src
+|			└── components
+|				└── ...
+|			└── content.widget.js
 ├── .babelrc 			- Babel config for ES6+ syntax
 ├── .editorconfig
 ├── .eslintignore
 ├── .eslintrc.js 		- Extends eslint-config-react-union
 ├── .gitignore
-├── jest.config.js 		- Jest's config for unit testing
 ├── package.json
-└── README.md
+├── README.md 
+└── testsSetup.js 		- Adapters for enzyem
 ```
 
 ## Running the example
