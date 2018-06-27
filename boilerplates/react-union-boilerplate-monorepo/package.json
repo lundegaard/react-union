@@ -21,7 +21,7 @@
     "eslint-plugin-prettier": "2.6.0",
     "eslint-plugin-react": "7.4.0",
     "prettier": "1.10.2",
-    "react-union-scripts": "^0.4.0"
+    "react-union-scripts": "^0.5.0"
   },
   "scripts": {
     "build": "react-union-scripts build",
