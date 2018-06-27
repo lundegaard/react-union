@@ -122,7 +122,7 @@ yarn start --app YourAppName --analyze
 
 Usage is mostly same as in uni repo, but it has a few differences.
 	* There are two types of packages - `widgets` and `apps`.
-		* The are distinguished by pattern .*union-app.* and .*union-widget.*. Patter can be changed in config.
+		* The are distinguished by pattern .*union-app.* and .*union-widget.*. Pattern can be changed in `union.config.js`.
 	* App name must reflect folder name and must be in dash-case. `YourAppName > union-app-your-app-name`
 	* You can use as many workspaces as you want. Eg. ['packages/*'] or ['apps/*', 'widgets/*'].
 
