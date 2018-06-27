@@ -4,4 +4,12 @@ module.exports = {
 	globals: {
 		__DEV__: true,
 	},
+	rules: {
+		'import/no-extraneous-dependencies': [
+			'error',
+			{
+				devDependencies: true,
+			},
+		],
+	},
 };
