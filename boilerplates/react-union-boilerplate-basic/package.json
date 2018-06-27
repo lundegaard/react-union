@@ -35,12 +35,11 @@
   "scripts": {
     "build": "react-union-scripts build",
     "start": "react-union-scripts start --app SampleApp",
-    "test": "yarn lint && yarn test:js",
-    "test:js": "react-union-scripts test",
+    "test": "react-union-scripts test",
     "lint": "yarn lint:eslint",
     "lint:eslint": "eslint --ext .js ./",
     "precommit": "lint-staged",
-    "prepush": "yarn lint"
+    "prepush": "yarn lint && yarn test --release"
   },
   "jest": {
     "snapshotSerializers": [
