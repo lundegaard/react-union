@@ -31,7 +31,16 @@
   "repository": "https://github.com/lundegaard/react-union",
   "license": "UNLICENSED",
   "devDependencies": {
-    "babel-eslint": "8.0.1",
+    "babel-core": "6.23.1",
+    "babel-jest": "22.4.3",
+    "babel-loader": "7.1.4",
+    "babel-polyfill": "6.23.0",
+    "babel-preset-env": "1.2.1",
+    "babel-preset-react": "6.23.0",
+    "babel-preset-stage-1": "6.22.0",
+    "babel-runtime": "6.23.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "4.17.0",
     "eslint-config-react-union": "0.4.0",
     "eslint-plugin-babel": "4.1.2",
@@ -69,7 +78,15 @@
     ]
   },
   "jest": {
-    "testPathIgnorePatterns": ["/node_modules/", "/.history/", "packages/react-union-scripts/scripts/test.js"],
-    "rootDir": "./packages"
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/.history/",
+      "/boilerplates/",
+      "packages/react-union-scripts/scripts/test.js",
+      "packages/react-union/es",
+      "packages/react-union/dist",
+      "packages/react-union/lib"
+    ],
+    "setupTestFrameworkScriptFile": "<rootDir>/testsSetup.js"
   }
 }
