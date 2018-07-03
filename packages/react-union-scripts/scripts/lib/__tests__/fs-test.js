@@ -142,4 +142,17 @@ describe('fs', () => {
 			]);
 		});
 	});
+	describe('readAllNonUnionPackages', () => {
+		it('should read all non union packages from workspace', () => {
+			createMockRootPkgJSON();
+			createMockGlob([
+				'package/union-app-test',
+				'package/union-app-test1',
+				'package/union-widget-test',
+				'package/custom-pkg',
+			]);
+			const utilsFs = require('../fs');
+			expect(utilsFs.readAllNonUnionPackages('union-app', 'union-widget')).toEqual(['custom-pkg']);
+		});
+	});
 });
