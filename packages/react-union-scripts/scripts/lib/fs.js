@@ -22,7 +22,10 @@ const isDirectory = source => fs.lstatSync(source).isDirectory();
 
 const readDirs = dir =>
 	fs.existsSync(dir)
-		? R.compose(R.filter(name => isDirectory(path.join(dir, name))), fs.readdirSync)(dir)
+		? R.compose(
+				R.filter(name => isDirectory(path.join(dir, name))),
+				fs.readdirSync
+		  )(dir)
 		: [];
 
 const resolveSymlink = (...args) => fs.realpathSync(path.resolve(...args));
@@ -58,11 +61,19 @@ const resolveWorkspacesPackagePattern = R.cond([
 	],
 ]);
 
+const takePackageName = R.map(R.o(R.last, R.split('/')));
+
 const readAllAppsFromWorkspaces = appPattern =>
+	intoArray(R.o(takePackageName, R.filter(R.test(resolveWorkspacesPackagePattern(appPattern)))))(
+		readAllWorkspacesFlatten()
+	);
+
+const readAllNonUnionPackages = (appPattern, widgetPattern) =>
 	intoArray(
-		R.o(
-			R.map(R.o(R.last, R.split('/'))),
-			R.filter(R.test(resolveWorkspacesPackagePattern(appPattern)))
+		R.compose(
+			takePackageName,
+			R.reject(R.test(resolveWorkspacesPackagePattern(appPattern))),
+			R.reject(R.test(resolveWorkspacesPackagePattern(widgetPattern)))
 		)
 	)(readAllWorkspacesFlatten());
 
@@ -88,6 +99,7 @@ module.exports = {
 	getAppPath,
 	resolveSymlink,
 	readAllWorkspacesFlatten,
+	readAllNonUnionPackages,
 	getAllWorkspacesWithFullPathSuffixed,
 	readPackagesJSONOnPathsTransducer,
 	getAppPackageJSON,

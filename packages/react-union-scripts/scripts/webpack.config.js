@@ -12,6 +12,7 @@ const {
 	getAppPackageJSON,
 	resolveWorkspacesPackagePattern,
 	readPackagesJSONOnPathsTransducer,
+	readAllNonUnionPackages,
 } = require('./lib/fs');
 const loaders = require('./webpack/loaders.parts');
 const {
@@ -66,7 +67,12 @@ const appsWidgetList = ({ name: appName, workspaces: { widgetPattern } }) => {
 
 const getUsedPackagesForApp = config => {
 	const widgetList = appsWidgetList(config);
-	const withApp = [config.name, ...widgetList];
+	// TODO maybe filter all non union packages by package.json from all of the widgets and apps.
+	const allNonUnionPackages = readAllNonUnionPackages(
+		config.workspaces.appPattern,
+		config.workspaces.widgetPattern
+	);
+	const withApp = [config.name, ...widgetList, ...allNonUnionPackages];
 	return pkg => R.find(R.contains(R.__, pkg), withApp);
 };
 
@@ -110,12 +116,13 @@ const getWebpackConfig_ = config => {
 	} = addPathsToLoaders(isMonoRepo ? loadersForMonoRepo() : loadersForUniRepo());
 
 	const uniRepoDeps = () => require(resolveSymlink(process.cwd(), './package.json')).dependencies;
+	// TODO consider only adding deps that are intersect across the widgets and apps
 	const monoRepoDeps = () =>
 		R.pipe(
 			R.into(
 				[],
 				R.compose(
-					R.filter(R.or(R.contains(appName), getUsedPackagesForApp(config))),
+					R.filter(R.either(R.contains(appName), getUsedPackagesForApp(config))),
 					readPackagesJSONOnPathsTransducer,
 					R.map(dependenciesP)
 				)
