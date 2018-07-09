@@ -1,6 +1,6 @@
 import React from 'react';
 import { JSDOM } from 'jsdom';
-import scan from '../scan';
+import scan from '../core';
 
 const createDocument = (data = '', additionalStuff = '') => {
 	const { document } = new JSDOM(
@@ -23,14 +23,12 @@ const createDocument = (data = '', additionalStuff = '') => {
 };
 
 describe('scan', () => {
-	it('should get descriptor for hero route', async() => {
+	it('should get descriptor for hero route', async () => {
 		const descriptor = await scan(
 			[
 				{
 					path: 'hero',
-					getComponent: done => {
-						done();
-					},
+					component: null,
 				},
 			],
 			createDocument().body
@@ -42,29 +40,25 @@ describe('scan', () => {
 			namespace: 'main',
 		});
 	});
-	it('should get parsed data for descriptor', async() => {
+	it('should get parsed data for descriptor', async () => {
 		const descriptor = await scan(
 			[
 				{
 					path: 'hero',
-					getComponent: done => {
-						done();
-					},
+					component: null,
 				},
 			],
 			createDocument('{ "foo": "bar"}').body
 		);
 		expect(descriptor[0].descriptor.data).toEqual({ foo: 'bar' });
 	});
-	it('should get resolved component from descriptor', async() => {
+	it('should get resolved component from descriptor', async () => {
 		const DummyComponent = () => <div />;
 		const descriptor = await scan(
 			[
 				{
 					path: 'hero',
-					getComponent: done => {
-						done(DummyComponent);
-					},
+					component: DummyComponent,
 				},
 			],
 			createDocument('{ "foo": "bar"}').body
@@ -78,15 +72,11 @@ describe('scan', () => {
 				[
 					{
 						path: 'hero',
-						getComponent: done => {
-							done(DummyComponent);
-						},
+						getComponent: DummyComponent,
 					},
 					{
 						path: 'content',
-						getComponent: done => {
-							done(DummyComponent);
-						},
+						getComponent: DummyComponent,
 					},
 				],
 				createDocument(

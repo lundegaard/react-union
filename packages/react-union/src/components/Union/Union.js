@@ -65,7 +65,7 @@ class Union extends Component {
 	};
 
 	state = {
-		configs: this.props.isServer ? this.scan(props) : [],
+		configs: this.props.isServer ? this.scan(this.props) : [],
 	};
 
 	componentDidMount() {
@@ -78,6 +78,7 @@ class Union extends Component {
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.routes !== this.props.routes) {
+			// eslint-disable-next-line react/no-did-update-set-state
 			this.setState({
 				configs: this.scan(this.props),
 			});

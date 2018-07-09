@@ -16,7 +16,7 @@ import WidgetProvider from '../WidgetProvider';
  *
  * @see WidgetProvider
  */
-const Widget = ({ component: WidgetComponent, descriptor, render }) => {
+export const Widget = ({ component: WidgetComponent, descriptor, render }) => {
 	const { name, container, namespace, data } = descriptor;
 	const resolvedNamespace = namespace || container;
 
