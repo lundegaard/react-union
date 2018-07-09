@@ -3,6 +3,7 @@ const invariant = require('invariant');
 const merge = require('webpack-merge');
 const path = require('path');
 const R = require('ramda');
+const R_ = require('ramda-extension');
 
 const cli = require('./lib/cli');
 const { getUnionConfig, getAppConfig, mergeWhen, getForMode, isMonoRepo } = require('./lib/utils');
@@ -48,14 +49,10 @@ const GLOBALS = {
 	'process.env.NODE_ENV': buildModeString,
 };
 
+const nodeModulesPath = resolveSymlink(process.cwd(), './node_modules');
+const isNotJsLoader = R_.notInclude([loaders.loadBabel, loaders.loadAsyncModules]);
 const addPathsToLoaders = srcs =>
-	R.map(value => {
-		if (value === loaders.loadImages) {
-			const nodeModulesPath = resolveSymlink(process.cwd(), './node_modules');
-			return value([...srcs, nodeModulesPath]);
-		}
-		return value(srcs);
-	}, loaders);
+	R.map(value => (isNotJsLoader(value) ? value([...srcs, nodeModulesPath]) : value(srcs)), loaders);
 
 const appsWidgetList = ({ name: appName, workspaces: { widgetPattern } }) => {
 	return R.pipe(
