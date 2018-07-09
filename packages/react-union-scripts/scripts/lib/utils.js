@@ -201,17 +201,6 @@ const getUnionConfig = () =>
 const getAppConfig = () =>
 	R.find(R.whereEq({ name: isMonoRepo ? cli.appOriginal : cli.app }), getUnionConfig());
 
-const resolveAsyncSuffix = R.cond([
-	[R.is(RegExp), R.identity],
-	[R_.isString, asyncSuffix => R_.constructRegExp(`\.${asyncSuffix}\.js$`, 'i')],
-	[R_.isArray, asyncSuffix => R_.constructRegExp(`\.(${R.join('|', asyncSuffix)})\.js$`, 'i')],
-	[
-		R.T,
-		() =>
-			invariant(false, "Invalid property 'asyncSuffix'. It should be string or list of strings."),
-	],
-]);
-
 const mergeWhen = (condition, fn, ...fnArgs) => (condition ? fn(...fnArgs) : {});
 const getForMode = (debug, prod) => (cli.debug ? debug : prod);
 
@@ -220,7 +209,6 @@ module.exports = {
 	normalizeConfig,
 	getUnionConfig,
 	getAppConfig,
-	resolveAsyncSuffix,
 	stats,
 	isMonoRepo,
 	mergeWhen,

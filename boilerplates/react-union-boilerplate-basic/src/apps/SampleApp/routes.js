@@ -5,14 +5,14 @@ export default [
 	{
 		path: 'hero',
 		component: Loadable({
-			loader: () => import('../../widgets/Hero/components/Root'),
+			loader: () => import('../../widgets/Hero'),
 			loading: () => null,
 		}),
 	},
 	{
 		path: 'content',
 		component: Loadable({
-			loader: () => import('../../widgets/Content/components/Root'),
+			loader: () => import('../../widgets/Content'),
 			loading: () => null,
 		}),
 	},
