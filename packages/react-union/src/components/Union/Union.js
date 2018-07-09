@@ -3,7 +3,7 @@ import React, { Component, StrictMode, Fragment } from 'react';
 
 import { noop } from '../../utils';
 import { RouteShape } from '../../shapes';
-import scan from '../../scan';
+import scan from '../../scanning';
 
 import Widget from '../Widget';
 
@@ -15,9 +15,17 @@ import Widget from '../Widget';
 class Union extends Component {
 	static propTypes = {
 		/**
+		 * Cheerio instance for SSR.
+		 */
+		$: PropTypes.any,
+		/**
 		 * Children of the `Union` component.
 		 */
 		children: PropTypes.node,
+		/**
+		 * If true, the scanning will begin in the constructor instead of `componentDidMount`.
+		 */
+		isServer: PropTypes.bool,
 		/**
 		 * Called after the scan of the HTML is done.
 		 */
@@ -35,7 +43,11 @@ class Union extends Component {
 		 */
 		parent: PropTypes.object,
 		/**
-		 *  Array of routes that are supported by your application.
+		 * Called instead of the default `createPortal` function.
+		 */
+		renderWidget: PropTypes.func,
+		/**
+		 * Array of routes that are supported by your application.
 		 */
 		routes: PropTypes.arrayOf(PropTypes.shape(RouteShape)).isRequired,
 		/**
@@ -48,41 +60,52 @@ class Union extends Component {
 		onScanEnd: noop,
 		onScanError: noop,
 		onScanStart: noop,
+		parent: document && document.body,
 		strictMode: true,
 	};
 
 	state = {
-		configs: [],
+		configs: this.props.isServer ? this.scan(props) : [],
 	};
 
 	componentDidMount() {
-		this.scan(this.props);
+		// NOTE: This is not wrong. We need to initialize the scanning after the component mounts.
+		// eslint-disable-next-line react/no-did-mount-set-state
+		this.setState({
+			configs: this.scan(this.props),
+		});
 	}
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.routes !== this.props.routes) {
-			this.scan(prevProps);
+			this.setState({
+				configs: this.scan(this.props),
+			});
 		}
 	}
 
 	scan = props => {
-		const { onScanStart, onScanEnd, onScanError, parent, routes } = props;
+		const { $, onScanStart, onScanEnd, onScanError, parent, routes } = props;
 
-		onScanStart();
+		try {
+			onScanStart();
+			const configs = scan(routes, $ || parent);
+			onScanEnd(configs);
 
-		const domParent = parent || document.body;
+			return configs;
+		} catch (error) {
+			onScanError(error);
 
-		scan(routes, domParent).then(
-			configs => {
-				onScanEnd(configs);
-				this.setState({ configs });
-			},
-			error => onScanError(error)
-		);
+			return [];
+		}
 	};
 
 	renderWidget = config => (
-		<Widget key={config.descriptor.namespace || config.descriptor.container} {...config} />
+		<Widget
+			key={config.descriptor.namespace || config.descriptor.container}
+			render={this.props.renderWidget}
+			{...config}
+		/>
 	);
 
 	resolveStrictMode = union => (this.props.strictMode ? <StrictMode>{union}</StrictMode> : union);

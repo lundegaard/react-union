@@ -1,5 +1,6 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
+import PropTypes from 'prop-types';
 
 import { warning, invariant } from '../../utils';
 import { ConfigShape } from '../../shapes';
@@ -15,7 +16,7 @@ import WidgetProvider from '../WidgetProvider';
  *
  * @see WidgetProvider
  */
-const Widget = ({ component: WidgetComponent, descriptor }) => {
+const Widget = ({ component: WidgetComponent, descriptor, render }) => {
 	const { name, container, namespace, data } = descriptor;
 	const resolvedNamespace = namespace || container;
 
@@ -25,22 +26,26 @@ const Widget = ({ component: WidgetComponent, descriptor }) => {
 	);
 
 	const widgetProps = { namespace: resolvedNamespace, data };
-	const element = document.getElementById(container);
 
-	warning(element, `HTML element with ID "${container}" not found for widget "${name}"`);
+	const widgetElement = (
+		<WidgetProvider {...widgetProps}>
+			<WidgetComponent {...widgetProps} />
+		</WidgetProvider>
+	);
 
-	return WidgetComponent && element
-		? createPortal(
-				<WidgetProvider {...widgetProps}>
-					<WidgetComponent {...widgetProps} />
-				</WidgetProvider>,
-				element
-		  )
-		: null;
+	if (render) {
+		return render(widgetElement, container);
+	}
+
+	const domElement = document.getElementById(container);
+	warning(domElement, `HTML element with ID "${container}" not found for widget "${name}"`);
+
+	return domElement ? createPortal(widgetElement, domElement) : null;
 };
 
-Widget.propTypes = ConfigShape;
-
-export { Widget };
+Widget.propTypes = {
+	...ConfigShape,
+	render: PropTypes.func,
+};
 
 export default withErrorBoundary(Widget);

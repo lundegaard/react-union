@@ -1,19 +1,20 @@
-/* eslint-disable import/no-unresolved,import/extensions */
+/* eslint-disable babel/new-cap,import/no-unresolved,import/extensions */
 // ESLINT IS DISABLED BECAUSE DEPS ARE NOT RESOLVED IN UNION MONO REPO
-import loadHeroWidget from 'union-widget-hero';
-import loadContentWidget from 'union-widget-content';
+import Loadable from 'react-loadable';
 
 export default [
 	{
 		path: 'hero',
-		getComponent: done => {
-			loadHeroWidget(mod => done(mod.default));
-		},
+		component: Loadable({
+			loader: () => import('union-widget-hero'),
+			loading: () => null,
+		}),
 	},
 	{
 		path: 'content',
-		getComponent: done => {
-			loadContentWidget(mod => done(mod.default));
-		},
+		component: Loadable({
+			loader: () => import('union-widget-content'),
+			loading: () => null,
+		}),
 	},
 ];
