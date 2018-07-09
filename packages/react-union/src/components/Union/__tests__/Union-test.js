@@ -15,10 +15,7 @@ const DummyComponent = () => <div />;
 const routes = [
 	{
 		path: 'hero',
-		getComponent: done => {
-			done();
-			return DummyComponent;
-		},
+		component: DummyComponent,
 	},
 ];
 
@@ -34,9 +31,9 @@ const scanResult = [
 	},
 ];
 
-const mockUnion = (res = Promise.resolve(scanResult)) => {
+const mockUnion = (res = scanResult) => {
 	const scanFn = jest.fn(() => res);
-	jest.doMock('../../../scan', () => scanFn);
+	jest.doMock('../../../scanning', () => scanFn);
 	const Union = require('../Union').default;
 
 	return {
