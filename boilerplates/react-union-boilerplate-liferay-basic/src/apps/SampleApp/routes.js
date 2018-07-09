@@ -1,17 +1,19 @@
-import loadHeroWidget from '../../widgets/Hero/hero.widget';
-import loadContentWidget from '../../widgets/Content/content.widget';
+/* eslint-disable babel/new-cap */
+import Loadable from 'react-loadable';
 
 export default [
 	{
 		path: 'hero',
-		getComponent(done) {
-			loadHeroWidget(mod => done(mod.default));
-		},
+		component: Loadable({
+			loader: () => import('../../widgets/Hero/components/Root'),
+			loading: () => null,
+		}),
 	},
 	{
 		path: 'content',
-		getComponent(done) {
-			loadContentWidget(mod => done(mod.default));
-		},
+		component: Loadable({
+			loader: () => import('../../widgets/Content/components/Root'),
+			loading: () => null,
+		}),
 	},
 ];

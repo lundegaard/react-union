@@ -1,4 +1,6 @@
 import always from 'ramda/src/always';
+import reduce from 'ramda/src/reduce';
+import mergeDeepRight from 'ramda/src/mergeDeepRight';
 
 export const warning = (pred, msg) => {
 	if (pred) {
@@ -41,6 +43,8 @@ export const createElementWithId = (id, parent, elementType = 'div') => {
 	return element ? element : createElement(id, parent, elementType);
 };
 
+export const getDisplayName = Component => Component.displayName || Component.name || 'Component';
+
 export const noop = always(null);
 
-export const getDisplayName = Component => Component.displayName || Component.name || 'Component';
+export const mergeDeepRightAll = reduce(mergeDeepRight, {});
