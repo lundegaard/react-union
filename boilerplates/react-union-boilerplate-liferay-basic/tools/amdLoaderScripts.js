@@ -26,7 +26,7 @@ function createLiferayConfigChunk({ name, path = null, dependencies = [] }) {
     dependencies: ${JSON.stringify(dependencies)},
 		name: ${JSON.stringify(name)},
 		exports: ${JSON.stringify(name)},
-    path: MODULE_PATH + "/${fullPath}",
+    path: ${JSON.stringify(fullPath)},
   }
 );`;
 }

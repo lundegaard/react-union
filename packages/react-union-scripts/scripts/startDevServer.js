@@ -15,7 +15,7 @@ function startDevServer() {
 	);
 
 	const webpackConfig = configs[0];
-	const unionConfig = getAppConfig(cli.app);
+	const unionConfig = getAppConfig();
 
 	invariant(!cli.proxy || unionConfig.proxy.port, "Missing 'port' for proxy in your union.config.");
 	invariant(
@@ -34,11 +34,11 @@ function startDevServer() {
 				webpackHotMiddleware(compiler),
 				...(!cli.proxy && unionConfig.devServer.historyApiFallback
 					? [
-						historyApiFallback({
-							disableDotRule: true,
-							htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
-						}),
-					]
+							historyApiFallback({
+								disableDotRule: true,
+								htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
+							}),
+					  ]
 					: []),
 			];
 
@@ -46,20 +46,20 @@ function startDevServer() {
 
 			const config = cli.proxy
 				? {
-					port: unionConfig.proxy.port,
-					proxy: {
-						target: unionConfig.proxy.target,
-						middleware,
-					},
-					serveStatic: baseDirs,
-				}
+						port: unionConfig.proxy.port,
+						proxy: {
+							target: unionConfig.proxy.target,
+							middleware,
+						},
+						serveStatic: baseDirs,
+				  }
 				: {
-					port: unionConfig.devServer.port,
-					server: {
-						baseDir: baseDirs,
-						middleware,
-					},
-				};
+						port: unionConfig.devServer.port,
+						server: {
+							baseDir: baseDirs,
+							middleware,
+						},
+				  };
 
 			browserSync.create().init(
 				{

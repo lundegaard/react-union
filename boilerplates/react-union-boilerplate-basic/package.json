@@ -1,6 +1,6 @@
 {
   "name": "react-union-boilerplate-basic",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "license": "MIT",
   "repository": "https://github.com/lundegaard/react-union",
@@ -13,30 +13,44 @@
     "react": "16.4.1",
     "react-dom": "16.4.1",
     "react-hot-loader": "4.3.3",
-    "react-union": "0.2.0",
+    "react-union": "^0.3.0",
     "redbox-react": "1.6.0"
   },
   "devDependencies": {
     "babel-eslint": "8.0.1",
     "babel-preset-react": "6.23.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.4",
     "eslint": "4.7.2",
-    "eslint-config-prettier": "2.9.0",
-    "eslint-config-react-union": "0.2.0",
+    "eslint-config-react-union": "^0.4.0",
     "eslint-plugin-babel": "4.1.2",
     "eslint-plugin-import": "2.7.0",
-    "eslint-plugin-prettier": "2.6.0",
     "eslint-plugin-react": "7.4.0",
-    "prettier": "1.10.2",
-    "react-test-renderer": "16.4.1",
-    "react-union-scripts": "0.3.0",
-    "skin-deep": "1.2.0"
+    "husky": "^0.14.3",
+    "lint-staged": "^7.2.0",
+    "prettier": "^1.13.5",
+    "react-union-scripts": "^0.5.3"
   },
   "scripts": {
     "build": "react-union-scripts build",
     "start": "react-union-scripts start --app SampleApp",
-    "test": "yarn lint && yarn test:js",
-    "test:js": "react-union-scripts test",
+    "test": "react-union-scripts test",
     "lint": "yarn lint:eslint",
-    "lint:eslint": "eslint --ext .js ./"
+    "lint:eslint": "eslint --ext .js ./",
+    "precommit": "lint-staged",
+    "prepush": "yarn lint && yarn test --release"
+  },
+  "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "prettier --write",
+      "yarn lint --fix",
+      "git add"
+    ]
   }
 }

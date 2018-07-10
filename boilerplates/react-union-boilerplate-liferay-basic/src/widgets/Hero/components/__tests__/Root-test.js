@@ -1,15 +1,12 @@
 import React from 'react';
-import sd from 'skin-deep';
-
+import { shallow } from 'enzyme';
 import Root from '../Root';
 
-describe('Root', () => {
-	it('should exist', () => {
-		expect(Root).toBeDefined();
-	});
+describe('<Root />', () => {
+	const requiredProps = {};
 
-	it('should render static text content', () => {
-		const tree = sd.shallowRender(<Root />);
-		expect(tree.type).toBe('img');
+	it('should match snapshot', () => {
+		const wrapper = shallow(<Root {...requiredProps} />);
+		expect(wrapper).toMatchSnapshot();
 	});
 });

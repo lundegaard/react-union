@@ -81,11 +81,12 @@ const cleanup = verdaccio => {
 	logDone();
 };
 
-(async () => {
+(async() => {
 	let verdaccioProcess = undefined;
 	try {
 		logSegment('INSTALL REPO');
 		execCommand('yarn');
+		execCommand('yarn run test --ci');
 		execCommand('yarn run lint', { stdio: 'inherit' });
 		logDone();
 		logSegment('CHECK INTEGRITY OF REACT-UNION BUILD');

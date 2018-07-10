@@ -8,14 +8,26 @@ const path = require('path');
 const utilsFs = require('./fs');
 const cli = require('./cli');
 
+const isMonoRepo = utilsFs.getWorkspacesPatterns();
+
+const DEFAULT_WIDGET_PATTERN = 'union-widget';
+const DEFAULT_APP_PATTERN = 'union-app';
+
+const BUILD_FOLDER = 'build';
+const PUBLIC_FOLDER = 'public';
+const SRC_FOLDER = 'src';
+const INDEX_FOLDER = 'index';
+const APPS_FOLDER = 'apps';
+
 const UNION_CONFIG_PATH = path.resolve(process.cwd(), './union.config.js');
-const DEFAULT_APP_DIR = path.resolve(process.cwd(), 'src', 'apps');
+const DEFAULT_UNI_REPO_APP_DIR = path.resolve(process.cwd(), SRC_FOLDER, APPS_FOLDER);
+
 const DEFAULT_PORT = 3300;
 const DEFAULT_UNION_CONFIG = {
 	// computed in `extendPaths_`
 	paths: {},
 	// computed in `extendsClean_`
-	clean: { paths: [], options: {} },
+	clean: { options: {} },
 	generateVendorBundle: true,
 	generateTemplate: true,
 	vendorBlackList: [],
@@ -38,6 +50,10 @@ const DEFAULT_UNION_CONFIG = {
 	},
 	mergeWebpackConfig: R.identity,
 	asyncSuffix: 'widget',
+	workspaces: {
+		widgetPattern: DEFAULT_WIDGET_PATTERN,
+		appPattern: DEFAULT_APP_PATTERN,
+	},
 };
 
 const stats = {
@@ -57,7 +73,7 @@ const nilOrEmpty_ = R.either(R.isNil, R.isEmpty);
 const whenIsFunction_ = R.when(R_.isFunction);
 const trimSlashes = R.o(R.dropWhile(equalsSlash_), R.dropLastWhile(equalsSlash_));
 
-const getApps_ = R.path(['apps']);
+const getApps_ = R.path([APPS_FOLDER]);
 
 const extendsClean_ = config => ({
 	...config,
@@ -71,15 +87,27 @@ const extendsClean_ = config => ({
 	},
 });
 
+const defaultUniRepoPaths = config => ({
+	build: path.resolve(process.cwd(), BUILD_FOLDER, config.name),
+	// directory for resources and template
+	public: path.resolve(process.cwd(), PUBLIC_FOLDER, config.name),
+	// path entry of the app
+	index: path.resolve(DEFAULT_UNI_REPO_APP_DIR, config.name, INDEX_FOLDER),
+});
+
+const defaultMonoRepoPaths = config => {
+	const appPath = utilsFs.getAppPath(config.name);
+	return {
+		build: path.resolve(process.cwd(), BUILD_FOLDER, config.name),
+		public: path.resolve(process.cwd(), appPath, PUBLIC_FOLDER),
+		index: path.resolve(process.cwd(), appPath, SRC_FOLDER, INDEX_FOLDER),
+	};
+};
+
 const extendPaths_ = config => ({
 	...config,
 	paths: {
-		// path to build folder
-		build: path.resolve(process.cwd(), 'build', config.name),
-		// directory for resources and template
-		public: path.resolve(process.cwd(), 'public', config.name),
-		// path entry of the app
-		index: path.resolve(DEFAULT_APP_DIR, config.name, 'index'),
+		...(isMonoRepo ? defaultMonoRepoPaths(config) : defaultUniRepoPaths(config)),
 		...config.paths,
 	},
 });
@@ -88,11 +116,15 @@ const extendOutputMapper_ = R.evolve({
 	outputMapper: R.o(R.map(trimSlashes), R.merge(DEFAULT_UNION_CONFIG.outputMapper)),
 });
 
-const getCommonUnionConfig_ = R.omit(['apps']);
+const getCommonUnionConfig_ = R.omit([APPS_FOLDER]);
 
 const extendConfigs = R.map(
 	R.o(
-		R.compose(extendsClean_, extendPaths_, extendOutputMapper_),
+		R.compose(
+			extendsClean_,
+			extendPaths_,
+			extendOutputMapper_
+		),
 		R.mergeDeepRight(DEFAULT_UNION_CONFIG)
 	)
 );
@@ -130,14 +162,19 @@ const normalizeConfig = R.cond([
 	[R.T, R_.noop],
 ]);
 
-const setAppsIfMissing_ = R.curry((defaultDirs, config) =>
-	R.cond([
-		[nilOrEmpty_, R.always(defaultDirs)],
+const getAppPattern_ = R.path(['workspaces', 'appPattern']);
+
+const setAppsIfMissing_ = config => {
+	const uniRepoDirs = () => utilsFs.readDirs(DEFAULT_UNI_REPO_APP_DIR);
+	const appsPattern = getAppPattern_(config) || getAppPattern_(DEFAULT_UNION_CONFIG);
+	const appDirs = isMonoRepo ? utilsFs.readAllAppsFromWorkspaces(appsPattern) : uniRepoDirs();
+	return R.cond([
+		[nilOrEmpty_, R.always(appDirs)],
 		[R_.isArray, R.identity],
-		[c => !c.apps, c => R.mergeDeepRight(c, { apps: defaultDirs })],
+		[c => !c.apps, c => R.mergeDeepRight(c, { apps: appDirs })],
 		[R.T, R.identity],
-	])(config)
-);
+	])(config);
+};
 
 /**
  * Returns evaluated unionConfig based on `union.config.js`.
@@ -150,7 +187,7 @@ const getUnionConfig = () =>
 	R.pipe(
 		R.ifElse(fs.existsSync, x => require(x), R_.noop),
 		whenIsFunction_(R.applyTo(cli)),
-		setAppsIfMissing_(utilsFs.readDirs(DEFAULT_APP_DIR)),
+		setAppsIfMissing_,
 		normalizeConfig,
 		R.tap(validateConfig_),
 		extendConfigs
@@ -161,9 +198,8 @@ const getUnionConfig = () =>
  *
  * @param {string} app Name of the app
  */
-const getAppConfig = name => R.find(R.whereEq({ name }), getUnionConfig());
-
-const resolveSymlink = (...args) => fs.realpathSync(path.resolve(...args));
+const getAppConfig = () =>
+	R.find(R.whereEq({ name: isMonoRepo ? cli.appOriginal : cli.app }), getUnionConfig());
 
 const resolveAsyncSuffix = R.cond([
 	[R.is(RegExp), R.identity],
@@ -176,12 +212,17 @@ const resolveAsyncSuffix = R.cond([
 	],
 ]);
 
+const mergeWhen = (condition, fn, ...fnArgs) => (condition ? fn(...fnArgs) : {});
+const getForMode = (debug, prod) => (cli.debug ? debug : prod);
+
 module.exports = {
 	UNION_CONFIG_PATH,
 	normalizeConfig,
 	getUnionConfig,
 	getAppConfig,
 	resolveAsyncSuffix,
-	resolveSymlink,
 	stats,
+	isMonoRepo,
+	mergeWhen,
+	getForMode,
 };

@@ -1,5 +1,3 @@
-node_modules/*
-build/*
-stats.json
-docs/node_modules/*
-liferay-amd-loader/*
+build
+hero-portlet
+liferay-amd-loader
