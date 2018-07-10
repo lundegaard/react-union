@@ -54,7 +54,6 @@ create "testsSetup.js" file in root of your project.`
 	const sanitizedConfig = pickSupported(jestConfig);
 
 	return {
-		testPathIgnorePatterns: ['/node_modules/', '/.history/'],
 		cacheDirectory: '/tmp/jest_cache',
 		globals: {
 			__DEV__: true,
@@ -64,9 +63,10 @@ create "testsSetup.js" file in root of your project.`
 			'^.+\\.s?css$': resolveSymlink(__dirname, 'jest/scssTransformer.js'),
 			[filePattern]: resolveSymlink(__dirname, 'jest/fileTransformer.js'),
 		},
-		modulePathIgnorePatterns: ['/build/', '/node_modules/'],
 		rootDir,
 		setupTestFrameworkScriptFile: setupTestsFile,
+		moduleFileExtensions: ['web.js', 'js', 'json', 'web.jsx', 'jsx', 'node'],
+		transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
 		...sanitizedConfig,
 	};
 };
