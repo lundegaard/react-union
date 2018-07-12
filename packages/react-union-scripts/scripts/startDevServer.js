@@ -1,12 +1,47 @@
 const invariant = require('invariant');
 const browserSync = require('browser-sync');
 const webpack = require('webpack');
+const R = require('ramda');
+const R_ = require('ramda-extension');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
+const proxyMiddleware = require('http-proxy-middleware');
 const historyApiFallback = require('connect-history-api-fallback');
 const configs = require('./webpack.config');
 const cli = require('./lib/cli');
 const { stats, getAppConfig } = require('./lib/utils');
+
+// webpack 4.0 compatible. based on impl from webpack dev-server
+const getProxyMiddleware = ({ proxy } = {}) => {
+	if (!proxy) {
+		return [];
+	}
+	let normalizedConfig = proxy;
+	if (!R_.isArray(proxy)) {
+		normalizedConfig = R.pipe(
+			R.mapObjIndexed((target, context) => {
+				// for more info see https://github.com/webpack/webpack-dev-server/blob/master/lib/Server.js#L193
+				const correctedContext = R.o(R.replace(/\/\*$/, ''), R.replace(/^\*$/, '**'))(context);
+				if (R_.isString(target)) {
+					return {
+						context: correctedContext,
+						target,
+					};
+				} else {
+					return {
+						...target,
+						context: correctedContext,
+					};
+				}
+			}),
+			R.values
+		)(proxy);
+	}
+	return R.map(config => {
+		const proxyConfig = R_.isFunction(config) ? config() : config;
+		return proxyMiddleware(proxyConfig.context, proxyConfig);
+	}, normalizedConfig);
+};
 
 function startDevServer() {
 	invariant(
@@ -40,6 +75,7 @@ function startDevServer() {
 							}),
 					  ]
 					: []),
+				...getProxyMiddleware(webpackConfig.devServer),
 			];
 
 			const baseDirs = [webpackConfig.output.path, unionConfig.paths.public];

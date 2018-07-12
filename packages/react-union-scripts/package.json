@@ -1,5 +1,5 @@
 {
-  "version": "0.5.3",
+  "version": "0.5.4",
   "name": "react-union-scripts",
   "description": "Provides scripts for building JS web apps targeted on either CMS or Portal solutions.",
   "license": "MIT",
@@ -42,6 +42,7 @@
     "fs-extra": "0.30.0",
     "glob": "7.1.2",
     "html-webpack-plugin": "3.2.0",
+    "http-proxy-middleware": "^0.18.0",
     "invariant": "2.2.1",
     "jest": "23.2.0",
     "mkdirp": "0.5.1",
