@@ -17,7 +17,10 @@ const { toPascalCase, includes, notInclude } = require('ramda-extension');
  * 		) // "AppName"
  */
 const getArgValue = (arg, program) =>
-	compose(ifElse(equals(-1), always(null), x => program[x + 1]), findIndex(equals(arg)))(program);
+	compose(
+		ifElse(equals(-1), always(null), x => program[x + 1]),
+		findIndex(equals(arg))
+	)(program);
 
 const program = process.argv;
 const programIncludes = includes(program);

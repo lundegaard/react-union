@@ -30,12 +30,14 @@
     "eslint-plugin-react": "7.4.0",
     "husky": "^0.14.3",
     "lint-staged": "^7.2.0",
+    "mkdirp": "0.5.1",
     "prettier": "^1.13.5",
-    "react-union-scripts": "^0.5.4"
+    "react-union-scripts": "^0.5.4",
+    "rimraf": "2.6.2"
   },
   "scripts": {
     "build": "react-union-scripts build",
-    "build:liferay": "react-union-scripts build --target liferay",
+    "build:liferay": "react-union-scripts build --release --target liferay && node ./tools/amdLoaderScripts.js SampleApp",
     "start": "react-union-scripts start --app SampleApp",
     "start:proxy": "react-union-scripts start --app SampleApp --proxy --target liferay",
     "test": "react-union-scripts test",

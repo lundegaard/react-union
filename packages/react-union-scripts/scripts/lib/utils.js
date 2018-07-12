@@ -120,7 +120,11 @@ const getCommonUnionConfig_ = R.omit([APPS_FOLDER]);
 
 const extendConfigs = R.map(
 	R.o(
-		R.compose(extendsClean_, extendPaths_, extendOutputMapper_),
+		R.compose(
+			extendsClean_,
+			extendPaths_,
+			extendOutputMapper_
+		),
 		R.mergeDeepRight(DEFAULT_UNION_CONFIG)
 	)
 );
