@@ -15,10 +15,6 @@ import Widget from '../Widget';
 class Union extends Component {
 	static propTypes = {
 		/**
-		 * Cheerio instance for SSR.
-		 */
-		$: PropTypes.any,
-		/**
 		 * Children of the `Union` component.
 		 */
 		children: PropTypes.node,
@@ -64,33 +60,12 @@ class Union extends Component {
 		strictMode: true,
 	};
 
-	state = {
-		configs: this.props.isServer ? this.scan(this.props) : [],
-	};
-
-	componentDidMount() {
-		// NOTE: This is not wrong. We need to initialize the scanning after the component mounts.
-		// eslint-disable-next-line react/no-did-mount-set-state
-		this.setState({
-			configs: this.scan(this.props),
-		});
-	}
-
-	componentDidUpdate(prevProps) {
-		if (prevProps.routes !== this.props.routes) {
-			// eslint-disable-next-line react/no-did-update-set-state
-			this.setState({
-				configs: this.scan(this.props),
-			});
-		}
-	}
-
-	scan = props => {
-		const { $, onScanStart, onScanEnd, onScanError, parent, routes } = props;
+	static scan = props => {
+		const { onScanStart, onScanEnd, onScanError, parent, routes } = props;
 
 		try {
 			onScanStart();
-			const configs = scan(routes, $ || parent);
+			const configs = scan(routes, parent);
 			onScanEnd(configs);
 
 			return configs;
@@ -100,6 +75,30 @@ class Union extends Component {
 			return [];
 		}
 	};
+
+	static getDerivedStateFromProps(nextProps, prevState) {
+		if (prevState.routes !== nextProps.routes) {
+			return {
+				configs: Union.scan(nextProps),
+				routes: nextProps.routes,
+			};
+		}
+
+		return null;
+	}
+
+	state = {
+		configs: this.props.isServer ? Union.scan(this.props) : [],
+		routes: this.props.routes,
+	};
+
+	componentDidMount() {
+		// NOTE: This is not wrong. We need to initialize the scanning after the component mounts.
+		// eslint-disable-next-line react/no-did-mount-set-state
+		this.setState({
+			configs: Union.scan(this.props),
+		});
+	}
 
 	renderWidget = config => (
 		<Widget
