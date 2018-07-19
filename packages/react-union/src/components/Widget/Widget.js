@@ -5,16 +5,13 @@ import PropTypes from 'prop-types';
 import { warning, invariant } from '../../utils';
 import { ConfigShape } from '../../shapes';
 import { withErrorBoundary } from '../../decorators';
-
-import WidgetProvider from '../WidgetProvider';
+import { WidgetContext } from '../../contexts';
 
 /**
  * An internal component of `Union`.
  *
  * It renders a widget based on `descriptor` and `component` using React portals.
  * Provides context to the `component` with widget descriptor information.
- *
- * @see WidgetProvider
  */
 export const Widget = ({ component: WidgetComponent, descriptor, render }) => {
 	const { widget, container, namespace, data } = descriptor;
@@ -28,9 +25,9 @@ export const Widget = ({ component: WidgetComponent, descriptor, render }) => {
 	const widgetProps = { namespace: resolvedNamespace, data };
 
 	const widgetElement = (
-		<WidgetProvider {...widgetProps}>
+		<WidgetContext.Provider value={widgetProps}>
 			<WidgetComponent {...widgetProps} />
-		</WidgetProvider>
+		</WidgetContext.Provider>
 	);
 
 	if (render) {
