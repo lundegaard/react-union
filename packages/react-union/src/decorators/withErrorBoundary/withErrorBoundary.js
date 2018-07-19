@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import path from 'ramda/src/path';
 
 import { ConfigShape } from '../../shapes';
+import { getDisplayName } from '../../utils';
 
 const getName = path(['props', 'descriptor', 'name']);
 
-const withErrorBoundary = WrappedComponent => {
-	class UnionWidgetErrorBoundary extends Component {
+const withErrorBoundary = NextComponent => {
+	class WithErrorBoundary extends Component {
 		static propTypes = ConfigShape;
+
+		static displayName = `WithErrorBoundary(${getDisplayName(NextComponent)})`;
 
 		state = {
 			hasError: false,
@@ -25,11 +28,11 @@ const withErrorBoundary = WrappedComponent => {
 				return `An error has occurred in widget "${name}". See the console output for more details.`;
 			}
 
-			return <WrappedComponent {...this.props} />;
+			return <NextComponent {...this.props} />;
 		}
 	}
 
-	return UnionWidgetErrorBoundary;
+	return WithErrorBoundary;
 };
 
 export default withErrorBoundary;

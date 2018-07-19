@@ -42,3 +42,5 @@ export const createElementWithId = (id, parent, elementType = 'div') => {
 };
 
 export const noop = always(null);
+
+export const getDisplayName = Component => Component.displayName || Component.name || 'Component';
