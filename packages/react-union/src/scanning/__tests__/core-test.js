@@ -72,11 +72,11 @@ describe('scan', () => {
 				[
 					{
 						path: 'hero',
-						getComponent: DummyComponent,
+						component: DummyComponent,
 					},
 					{
 						path: 'content',
-						getComponent: DummyComponent,
+						component: DummyComponent,
 					},
 				],
 				createDocument(
