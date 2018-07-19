@@ -59,10 +59,13 @@ describe('<Union />', () => {
 		await mount(<mock.Union routes={routes} strictMode={false} onScanEnd={onScanEnd} />);
 		expect(onScanEnd).toHaveBeenCalledWith(scanResult);
 	});
-	it('should call onScanError when error happens in scan', async () => {
-		const mock = mockUnion(Promise.reject('error'));
+	it.only('should call onScanError when error happens in scan', async () => {
+		jest.doMock('../../../scanning', () => () => {
+			throw 'error';
+		});
+		const Union = require('../Union').default;
 		const onScanError = jest.fn();
-		await mount(<mock.Union routes={routes} strictMode={false} onScanError={onScanError} />);
+		await mount(<Union routes={routes} strictMode={false} onScanError={onScanError} />);
 		expect(onScanError).toHaveBeenCalledWith('error');
 	});
 	it('should run scan on did mount', async () => {
