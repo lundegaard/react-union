@@ -8,7 +8,7 @@ import prop from 'ramda/src/prop';
 import mergeDeepRight from 'ramda/src/mergeDeepRight';
 import compose from 'ramda/src/compose';
 
-import { validateDescriptorStructures, validateRoutesWithDescriptors } from '../validate';
+import { validateDescriptorStructures, validateRoutesWithDescriptors } from '../validation';
 
 import {
 	getWidgetDescriptors as getCheerioWidgetDescriptors,
