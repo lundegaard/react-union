@@ -14,7 +14,7 @@ Renders React widgets.
 <div id="${ns}content"></div>
 <script data-union-widget="content" data-union-container="${ns}content" type="application/json">
     {
-        "textation": {
+        "messages": {
             "heading": "${heading}",
             "content": "${content}"
         }
