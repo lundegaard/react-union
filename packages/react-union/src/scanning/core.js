@@ -8,7 +8,7 @@ import prop from 'ramda/src/prop';
 
 import getCheerioDescriptors from './descriptors/cheerio';
 import getDomDescriptors from './descriptors/dom';
-import { validateDescriptorStructures, validateRoutesWithDescriptors } from '../validate';
+import { validateDescriptorStructures, validateRoutesWithDescriptors } from '../validation';
 
 const getDescriptors = ifElse(is(Function), getCheerioDescriptors, getDomDescriptors);
 
