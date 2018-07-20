@@ -35,9 +35,9 @@ class Union extends Component {
 		 */
 		onScanStart: PropTypes.func,
 		/**
-		 * Element in which the scan is running. By default `document.body`.
+		 * HTML element or Cheerio wrapper in which the scan is running. By default `document.body`.
 		 */
-		parent: PropTypes.object,
+		parent: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
 		/**
 		 * Called instead of the default `createPortal` function.
 		 */
