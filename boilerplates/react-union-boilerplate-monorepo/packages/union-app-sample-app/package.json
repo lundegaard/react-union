@@ -11,8 +11,8 @@
     "react": "16.0.0",
     "react-dom": "16.0.0",
     "react-hot-loader": "^4.3.3",
-    "react-loadable": "5.4.0",
     "react-union": "^0.4.0",
+    "react-universal-component": "^3.0.0",
     "union-widget-hero": "0.1.0",
     "union-widget-content": "0.1.0",
     "redbox-react": "1.5.0"
