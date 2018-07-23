@@ -1,4 +1,3 @@
-/* eslint-disable babel/new-cap */
 import universal from 'react-universal-component';
 
 export default [
