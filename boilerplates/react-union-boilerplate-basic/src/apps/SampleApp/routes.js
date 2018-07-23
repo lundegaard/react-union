@@ -1,19 +1,13 @@
 /* eslint-disable babel/new-cap */
-import Loadable from 'react-loadable';
+import universal from 'react-universal-component';
 
 export default [
 	{
 		path: 'hero',
-		component: Loadable({
-			loader: () => import('../../widgets/Hero'),
-			loading: () => null,
-		}),
+		component: universal(() => import('../../widgets/Hero')),
 	},
 	{
 		path: 'content',
-		component: Loadable({
-			loader: () => import('../../widgets/Content'),
-			loading: () => null,
-		}),
+		component: universal(() => import('../../widgets/Content')),
 	},
 ];
