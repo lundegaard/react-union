@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "main": "src/content.widget.js",
+  "main": "src/index.js",
   "repository": "https://github.com/lundegaard/react-union",
   "engines": {
     "node": ">=8"
