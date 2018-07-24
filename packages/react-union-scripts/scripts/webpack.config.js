@@ -176,7 +176,8 @@ const getWebpackConfig_ = config => {
 			vendorBundle,
 			config,
 			isMonoRepo ? monoRepoDeps() : uniRepoDeps()
-		)
+		),
+		manifestPlugin()
 	);
 
 	const devWebpack = () =>
@@ -190,7 +191,7 @@ const getWebpackConfig_ = config => {
 			}
 		);
 
-	const prodWebpack = () => merge(commonConfig, manifestPlugin(), uglifyJsPlugin(cli.verbose));
+	const prodWebpack = () => merge(commonConfig, uglifyJsPlugin(cli.verbose));
 
 	return mergeWebpackConfig(cli.debug ? devWebpack() : prodWebpack());
 };
