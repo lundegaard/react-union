@@ -14,7 +14,7 @@
     "react": "16.4.1",
     "react-dom": "16.4.1",
     "react-hot-loader": "4.3.3",
-    "react-union": "^0.3.0",
+    "react-union": "^0.4.0",
     "redbox-react": "1.6.0"
   },
   "devDependencies": {
@@ -32,7 +32,7 @@
     "lint-staged": "^7.2.0",
     "mkdirp": "0.5.1",
     "prettier": "^1.13.5",
-    "react-union-scripts": "^0.5.4",
+    "react-union-scripts": "^0.5.5",
     "rimraf": "2.6.2"
   },
   "scripts": {
