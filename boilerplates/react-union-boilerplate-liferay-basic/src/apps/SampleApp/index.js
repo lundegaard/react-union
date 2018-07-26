@@ -1,5 +1,5 @@
 import React from 'react';
-import { justRender, unmountComponentAtNode } from 'react-union';
+import { justRender, justUnmountComponentAtNode } from 'react-union';
 import { AppContainer } from 'react-hot-loader';
 import ready from 'document-ready';
 
@@ -21,7 +21,7 @@ ready(() => {
 	render(Root);
 
 	if (window.Liferay) {
-		window.Liferay.on('startNavigate', unmountComponentAtNode);
+		window.Liferay.on('startNavigate', justUnmountComponentAtNode);
 		window.Liferay.on('endNavigate', rerenderContainer);
 	}
 });
