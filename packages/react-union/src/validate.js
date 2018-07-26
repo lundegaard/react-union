@@ -5,25 +5,26 @@ import prop from 'ramda/src/prop';
 
 import { invariant } from './utils';
 
-export const validateDescriptorStructures = forEach(({ name, namespace, container }) => {
-	invariant(name, "Missing 'name' in the widget descriptor.");
+export const validateDescriptorStructures = forEach(({ widget, namespace, container }) => {
+	invariant(widget, 'Missing data-union-widget value in the widget descriptor.');
+
 	invariant(
 		namespace || container,
-		`Missing required attributes for the widget "${name}". ` +
+		`Missing required attributes for the widget "${widget}". ` +
 			"Fill in the 'data-union-namespace' or 'data-union-container' in the widget descriptors."
 	);
 });
 
 export const validateRoutesWithDescriptors = (routes, descriptors) => {
 	const routePaths = map(prop('path'), routes);
-	const descriptorNames = map(prop('name'), descriptors);
+	const widgetNames = map(prop('widget'), descriptors);
 
 	forEach(
-		descriptorName =>
+		widgetName =>
 			invariant(
-				contains(descriptorName, routePaths),
-				`Could not find a matching route for widget descriptor of name "${descriptorName}".`
+				contains(widgetName, routePaths),
+				`Could not find a matching route for widget descriptor of widget "${widgetName}".`
 			),
-		descriptorNames
+		widgetNames
 	);
 };

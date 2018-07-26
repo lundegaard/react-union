@@ -8,5 +8,13 @@ module.exports = {
 				devDependencies: true,
 			},
 		],
+		'space-before-function-paren': [
+			'error',
+			{
+				anonymous: 'never',
+				named: 'never',
+				asyncArrow: 'always',
+			},
+		],
 	},
 };

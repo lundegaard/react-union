@@ -27,7 +27,7 @@ const scanResult = [
 		component: DummyComponent,
 		descriptor: {
 			container: 'hero',
-			name: 'hero',
+			widget: 'hero',
 			data: {},
 			namespace: undefined,
 		},
@@ -50,35 +50,35 @@ describe('<Union />', () => {
 		jest.resetAllMocks();
 		jest.resetModules();
 	});
-	it('should call onScanStart', async() => {
+	it('should call onScanStart', async () => {
 		const mock = mockUnion();
 		const onScanStart = jest.fn();
 		await mount(<mock.Union routes={routes} strictMode={false} onScanStart={onScanStart} />);
 		expect(onScanStart).toHaveBeenCalled();
 	});
-	it('should call onScanEnd when successfully scanned with result', async() => {
+	it('should call onScanEnd when successfully scanned with result', async () => {
 		const onScanEnd = jest.fn();
 		const mock = mockUnion();
 		await mount(<mock.Union routes={routes} strictMode={false} onScanEnd={onScanEnd} />);
 		expect(onScanEnd).toHaveBeenCalledWith(scanResult);
 	});
-	it('should call onScanError when error happens in scan', async() => {
+	it('should call onScanError when error happens in scan', async () => {
 		const mock = mockUnion(Promise.reject('error'));
 		const onScanError = jest.fn();
 		await mount(<mock.Union routes={routes} strictMode={false} onScanError={onScanError} />);
 		expect(onScanError).toHaveBeenCalledWith('error');
 	});
-	it('should run scan on did mount', async() => {
+	it('should run scan on did mount', async () => {
 		const mock = mockUnion();
 		await mount(<mock.Union routes={routes} strictMode={false} />);
 		expect(mock.scanFn).toHaveBeenCalled();
 	});
-	it('should set state with new config', async() => {
+	it('should set state with new config', async () => {
 		const mock = mockUnion();
 		const wrapper = await mount(<mock.Union routes={routes} strictMode={false} />);
 		expect(wrapper.state()).toEqual({ configs: scanResult });
 	});
-	it('should render widget with props from config', async() => {
+	it('should render widget with props from config', async () => {
 		const mock = mockUnion();
 		await mount(<mock.Union routes={routes} strictMode={false} />);
 		expect(mockWidget).toHaveBeenCalledWith(scanResult[0]);

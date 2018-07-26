@@ -16,18 +16,18 @@ import WidgetProvider from '../WidgetProvider';
  * @see WidgetProvider
  */
 const Widget = ({ component: WidgetComponent, descriptor }) => {
-	const { name, container, namespace, data } = descriptor;
+	const { widget, container, namespace, data } = descriptor;
 	const resolvedNamespace = namespace || container;
 
 	invariant(
 		!WidgetComponent || container,
-		`Missing attribute "container" for the widget "${name}" to be rendered.`
+		`Missing attribute "container" for the widget "${widget}" to be rendered.`
 	);
 
 	const widgetProps = { namespace: resolvedNamespace, data };
 	const element = document.getElementById(container);
 
-	warning(element, `HTML element with ID "${container}" not found for widget "${name}"`);
+	warning(element, `HTML element with ID "${container}" not found for widget "${widget}"`);
 
 	return WidgetComponent && element
 		? createPortal(

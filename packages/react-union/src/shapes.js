@@ -7,9 +7,10 @@ export const RouteShape = {
 
 export const ConfigShape = {
 	descriptor: PropTypes.shape({
-		name: PropTypes.string.isRequired,
 		container: PropTypes.string,
+		data: PropTypes.object,
 		namespace: PropTypes.string,
+		widget: PropTypes.string.isRequired,
 	}).isRequired,
 	// covers both class and functional components
 	component: PropTypes.func.isRequired,

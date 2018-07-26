@@ -12,13 +12,19 @@ import tryCatch from 'ramda/src/tryCatch';
 import always from 'ramda/src/always';
 import keys from 'ramda/src/keys';
 import values from 'ramda/src/values';
+import compose from 'ramda/src/compose';
+import reduce from 'ramda/src/reduce';
+import mergeDeepRight from 'ramda/src/mergeDeepRight';
 
 import { validateDescriptorStructures, validateRoutesWithDescriptors } from './validate';
 
 const loadRouteComponent = route => new Promise(resolve => route.getComponent(resolve));
 
-const selectDescriptors = parent => parent.querySelectorAll('[data-union-widget]');
+const selectWidgetDescriptors = parent => parent.querySelectorAll('[data-union-widget]');
+const selectCommonDescriptors = parent => parent.querySelectorAll('[data-union-common]');
+
 const parseJsonContent = o(unary(JSON.parse), prop('innerHTML'));
+const safelyParseJsonContent = tryCatch(parseJsonContent, always({}));
 
 /**
  * Describes the structure of a descriptor that we work with in JS (as opposed to the DOM structure).
@@ -28,10 +34,10 @@ const parseJsonContent = o(unary(JSON.parse), prop('innerHTML'));
  * @type {Object.<string, Function>}
  */
 const elementTransformationsByKey = {
-	name: path(['dataset', 'unionWidget']),
+	widget: path(['dataset', 'unionWidget']),
 	container: path(['dataset', 'unionContainer']),
 	namespace: path(['dataset', 'unionNamespace']),
-	data: tryCatch(parseJsonContent, always({})),
+	data: safelyParseJsonContent,
 };
 
 const pairArrayWithDescriptorKeys = zipObj(keys(elementTransformationsByKey));
@@ -39,10 +45,19 @@ const pairArrayWithDescriptorKeys = zipObj(keys(elementTransformationsByKey));
 const pairArgsWithDescriptorKeys = unapply(pairArrayWithDescriptorKeys);
 const parseDescriptor = converge(pairArgsWithDescriptorKeys, values(elementTransformationsByKey));
 
-const getDescriptors = o(map(parseDescriptor), selectDescriptors);
+const getWidgetDescriptors = o(map(parseDescriptor), selectWidgetDescriptors);
+
+const getCommonData = compose(
+	reduce(mergeDeepRight, {}),
+	map(safelyParseJsonContent),
+	selectCommonDescriptors
+);
+
+const mergeCommonDataToConfigs = commonData =>
+	map(mergeDeepRight({ descriptor: { data: commonData } }));
 
 const loadConfigs = (routes, descriptors) => {
-	const findRouteByDescriptor = ({ name }) => find(whereEq({ path: name }), routes);
+	const findRouteByDescriptor = ({ widget }) => find(whereEq({ path: widget }), routes);
 
 	const pairDescriptorWithComponent = descriptor => component => ({
 		component,
@@ -69,7 +84,7 @@ const loadConfigs = (routes, descriptors) => {
  *											[{
  *												component,
  *												descriptor: {
- *													name,
+ *													widget,
  *													container,
  *  										 		namespace,
  *													data
@@ -78,14 +93,15 @@ const loadConfigs = (routes, descriptors) => {
  *
  */
 const scan = (routes, parent) => {
-	const descriptors = getDescriptors(parent);
+	const descriptors = getWidgetDescriptors(parent);
+	const commonData = getCommonData(parent);
 
 	validateDescriptorStructures(descriptors);
 	validateRoutesWithDescriptors(routes, descriptors);
 
-	const configs = loadConfigs(routes, descriptors);
+	const configPromises = loadConfigs(routes, descriptors);
 
-	return Promise.all(configs);
+	return Promise.all(configPromises).then(mergeCommonDataToConfigs(commonData));
 };
 
 export default scan;
