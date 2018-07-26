@@ -197,13 +197,13 @@ If you need to provide custom data to the instance of your widget, pass a valid 
 </script>
 ```
 
-**Data Widget**
+**Passing common data to all widgets**
 
-If you only need to provide data to other widgets in your application, there is no need to render anything.
+If you need to provide common data to all widgets in your application, use the `data-union-common` attribute. This data will be recursively merged with the JSON content of each widget descriptor.
 
 ```html
 <!-- Widget descriptor -->
-<script data-union-widget="my-widget" data-union-namespace="my-widget-namespace" type="application/json">
+<script data-union-common type="application/json">
 	{
 		"customField": "custom field",
 		"urls": {
