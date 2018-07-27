@@ -59,13 +59,17 @@ describe('<Union />', () => {
 		await mount(<mock.Union routes={routes} strictMode={false} onScanEnd={onScanEnd} />);
 		expect(onScanEnd).toHaveBeenCalledWith(scanResult);
 	});
-	it.only('should call onScanError when error happens in scan', async () => {
+	it('should call onScanError when error happens in scan', async () => {
 		jest.doMock('../../../scanning', () => () => {
 			throw 'error';
 		});
 		const Union = require('../Union').default;
 		const onScanError = jest.fn();
-		await mount(<Union routes={routes} strictMode={false} onScanError={onScanError} />);
+
+		expect(() =>
+			mount(<Union routes={routes} strictMode={false} onScanError={onScanError} />)
+		).toThrowError();
+
 		expect(onScanError).toHaveBeenCalledWith('error');
 	});
 	it('should run scan on did mount', async () => {
@@ -76,7 +80,7 @@ describe('<Union />', () => {
 	it('should set state with new config', async () => {
 		const mock = mockUnion();
 		const wrapper = await mount(<mock.Union routes={routes} strictMode={false} />);
-		expect(wrapper.state()).toEqual({ configs: scanResult });
+		expect(wrapper.state()).toEqual({ configs: scanResult, routes });
 	});
 	it('should render widget with props from config', async () => {
 		const mock = mockUnion();
