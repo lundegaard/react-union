@@ -72,7 +72,7 @@ class Union extends Component {
 		} catch (error) {
 			onScanError(error);
 
-			return [];
+			throw error;
 		}
 	};
 

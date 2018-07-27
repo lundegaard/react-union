@@ -1,15 +1,23 @@
 import o from 'ramda/src/o';
 import unary from 'ramda/src/unary';
-import tryCatch from 'ramda/src/tryCatch';
-import always from 'ramda/src/always';
 import { mergeDeepRightAll } from '../../utils';
 
 const dangerouslyParseJsonContent = o(unary(JSON.parse), wrapper => wrapper.html());
 
-const parseJsonContent = tryCatch(dangerouslyParseJsonContent, always({}));
+const parseJsonContent = wrapper => {
+	try {
+		return dangerouslyParseJsonContent(wrapper);
+	} catch (error) {
+		if (wrapper.html().trim()) {
+			throw error;
+		}
+
+		return {};
+	}
+};
 
 const parseDescriptor = wrapper => ({
-	name: wrapper.data('union-widget'),
+	widget: wrapper.data('union-widget'),
 	container: wrapper.data('union-container'),
 	namespace: wrapper.data('union-namespace'),
 	data: parseJsonContent(wrapper),

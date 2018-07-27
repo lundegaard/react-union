@@ -32,7 +32,7 @@ const mergeCommonDataToConfigs = commonData =>
 	map(mergeDeepRight({ descriptor: { data: commonData } }));
 
 const getConfigs = (routes, descriptors) => {
-	const findRouteByDescriptor = ({ name }) => find(whereEq({ path: name }), routes);
+	const findRouteByDescriptor = ({ widget }) => find(whereEq({ path: widget }), routes);
 	const findComponentByDescriptor = o(prop('component'), findRouteByDescriptor);
 
 	const findDescriptorConfig = descriptor => ({
@@ -48,12 +48,12 @@ const getConfigs = (routes, descriptors) => {
  *
  * @param  {Array} routes Route configurations.
  * @param  {Element} parent The root DOM element where to find the widget descriptors.
- * @return {Promise} Resolves with array of widget descriptors and corresponding component:
+ * @return {Array} Array of widget descriptors and corresponding component:
  *
  *											[{
  *												component,
  *												descriptor: {
- *													name,
+ *													widget,
  *													container,
  *  										 		namespace,
  *													data
@@ -63,7 +63,7 @@ const getConfigs = (routes, descriptors) => {
  */
 const scan = (routes, parentOr$) => {
 	const descriptors = getWidgetDescriptors(parentOr$);
-	const commonData = getCommonData(parent);
+	const commonData = getCommonData(parentOr$);
 
 	validateDescriptorStructures(descriptors);
 	validateRoutesWithDescriptors(routes, descriptors);

@@ -3,8 +3,6 @@ import unary from 'ramda/src/unary';
 import path from 'ramda/src/path';
 import prop from 'ramda/src/prop';
 import map from 'ramda/src/map';
-import tryCatch from 'ramda/src/tryCatch';
-import always from 'ramda/src/always';
 import applySpec from 'ramda/src/applySpec';
 import compose from 'ramda/src/compose';
 import { mergeDeepRightAll } from '../../utils';
@@ -14,10 +12,20 @@ const selectCommonDescriptorElements = parent => parent.querySelectorAll('[data-
 
 const dangerouslyParseJsonContent = o(unary(JSON.parse), prop('innerHTML'));
 
-const parseJsonContent = tryCatch(dangerouslyParseJsonContent, always({}));
+const parseJsonContent = element => {
+	try {
+		return dangerouslyParseJsonContent(element);
+	} catch (error) {
+		if (element.innerHTML.trim()) {
+			throw error;
+		}
+
+		return {};
+	}
+};
 
 const parseWidgetDescriptorElement = applySpec({
-	name: path(['dataset', 'unionWidget']),
+	widget: path(['dataset', 'unionWidget']),
 	container: path(['dataset', 'unionContainer']),
 	namespace: path(['dataset', 'unionNamespace']),
 	data: parseJsonContent,
