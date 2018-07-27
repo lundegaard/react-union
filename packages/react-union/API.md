@@ -214,6 +214,8 @@ If you need to provide common data to all widgets in your application, use the `
 </script>
 ```
 
+_NOTE:_ You can provide multiple common data descriptors to React-union, but it is discouraged if you don't have control over their order in the portal or CMS.
+
 ## Route
 
 An object that is used for pairing a widget descriptor with a React widget.
