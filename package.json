@@ -87,6 +87,7 @@
       "packages/react-union/dist",
       "packages/react-union/lib"
     ],
-    "setupTestFrameworkScriptFile": "<rootDir>/testsSetup.js"
+    "setupTestFrameworkScriptFile": "<rootDir>/testsSetup.js",
+    "testURL": "http://localhost/"
   }
 }
