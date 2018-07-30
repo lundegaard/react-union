@@ -16,7 +16,8 @@ const DEFAULT_APP_PATTERN = 'union-app';
 const BUILD_FOLDER = 'build';
 const PUBLIC_FOLDER = 'public';
 const SRC_FOLDER = 'src';
-const INDEX_FOLDER = 'index';
+const INDEX_FILE = 'index';
+const SSR_INDEX_FILE = 'index.ssr';
 const APPS_FOLDER = 'apps';
 
 const UNION_CONFIG_PATH = path.resolve(process.cwd(), './union.config.js');
@@ -92,7 +93,9 @@ const defaultUniRepoPaths = config => ({
 	// directory for resources and template
 	public: path.resolve(process.cwd(), PUBLIC_FOLDER, config.name),
 	// path entry of the app
-	index: path.resolve(DEFAULT_UNI_REPO_APP_DIR, config.name, INDEX_FOLDER),
+	index: path.resolve(DEFAULT_UNI_REPO_APP_DIR, config.name, INDEX_FILE),
+	// path entry of the app SSR handler
+	ssrIndex: path.resolve(DEFAULT_UNI_REPO_APP_DIR, config.name, SSR_INDEX_FILE),
 });
 
 const defaultMonoRepoPaths = config => {
@@ -100,7 +103,8 @@ const defaultMonoRepoPaths = config => {
 	return {
 		build: path.resolve(process.cwd(), BUILD_FOLDER, config.name),
 		public: path.resolve(process.cwd(), appPath, PUBLIC_FOLDER),
-		index: path.resolve(process.cwd(), appPath, SRC_FOLDER, INDEX_FOLDER),
+		index: path.resolve(process.cwd(), appPath, SRC_FOLDER, INDEX_FILE),
+		ssrIndex: path.resolve(process.cwd(), appPath, SRC_FOLDER, SSR_INDEX_FILE),
 	};
 };
 
