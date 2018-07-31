@@ -1,3 +1,5 @@
+const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
+
 const loadBabel = include => () => ({
 	module: {
 		rules: [
@@ -10,48 +12,33 @@ const loadBabel = include => () => ({
 	},
 });
 
-const loadScss = include => debug => ({
+const loadCss = include => (debug, ssr) => ({
 	module: {
 		rules: [
 			{
-				test: /\.scss$/,
+				test: /\.s?css$/,
 				include,
 				use: [
-					require.resolve('style-loader'),
+					...(ssr ? [] : [ExtractCssChunks.loader]),
 					{
-						loader: require.resolve('css-loader'),
+						loader: require.resolve(`css-loader${ssr ? '/locals' : ''}`),
 						options: {
-							importLoaders: 1,
 							minimize: true,
 							sourceMap: debug,
+							modules: true,
+							localIdentName: '[name]__[local]--[hash:base64:5]',
 						},
 					},
 					{
 						loader: require.resolve('resolve-url-loader'),
-						options: {
-							// always true - needed for sass-loader
-							sourceMap: true,
-						},
 					},
 					{
 						loader: require.resolve('sass-loader'),
 						options: {
-							sourceMap: debug,
+							sourceMap: true,
 						},
 					},
 				],
-			},
-		],
-	},
-});
-
-const loadCss = include => () => ({
-	module: {
-		rules: [
-			{
-				test: /\.css$/,
-				include,
-				use: [require.resolve('style-loader'), require.resolve('css-loader')],
 			},
 		],
 	},
@@ -98,7 +85,6 @@ const loadFiles = include => ({ outputMapper }) => ({
 module.exports = {
 	loadBabel,
 	loadCss,
-	loadScss,
 	loadImages,
 	loadFiles,
 };

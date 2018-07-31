@@ -51,6 +51,7 @@ const DEFAULT_UNION_CONFIG = {
 	},
 	outputMapper: {
 		js: 'static/js',
+		css: 'static/css',
 		media: 'static/media',
 		index: 'index.html',
 	},

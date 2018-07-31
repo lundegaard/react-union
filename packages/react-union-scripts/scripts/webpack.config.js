@@ -25,6 +25,7 @@ const {
 	uglifyJsPlugin,
 	cleanPlugin,
 	limitChunkCountPlugin,
+	extractCssChunksPlugin,
 } = require('./webpack/plugins.parts');
 const { resolve, optimization, performanceHints, context } = require('./webpack/common.parts');
 
@@ -85,15 +86,7 @@ const getPackagesPath = R.useWith(R.filter, [
 ]);
 
 const getWebpackConfig_ = (config, ssr) => {
-	const {
-		paths,
-		name: appName,
-		proxy,
-		generateTemplate,
-		publicPath,
-		outputMapper,
-		mergeWebpackConfig,
-	} = config;
+	const { paths, proxy, generateTemplate, publicPath, outputMapper, mergeWebpackConfig } = config;
 
 	// TODO: maybe early return if SSR index file does not exist
 
@@ -110,8 +103,7 @@ const getWebpackConfig_ = (config, ssr) => {
 
 	const loadersForMonoRepo = () => getPackagesPathForSuffix('src');
 
-	// eslint-disable-next-line no-unused-vars
-	const { loadBabel, loadCss, loadScss, loadImages, loadFiles } = addPathsToLoaders(
+	const { loadBabel, loadCss, loadImages, loadFiles } = addPathsToLoaders(
 		isMonoRepo ? loadersForMonoRepo() : loadersForUniRepo()
 	);
 
@@ -146,37 +138,31 @@ const getWebpackConfig_ = (config, ssr) => {
 			},
 		},
 		loadBabel(),
-		// loadCss(),
-		// loadScss(cli.debug),
+		loadCss(cli.debug, ssr),
 		loadImages(config),
 		loadFiles(config),
 		definePlugin(createGlobals(ssr)),
 		resolve(isMonoRepo ? monoRepoResolve() : uniRepoResolve()),
 		context(),
 		performanceHints(),
-		mergeWhen(cli.analyze, analyzeBundlePlugin),
-		manifestPlugin()
+		mergeWhen(cli.analyze, analyzeBundlePlugin)
 	);
 
-	const serverWebpack = () =>
+	const clientConfig = () =>
 		merge(
 			commonConfig,
 			{
-				target: 'node',
-				output: {
-					path: path.join(path.resolve(outputPath), '.ssr'),
-					filename: `${appName}.js`,
-					libraryTarget: 'umd',
-				},
+				name: 'client',
 			},
-			limitChunkCountPlugin()
+			optimization(),
+			cleanPlugin(config),
+			extractCssChunksPlugin(cli.debug, hmr, outputMapper.css),
+			manifestPlugin()
 		);
 
-	const clientWebpack = () => merge(commonConfig, cleanPlugin(config), optimization());
-
-	const devWebpack = () =>
+	const clientDevelopmentConfig = () =>
 		merge(
-			clientWebpack(),
+			clientConfig(),
 			loaderOptionsPlugin(true),
 			mergeWhen(hmr, hmrPlugin),
 			mergeWhen(generateTemplate, htmlPlugin, config, outputPath),
@@ -185,14 +171,28 @@ const getWebpackConfig_ = (config, ssr) => {
 			}
 		);
 
-	const prodWebpack = () => merge(clientWebpack(), uglifyJsPlugin(cli.verbose));
+	const clientProductionConfig = () => merge(clientConfig(), uglifyJsPlugin(cli.verbose));
+
+	const serverConfig = () =>
+		merge(
+			commonConfig,
+			{
+				name: 'server',
+				target: 'node',
+				output: {
+					path: path.join(path.resolve(outputPath), '.ssr'),
+					filename: 'main.js',
+					libraryTarget: 'umd',
+				},
+			},
+			limitChunkCountPlugin()
+		);
 
 	if (ssr) {
-		return mergeWebpackConfig(serverWebpack(), ssr);
+		return mergeWebpackConfig(serverConfig(), ssr);
 	}
 
-	const webpackConfig = cli.debug ? devWebpack() : prodWebpack();
-	return mergeWebpackConfig(webpackConfig, ssr);
+	return mergeWebpackConfig(cli.debug ? clientDevelopmentConfig() : clientProductionConfig(), ssr);
 };
 
 const getWebpackConfigPair_ = config => [
