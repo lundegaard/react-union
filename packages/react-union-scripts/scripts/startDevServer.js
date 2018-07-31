@@ -49,7 +49,7 @@ function startDevServer() {
 		'You can start DEV Sever only for one module at the same time.'
 	);
 
-	const webpackConfig = configs[0];
+	const webpackConfig = configs[0][0];
 	const unionConfig = getAppConfig();
 
 	invariant(!cli.proxy || unionConfig.proxy.port, "Missing 'port' for proxy in your union.config.");

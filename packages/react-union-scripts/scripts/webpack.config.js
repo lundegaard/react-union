@@ -12,7 +12,6 @@ const {
 	getAllWorkspacesWithFullPathSuffixed,
 	getAppPackageJSON,
 	resolveWorkspacesPackagePattern,
-	readPackagesJSONOnPathsTransducer,
 	readAllNonUnionPackages,
 } = require('./lib/fs');
 const loaders = require('./webpack/loaders.parts');
@@ -25,8 +24,9 @@ const {
 	analyzeBundlePlugin,
 	uglifyJsPlugin,
 	cleanPlugin,
+	limitChunkCountPlugin,
 } = require('./webpack/plugins.parts');
-const { resolve, vendorBundle, performanceHints, context } = require('./webpack/common.parts');
+const { resolve, optimization, performanceHints, context } = require('./webpack/common.parts');
 
 const dependenciesP = R.prop('dependencies');
 
@@ -42,12 +42,18 @@ if (cli.proxy) {
 
 console.log(`Optimizing for ${buildMode} mode.`);
 
-const GLOBALS = {
+const createGlobals = ssr => ({
 	__DEV__: cli.debug, //  alias for `process.env.NODE_ENV === 'development'
-	'process.env.BROWSER': true,
+	'process.env.BROWSER': ssr,
 	'process.env.BABEL_ENV': buildModeString,
 	'process.env.NODE_ENV': buildModeString,
-};
+	...(ssr
+		? {
+				window: {},
+				document: {},
+		  }
+		: {}),
+});
 
 const nodeModulesPath = resolveSymlink(process.cwd(), './node_modules');
 const isNotJsLoader = R_.notInclude([loaders.loadBabel, loaders.loadAsyncModules]);
@@ -78,17 +84,18 @@ const getPackagesPath = R.useWith(R.filter, [
 	getAllWorkspacesWithFullPathSuffixed,
 ]);
 
-const getWebpackConfig_ = config => {
+const getWebpackConfig_ = (config, ssr) => {
 	const {
 		paths,
 		name: appName,
 		proxy,
 		generateTemplate,
-		generateVendorBundle,
 		publicPath,
 		outputMapper,
 		mergeWebpackConfig,
 	} = config;
+
+	// TODO: maybe early return if SSR index file does not exist
 
 	const getPackagesPathForSuffix = getPackagesPath(config);
 
@@ -103,24 +110,10 @@ const getWebpackConfig_ = config => {
 
 	const loadersForMonoRepo = () => getPackagesPathForSuffix('src');
 
+	// eslint-disable-next-line no-unused-vars
 	const { loadBabel, loadCss, loadScss, loadImages, loadFiles } = addPathsToLoaders(
 		isMonoRepo ? loadersForMonoRepo() : loadersForUniRepo()
 	);
-
-	const uniRepoDeps = () => require(resolveSymlink(process.cwd(), './package.json')).dependencies;
-	// TODO consider only adding deps that are intersect across the widgets and apps
-	const monoRepoDeps = () =>
-		R.pipe(
-			R.into(
-				[],
-				R.compose(
-					R.filter(R.either(R.contains(appName), getUsedPackagesForApp(config))),
-					readPackagesJSONOnPathsTransducer,
-					R.map(dependenciesP)
-				)
-			),
-			R.mergeAll
-		)(getAllWorkspacesWithFullPathSuffixed('package.json'));
 
 	const uniRepoResolve = () => [
 		path.resolve(__dirname, '../node_modules'),
@@ -138,13 +131,11 @@ const getWebpackConfig_ = config => {
 	const commonConfig = merge(
 		{ mode: buildMode },
 		{
-			entry: {
-				[appName]: [
-					require.resolve('babel-polyfill'),
-					...(hmr ? [require.resolve('webpack-hot-middleware/client')] : []),
-					paths.index,
-				],
-			},
+			entry: [
+				...(ssr ? [] : [require.resolve('babel-polyfill')]),
+				...(hmr ? [require.resolve('webpack-hot-middleware/client')] : []),
+				...(ssr ? [paths.ssrIndex] : [paths.index]),
+			],
 			output: {
 				path: path.resolve(outputPath),
 				filename: `${outputMapper.js}/${outputFilename}`,
@@ -155,28 +146,37 @@ const getWebpackConfig_ = config => {
 			},
 		},
 		loadBabel(),
-		loadCss(),
-		loadScss(cli.debug),
+		// loadCss(),
+		// loadScss(cli.debug),
 		loadImages(config),
 		loadFiles(config),
-		definePlugin(GLOBALS),
-		cleanPlugin(config),
+		definePlugin(createGlobals(ssr)),
 		resolve(isMonoRepo ? monoRepoResolve() : uniRepoResolve()),
 		context(),
-		performanceHints,
+		performanceHints(),
 		mergeWhen(cli.analyze, analyzeBundlePlugin),
-		mergeWhen(
-			generateVendorBundle,
-			vendorBundle,
-			config,
-			isMonoRepo ? monoRepoDeps() : uniRepoDeps()
-		),
 		manifestPlugin()
 	);
 
-	const devWebpack = () =>
+	const serverWebpack = () =>
 		merge(
 			commonConfig,
+			{
+				target: 'node',
+				output: {
+					path: path.join(path.resolve(outputPath), '.ssr'),
+					filename: `${appName}.js`,
+					libraryTarget: 'umd',
+				},
+			},
+			limitChunkCountPlugin()
+		);
+
+	const clientWebpack = () => merge(commonConfig, cleanPlugin(config), optimization());
+
+	const devWebpack = () =>
+		merge(
+			clientWebpack(),
 			loaderOptionsPlugin(true),
 			mergeWhen(hmr, hmrPlugin),
 			mergeWhen(generateTemplate, htmlPlugin, config, outputPath),
@@ -185,19 +185,29 @@ const getWebpackConfig_ = config => {
 			}
 		);
 
-	const prodWebpack = () => merge(commonConfig, uglifyJsPlugin(cli.verbose));
+	const prodWebpack = () => merge(clientWebpack(), uglifyJsPlugin(cli.verbose));
 
-	return mergeWebpackConfig(cli.debug ? devWebpack() : prodWebpack());
+	if (ssr) {
+		return mergeWebpackConfig(serverWebpack(), ssr);
+	}
+
+	const webpackConfig = cli.debug ? devWebpack() : prodWebpack();
+	return mergeWebpackConfig(webpackConfig, ssr);
 };
+
+const getWebpackConfigPair_ = config => [
+	getWebpackConfig_(config, false),
+	getWebpackConfig_(config, true),
+];
 
 const buildSingle_ = () => {
 	const config = getAppConfig();
 	invariant(config, `Missing configuration for the app called '${cli.app}'.`);
 
-	return [getWebpackConfig_(config)];
+	return [getWebpackConfigPair_(config)];
 };
 
-const buildAll_ = () => getUnionConfig().map(getWebpackConfig_);
+const buildAll_ = () => getUnionConfig().map(getWebpackConfigPair_);
 
 /**
  * If building from root directory all modules in `union.config.js` are built.

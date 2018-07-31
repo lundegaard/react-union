@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "babel-eslint": "8.0.1",
+    "babel-plugin-universal-import": "3.0.0",
     "babel-preset-react": "6.23.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
@@ -34,8 +35,9 @@
     "react-union-scripts": "^0.5.5"
   },
   "scripts": {
-    "build": "react-union-scripts build",
+    "build": "react-union-scripts build --release",
     "start": "react-union-scripts start --app SampleApp",
+    "start:ssr-server": "react-union-scripts start-ssr-server --app SampleApp --verbose",
     "test": "react-union-scripts test",
     "lint": "yarn lint:eslint",
     "lint:eslint": "eslint --ext .js ./",

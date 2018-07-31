@@ -39,10 +39,6 @@ class Union extends Component {
 		 */
 		parent: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
 		/**
-		 * Called instead of the default `createPortal` function.
-		 */
-		renderWidget: PropTypes.func,
-		/**
 		 * Array of routes that are supported by your application.
 		 */
 		routes: PropTypes.arrayOf(PropTypes.shape(RouteShape)).isRequired,
@@ -53,6 +49,7 @@ class Union extends Component {
 	};
 
 	static defaultProps = {
+		isServer: false,
 		onScanEnd: noop,
 		onScanError: noop,
 		onScanStart: noop,
@@ -100,8 +97,8 @@ class Union extends Component {
 
 	renderWidget = config => (
 		<Widget
+			isServer={this.props.isServer}
 			key={config.descriptor.namespace || config.descriptor.container}
-			render={this.props.renderWidget}
 			{...config}
 		/>
 	);

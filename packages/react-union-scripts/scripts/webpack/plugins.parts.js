@@ -68,6 +68,14 @@ const uglifyJsPlugin = verbose => ({
 	},
 });
 
+const limitChunkCountPlugin = () => ({
+	plugins: [
+		new webpack.optimize.LimitChunkCountPlugin({
+			maxChunks: 1,
+		}),
+	],
+});
+
 module.exports = {
 	loaderOptionsPlugin,
 	definePlugin,
@@ -77,4 +85,5 @@ module.exports = {
 	analyzeBundlePlugin,
 	uglifyJsPlugin,
 	cleanPlugin,
+	limitChunkCountPlugin,
 };

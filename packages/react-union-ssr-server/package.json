@@ -1,0 +1,23 @@
+{
+  "name": "react-union-ssr-server",
+  "version": "0.1.0",
+  "description": "Server-side rendering for React-union",
+  "main": "src/index.js",
+  "repository": "https://github.com/lundegaard/react-union",
+  "contributors": [
+    "Vaclav Jancarik <vaclav.jancarik@lundegaard.eu>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "1.0.0-rc.2",
+    "koa": "2.5.1",
+    "koa-bodyparser": "4.2.1",
+    "react": "16.4.1",
+    "react-dom": "16.4.1",
+    "react-union": "^0.4.0",
+    "webpack-flush-chunks": "2.0.1"
+  },
+  "peerDependencies": {
+    "react-universal-component": "^3.0.0"
+  }
+}

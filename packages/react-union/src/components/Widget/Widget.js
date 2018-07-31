@@ -14,7 +14,7 @@ import { WidgetContext } from '../../contexts';
  * Provides context to the `component` with widget descriptor information.
  *
  */
-export const Widget = ({ component: WidgetComponent, descriptor, render }) => {
+export const Widget = ({ component: WidgetComponent, descriptor, isServer }) => {
 	const { widget, container, namespace, data } = descriptor;
 	const resolvedNamespace = namespace || container;
 
@@ -31,8 +31,8 @@ export const Widget = ({ component: WidgetComponent, descriptor, render }) => {
 		</WidgetContext.Provider>
 	);
 
-	if (render) {
-		return render(widgetElement, container);
+	if (isServer) {
+		return <div data-union-portal={container}>{widgetElement}</div>;
 	}
 
 	const domElement = document.getElementById(container);
@@ -43,7 +43,7 @@ export const Widget = ({ component: WidgetComponent, descriptor, render }) => {
 
 Widget.propTypes = {
 	...ConfigShape,
-	render: PropTypes.func,
+	isServer: PropTypes.bool.isRequired,
 };
 
 export default withErrorBoundary(Widget);
