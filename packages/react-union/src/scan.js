@@ -74,23 +74,16 @@ const loadConfigs = (routes, descriptors) => {
 	return map(loadDescriptorConfig, descriptors);
 };
 
+const addCommonDataProperty = commonData => configs => ({ commonData, configs });
+
 /**
  * Finds widget descriptors in `parent` and pairs them with components returned by correspoding `routes`.
  *
  * @param  {Array} routes Route configurations.
  * @param  {Element} parent The root DOM element where to find the widget descriptors.
- * @return {Promise} Resolves with array of widget descriptors and corresponding component:
- *
- *											[{
- *												component,
- *												descriptor: {
- *													widget,
- *													container,
- *  										 		namespace,
- *													data
- * 												}
- * 											}, ...]
- *
+ * @return {Object} The object has two properties: `configs` and `commonData`.
+ * 									`configs` is an array of object with `component` and `descriptor` properties.
+ *									`commonData` is the merged JSON content of common widget descriptors.
  */
 const scan = (routes, parent) => {
 	const descriptors = getWidgetDescriptors(parent);
@@ -101,7 +94,9 @@ const scan = (routes, parent) => {
 
 	const configPromises = loadConfigs(routes, descriptors);
 
-	return Promise.all(configPromises).then(mergeCommonDataToConfigs(commonData));
+	return Promise.all(configPromises)
+		.then(mergeCommonDataToConfigs(commonData))
+		.then(addCommonDataProperty(commonData));
 };
 
 export default scan;

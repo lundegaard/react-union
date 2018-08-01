@@ -216,6 +216,8 @@ If you need to provide common data to all widgets in your application, use the `
 
 _NOTE:_ You can provide multiple common data descriptors to React-union, but it is discouraged if you don't have control over their order in the portal or CMS.
 
+This data will also be available under the `rawCommonData` property in `WidgetContext` as well as the `props` passed to the widget. Note that you should try to use `data` instead of `rawCommonData` as much as possible to allow for widget-specific overriding. The `rawCommonData` prop is made available for convenient application-wide configuration which depends on this data, such as HTTP headers for Redux-based AJAX.
+
 ## Route
 
 An object that is used for pairing a widget descriptor with a React widget.

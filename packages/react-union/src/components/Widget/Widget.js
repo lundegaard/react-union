@@ -4,8 +4,7 @@ import { createPortal } from 'react-dom';
 import { warning, invariant } from '../../utils';
 import { ConfigShape } from '../../shapes';
 import { withErrorBoundary } from '../../decorators';
-
-import WidgetProvider from '../WidgetProvider';
+import { WidgetContext } from '../../contexts';
 
 /**
  * An internal component of `Union`.
@@ -13,9 +12,8 @@ import WidgetProvider from '../WidgetProvider';
  * It renders a widget based on `descriptor` and `component` using React portals.
  * Provides context to the `component` with widget descriptor information.
  *
- * @see WidgetProvider
  */
-const Widget = ({ component: WidgetComponent, descriptor }) => {
+const Widget = ({ commonData, component: WidgetComponent, descriptor }) => {
 	const { widget, container, namespace, data } = descriptor;
 	const resolvedNamespace = namespace || container;
 
@@ -24,16 +22,23 @@ const Widget = ({ component: WidgetComponent, descriptor }) => {
 		`Missing attribute "container" for the widget "${widget}" to be rendered.`
 	);
 
-	const widgetProps = { namespace: resolvedNamespace, data };
+	const widgetProps = {
+		data,
+		namespace: resolvedNamespace,
+		// NOTE: prop renamed to discourage use in widget source code
+		// people should `data` instead to allow for widget-specific overriding
+		rawCommonData: commonData,
+	};
+
 	const element = document.getElementById(container);
 
 	warning(element, `HTML element with ID "${container}" not found for widget "${widget}"`);
 
 	return WidgetComponent && element
 		? createPortal(
-				<WidgetProvider {...widgetProps}>
+				<WidgetContext.Provider value={widgetProps}>
 					<WidgetComponent {...widgetProps} />
-				</WidgetProvider>,
+				</WidgetContext.Provider>,
 				element
 		  )
 		: null;

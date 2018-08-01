@@ -22,17 +22,20 @@ const routes = [
 	},
 ];
 
-const scanResult = [
-	{
-		component: DummyComponent,
-		descriptor: {
-			container: 'hero',
-			widget: 'hero',
-			data: {},
-			namespace: undefined,
+const scanResult = {
+	commonData: {},
+	configs: [
+		{
+			component: DummyComponent,
+			descriptor: {
+				container: 'hero',
+				widget: 'hero',
+				data: {},
+				namespace: undefined,
+			},
 		},
-	},
-];
+	],
+};
 
 const mockUnion = (res = Promise.resolve(scanResult)) => {
 	const scanFn = jest.fn(() => res);
@@ -60,7 +63,7 @@ describe('<Union />', () => {
 		const onScanEnd = jest.fn();
 		const mock = mockUnion();
 		await mount(<mock.Union routes={routes} strictMode={false} onScanEnd={onScanEnd} />);
-		expect(onScanEnd).toHaveBeenCalledWith(scanResult);
+		expect(onScanEnd).toHaveBeenCalledWith(scanResult.configs, scanResult.commonData);
 	});
 	it('should call onScanError when error happens in scan', async () => {
 		const mock = mockUnion(Promise.reject('error'));
@@ -76,11 +79,14 @@ describe('<Union />', () => {
 	it('should set state with new config', async () => {
 		const mock = mockUnion();
 		const wrapper = await mount(<mock.Union routes={routes} strictMode={false} />);
-		expect(wrapper.state()).toEqual({ configs: scanResult });
+		expect(wrapper.state()).toEqual(scanResult);
 	});
 	it('should render widget with props from config', async () => {
 		const mock = mockUnion();
 		await mount(<mock.Union routes={routes} strictMode={false} />);
-		expect(mockWidget).toHaveBeenCalledWith(scanResult[0]);
+		expect(mockWidget).toHaveBeenCalledWith({
+			...scanResult.configs[0],
+			commonData: scanResult.commonData,
+		});
 	});
 });
