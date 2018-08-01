@@ -26,7 +26,7 @@ const Widget = ({ commonData, component: WidgetComponent, descriptor }) => {
 		data,
 		namespace: resolvedNamespace,
 		// NOTE: prop renamed to discourage use in widget source code
-		// people should `data` instead to allow for widget-specific overriding
+		// people should use `data` instead to allow for widget-specific overriding
 		rawCommonData: commonData,
 	};
 
