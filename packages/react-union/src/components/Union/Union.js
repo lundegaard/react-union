@@ -53,6 +53,7 @@ class Union extends Component {
 
 	state = {
 		configs: [],
+		commonData: null,
 	};
 
 	componentDidMount() {
@@ -73,16 +74,20 @@ class Union extends Component {
 		const domParent = parent || document.body;
 
 		scan(routes, domParent).then(
-			configs => {
-				onScanEnd(configs);
-				this.setState({ configs });
+			({ configs, commonData }) => {
+				onScanEnd(configs, commonData);
+				this.setState({ configs, commonData });
 			},
 			error => onScanError(error)
 		);
 	};
 
 	renderWidget = config => (
-		<Widget key={config.descriptor.namespace || config.descriptor.container} {...config} />
+		<Widget
+			commonData={this.state.commonData}
+			key={config.descriptor.namespace || config.descriptor.container}
+			{...config}
+		/>
 	);
 
 	resolveStrictMode = union => (this.props.strictMode ? <StrictMode>{union}</StrictMode> : union);
