@@ -70,13 +70,13 @@ const scan = (routes, parentOr$) => {
 	validateDescriptorStructures(descriptors);
 	validateRoutesWithDescriptors(routes, descriptors);
 
-	const getConfigsWithCommonData = compose(
+	const getScanningResult = compose(
 		pairCommonDataWithConfigs(commonData),
 		mergeCommonDataToConfigs(commonData),
 		getConfigs
 	);
 
-	return getConfigsWithCommonData(routes, descriptors);
+	return getScanningResult(routes, descriptors);
 };
 
 export default scan;
