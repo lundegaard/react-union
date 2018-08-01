@@ -63,7 +63,7 @@ describe('<Union />', () => {
 		const onScanEnd = jest.fn();
 		const mock = mockUnion();
 		await mount(<mock.Union routes={routes} strictMode={false} onScanEnd={onScanEnd} />);
-		expect(onScanEnd).toHaveBeenCalledWith(scanResult.configs, scanResult.commonData);
+		expect(onScanEnd).toHaveBeenCalledWith(scanResult);
 	});
 	it('should call onScanError when error happens in scan', async () => {
 		const mock = mockUnion(Promise.reject('error'));
@@ -84,9 +84,6 @@ describe('<Union />', () => {
 	it('should render widget with props from config', async () => {
 		const mock = mockUnion();
 		await mount(<mock.Union routes={routes} strictMode={false} />);
-		expect(mockWidget).toHaveBeenCalledWith({
-			...scanResult.configs[0],
-			commonData: scanResult.commonData,
-		});
+		expect(mockWidget).toHaveBeenCalledWith(scanResult.configs[0]);
 	});
 });
