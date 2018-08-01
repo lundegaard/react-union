@@ -24,7 +24,7 @@ const createDocument = (data = '', additionalStuff = '') => {
 
 describe('scan', () => {
 	it('should get descriptor for hero route', async () => {
-		const descriptor = await scan(
+		const { configs } = await scan(
 			[
 				{
 					path: 'hero',
@@ -33,7 +33,7 @@ describe('scan', () => {
 			],
 			createDocument().body
 		);
-		expect(descriptor[0].descriptor).toEqual({
+		expect(configs[0].descriptor).toEqual({
 			container: 'hero',
 			data: {},
 			widget: 'hero',
@@ -41,7 +41,7 @@ describe('scan', () => {
 		});
 	});
 	it('should get parsed data for descriptor', async () => {
-		const descriptor = await scan(
+		const { configs } = await scan(
 			[
 				{
 					path: 'hero',
@@ -50,11 +50,11 @@ describe('scan', () => {
 			],
 			createDocument('{ "foo": "bar"}').body
 		);
-		expect(descriptor[0].descriptor.data).toEqual({ foo: 'bar' });
+		expect(configs[0].descriptor.data).toEqual({ foo: 'bar' });
 	});
 	it('should get resolved component from descriptor', async () => {
 		const DummyComponent = () => <div />;
-		const descriptor = await scan(
+		const { configs } = await scan(
 			[
 				{
 					path: 'hero',
@@ -63,7 +63,7 @@ describe('scan', () => {
 			],
 			createDocument('{ "foo": "bar"}').body
 		);
-		expect(descriptor[0].component).toBe(DummyComponent);
+		expect(configs[0].component).toBe(DummyComponent);
 	});
 	it('should throw error when some descriptor is not in routes', () => {
 		const DummyComponent = () => <div />;

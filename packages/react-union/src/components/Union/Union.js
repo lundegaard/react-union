@@ -65,10 +65,10 @@ class Union extends Component {
 
 		try {
 			onScanStart();
-			const configs = scan(routes, parent);
-			onScanEnd(configs);
+			const scanningResult = scan(routes, parent);
+			onScanEnd(scanningResult);
 
-			return configs;
+			return scanningResult;
 		} catch (error) {
 			onScanError(error);
 
@@ -79,7 +79,7 @@ class Union extends Component {
 	static getDerivedStateFromProps(nextProps, prevState) {
 		if (prevState.routes !== nextProps.routes) {
 			return {
-				configs: Union.scan(nextProps),
+				...Union.scan(nextProps),
 				routes: nextProps.routes,
 			};
 		}
@@ -88,16 +88,14 @@ class Union extends Component {
 	}
 
 	state = {
-		configs: this.props.isServer ? Union.scan(this.props) : [],
+		...(this.props.isServer ? Union.scan(this.props) : { commonData: {}, configs: [] }),
 		routes: this.props.routes,
 	};
 
 	componentDidMount() {
 		// NOTE: This is not wrong. We need to initialize the scanning after the component mounts.
 		// eslint-disable-next-line react/no-did-mount-set-state
-		this.setState({
-			configs: Union.scan(this.props),
-		});
+		this.setState(Union.scan(this.props));
 	}
 
 	renderWidget = config => (

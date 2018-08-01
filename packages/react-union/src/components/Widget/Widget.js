@@ -12,6 +12,7 @@ import { WidgetContext } from '../../contexts';
  *
  * It renders a widget based on `descriptor` and `component` using React portals.
  * Provides context to the `component` with widget descriptor information.
+ *
  */
 export const Widget = ({ component: WidgetComponent, descriptor, render }) => {
 	const { widget, container, namespace, data } = descriptor;
@@ -22,7 +23,7 @@ export const Widget = ({ component: WidgetComponent, descriptor, render }) => {
 		`Missing attribute "container" for the widget "${widget}" to be rendered.`
 	);
 
-	const widgetProps = { namespace: resolvedNamespace, data };
+	const widgetProps = { data, namespace: resolvedNamespace };
 
 	const widgetElement = (
 		<WidgetContext.Provider value={widgetProps}>

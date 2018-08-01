@@ -4,7 +4,7 @@ import { WidgetContext } from '../../contexts';
 import { getDisplayName } from '../../utils';
 
 /**
- * HOC which adds the `namespace` and `data` props to passed component.
+ * HOC which spreads the surrounding WidgetContext's value to passed component.
  *
  * @param {React.Component} NextComponent component to bind the props to
  */

@@ -43,6 +43,8 @@ const getConfigs = (routes, descriptors) => {
 	return map(findDescriptorConfig, descriptors);
 };
 
+const pairCommonDataWithConfigs = commonData => configs => ({ commonData, configs });
+
 /**
  * Finds widget descriptors in `parent` and pairs them with components returned by correspoding `routes`.
  *
@@ -69,6 +71,7 @@ const scan = (routes, parentOr$) => {
 	validateRoutesWithDescriptors(routes, descriptors);
 
 	const getConfigsWithCommonData = compose(
+		pairCommonDataWithConfigs(commonData),
 		mergeCommonDataToConfigs(commonData),
 		getConfigs
 	);
