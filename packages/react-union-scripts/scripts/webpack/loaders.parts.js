@@ -1,27 +1,3 @@
-const { resolveAsyncSuffix } = require('../lib/utils');
-
-const loadAsyncModules = include => ({ asyncSuffix }) => ({
-	module: {
-		rules: [
-			{
-				test: resolveAsyncSuffix(asyncSuffix),
-				include,
-				exclude: /node_modules/,
-				use: [
-					require.resolve('babel-loader'),
-					{
-						loader: require.resolve('bundle-loader'),
-						options: {
-							lazy: true,
-							name: '[name]',
-						},
-					},
-				],
-			},
-		],
-	},
-});
-
 const loadBabel = include => () => ({
 	module: {
 		rules: [
@@ -120,7 +96,6 @@ const loadFiles = include => ({ outputMapper }) => ({
 });
 
 module.exports = {
-	loadAsyncModules,
 	loadBabel,
 	loadCss,
 	loadScss,

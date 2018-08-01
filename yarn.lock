@@ -1686,12 +1686,6 @@ builtin-status-codes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
 
-bundle-loader@0.5.6:
-  version "0.5.6"
-  resolved "https://registry.yarnpkg.com/bundle-loader/-/bundle-loader-0.5.6.tgz#6c9042e62f1c89941458805a3a479d10f34c71fd"
-  dependencies:
-    loader-utils "^1.1.0"
-
 byline@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/byline/-/byline-5.0.0.tgz#741c5216468eadc457b03410118ad77de8c1ddb1"
@@ -4173,7 +4167,7 @@ hoek@2.x.x:
   version "2.16.3"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
 
-hoist-non-react-statics@^2.5.0:
+hoist-non-react-statics@^2.2.1, hoist-non-react-statics@^2.5.0:
   version "2.5.5"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
 
@@ -7299,6 +7293,13 @@ react-test-renderer@^16.0.0-0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
     react-is "^16.4.1"
+
+react-universal-component@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-universal-component/-/react-universal-component-3.0.0.tgz#62fc71f314b625a9f8ec9dda310402e669211a8f"
+  dependencies:
+    hoist-non-react-statics "^2.2.1"
+    prop-types "^15.5.10"
 
 react@16.4.1, react@^16.4.1:
   version "16.4.1"

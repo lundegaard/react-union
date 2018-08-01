@@ -3,7 +3,7 @@ import React, { Component, StrictMode, Fragment } from 'react';
 
 import { noop } from '../../utils';
 import { RouteShape } from '../../shapes';
-import scan from '../../scan';
+import scan from '../../scanning';
 
 import Widget from '../Widget';
 
@@ -19,6 +19,10 @@ class Union extends Component {
 		 */
 		children: PropTypes.node,
 		/**
+		 * If true, the scanning will begin in the constructor instead of `componentDidMount`.
+		 */
+		isServer: PropTypes.bool,
+		/**
 		 * Called after the scan of the HTML is done.
 		 */
 		onScanEnd: PropTypes.func,
@@ -31,11 +35,15 @@ class Union extends Component {
 		 */
 		onScanStart: PropTypes.func,
 		/**
-		 * Element in which the scan is running. By default `document.body`.
+		 * HTML element or Cheerio wrapper in which the scan is running. By default `document.body`.
 		 */
-		parent: PropTypes.object,
+		parent: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
 		/**
-		 *  Array of routes that are supported by your application.
+		 * Called instead of the default `createPortal` function.
+		 */
+		renderWidget: PropTypes.func,
+		/**
+		 * Array of routes that are supported by your application.
 		 */
 		routes: PropTypes.arrayOf(PropTypes.shape(RouteShape)).isRequired,
 		/**
@@ -48,41 +56,54 @@ class Union extends Component {
 		onScanEnd: noop,
 		onScanError: noop,
 		onScanStart: noop,
+		parent: document && document.body,
 		strictMode: true,
 	};
 
+	static scan = props => {
+		const { onScanStart, onScanEnd, onScanError, parent, routes } = props;
+
+		try {
+			onScanStart();
+			const scanningResult = scan(routes, parent);
+			onScanEnd(scanningResult);
+
+			return scanningResult;
+		} catch (error) {
+			onScanError(error);
+
+			throw error;
+		}
+	};
+
+	static getDerivedStateFromProps(nextProps, prevState) {
+		if (prevState.routes !== nextProps.routes) {
+			return {
+				...Union.scan(nextProps),
+				routes: nextProps.routes,
+			};
+		}
+
+		return null;
+	}
+
 	state = {
-		configs: [],
+		...(this.props.isServer ? Union.scan(this.props) : { commonData: {}, configs: [] }),
+		routes: this.props.routes,
 	};
 
 	componentDidMount() {
-		this.scan(this.props);
+		// NOTE: This is not wrong. We need to initialize the scanning after the component mounts.
+		// eslint-disable-next-line react/no-did-mount-set-state
+		this.setState(Union.scan(this.props));
 	}
-
-	componentDidUpdate(prevProps) {
-		if (prevProps.routes !== this.props.routes) {
-			this.scan(prevProps);
-		}
-	}
-
-	scan = props => {
-		const { onScanStart, onScanEnd, onScanError, parent, routes } = props;
-
-		onScanStart();
-
-		const domParent = parent || document.body;
-
-		scan(routes, domParent).then(
-			configs => {
-				onScanEnd(configs);
-				this.setState({ configs });
-			},
-			error => onScanError(error)
-		);
-	};
 
 	renderWidget = config => (
-		<Widget key={config.descriptor.namespace || config.descriptor.container} {...config} />
+		<Widget
+			key={config.descriptor.namespace || config.descriptor.container}
+			render={this.props.renderWidget}
+			{...config}
+		/>
 	);
 
 	resolveStrictMode = union => (this.props.strictMode ? <StrictMode>{union}</StrictMode> : union);

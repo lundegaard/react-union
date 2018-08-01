@@ -1,19 +1,14 @@
 /* eslint-disable import/no-unresolved,import/extensions */
 // ESLINT IS DISABLED BECAUSE DEPS ARE NOT RESOLVED IN UNION MONO REPO
-import loadHeroWidget from 'union-widget-hero';
-import loadContentWidget from 'union-widget-content';
+import universal from 'react-universal-component';
 
 export default [
 	{
 		path: 'hero',
-		getComponent: done => {
-			loadHeroWidget(mod => done(mod.default));
-		},
+		component: universal(() => import('union-widget-hero')),
 	},
 	{
 		path: 'content',
-		getComponent: done => {
-			loadContentWidget(mod => done(mod.default));
-		},
+		component: universal(() => import('union-widget-content')),
 	},
 ];

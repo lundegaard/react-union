@@ -15,28 +15,28 @@ const DummyComponent = () => <div />;
 const routes = [
 	{
 		path: 'hero',
-		getComponent: done => {
-			done();
-			return DummyComponent;
-		},
-	},
-];
-
-const scanResult = [
-	{
 		component: DummyComponent,
-		descriptor: {
-			container: 'hero',
-			widget: 'hero',
-			data: {},
-			namespace: undefined,
-		},
 	},
 ];
 
-const mockUnion = (res = Promise.resolve(scanResult)) => {
+const scanResult = {
+	commonData: {},
+	configs: [
+		{
+			component: DummyComponent,
+			descriptor: {
+				container: 'hero',
+				widget: 'hero',
+				data: {},
+				namespace: undefined,
+			},
+		},
+	],
+};
+
+const mockUnion = (res = scanResult) => {
 	const scanFn = jest.fn(() => res);
-	jest.doMock('../../../scan', () => scanFn);
+	jest.doMock('../../../scanning', () => scanFn);
 	const Union = require('../Union').default;
 
 	return {
@@ -63,9 +63,16 @@ describe('<Union />', () => {
 		expect(onScanEnd).toHaveBeenCalledWith(scanResult);
 	});
 	it('should call onScanError when error happens in scan', async () => {
-		const mock = mockUnion(Promise.reject('error'));
+		jest.doMock('../../../scanning', () => () => {
+			throw 'error';
+		});
+		const Union = require('../Union').default;
 		const onScanError = jest.fn();
-		await mount(<mock.Union routes={routes} strictMode={false} onScanError={onScanError} />);
+
+		expect(() =>
+			mount(<Union routes={routes} strictMode={false} onScanError={onScanError} />)
+		).toThrowError();
+
 		expect(onScanError).toHaveBeenCalledWith('error');
 	});
 	it('should run scan on did mount', async () => {
@@ -76,11 +83,11 @@ describe('<Union />', () => {
 	it('should set state with new config', async () => {
 		const mock = mockUnion();
 		const wrapper = await mount(<mock.Union routes={routes} strictMode={false} />);
-		expect(wrapper.state()).toEqual({ configs: scanResult });
+		expect(wrapper.state()).toEqual({ ...scanResult, routes });
 	});
 	it('should render widget with props from config', async () => {
 		const mock = mockUnion();
 		await mount(<mock.Union routes={routes} strictMode={false} />);
-		expect(mockWidget).toHaveBeenCalledWith(scanResult[0]);
+		expect(mockWidget).toHaveBeenCalledWith(scanResult.configs[0]);
 	});
 });
