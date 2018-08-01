@@ -74,20 +74,16 @@ class Union extends Component {
 		const domParent = parent || document.body;
 
 		scan(routes, domParent).then(
-			({ configs, commonData }) => {
-				onScanEnd(configs, commonData);
-				this.setState({ configs, commonData });
+			result => {
+				onScanEnd(result);
+				this.setState(result);
 			},
 			error => onScanError(error)
 		);
 	};
 
 	renderWidget = config => (
-		<Widget
-			commonData={this.state.commonData}
-			key={config.descriptor.namespace || config.descriptor.container}
-			{...config}
-		/>
+		<Widget key={config.descriptor.namespace || config.descriptor.container} {...config} />
 	);
 
 	resolveStrictMode = union => (this.props.strictMode ? <StrictMode>{union}</StrictMode> : union);

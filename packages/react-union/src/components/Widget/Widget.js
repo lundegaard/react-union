@@ -13,7 +13,7 @@ import { WidgetContext } from '../../contexts';
  * Provides context to the `component` with widget descriptor information.
  *
  */
-const Widget = ({ commonData, component: WidgetComponent, descriptor }) => {
+const Widget = ({ component: WidgetComponent, descriptor }) => {
 	const { widget, container, namespace, data } = descriptor;
 	const resolvedNamespace = namespace || container;
 
@@ -22,13 +22,7 @@ const Widget = ({ commonData, component: WidgetComponent, descriptor }) => {
 		`Missing attribute "container" for the widget "${widget}" to be rendered.`
 	);
 
-	const widgetProps = {
-		data,
-		namespace: resolvedNamespace,
-		// NOTE: prop renamed to discourage use in widget source code
-		// people should use `data` instead to allow for widget-specific overriding
-		rawCommonData: commonData,
-	};
+	const widgetProps = { data, namespace: resolvedNamespace };
 
 	const element = document.getElementById(container);
 
