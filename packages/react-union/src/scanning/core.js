@@ -46,22 +46,13 @@ const getConfigs = (routes, descriptors) => {
 const pairCommonDataWithConfigs = commonData => configs => ({ commonData, configs });
 
 /**
- * Finds widget descriptors in `parent` and pairs them with components returned by correspoding `routes`.
+ * Finds widget descriptors in `parent` and pairs them with components in `routes`.
  *
  * @param  {Array} routes Route configurations.
  * @param  {Element} parent The root DOM element where to find the widget descriptors.
- * @return {Array} Array of widget descriptors and corresponding component:
- *
- *											[{
- *												component,
- *												descriptor: {
- *													widget,
- *													container,
- *  										 		namespace,
- *													data
- * 												}
- * 											}, ...]
- *
+ * @return {Object} The object has two properties: `configs` and `commonData`.
+ *									`configs` is an array of objects with `component` and `descriptor` properties.
+ *									`commonData` is the merged JSON content of common widget descriptors.
  */
 const scan = (routes, parentOr$) => {
 	const descriptors = getWidgetDescriptors(parentOr$);
