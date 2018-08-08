@@ -31,7 +31,7 @@ class Union extends Component {
 		 */
 		onScanStart: PropTypes.func,
 		/**
-		 * Element in which the scan is running. By default `document.body`.
+		 * Element in which the scan is running. By default `document`.
 		 */
 		parent: PropTypes.object,
 		/**
@@ -71,7 +71,7 @@ class Union extends Component {
 
 		onScanStart();
 
-		const domParent = parent || document.body;
+		const domParent = parent || document;
 
 		scan(routes, domParent).then(
 			result => {
