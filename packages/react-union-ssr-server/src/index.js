@@ -3,7 +3,8 @@ const bodyParser = require('koa-bodyparser');
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
 const cheerio = require('cheerio');
-const { ReportChunks } = require('react-universal-component');
+const { RenderingContext } = require('react-union');
+const { flushChunkNames } = require('react-universal-component/server');
 const { default: flushChunks } = require('webpack-flush-chunks');
 
 module.exports = handleRequest => {
@@ -17,21 +18,21 @@ module.exports = handleRequest => {
 		const head = document_$('head');
 		const body = document_$('body');
 
-		const chunkNames = [];
-
-		const render = reactElement => {
-			const clonedElement = React.cloneElement(reactElement, {
+		const renderingContextProps = {
+			value: {
 				isServer: true,
 				parent: document_$,
-			});
+			},
+		};
 
-			const props = {
-				report: chunkName => chunkNames.push(chunkName),
-			};
-
-			const rawHtml = ReactDOMServer.renderToString(
-				React.createElement(ReportChunks, props, clonedElement)
+		const render = reactElement => {
+			const wrappedElement = React.createElement(
+				RenderingContext.Provider,
+				renderingContextProps,
+				reactElement
 			);
+
+			const rawHtml = ReactDOMServer.renderToString(wrappedElement);
 
 			const raw_$ = cheerio.load(rawHtml);
 
@@ -50,7 +51,7 @@ module.exports = handleRequest => {
 		// NOTE: this variable is defined in react-union-scripts' build.js (prepended to the bundle)
 		// eslint-disable-next-line no-undef
 		const chunks = flushChunks(SSR_CLIENT_STATS, {
-			chunkNames,
+			chunkNames: flushChunkNames(),
 			before: ['runtime', 'vendor'],
 			after: ['main'],
 		});

@@ -4,6 +4,7 @@ import React, { Component, StrictMode, Fragment } from 'react';
 import { noop } from '../../utils';
 import { RouteShape } from '../../shapes';
 import scan from '../../scanning';
+import { withRenderingContext } from '../../decorators';
 
 import Widget from '../Widget';
 
@@ -21,7 +22,7 @@ class Union extends Component {
 		/**
 		 * If true, the scanning will begin in the constructor instead of `componentDidMount`.
 		 */
-		isServer: PropTypes.bool,
+		isServer: PropTypes.bool.isRequired,
 		/**
 		 * Called after the scan of the HTML is done.
 		 */
@@ -115,4 +116,4 @@ class Union extends Component {
 	}
 }
 
-export default Union;
+export default withRenderingContext(Union);

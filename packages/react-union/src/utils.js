@@ -1,5 +1,7 @@
 import always from 'ramda/src/always';
 import reduce from 'ramda/src/reduce';
+import reject from 'ramda/src/reject';
+import isNil from 'ramda/src/isNil';
 import mergeDeepRight from 'ramda/src/mergeDeepRight';
 
 export const warning = (pred, msg) => {
@@ -48,3 +50,5 @@ export const getDisplayName = Component => Component.displayName || Component.na
 export const noop = always(null);
 
 export const mergeDeepRightAll = reduce(mergeDeepRight, {});
+
+export const rejectNil = reject(isNil);
