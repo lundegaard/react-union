@@ -35,7 +35,7 @@ class Union extends Component {
 		 */
 		onScanStart: PropTypes.func,
 		/**
-		 * HTML element or Cheerio wrapper in which the scan is running. By default `document.body`.
+		 * HTML element or Cheerio wrapper in which the scan is running. By default `document`.
 		 */
 		parent: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
 		/**
@@ -53,7 +53,7 @@ class Union extends Component {
 		onScanEnd: noop,
 		onScanError: noop,
 		onScanStart: noop,
-		parent: document && document.body,
+		parent: document,
 		strictMode: true,
 	};
 
