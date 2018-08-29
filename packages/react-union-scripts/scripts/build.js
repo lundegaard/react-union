@@ -1,11 +1,13 @@
 const webpack = require('webpack');
+const { promisify } = require('util');
 const fse = require('fs-extra');
 const fs = require('fs');
 const {
 	map,
 	test,
 	complement,
-	flatten,
+	chain,
+	values,
 	splitEvery,
 	compose,
 	head,
@@ -35,25 +37,20 @@ const prependClientStats = clientStats => {
 	);
 };
 
-function build() {
-	return new Promise((resolve, reject) => {
-		// FIXME: this will break for applications without SSR
-		const flattenedConfigs = flatten(configs);
+async function build() {
+	// FIXME: this will break for applications without SSR
+	const flattenedConfigs = chain(values, configs);
+	const compiler = webpack(flattenedConfigs);
+	const run = promisify(compiler.run.bind(compiler));
 
-		webpack(flattenedConfigs).run((err, buildStats) => {
-			if (err) {
-				reject(err);
-			} else {
-				console.log(buildStats.toString(stats));
-				forEach(prependClientStats, getClientStatsList(buildStats));
-				copyPublicFolder(getUnionConfig());
-				resolve();
-			}
-		});
-	});
+	const buildStats = await run();
+	console.log(buildStats.toString(stats));
+
+	forEach(prependClientStats, getClientStatsList(buildStats));
+	copyPublicFolder(getUnionConfig());
 }
 
-const copyPublicFolder = map(config => {
+const copyPublicFolder = forEach(config => {
 	fse.copySync(config.paths.public, config.paths.build, {
 		dereference: true,
 		filter: complement(test(config.copyToPublicIgnore)),

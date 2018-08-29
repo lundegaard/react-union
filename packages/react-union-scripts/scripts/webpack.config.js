@@ -2,6 +2,7 @@
 const invariant = require('invariant');
 const merge = require('webpack-merge');
 const path = require('path');
+const fs = require('fs');
 const R = require('ramda');
 const R_ = require('ramda-extension');
 
@@ -88,7 +89,9 @@ const getPackagesPath = R.useWith(R.filter, [
 const getWebpackConfig_ = (config, ssr) => {
 	const { paths, proxy, generateTemplate, publicPath, outputMapper, mergeWebpackConfig } = config;
 
-	// TODO: maybe early return if SSR index file does not exist
+	if (ssr && !fs.existsSync(require.resolve(paths.ssrIndex))) {
+		return null;
+	}
 
 	const getPackagesPathForSuffix = getPackagesPath(config);
 
@@ -195,10 +198,10 @@ const getWebpackConfig_ = (config, ssr) => {
 	return mergeWebpackConfig(cli.debug ? clientDevelopmentConfig() : clientProductionConfig(), ssr);
 };
 
-const getWebpackConfigPair_ = config => [
-	getWebpackConfig_(config, false),
-	getWebpackConfig_(config, true),
-];
+const getWebpackConfigPair_ = config => ({
+	client: getWebpackConfig_(config, false),
+	server: getWebpackConfig_(config, true),
+});
 
 const buildSingle_ = () => {
 	const config = getAppConfig();

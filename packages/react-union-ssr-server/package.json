@@ -1,7 +1,7 @@
 {
   "name": "react-union-ssr-server",
   "version": "0.1.0",
-  "description": "Server-side rendering for React-union",
+  "description": "HTTP server for server-side rendering.",
   "main": "src/index.js",
   "repository": "https://github.com/lundegaard/react-union",
   "contributors": [
