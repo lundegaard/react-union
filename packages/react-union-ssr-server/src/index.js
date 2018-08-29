@@ -6,12 +6,13 @@ const cheerio = require('cheerio');
 const { ReportChunks } = require('react-universal-component');
 const { default: flushChunks } = require('webpack-flush-chunks');
 
-module.exports = (appConfig, appHandler, clientStats) => {
+module.exports = handleRequest => {
 	const app = new Koa();
 
 	app.use(bodyParser({ enableTypes: ['text'] }));
 
 	app.use(async ctx => {
+		// TODO: add health-check (when you GET on '/', it should return a 200 saying that it is running)
 		const document_$ = cheerio.load(ctx.request.body);
 		const head = document_$('head');
 		const body = document_$('body');
@@ -44,9 +45,11 @@ module.exports = (appConfig, appHandler, clientStats) => {
 			});
 		};
 
-		appHandler({ render, head, body, ctx });
+		handleRequest({ render, head, body, ctx });
 
-		const chunks = flushChunks(clientStats, {
+		// NOTE: defined in build
+		// eslint-disable-next-line no-undef
+		const chunks = flushChunks(SSR_CLIENT_STATS, {
 			chunkNames,
 			before: ['runtime', 'vendor'],
 			after: ['main'],
@@ -61,5 +64,9 @@ module.exports = (appConfig, appHandler, clientStats) => {
 		ctx.body = document_$.html();
 	});
 
-	return app;
+	// TODO: use process.env.SOMETHING
+	const port = 3303;
+	app.listen(port);
+
+	console.log(`🚀 SSR server is listening on port ${port} 🚀`);
 };

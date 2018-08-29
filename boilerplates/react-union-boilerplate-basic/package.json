@@ -32,12 +32,13 @@
     "husky": "^0.14.3",
     "lint-staged": "^7.2.0",
     "prettier": "^1.13.5",
-    "react-union-scripts": "^0.5.5"
+    "react-union-scripts": "^0.5.5",
+    "react-union-ssr-server": "^0.1.0"
   },
   "scripts": {
     "build": "react-union-scripts build --release",
     "start": "react-union-scripts start --app SampleApp",
-    "start:ssr-server": "react-union-scripts start-ssr-server --app SampleApp --verbose",
+    "start:ssr-server": "node build/SampleApp/.ssr",
     "test": "react-union-scripts test",
     "lint": "yarn lint:eslint",
     "lint:eslint": "eslint --ext .js ./",

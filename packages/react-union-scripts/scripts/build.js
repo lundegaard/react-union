@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const fse = require('fs-extra');
+const fs = require('fs');
 const {
 	map,
 	test,
@@ -24,6 +25,16 @@ const getClientStatsList = compose(
 	invoker(0, 'toJson')
 );
 
+const prependClientStats = clientStats => {
+	const bundlePath = path.join(clientStats.outputPath, '.ssr');
+	const bundleContent = fs.readFileSync(path.join(bundlePath, 'main.js'));
+
+	fs.writeFileSync(
+		path.join(bundlePath, 'index.js'),
+		`var SSR_CLIENT_STATS = ${JSON.stringify(clientStats)};${bundleContent}`
+	);
+};
+
 function build() {
 	return new Promise((resolve, reject) => {
 		// FIXME: this will break for applications without SSR
@@ -34,18 +45,8 @@ function build() {
 				reject(err);
 			} else {
 				console.log(buildStats.toString(stats));
-
-				forEach(
-					clientStats =>
-						fse.writeJsonSync(
-							path.join(clientStats.outputPath, '.ssr', 'clientStats.json'),
-							clientStats
-						),
-					getClientStatsList(buildStats)
-				);
-
+				forEach(prependClientStats, getClientStatsList(buildStats));
 				copyPublicFolder(getUnionConfig());
-
 				resolve();
 			}
 		});
