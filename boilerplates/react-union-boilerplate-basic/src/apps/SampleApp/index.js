@@ -3,11 +3,12 @@ import { justRender } from 'react-union';
 import { AppContainer } from 'react-hot-loader';
 
 import Root from './components/Root';
+import routes from './routes';
 
-const render = Component =>
+const render = NextRoot =>
 	justRender(
 		<AppContainer errorReporter={__DEV__ ? require('redbox-react').default : null}>
-			<Component />
+			<NextRoot routes={routes} />
 		</AppContainer>
 	);
 

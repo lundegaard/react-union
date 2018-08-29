@@ -6,12 +6,13 @@ export const RouteShape = {
 };
 
 export const ConfigShape = {
+	component: PropTypes.func.isRequired,
 	descriptor: PropTypes.shape({
 		container: PropTypes.string,
 		data: PropTypes.object,
 		namespace: PropTypes.string,
 		widget: PropTypes.string.isRequired,
 	}).isRequired,
-	// covers both class and functional components
-	component: PropTypes.func.isRequired,
+	// NOTE: can only be present in SSR context
+	initialProps: PropTypes.object,
 };

@@ -14,7 +14,7 @@ import { WidgetContext } from '../../contexts';
  * Provides context to the `component` with widget descriptor information.
  *
  */
-export const Widget = ({ component: WidgetComponent, descriptor, isServer }) => {
+export const Widget = ({ component: WidgetComponent, descriptor, initialProps, isServer }) => {
 	const { widget, container, namespace, data } = descriptor;
 	const resolvedNamespace = namespace || container;
 
@@ -23,11 +23,15 @@ export const Widget = ({ component: WidgetComponent, descriptor, isServer }) => 
 		`Missing attribute "container" for the widget "${widget}" to be rendered.`
 	);
 
-	const widgetProps = { data, namespace: resolvedNamespace };
+	const widgetProps = {
+		data,
+		isServer,
+		namespace: resolvedNamespace,
+	};
 
 	const widgetElement = (
 		<WidgetContext.Provider value={widgetProps}>
-			<WidgetComponent {...widgetProps} />
+			<WidgetComponent {...widgetProps} {...initialProps} />
 		</WidgetContext.Provider>
 	);
 

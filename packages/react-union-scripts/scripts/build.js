@@ -28,12 +28,15 @@ const getClientStatsList = compose(
 );
 
 const prependClientStats = clientStats => {
-	const bundlePath = path.join(clientStats.outputPath, '.ssr');
-	const bundleContent = fs.readFileSync(path.join(bundlePath, 'main.js'));
+	const ssrPath = path.join(clientStats.outputPath, '.ssr');
+	const originalBundlePath = path.join(ssrPath, 'main.js');
+	const originalBundleContent = fs.readFileSync(originalBundlePath);
+	const newBundlePath = path.join(ssrPath, 'index.js');
 
+	fs.unlinkSync(originalBundlePath);
 	fs.writeFileSync(
-		path.join(bundlePath, 'index.js'),
-		`var SSR_CLIENT_STATS = ${JSON.stringify(clientStats)};${bundleContent}`
+		newBundlePath,
+		`var SSR_CLIENT_STATS = ${JSON.stringify(clientStats)};${originalBundleContent}`
 	);
 };
 

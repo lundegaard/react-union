@@ -84,7 +84,14 @@ module.exports = {
 		quotes: ['error', 'single', 'avoid-escape'],
 		semi: ['error', 'always'],
 		'space-before-blocks': ['error', 'always'],
-		'space-before-function-paren': ['error', 'never'],
+		'space-before-function-paren': [
+			'error',
+			{
+				anonymous: 'never',
+				named: 'never',
+				asyncArrow: 'always',
+			},
+		],
 		'space-infix-ops': 'error',
 		'space-unary-ops': [
 			'error',

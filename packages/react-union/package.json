@@ -22,8 +22,9 @@
     "dist"
   ],
   "dependencies": {
-    "prop-types": "15.6.1",
-    "ramda": "0.25.0"
+    "hoist-non-react-statics": "^3.0.1",
+    "prop-types": "^15.6.2",
+    "ramda": "^0.25.0"
   },
   "devDependencies": {
     "babel-cli": "6.23.0",

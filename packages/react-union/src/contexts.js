@@ -7,5 +7,5 @@ export const WidgetContext = createContext({
 
 export const RenderingContext = createContext({
 	isServer: false,
-	parent: null,
+	scanResult: null,
 });

@@ -1,10 +1,8 @@
 import React from 'react';
 import { Union } from 'react-union';
 
-import routes from '../../routes';
-
 import './Root.scss';
 
-const Root = () => <Union routes={routes} />;
+const Root = props => <Union {...props} />;
 
 export default Root;

@@ -1,4 +1,5 @@
 import React from 'react';
+import hoistNonReactStatics from 'hoist-non-react-statics';
 
 import { WidgetContext } from '../../contexts';
 import { getDisplayName } from '../../utils';
@@ -15,6 +16,7 @@ const withWidgetContext = NextComponent => {
 		</WidgetContext.Consumer>
 	);
 
+	hoistNonReactStatics(WithWidgetContext, NextComponent);
 	WithWidgetContext.displayName = `WithWidgetContext(${getDisplayName(NextComponent)})`;
 
 	return WithWidgetContext;

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component, StrictMode, Fragment } from 'react';
 
-import { noop } from '../../utils';
+import { noop, invariant } from '../../utils';
 import { RouteShape } from '../../shapes';
 import scan from '../../scanning';
 import { withRenderingContext } from '../../decorators';
@@ -20,7 +20,7 @@ class Union extends Component {
 		 */
 		children: PropTypes.node,
 		/**
-		 * If true, the scanning will begin in the constructor instead of `componentDidMount`.
+		 * Whether the component is rendered in SSR context. Passed by `withRenderingContext`.
 		 */
 		isServer: PropTypes.bool.isRequired,
 		/**
@@ -42,7 +42,11 @@ class Union extends Component {
 		/**
 		 * Array of routes that are supported by your application.
 		 */
-		routes: PropTypes.arrayOf(PropTypes.shape(RouteShape)).isRequired,
+		routes: PropTypes.arrayOf(PropTypes.shape(RouteShape)),
+		/**
+		 * SSR scan result which may be passed by `withRenderingContext`.
+		 */
+		scanResult: PropTypes.object,
 		/**
 		 * Enable React.Strict mode. By default `true`
 		 */
@@ -74,8 +78,8 @@ class Union extends Component {
 		}
 	};
 
-	static getDerivedStateFromProps(nextProps, prevState) {
-		if (prevState.routes !== nextProps.routes) {
+	static getDerivedStateFromProps(nextProps, previousState) {
+		if (previousState.routes !== nextProps.routes) {
 			return {
 				scanResult: Union.scan(nextProps),
 				routes: nextProps.routes,
@@ -85,15 +89,35 @@ class Union extends Component {
 		return null;
 	}
 
+	constructor(props, ...args) {
+		super(props, ...args);
+
+		invariant(
+			props.isServer !== Boolean(props.routes),
+			props.isServer
+				? 'You should not be passing `routes` to <Union /> in the SSR context. ' +
+				  'Instead, you should pass them to the `render` function in the SSR request handler.'
+				: 'Missing `routes` prop in <Union />.'
+		);
+	}
+
 	state = {
-		scanResult: this.props.isServer ? Union.scan(this.props) : { commonData: {}, configs: [] },
+		// NOTE: We never work with `this.state.routes`, this is because of getDerivedStateFromProps.
 		routes: this.props.routes,
+		scanResult: this.getInitialScanResult(),
 	};
 
 	componentDidMount() {
 		// NOTE: This is not wrong. We need to initialize the scanning after the component mounts.
 		// eslint-disable-next-line react/no-did-mount-set-state
 		this.setState({ scanResult: Union.scan(this.props) });
+	}
+
+	getInitialScanResult() {
+		return (
+			this.props.scanResult ||
+			(this.props.isServer ? Union.scan(this.props) : { commonData: {}, configs: [] })
+		);
 	}
 
 	renderWidget = config => (

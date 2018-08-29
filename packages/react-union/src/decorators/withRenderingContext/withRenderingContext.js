@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { RenderingContext } from '../../contexts';
-import { getDisplayName, rejectNil } from '../../utils';
+import { getDisplayName } from '../../utils';
 
 /**
  * HOC which spreads the surrounding RenderingContext's value to passed component.
@@ -11,7 +11,7 @@ import { getDisplayName, rejectNil } from '../../utils';
 const withRenderingContext = NextComponent => {
 	const WithRenderingContext = props => (
 		<RenderingContext.Consumer>
-			{value => <NextComponent {...props} {...rejectNil(value)} />}
+			{value => <NextComponent {...props} {...value} />}
 		</RenderingContext.Consumer>
 	);
 

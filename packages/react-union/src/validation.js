@@ -11,7 +11,7 @@ export const validateDescriptorStructures = forEach(({ widget, namespace, contai
 	invariant(
 		namespace || container,
 		`Missing required attributes for the widget "${widget}". ` +
-			"Fill in the 'data-union-namespace' or 'data-union-container' in the widget descriptors."
+			"Fill in the 'data-union-namespace' or 'data-union-container' in the widget descriptor."
 	);
 });
 
