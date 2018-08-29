@@ -1,0 +1,14 @@
+{
+  "name": "react-union-ssr-mock-server",
+  "version": "0.1.0",
+  "description": "HTTP server which pipes mock output through a running SSR server.",
+  "main": "src/index.js",
+  "repository": "https://github.com/lundegaard/react-union",
+  "contributors": [
+    "Vaclav Jancarik <vaclav.jancarik@lundegaard.eu>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "koa": "2.5.1"
+  }
+}
