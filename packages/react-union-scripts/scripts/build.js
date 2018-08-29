@@ -26,6 +26,7 @@ const getClientStatsList = compose(
 
 function build() {
 	return new Promise((resolve, reject) => {
+		// FIXME: this will break for applications without SSR
 		const flattenedConfigs = flatten(configs);
 
 		webpack(flattenedConfigs).run((err, buildStats) => {

@@ -43,7 +43,7 @@ const getConfigs = (routes, descriptors) => {
 	return map(findDescriptorConfig, descriptors);
 };
 
-const pairCommonDataWithConfigs = commonData => configs => ({ commonData, configs });
+const shapeScanResult = commonData => configs => ({ commonData, configs });
 
 /**
  * Finds widget descriptors in `parent` and pairs them with components in `routes`.
@@ -51,8 +51,8 @@ const pairCommonDataWithConfigs = commonData => configs => ({ commonData, config
  * @param  {Array} routes Route configurations.
  * @param  {Element} parent The root DOM element where to find the widget descriptors.
  * @return {Object} The object has two properties: `configs` and `commonData`.
- *									`configs` is an array of objects with `component` and `descriptor` properties.
- *									`commonData` is the merged JSON content of common widget descriptors.
+ * 	`configs` is an array of objects with `component` and `descriptor` properties.
+ * 	`commonData` is the merged JSON content of common widget descriptors.
  */
 const scan = (routes, parentOr$) => {
 	const descriptors = getWidgetDescriptors(parentOr$);
@@ -61,13 +61,13 @@ const scan = (routes, parentOr$) => {
 	validateDescriptorStructures(descriptors);
 	validateRoutesWithDescriptors(routes, descriptors);
 
-	const getScanningResult = compose(
-		pairCommonDataWithConfigs(commonData),
+	const createScanResult = compose(
+		shapeScanResult(commonData),
 		mergeCommonDataToConfigs(commonData),
 		getConfigs
 	);
 
-	return getScanningResult(routes, descriptors);
+	return createScanResult(routes, descriptors);
 };
 
 export default scan;

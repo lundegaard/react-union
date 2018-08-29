@@ -49,6 +49,7 @@ function startDevServer() {
 		'You can start DEV Sever only for one module at the same time.'
 	);
 
+	// TODO: perhaps use client and server properties instead of this
 	const webpackConfig = configs[0][0];
 	const unionConfig = getAppConfig();
 

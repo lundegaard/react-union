@@ -21,7 +21,8 @@ ready(() => {
 	render(Root);
 
 	if (window.Liferay) {
-		window.Liferay.on('startNavigate', justUnmountComponentAtNode);
+		// NOTE: cannot be shortened because justUnmountComponentAtNode needs to default the first arg
+		window.Liferay.on('startNavigate', () => justUnmountComponentAtNode());
 		window.Liferay.on('endNavigate', rerenderContainer);
 	}
 });
