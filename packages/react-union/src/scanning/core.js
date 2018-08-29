@@ -31,7 +31,7 @@ const getCommonData = ifElse(is(Function), getCheerioCommonData, getDomCommonDat
 const mergeCommonDataToConfigs = commonData =>
 	map(mergeDeepRight({ descriptor: { data: commonData } }));
 
-const getConfigs = (routes, descriptors) => {
+const createConfigs = (routes, descriptors) => {
 	const findRouteByDescriptor = ({ widget }) => find(whereEq({ path: widget }), routes);
 	const findComponentByDescriptor = o(prop('component'), findRouteByDescriptor);
 
@@ -64,7 +64,7 @@ const scan = (routes, parentOr$) => {
 	const createScanResult = compose(
 		shapeScanResult(commonData),
 		mergeCommonDataToConfigs(commonData),
-		getConfigs
+		createConfigs
 	);
 
 	return createScanResult(routes, descriptors);

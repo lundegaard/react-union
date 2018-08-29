@@ -47,7 +47,7 @@ module.exports = handleRequest => {
 
 		handleRequest({ render, head, body, ctx });
 
-		// NOTE: defined in build
+		// NOTE: this variable is defined in react-union-scripts' build.js (prepended to the bundle)
 		// eslint-disable-next-line no-undef
 		const chunks = flushChunks(SSR_CLIENT_STATS, {
 			chunkNames,
