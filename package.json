@@ -59,6 +59,7 @@
   ],
   "scripts": {
     "example:basic": "cd boilerplates/react-union-boilerplate-basic && yarn start",
+    "example:ssr": "cd boilerplates/react-union-boilerplate-basic && yarn build && yarn start:ssr-server",
     "lint": "eslint \"packages/*.js\" \"packages/**/*.js\" \"boilerplates/**/*.js\"",
     "lint:fix": "yarn lint --fix",
     "test": "jest",

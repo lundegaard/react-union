@@ -1,28 +1,18 @@
-/* eslint-disable import/no-dynamic-require */
-const { keys, o, reject } = require('ramda');
-const { includes } = require('ramda-extension');
 const path = require('path');
 
-const vendorBundle = ({ vendorBlackList }, dependencies) => {
-	const inVendorBlackList = includes(vendorBlackList);
-	return {
-		entry: {
-			vendor: o(reject(inVendorBlackList), keys)(dependencies),
+const optimization = () => ({
+	optimization: {
+		splitChunks: {
+			chunks: 'all',
+			name: 'vendor',
 		},
-		optimization: {
-			splitChunks: {
-				cacheGroups: {
-					vendor: {
-						chunks: 'initial',
-						name: 'vendor',
-						test: 'vendor',
-						enforce: true,
-					},
-				},
-			},
+		// Keep the runtime chunk seperated to enable long term caching
+		// https://twitter.com/wSokra/status/969679223278505985
+		runtimeChunk: {
+			name: 'runtime',
 		},
-	};
-};
+	},
+});
 
 const resolve = modules => ({
 	resolve: {
@@ -31,11 +21,11 @@ const resolve = modules => ({
 	},
 });
 
-const performanceHints = {
+const performanceHints = () => ({
 	performance: {
 		hints: false,
 	},
-};
+});
 
 const context = () => ({
 	context: path.resolve(path.join(process.cwd(), './src')),
@@ -43,7 +33,7 @@ const context = () => ({
 
 module.exports = {
 	resolve,
-	vendorBundle,
+	optimization,
 	performanceHints,
 	context,
 };

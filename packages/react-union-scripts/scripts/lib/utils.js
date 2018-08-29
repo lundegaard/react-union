@@ -16,13 +16,16 @@ const DEFAULT_APP_PATTERN = 'union-app';
 const BUILD_FOLDER = 'build';
 const PUBLIC_FOLDER = 'public';
 const SRC_FOLDER = 'src';
-const INDEX_FOLDER = 'index';
+const INDEX_FILE = 'index';
+const SSR_INDEX_FILE = 'index.ssr';
 const APPS_FOLDER = 'apps';
 
 const UNION_CONFIG_PATH = path.resolve(process.cwd(), './union.config.js');
 const DEFAULT_UNI_REPO_APP_DIR = path.resolve(process.cwd(), SRC_FOLDER, APPS_FOLDER);
 
 const DEFAULT_PORT = 3300;
+const DEFAULT_SSR_PORT = 3303;
+
 const DEFAULT_UNION_CONFIG = {
 	// computed in `extendPaths_`
 	paths: {},
@@ -43,8 +46,12 @@ const DEFAULT_UNION_CONFIG = {
 		target: '',
 		publicPath: '/',
 	},
+	ssrServer: {
+		port: DEFAULT_SSR_PORT,
+	},
 	outputMapper: {
 		js: 'static/js',
+		css: 'static/css',
 		media: 'static/media',
 		index: 'index.html',
 	},
@@ -92,7 +99,9 @@ const defaultUniRepoPaths = config => ({
 	// directory for resources and template
 	public: path.resolve(process.cwd(), PUBLIC_FOLDER, config.name),
 	// path entry of the app
-	index: path.resolve(DEFAULT_UNI_REPO_APP_DIR, config.name, INDEX_FOLDER),
+	index: path.resolve(DEFAULT_UNI_REPO_APP_DIR, config.name, INDEX_FILE),
+	// path entry of the app SSR handler
+	ssrIndex: path.resolve(DEFAULT_UNI_REPO_APP_DIR, config.name, SSR_INDEX_FILE),
 });
 
 const defaultMonoRepoPaths = config => {
@@ -100,7 +109,8 @@ const defaultMonoRepoPaths = config => {
 	return {
 		build: path.resolve(process.cwd(), BUILD_FOLDER, config.name),
 		public: path.resolve(process.cwd(), appPath, PUBLIC_FOLDER),
-		index: path.resolve(process.cwd(), appPath, SRC_FOLDER, INDEX_FOLDER),
+		index: path.resolve(process.cwd(), appPath, SRC_FOLDER, INDEX_FILE),
+		ssrIndex: path.resolve(process.cwd(), appPath, SRC_FOLDER, SSR_INDEX_FILE),
 	};
 };
 
@@ -201,17 +211,6 @@ const getUnionConfig = () =>
 const getAppConfig = () =>
 	R.find(R.whereEq({ name: isMonoRepo ? cli.appOriginal : cli.app }), getUnionConfig());
 
-const resolveAsyncSuffix = R.cond([
-	[R.is(RegExp), R.identity],
-	[R_.isString, asyncSuffix => R_.constructRegExp(`\.${asyncSuffix}\.js$`, 'i')],
-	[R_.isArray, asyncSuffix => R_.constructRegExp(`\.(${R.join('|', asyncSuffix)})\.js$`, 'i')],
-	[
-		R.T,
-		() =>
-			invariant(false, "Invalid property 'asyncSuffix'. It should be string or list of strings."),
-	],
-]);
-
 const mergeWhen = (condition, fn, ...fnArgs) => (condition ? fn(...fnArgs) : {});
 const getForMode = (debug, prod) => (cli.debug ? debug : prod);
 
@@ -220,7 +219,6 @@ module.exports = {
 	normalizeConfig,
 	getUnionConfig,
 	getAppConfig,
-	resolveAsyncSuffix,
 	stats,
 	isMonoRepo,
 	mergeWhen,

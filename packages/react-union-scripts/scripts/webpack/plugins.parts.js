@@ -5,6 +5,8 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
 const UglifyWebpackPlugin = require('uglifyjs-webpack-plugin');
+const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
+const { getForMode } = require('../lib/utils');
 
 const loaderOptionsPlugin = debug => ({
 	plugins: [
@@ -68,6 +70,29 @@ const uglifyJsPlugin = verbose => ({
 	},
 });
 
+const limitChunkCountPlugin = () => ({
+	plugins: [
+		new webpack.optimize.LimitChunkCountPlugin({
+			maxChunks: 1,
+		}),
+	],
+});
+
+const extractCssChunksPlugin = (debug, hot, path) => {
+	const filename = getForMode('[name].css', '[name].[chunkhash:8].css');
+	const chunkFilename = getForMode('[name].chunk.css', '[name].[chunkhash:8].chunk.css');
+
+	return {
+		plugins: [
+			new ExtractCssChunks({
+				hot,
+				filename: `${path}/${filename}`,
+				chunkFilename: `${path}/${chunkFilename}`,
+			}),
+		],
+	};
+};
+
 module.exports = {
 	loaderOptionsPlugin,
 	definePlugin,
@@ -77,4 +102,6 @@ module.exports = {
 	analyzeBundlePlugin,
 	uglifyJsPlugin,
 	cleanPlugin,
+	limitChunkCountPlugin,
+	extractCssChunksPlugin,
 };

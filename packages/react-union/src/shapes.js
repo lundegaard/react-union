@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 export const RouteShape = {
-	getComponent: PropTypes.func.isRequired,
+	component: PropTypes.func.isRequired,
 	path: PropTypes.string.isRequired,
 };
 

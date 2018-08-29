@@ -5,6 +5,6 @@ import routes from '../../routes';
 
 import './Root.scss';
 
-const Root = () => <Union routes={routes} />;
+const Root = props => <Union routes={routes} {...props} />;
 
 export default Root;

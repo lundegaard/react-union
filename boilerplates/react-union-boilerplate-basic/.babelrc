@@ -30,6 +30,7 @@
         "polyfill": false,
         "regenerator": true
       }
-    ]
+    ],
+    "universal-import"
   ]
 }
