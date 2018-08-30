@@ -89,18 +89,6 @@ class Union extends Component {
 		return null;
 	}
 
-	constructor(props, ...args) {
-		super(props, ...args);
-
-		invariant(
-			props.isServer !== Boolean(props.routes),
-			props.isServer
-				? 'You should not be passing `routes` to <Union /> in the SSR context. ' +
-				  'Instead, you should pass them to the `render` function in the SSR request handler.'
-				: 'Missing `routes` prop in <Union />.'
-		);
-	}
-
 	state = {
 		// NOTE: We never work with `this.state.routes`, this is because of getDerivedStateFromProps.
 		routes: this.props.routes,
@@ -131,6 +119,16 @@ class Union extends Component {
 	resolveStrictMode = union => (this.props.strictMode ? <StrictMode>{union}</StrictMode> : union);
 
 	render() {
+		const { isServer, routes } = this.props;
+
+		invariant(
+			isServer !== Boolean(routes),
+			isServer
+				? 'You should not be passing `routes` to <Union /> in the SSR context. ' +
+				  'Instead, you should pass them to the `render` function in the SSR request handler.'
+				: 'Missing `routes` prop in <Union />.'
+		);
+
 		return this.resolveStrictMode(
 			<Fragment>
 				{this.props.children}

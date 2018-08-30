@@ -43,13 +43,14 @@ const getProxyMiddleware = ({ proxy } = {}) => {
 	}, normalizedConfig);
 };
 
-function startDevServer() {
+async function startDevServer() {
 	invariant(
 		configs && configs.length === 1,
 		'You can start DEV Sever only for one module at the same time.'
 	);
 
-	const webpackConfig = configs[0].client;
+	const webpackConfigs = configs[0];
+	const clientConfig = webpackConfigs[0];
 	const unionConfig = getAppConfig();
 
 	invariant(!cli.proxy || unionConfig.proxy.port, "Missing 'port' for proxy in your union.config.");
@@ -58,55 +59,48 @@ function startDevServer() {
 		"Missing 'target' for proxy in your union.config"
 	);
 
-	return new Promise(resolve => {
-		const compiler = webpack(webpackConfig);
-		const handleCompilerComplete = () => {
-			const middleware = [
-				webpackDevMiddleware(compiler, {
-					publicPath: webpackConfig.output.publicPath,
-					stats,
-				}),
-				webpackHotMiddleware(compiler),
-				...(!cli.proxy && unionConfig.devServer.historyApiFallback
-					? [
-							historyApiFallback({
-								disableDotRule: true,
-								htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
-							}),
-					  ]
-					: []),
-				...getProxyMiddleware(webpackConfig.devServer),
-			];
+	const compiler = webpack(webpackConfigs);
+	const clientCompiler = compiler.compilers[0];
 
-			const baseDirs = [webpackConfig.output.path, unionConfig.paths.public];
+	const middleware = [
+		webpackDevMiddleware(compiler, {
+			publicPath: clientConfig.output.publicPath,
+			stats,
+		}),
+		webpackHotMiddleware(clientCompiler),
+		...(!cli.proxy && unionConfig.devServer.historyApiFallback
+			? [
+					historyApiFallback({
+						disableDotRule: true,
+						htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
+					}),
+			  ]
+			: []),
+		...getProxyMiddleware(clientConfig.devServer),
+	];
 
-			const config = cli.proxy
-				? {
-						port: unionConfig.proxy.port,
-						proxy: {
-							target: unionConfig.proxy.target,
-							middleware,
-						},
-						serveStatic: baseDirs,
-				  }
-				: {
-						port: unionConfig.devServer.port,
-						server: {
-							baseDir: baseDirs,
-							middleware,
-						},
-				  };
+	const baseDirs = [clientConfig.output.path, unionConfig.paths.public];
 
-			browserSync.create().init(
-				{
-					ui: false,
-					...config,
+	const config = cli.proxy
+		? {
+				port: unionConfig.proxy.port,
+				proxy: {
+					target: unionConfig.proxy.target,
+					middleware,
 				},
-				resolve
-			);
-		};
+				serveStatic: baseDirs,
+		  }
+		: {
+				port: unionConfig.devServer.port,
+				server: {
+					baseDir: baseDirs,
+					middleware,
+				},
+		  };
 
-		compiler.run(handleCompilerComplete);
+	browserSync.create().init({
+		ui: false,
+		...config,
 	});
 }
 module.exports = startDevServer;

@@ -51,4 +51,6 @@ const target = getArgValue('--target', program);
 
 const script = nth(2)(program);
 
-module.exports = { script, target, debug, verbose, proxy, noHmr, analyze, app, appOriginal };
+const ssr = programIncludes('--ssr');
+
+module.exports = { ssr, script, target, debug, verbose, proxy, noHmr, analyze, app, appOriginal };

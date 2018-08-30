@@ -183,7 +183,7 @@ const getWebpackConfig_ = (config, ssr) => {
 				name: 'server',
 				target: 'node',
 				output: {
-					path: path.join(path.resolve(outputPath), '.ssr'),
+					path: path.join(path.resolve(outputPath), 'server'),
 					filename: 'main.js',
 					libraryTarget: 'umd',
 				},
@@ -198,10 +198,10 @@ const getWebpackConfig_ = (config, ssr) => {
 	return mergeWebpackConfig(cli.debug ? clientDevelopmentConfig() : clientProductionConfig(), ssr);
 };
 
-const getWebpackConfigPair_ = config => ({
-	client: getWebpackConfig_(config, false),
-	server: getWebpackConfig_(config, true),
-});
+const getWebpackConfigPair_ = config => [
+	getWebpackConfig_(config, false),
+	getWebpackConfig_(config, true),
+];
 
 const buildSingle_ = () => {
 	const config = getAppConfig();

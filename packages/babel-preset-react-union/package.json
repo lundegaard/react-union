@@ -1,7 +1,7 @@
 {
-  "name": "react-union-ssr-mock-server",
+  "name": "babel-preset-react-union",
   "version": "0.1.0",
-  "description": "HTTP server which pipes mock output through a running SSR server.",
+  "description": "Babel preset for React Union",
   "main": "src/index.js",
   "repository": "https://github.com/lundegaard/react-union",
   "contributors": [
@@ -9,6 +9,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "koa": "2.5.1"
+    "babel-plugin-universal-import": "3.0.0",
+    "babel-preset-react": "6.23.0"
   }
 }

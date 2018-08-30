@@ -6,8 +6,7 @@ const {
 	map,
 	test,
 	complement,
-	chain,
-	values,
+	flatten,
 	splitEvery,
 	compose,
 	head,
@@ -28,7 +27,7 @@ const getClientStatsList = compose(
 );
 
 const prependClientStats = clientStats => {
-	const ssrPath = path.join(clientStats.outputPath, '.ssr');
+	const ssrPath = path.join(clientStats.outputPath, 'server');
 	const originalBundlePath = path.join(ssrPath, 'main.js');
 	const originalBundleContent = fs.readFileSync(originalBundlePath);
 	const newBundlePath = path.join(ssrPath, 'index.js');
@@ -42,7 +41,7 @@ const prependClientStats = clientStats => {
 
 async function build() {
 	// FIXME: this will break for applications without SSR
-	const flattenedConfigs = chain(values, configs);
+	const flattenedConfigs = flatten(configs);
 	const compiler = webpack(flattenedConfigs);
 	const run = promisify(compiler.run.bind(compiler));
 
