@@ -42,7 +42,14 @@ export const Widget = ({ component: WidgetComponent, descriptor, initialProps, i
 	const domElement = document.getElementById(container);
 	warning(domElement, `HTML element with ID "${container}" not found for widget "${widget}"`);
 
-	return domElement ? createPortal(widgetElement, domElement) : null;
+	if (!domElement) {
+		return null;
+	}
+
+	// TODO: React currently doesn't support portal hydration :(
+	domElement.innerHTML = '';
+
+	return createPortal(widgetElement, domElement);
 };
 
 Widget.propTypes = {

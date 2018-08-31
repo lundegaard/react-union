@@ -16,7 +16,8 @@ module.exports = applicationHandler => {
 		try {
 			const content = await renderContent(req.body, { req, res });
 
-			res.setHeader('Content-Type', 'application/html');
+			// TODO: add some useful headers
+			// res.setHeader('Content-Type', 'application/html');
 
 			if (res.__end) {
 				res.__end(content);
