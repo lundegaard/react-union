@@ -17,10 +17,10 @@ const populatePromiseMap = curry((promiseMap, context, config) => {
 
 const getMapEntries = invoker(0, 'entries');
 
-const replacePromisesWithValuesP = promiseMap =>
+const replacePromisesWithValues = promiseMap =>
 	compose(
 		Promise.all.bind(Promise),
-		map(async ([config, initialPropsP]) => promiseMap.set(config, await initialPropsP)),
+		map(async ([config, initialPropsPromise]) => promiseMap.set(config, await initialPropsPromise)),
 		Array.from,
 		getMapEntries
 	)(promiseMap);
@@ -33,7 +33,7 @@ const addInitialPropsToConfigs = async (configs, context) => {
 
 	// NOTE: this section is ugly and contains side-effects
 	forEach(populatePromiseMap(promiseMap, context), configs);
-	await replacePromisesWithValuesP(promiseMap);
+	await replacePromisesWithValues(promiseMap);
 	// NOTE: here ends the ugly section
 
 	return map(assocInitialProps(promiseMap), configs);

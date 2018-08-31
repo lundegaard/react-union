@@ -95,7 +95,7 @@ const getWebpackConfig_ = (config, ssr) => {
 
 	const getPackagesPathForSuffix = getPackagesPath(config);
 
-	const hmr = cli.script === 'start' && cli.debug && !cli.noHmr;
+	const hmr = cli.script === 'start' && cli.debug && !cli.noHmr && !ssr;
 
 	const outputPath = paths.build;
 

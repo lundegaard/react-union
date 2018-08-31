@@ -1,85 +1,50 @@
-const Koa = require('koa');
-const bodyParser = require('koa-bodyparser');
-const React = require('react');
-const ReactDOMServer = require('react-dom/server');
-const cheerio = require('cheerio');
-const { RenderingContext, scan } = require('react-union');
-const { flushChunkNames } = require('react-universal-component/server');
-const { default: flushChunks } = require('webpack-flush-chunks');
+const connect = require('connect');
+const http = require('http');
+const bodyParser = require('body-parser');
 
-const { hoistComponentStatics, addInitialPropsToConfigs } = require('./utils');
+const makeContentRenderer = require('./core');
 
-module.exports = handleRequest => {
-	const app = new Koa();
+const IS_DEV_SERVER = typeof SSR_CLIENT_STATS === 'undefined';
 
-	app.use(bodyParser({ enableTypes: ['text'] }));
+module.exports = applicationHandler => {
+	const app = connect();
+	const renderContent = makeContentRenderer(applicationHandler, !IS_DEV_SERVER);
 
-	app.use(async ctx => {
-		// TODO: when you GET on '/' or '/health', it should return a 200 saying that it is running
-		const document_$ = cheerio.load(ctx.request.body);
-		const head = document_$('head');
-		const body = document_$('body');
-		const context = { head, body, ctx };
+	app.use(bodyParser.text());
 
-		const render = async (reactElement, routes) => {
-			const scanResult = scan(routes, document_$);
-			const { configs } = scanResult;
+	const handleRequest = async (req, res, next) => {
+		try {
+			const content = await renderContent(req.body, { req, res });
 
-			// NOTE: https://github.com/faceyspacey/react-universal-component#static-hoisting
-			hoistComponentStatics(configs);
+			res.setHeader('Content-Type', 'application/html');
 
-			const newConfigs = await addInitialPropsToConfigs(configs, context);
-			const newScanResult = { ...scanResult, configs: newConfigs };
+			if (res.__end) {
+				res.__end(content);
+			} else {
+				res.end(content);
+			}
 
-			const renderingContextProps = {
-				value: {
-					isServer: true,
-					scanResult: newScanResult,
-				},
-			};
+			next();
+		} catch (error) {
+			next(error);
+		}
+	};
 
-			const wrappedElement = React.createElement(
-				RenderingContext.Provider,
-				renderingContextProps,
-				reactElement
-			);
+	app.use(handleRequest);
 
-			const rawHtml = ReactDOMServer.renderToString(wrappedElement);
+	// TODO: add health check endpoint ('/health')
 
-			const raw_$ = cheerio.load(rawHtml);
+	const server = http.createServer(app);
 
-			raw_$('[data-union-portal]').each((_, widget) => {
-				const $widget = raw_$(widget);
-				const id = $widget.data('union-portal');
-				const selector = `#${id}`;
-				const widgetHtml = $widget.html();
+	if (!IS_DEV_SERVER) {
+		// TODO: use process.env.SOMETHING or get the port from some reasonable source
+		const port = 3303;
+		server.listen(port);
+		console.log(`🚀 React-union SSR server is listening on port ${port} 🚀`);
+	}
 
-				document_$(selector).html(widgetHtml);
-			});
-		};
-
-		await handleRequest({ render, ...context });
-
-		// NOTE: this variable is defined in react-union-scripts' build.js (prepended to the bundle)
-		// eslint-disable-next-line no-undef
-		const chunks = flushChunks(SSR_CLIENT_STATS, {
-			chunkNames: flushChunkNames(),
-			before: ['runtime', 'vendor'],
-			after: ['main'],
-		});
-
-		const { styles, cssHash, js } = chunks;
-
-		head.append(styles.toString());
-		body.append(cssHash.toString());
-		body.append(js.toString());
-
-		ctx.body = document_$.html();
-	});
-
-	// TODO: use process.env.SOMETHING
-	const port = 3303;
-	app.listen(port);
-
-	console.log(`🚀 The SSR server is listening on port ${port} 🚀`);
+	// NOTE: this structure is required for WebpackHotServerMiddleware to work
+	// The middleware expects a `createHandler` function with the following signature
+	// options => (req, res, next) => any
+	return () => handleRequest;
 };

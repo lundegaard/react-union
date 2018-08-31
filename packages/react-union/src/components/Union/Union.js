@@ -58,7 +58,7 @@ class Union extends Component {
 		onScanEnd: noop,
 		onScanError: noop,
 		onScanStart: noop,
-		parent: document,
+		parent: typeof document !== 'undefined' ? document : null,
 		strictMode: true,
 	};
 
@@ -99,6 +99,8 @@ class Union extends Component {
 		// NOTE: This is not wrong. We need to initialize the scanning after the component mounts.
 		// eslint-disable-next-line react/no-did-mount-set-state
 		this.setState({ scanResult: Union.scan(this.props) });
+
+		// TODO: handle getInitialProps
 	}
 
 	getInitialScanResult() {

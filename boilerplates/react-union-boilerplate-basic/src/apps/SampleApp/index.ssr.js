@@ -6,6 +6,4 @@ import routes from './routes';
 
 const handleRequest = ({ render }) => render(<Root isServer />, routes);
 
-startServer(handleRequest);
-
-export default handleRequest;
+export default startServer(handleRequest);

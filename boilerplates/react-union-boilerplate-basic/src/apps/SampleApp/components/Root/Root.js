@@ -7,7 +7,7 @@ import routes from '../../routes';
 
 import './Root.scss';
 
-const Root = ({ isServer }) => <Union routes={!isServer && routes} />;
+const Root = ({ isServer }) => <Union routes={isServer ? null : routes} />;
 
 Root.propTypes = {
 	isServer: PropTypes.bool,

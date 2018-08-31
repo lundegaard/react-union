@@ -5,8 +5,11 @@ const R = require('ramda');
 const R_ = require('ramda-extension');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
+const webpackHotServerMiddleware = require('webpack-hot-server-middleware');
 const proxyMiddleware = require('http-proxy-middleware');
 const historyApiFallback = require('connect-history-api-fallback');
+const createHotServerHandler = require('react-union-ssr-server/middleware');
+
 const configs = require('./webpack.config');
 const cli = require('./lib/cli');
 const { stats, getAppConfig } = require('./lib/utils');
@@ -60,12 +63,27 @@ async function startDevServer() {
 	);
 
 	const compiler = webpack(webpackConfigs);
-	const clientCompiler = compiler.compilers[0];
+	const [clientCompiler] = compiler.compilers;
 
 	const middleware = [
+		// TODO: move elsewhere
+		(req, res, next) => {
+			if (req.url === '/') {
+				res.body = '';
+				res.__end = res.end;
+				res.__write = res.write;
+				res.end = data => {
+					res.body += data;
+					next();
+				};
+				res.write = data => (res.body += data);
+			}
+			next();
+		},
 		webpackDevMiddleware(compiler, {
 			publicPath: clientConfig.output.publicPath,
 			stats,
+			serverSideRender: true,
 		}),
 		webpackHotMiddleware(clientCompiler),
 		...(!cli.proxy && unionConfig.devServer.historyApiFallback
@@ -76,6 +94,7 @@ async function startDevServer() {
 					}),
 			  ]
 			: []),
+		webpackHotServerMiddleware(compiler, { createHandler: createHotServerHandler }),
 		...getProxyMiddleware(clientConfig.devServer),
 	];
 
