@@ -7,7 +7,8 @@ const { default: flushChunks } = require('webpack-flush-chunks');
 
 const { hoistComponentStatics, addInitialPropsToConfigs } = require('./utils');
 
-module.exports = (applicationHandler, shouldFlushChunks) => async (originalHtml, httpContext) => {
+module.exports = applicationHandler => async (originalHtml, options, httpContext) => {
+	const { clientStats, isPrebuilt } = options;
 	const document_$ = cheerio.load(originalHtml);
 	const head = document_$('head');
 	const body = document_$('body');
@@ -58,23 +59,26 @@ module.exports = (applicationHandler, shouldFlushChunks) => async (originalHtml,
 
 	const chunkNames = flushChunkNames();
 
-	if (!shouldFlushChunks) {
-		return document_$.html();
-	}
-
-	// NOTE: this variable is defined in react-union-scripts' build.js (prepended to the bundle)
-	// eslint-disable-next-line no-undef
-	const chunks = flushChunks(SSR_CLIENT_STATS, {
+	const chunks = flushChunks(clientStats, {
 		chunkNames,
-		before: ['runtime', 'vendor'],
-		after: ['main'],
+		// NOTE: if the server is not prebuilt (we are running a dev server), the dev server
+		// will output these chunks for us (and we don't want to insert them twice)
+		before: isPrebuilt ? ['runtime', 'vendor'] : [],
+		after: isPrebuilt ? ['main'] : [],
 	});
 
 	const { styles, cssHash, js } = chunks;
 
 	head.append(styles.toString());
 	body.append(cssHash.toString());
-	body.append(js.toString());
+
+	if (isPrebuilt) {
+		body.append(js.toString());
+	} else {
+		// NOTE: this is really ugly, but we probably don't have a better way to ensure the order
+		// TODO: find out if the order actually matters
+		body.find('[src*="main.chunk"]').before(js.toString());
+	}
 
 	return document_$.html();
 };

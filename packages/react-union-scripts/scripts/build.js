@@ -35,7 +35,7 @@ const prependClientStats = clientStats => {
 	fs.unlinkSync(originalBundlePath);
 	fs.writeFileSync(
 		newBundlePath,
-		`var SSR_CLIENT_STATS = ${JSON.stringify(clientStats)};${originalBundleContent}`
+		`global.SSR_CLIENT_STATS = ${JSON.stringify(clientStats)};${originalBundleContent}`
 	);
 };
 

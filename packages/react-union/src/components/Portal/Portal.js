@@ -25,6 +25,10 @@ class Portal extends React.Component {
 		this.removePortal(this.props);
 	}
 
+	UNSAFE_componentWillReceiveProps(nextProps) {
+		this.renderPortal(nextProps);
+	}
+
 	removePortal = props => {
 		ReactDOM.unmountComponentAtNode(props.to);
 	};

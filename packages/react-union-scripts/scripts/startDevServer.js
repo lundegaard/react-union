@@ -71,13 +71,12 @@ async function startDevServer() {
 			if (req.url === '/') {
 				res.body = '';
 				res.__end = res.end;
-				res.__write = res.write;
 				res.end = data => {
 					res.body += data;
 					next();
 				};
-				res.write = data => (res.body += data);
 			}
+
 			next();
 		},
 		webpackDevMiddleware(compiler, {
