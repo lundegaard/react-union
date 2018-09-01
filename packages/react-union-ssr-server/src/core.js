@@ -69,6 +69,8 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 
 	const { styles, cssHash, js } = chunks;
 
+	// TODO: append the scanResult to body so the client can pick it up without rescanning
+	// this will also solve passing initialProps down to the client
 	head.append(styles.toString());
 	body.append(cssHash.toString());
 
