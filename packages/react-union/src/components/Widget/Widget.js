@@ -1,11 +1,12 @@
 import React from 'react';
-import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 
 import { warning, invariant } from '../../utils';
 import { ConfigShape } from '../../shapes';
 import { withErrorBoundary } from '../../decorators';
 import { WidgetContext } from '../../contexts';
+
+import Portal from '../Portal';
 
 /**
  * An internal component of `Union`.
@@ -46,10 +47,7 @@ export const Widget = ({ component: WidgetComponent, descriptor, initialProps, i
 		return null;
 	}
 
-	// TODO: React currently doesn't support portal hydration :(
-	domElement.innerHTML = '';
-
-	return createPortal(widgetElement, domElement);
+	return <Portal to={domElement}>{widgetElement}</Portal>;
 };
 
 Widget.propTypes = {
