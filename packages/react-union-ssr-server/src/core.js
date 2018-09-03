@@ -39,7 +39,8 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 		);
 
 		// NOTE: https://github.com/faceyspacey/react-universal-component/issues/74
-		// TODO: check if this actually works for multiple parallel requests
+		// we are doing this to make sure that the next `flushChunkNames()` call will only contain
+		// the universal components from `renderToString`
 		flushChunkNames();
 		const rawHtml = ReactDOMServer.renderToString(wrappedElement);
 
@@ -53,11 +54,14 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 
 			document_$(selector).html(widgetHtml);
 		});
+
+		return {
+			chunkNames: flushChunkNames(),
+			scanResult: newScanResult,
+		};
 	};
 
-	await applicationHandler({ render, ...context });
-
-	const chunkNames = flushChunkNames();
+	const { chunkNames, scanResult } = await applicationHandler({ render, ...context });
 
 	const chunks = flushChunks(clientStats, {
 		chunkNames,
@@ -69,10 +73,10 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 
 	const { styles, cssHash, js } = chunks;
 
-	// TODO: append the scanResult to body so the client can pick it up without rescanning
-	// this will also solve passing initialProps down to the client
 	head.append(styles.toString());
 	body.append(cssHash.toString());
+
+	body.append(`<script>window.__SCAN_RESULT__=${JSON.stringify(scanResult)};</script>`);
 
 	if (isPrebuilt) {
 		body.append(js.toString());

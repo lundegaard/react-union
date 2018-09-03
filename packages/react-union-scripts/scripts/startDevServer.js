@@ -62,7 +62,7 @@ async function startDevServer() {
 		"Missing 'target' for proxy in your union.config"
 	);
 
-	// TODO: only compiler the client if SSR is disabled
+	// TODO: only compile the client if SSR is disabled
 	const compiler = webpack(webpackConfigs);
 	const [clientCompiler] = compiler.compilers;
 

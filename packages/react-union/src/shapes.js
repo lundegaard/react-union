@@ -13,6 +13,5 @@ export const ConfigShape = {
 		namespace: PropTypes.string,
 		widget: PropTypes.string.isRequired,
 	}).isRequired,
-	// NOTE: can only be present in SSR context
 	initialProps: PropTypes.object,
 };

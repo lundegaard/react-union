@@ -81,9 +81,8 @@ class Union extends Component {
 	static getDerivedStateFromProps(nextProps, previousState) {
 		if (previousState.routes !== nextProps.routes) {
 			return {
-				// TODO: this must have priority over the SSR scanResult
-				scanResult: Union.scan(nextProps),
 				routes: nextProps.routes,
+				scanResult: Union.scan(nextProps),
 			};
 		}
 
@@ -97,26 +96,30 @@ class Union extends Component {
 	};
 
 	componentDidMount() {
-		// NOTE: This is not wrong. We need to initialize the scanning after the component mounts.
-		// TODO: check if scanResult is not already passed from the server
-		// TODO: because we use ReactDOM.render as the Liferay onEndNavigate handler, we probably need
-		// to invalidate the server-side scanResult immediately after consumption
-		// eslint-disable-next-line react/no-did-mount-set-state
-		this.setState({ scanResult: Union.scan(this.props) });
+		const { props } = this;
+		const { attachListeners } = props;
+
+		if (attachListeners) {
+			attachListeners(() => this.setState({ scanResult: Union.scan(props) }));
+		}
 	}
 
+	// NOTE: not an arrow function because we want to call it in `state` property initializer
 	getInitialScanResult() {
-		return (
-			this.props.scanResult ||
-			(this.props.isServer ? Union.scan(this.props) : { commonData: {}, configs: [] })
-		);
+		const { isServer, scanResult } = this.props;
+
+		if (isServer) {
+			return scanResult || Union.scan(this.props);
+		}
+
+		return window.__SCAN_RESULT__ || Union.scan(this.props);
 	}
 
 	renderWidget = config => (
 		<Widget
+			config={config}
 			isServer={this.props.isServer}
 			key={config.descriptor.namespace || config.descriptor.container}
-			{...config}
 		/>
 	);
 

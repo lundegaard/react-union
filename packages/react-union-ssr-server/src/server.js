@@ -31,11 +31,12 @@ module.exports = applicationHandler => {
 	};
 
 	// NOTE: this global is undefined iff we are running a dev server
-	if (!global.SSR_CLIENT_STATS) {
+	if (!global.CLIENT_STATS) {
+		// NOTE: signature is the same as WebpackHotServerMiddleware's `createHandler` options property
 		return makeHandleRequest;
 	}
 
-	app.use(makeHandleRequest({ clientStats: global.SSR_CLIENT_STATS, isPrebuilt: true }));
+	app.use(makeHandleRequest({ clientStats: global.CLIENT_STATS, isPrebuilt: true }));
 
 	// TODO: add health check endpoint ('/health')
 

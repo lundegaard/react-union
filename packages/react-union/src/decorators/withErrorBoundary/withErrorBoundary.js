@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import path from 'ramda/src/path';
 
 import { ConfigShape } from '../../shapes';
 import { getDisplayName } from '../../utils';
 
-const getWidgetName = path(['props', 'descriptor', 'widget']);
+const getWidgetName = path(['props', 'config', 'descriptor', 'widget']);
 
 const withErrorBoundary = NextComponent => {
 	class WithErrorBoundary extends Component {
-		static propTypes = ConfigShape;
+		static propTypes = {
+			config: PropTypes.shape(ConfigShape).isRequired,
+		};
 
 		static displayName = `WithErrorBoundary(${getDisplayName(NextComponent)})`;
 
