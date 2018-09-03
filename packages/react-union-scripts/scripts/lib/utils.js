@@ -29,7 +29,7 @@ const DEFAULT_SSR_PORT = 3303;
 const DEFAULT_UNION_CONFIG = {
 	// computed in `extendPaths_`
 	paths: {},
-	// computed in `extendsClean_`
+	// computed in `extendClean_`
 	clean: { options: {} },
 	generateTemplate: true,
 	vendorBlackList: [],
@@ -81,7 +81,7 @@ const trimSlashes = R.o(R.dropWhile(equalsSlash_), R.dropLastWhile(equalsSlash_)
 
 const getApps_ = R.path([APPS_FOLDER]);
 
-const extendsClean_ = config => ({
+const extendClean_ = config => ({
 	...config,
 	clean: {
 		paths: [config.paths.build],
@@ -130,7 +130,7 @@ const getCommonUnionConfig_ = R.omit([APPS_FOLDER]);
 const extendConfigs = R.map(
 	R.o(
 		R.compose(
-			extendsClean_,
+			extendClean_,
 			extendPaths_,
 			extendOutputMapper_
 		),
