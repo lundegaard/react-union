@@ -145,7 +145,6 @@ const getWebpackConfig_ = config => {
 		{
 			entry: {
 				[appName]: [
-					require.resolve('babel-polyfill'),
 					...(hmr ? [require.resolve('webpack-hot-middleware/client')] : []),
 					paths.index,
 				],
