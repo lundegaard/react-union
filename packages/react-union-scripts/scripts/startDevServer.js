@@ -62,11 +62,13 @@ async function startDevServer() {
 		"Missing 'target' for proxy in your union.config"
 	);
 
+	// TODO: only compiler the client if SSR is disabled
 	const compiler = webpack(webpackConfigs);
 	const [clientCompiler] = compiler.compilers;
 
 	const middleware = [
 		// TODO: move elsewhere
+		// TODO: remove when SSR is disabled
 		(req, res, next) => {
 			if (req.url === '/') {
 				res.body = '';
@@ -82,6 +84,7 @@ async function startDevServer() {
 		webpackDevMiddleware(compiler, {
 			publicPath: clientConfig.output.publicPath,
 			stats,
+			// TODO: remove when SSR is disabled
 			serverSideRender: true,
 		}),
 		webpackHotMiddleware(clientCompiler),
@@ -93,6 +96,7 @@ async function startDevServer() {
 					}),
 			  ]
 			: []),
+		// TODO: remove when SSR is disabled
 		webpackHotServerMiddleware(compiler, { createHandler: createHotServerHandler }),
 		...getProxyMiddleware(clientConfig.devServer),
 	];

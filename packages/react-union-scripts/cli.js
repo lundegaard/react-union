@@ -7,8 +7,7 @@ function runCommand(command) {
 
 const command = process.argv[2];
 
-// TODO: consistent naming (start-ssr-server is weird alongside startDevServer)
-if (['start', 'build', 'test', 'start-ssr-server'].includes(command)) {
+if (['start', 'build', 'test'].includes(command)) {
 	runCommand(command).catch(err => {
 		console.error(process.argv.includes('--verbose') ? err.stack : `ERROR: ${err.message}`);
 		process.exit(1);

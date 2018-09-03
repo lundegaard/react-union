@@ -51,6 +51,6 @@ const target = getArgValue('--target', program);
 
 const script = nth(2)(program);
 
-const ssr = programIncludes('--ssr');
+// TODO: add ssr or no-ssr option
 
-module.exports = { ssr, script, target, debug, verbose, proxy, noHmr, analyze, app, appOriginal };
+module.exports = { script, target, debug, verbose, proxy, noHmr, analyze, app, appOriginal };

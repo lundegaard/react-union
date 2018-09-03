@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
-// TODO: Sadly, React does not support hydration of portals. This works!
+// HACK: Sadly, React does not support hydration of portals. This works!
 const renderSubtreeIntoContainer = ReactDOM.unstable_renderSubtreeIntoContainer;
 
 class Portal extends React.Component {
@@ -26,6 +26,10 @@ class Portal extends React.Component {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
+		if (nextProps.to !== this.props.to) {
+			this.removePortal(this.props);
+		}
+
 		this.renderPortal(nextProps);
 	}
 

@@ -81,6 +81,7 @@ class Union extends Component {
 	static getDerivedStateFromProps(nextProps, previousState) {
 		if (previousState.routes !== nextProps.routes) {
 			return {
+				// TODO: this must have priority over the SSR scanResult
 				scanResult: Union.scan(nextProps),
 				routes: nextProps.routes,
 			};
@@ -97,10 +98,11 @@ class Union extends Component {
 
 	componentDidMount() {
 		// NOTE: This is not wrong. We need to initialize the scanning after the component mounts.
+		// TODO: check if scanResult is not already passed from the server
+		// TODO: because we use ReactDOM.render as the Liferay onEndNavigate handler, we probably need
+		// to invalidate the server-side scanResult immediately after consumption
 		// eslint-disable-next-line react/no-did-mount-set-state
 		this.setState({ scanResult: Union.scan(this.props) });
-
-		// TODO: handle getInitialProps
 	}
 
 	getInitialScanResult() {

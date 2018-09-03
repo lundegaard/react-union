@@ -23,12 +23,14 @@ module.exports = applicationHandler => {
 				res.end(content);
 			}
 
+			// TODO: figure out where the next() calls are actually necessary, there's too many of them
 			next();
 		} catch (error) {
 			next(error);
 		}
 	};
 
+	// NOTE: this global is undefined iff we are running a dev server
 	if (!global.SSR_CLIENT_STATS) {
 		return makeHandleRequest;
 	}
