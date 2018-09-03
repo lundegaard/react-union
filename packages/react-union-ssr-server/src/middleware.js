@@ -1,9 +1,9 @@
 /**
  * `createHandler` property for WebpackHotServerMiddleware
  */
-module.exports = (error, handleRequest) => async (req, res, next) => {
+module.exports = (error, handleRequest) => (req, res, next) => {
 	if (error) {
-		next(error);
+		return next(error);
 	}
 
 	if (req.url !== '/index.html' && req.url !== '/') {
@@ -13,7 +13,7 @@ module.exports = (error, handleRequest) => async (req, res, next) => {
 	try {
 		next();
 		req.body = res.body;
-		await handleRequest(req, res, next);
+		handleRequest(req, res, next);
 	} catch (error) {
 		next(error);
 	}

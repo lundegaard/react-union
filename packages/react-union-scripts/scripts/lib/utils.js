@@ -24,7 +24,6 @@ const UNION_CONFIG_PATH = path.resolve(process.cwd(), './union.config.js');
 const DEFAULT_UNI_REPO_APP_DIR = path.resolve(process.cwd(), SRC_FOLDER, APPS_FOLDER);
 
 const DEFAULT_PORT = 3300;
-const DEFAULT_SSR_PORT = 3303;
 
 const DEFAULT_UNION_CONFIG = {
 	// computed in `extendPaths_`
@@ -44,9 +43,6 @@ const DEFAULT_UNION_CONFIG = {
 		port: DEFAULT_PORT,
 		target: '',
 		publicPath: '/',
-	},
-	ssrServer: {
-		port: DEFAULT_SSR_PORT,
 	},
 	outputMapper: {
 		js: 'static/js',

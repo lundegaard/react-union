@@ -37,7 +37,7 @@ const proxyMiddleware = ({ proxy } = {}) => {
 const responseCaptureMiddleware = (req, res, next) => {
 	if (req.url === '/') {
 		res.body = '';
-		res.__end = res.end;
+		res.forceEnd = res.end;
 		res.end = data => {
 			res.body += data;
 			next();

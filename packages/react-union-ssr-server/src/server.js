@@ -3,6 +3,7 @@ const http = require('http');
 const bodyParser = require('body-parser');
 
 const makeContentRenderer = require('./core');
+const { getPortArgument } = require('./utils');
 
 module.exports = applicationHandler => {
 	const app = connect();
@@ -14,17 +15,13 @@ module.exports = applicationHandler => {
 		try {
 			const content = await renderContent(req.body, options, { req, res });
 
-			// TODO: add some useful headers
-			// res.setHeader('Content-Type', 'application/html');
-
-			if (res.__end) {
-				res.__end(content);
+			// NOTE: res.forceEnd is defined iff we are running a dev server
+			if (res.forceEnd) {
+				res.forceEnd(content);
 			} else {
+				res.writeHead(200, { 'Content-Type': 'application/html' });
 				res.end(content);
 			}
-
-			// TODO: figure out where the next() calls are actually necessary, there's too many of them
-			next();
 		} catch (error) {
 			next(error);
 		}
@@ -36,14 +33,16 @@ module.exports = applicationHandler => {
 		return makeHandleRequest;
 	}
 
-	app.use(makeHandleRequest({ clientStats: global.CLIENT_STATS, isPrebuilt: true }));
+	app.use('/health', (req, res) => {
+		res.writeHead(200);
+		res.end('Running!');
+	});
 
-	// TODO: add health check endpoint ('/health')
+	app.use(makeHandleRequest({ clientStats: global.CLIENT_STATS, isPrebuilt: true }));
 
 	const server = http.createServer(app);
 
-	// TODO: use process.env.SOMETHING or get the port from some reasonable source
-	const port = 3303;
+	const port = getPortArgument() || process.env.SSR_PORT || 3303;
 	server.listen(port);
 	console.log(`🚀 React-union SSR server is listening on port ${port} 🚀`);
 };

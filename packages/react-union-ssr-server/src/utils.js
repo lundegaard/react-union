@@ -1,4 +1,16 @@
-const { call, __, map, path, compose, forEach, curry, assoc, invoker } = require('ramda');
+const {
+	call,
+	__,
+	map,
+	path,
+	compose,
+	forEach,
+	curry,
+	assoc,
+	invoker,
+	findIndex,
+	equals,
+} = require('ramda');
 const { rejectNil } = require('ramda-extension');
 
 const hoistComponentStatics = compose(
@@ -39,7 +51,13 @@ const addInitialPropsToConfigs = async (configs, context) => {
 	return map(assocInitialProps(promiseMap), configs);
 };
 
+const getPortArgument = () => {
+	const index = findIndex(equals('--port'), process.argv);
+	return index === -1 ? null : process.argv[index + 1];
+};
+
 module.exports = {
 	hoistComponentStatics,
 	addInitialPropsToConfigs,
+	getPortArgument,
 };

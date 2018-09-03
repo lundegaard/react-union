@@ -75,16 +75,9 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 
 	head.append(styles.toString());
 	body.append(cssHash.toString());
+	body.append(js.toString());
 
 	body.append(`<script>window.__SCAN_RESULT__=${JSON.stringify(scanResult)};</script>`);
-
-	if (isPrebuilt) {
-		body.append(js.toString());
-	} else {
-		// NOTE: this is really ugly, but we probably don't have a better way to ensure the order
-		// TODO: find out if the order actually matters
-		body.find('[src*="main.chunk"]').before(js.toString());
-	}
 
 	return document_$.html();
 };
