@@ -2,7 +2,6 @@
 const invariant = require('invariant');
 const merge = require('webpack-merge');
 const path = require('path');
-const fs = require('fs');
 const R = require('ramda');
 const R_ = require('ramda-extension');
 
@@ -33,7 +32,7 @@ const { resolve, optimization, performanceHints, context } = require('./webpack/
 const dependenciesP = R.prop('dependencies');
 
 const buildMode = getForMode('development', 'production');
-const buildModeString = getForMode('"development"', '"production"');
+const buildModeString = `"${buildMode}"`;
 
 /** if true, we are building bundles for all of the modules in 'configs' */
 const buildingAll = !cli.app;
@@ -44,17 +43,11 @@ if (cli.proxy) {
 
 console.log(`Optimizing for ${buildMode} mode.`);
 
-const createGlobals = ssr => ({
+const createGlobals = isServerConfig => ({
 	__DEV__: cli.debug, //  alias for `process.env.NODE_ENV === 'development'
-	'process.env.BROWSER': ssr,
+	'process.env.BROWSER': isServerConfig,
 	'process.env.BABEL_ENV': buildModeString,
 	'process.env.NODE_ENV': buildModeString,
-	...(ssr
-		? {
-				window: {},
-				document: {},
-		  }
-		: {}),
 });
 
 const nodeModulesPath = resolveSymlink(process.cwd(), './node_modules');
@@ -86,16 +79,20 @@ const getPackagesPath = R.useWith(R.filter, [
 	getAllWorkspacesWithFullPathSuffixed,
 ]);
 
-const getWebpackConfig_ = (config, ssr) => {
+const getWebpackConfig_ = (config, isServerConfig) => {
 	const { paths, proxy, generateTemplate, publicPath, outputMapper, mergeWebpackConfig } = config;
 
-	if (ssr && !fs.existsSync(require.resolve(paths.ssrIndex))) {
-		return null;
+	if (isServerConfig) {
+		try {
+			require.resolve(paths.ssrIndex);
+		} catch (error) {
+			return null;
+		}
 	}
 
 	const getPackagesPathForSuffix = getPackagesPath(config);
 
-	const hmr = cli.script === 'start' && cli.debug && !cli.noHmr && !ssr;
+	const isHot = cli.script === 'start' && cli.debug && !cli.noHMR;
 
 	const outputPath = paths.build;
 
@@ -127,9 +124,9 @@ const getWebpackConfig_ = (config, ssr) => {
 		{ mode: buildMode },
 		{
 			entry: [
-				...(ssr ? [] : [require.resolve('babel-polyfill')]),
-				...(hmr ? [require.resolve('webpack-hot-middleware/client')] : []),
-				...(ssr ? [paths.ssrIndex] : [paths.index]),
+				...(isServerConfig ? [] : [require.resolve('babel-polyfill')]),
+				...(!isServerConfig && isHot ? [require.resolve('webpack-hot-middleware/client')] : []),
+				...(isServerConfig ? [paths.ssrIndex] : [paths.index]),
 			],
 			output: {
 				path: path.resolve(outputPath),
@@ -141,16 +138,37 @@ const getWebpackConfig_ = (config, ssr) => {
 			},
 		},
 		loadBabel(),
-		loadCss(cli.debug, ssr),
+		loadCss(cli.debug, isServerConfig),
 		loadImages(config),
 		loadFiles(config),
-		definePlugin(createGlobals(ssr)),
+		definePlugin(createGlobals(isServerConfig)),
 		resolve(isMonoRepo ? monoRepoResolve() : uniRepoResolve()),
 		context(),
 		performanceHints(),
-		mergeWhen(cli.analyze, analyzeBundlePlugin)
+		mergeWhen(cli.analyze, analyzeBundlePlugin),
+		mergeWhen(isHot, hmrPlugin)
 	);
 
+	if (isServerConfig) {
+		const serverConfig = () =>
+			merge(
+				commonConfig,
+				{
+					name: 'server',
+					target: 'node',
+					output: {
+						path: path.join(path.resolve(outputPath), 'server'),
+						filename: 'index.js',
+						libraryTarget: 'umd',
+					},
+				},
+				limitChunkCountPlugin()
+			);
+
+		return mergeWebpackConfig(serverConfig(), isServerConfig);
+	}
+
+	// NOTE: here we only handle the client-side configs
 	const clientConfig = () =>
 		merge(
 			commonConfig,
@@ -159,7 +177,7 @@ const getWebpackConfig_ = (config, ssr) => {
 			},
 			optimization(),
 			cleanPlugin(config),
-			extractCssChunksPlugin(cli.debug, hmr, outputMapper.css),
+			extractCssChunksPlugin(cli.debug, isHot, outputMapper.css),
 			manifestPlugin()
 		);
 
@@ -167,8 +185,7 @@ const getWebpackConfig_ = (config, ssr) => {
 		merge(
 			clientConfig(),
 			loaderOptionsPlugin(true),
-			mergeWhen(hmr, hmrPlugin),
-			mergeWhen(generateTemplate, htmlPlugin, config, outputPath),
+			mergeWhen(generateTemplate, htmlPlugin, [config, outputPath]),
 			{
 				devtool: 'source-map',
 			}
@@ -176,26 +193,10 @@ const getWebpackConfig_ = (config, ssr) => {
 
 	const clientProductionConfig = () => merge(clientConfig(), uglifyJsPlugin(cli.verbose));
 
-	const serverConfig = () =>
-		merge(
-			commonConfig,
-			{
-				name: 'server',
-				target: 'node',
-				output: {
-					path: path.join(path.resolve(outputPath), 'server'),
-					filename: 'main.js',
-					libraryTarget: 'umd',
-				},
-			},
-			limitChunkCountPlugin()
-		);
-
-	if (ssr) {
-		return mergeWebpackConfig(serverConfig(), ssr);
-	}
-
-	return mergeWebpackConfig(cli.debug ? clientDevelopmentConfig() : clientProductionConfig(), ssr);
+	return mergeWebpackConfig(
+		cli.debug ? clientDevelopmentConfig() : clientProductionConfig(),
+		isServerConfig
+	);
 };
 
 const getWebpackConfigPair_ = config => [

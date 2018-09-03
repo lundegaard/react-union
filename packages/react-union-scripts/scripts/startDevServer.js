@@ -46,46 +46,47 @@ const getProxyMiddleware = ({ proxy } = {}) => {
 	}, normalizedConfig);
 };
 
+// TODO: move elsewhere along with getProxyMiddleware
+const responseCaptureMiddleware = (req, res, next) => {
+	if (req.url === '/') {
+		res.body = '';
+		res.__end = res.end;
+		res.end = data => {
+			res.body += data;
+			next();
+		};
+	}
+
+	next();
+};
+
 async function startDevServer() {
 	invariant(
 		configs && configs.length === 1,
-		'You can start DEV Sever only for one module at the same time.'
+		'You can start the development server only for one module at a time.'
 	);
 
 	const webpackConfigs = configs[0];
 	const clientConfig = webpackConfigs[0];
 	const unionConfig = getAppConfig();
 
+	const isSSR = webpackConfigs[1] && !cli.noSSR;
+
 	invariant(!cli.proxy || unionConfig.proxy.port, "Missing 'port' for proxy in your union.config.");
 	invariant(
 		!cli.proxy || unionConfig.proxy.target,
-		"Missing 'target' for proxy in your union.config"
+		"Missing 'target' for proxy in your union.config."
 	);
 
-	// TODO: only compile the client if SSR is disabled
-	const compiler = webpack(webpackConfigs);
+	const compiler = R.o(webpack, R_.rejectNil)(webpackConfigs);
 	const [clientCompiler] = compiler.compilers;
 
 	const middleware = [
-		// TODO: move elsewhere
-		// TODO: remove when SSR is disabled
-		(req, res, next) => {
-			if (req.url === '/') {
-				res.body = '';
-				res.__end = res.end;
-				res.end = data => {
-					res.body += data;
-					next();
-				};
-			}
-
-			next();
-		},
-		webpackDevMiddleware(compiler, {
+		...(isSSR ? [responseCaptureMiddleware] : []),
+		webpackDevMiddleware(isSSR ? compiler : clientCompiler, {
 			publicPath: clientConfig.output.publicPath,
 			stats,
-			// TODO: remove when SSR is disabled
-			serverSideRender: true,
+			serverSideRender: isSSR,
 		}),
 		webpackHotMiddleware(clientCompiler),
 		...(!cli.proxy && unionConfig.devServer.historyApiFallback
@@ -96,8 +97,13 @@ async function startDevServer() {
 					}),
 			  ]
 			: []),
-		// TODO: remove when SSR is disabled
-		webpackHotServerMiddleware(compiler, { createHandler: createHotServerHandler }),
+		...(isSSR
+			? [
+					webpackHotServerMiddleware(compiler, {
+						createHandler: createHotServerHandler,
+					}),
+			  ]
+			: []),
 		...getProxyMiddleware(clientConfig.devServer),
 	];
 

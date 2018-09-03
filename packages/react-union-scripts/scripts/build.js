@@ -3,47 +3,47 @@ const { promisify } = require('util');
 const fse = require('fs-extra');
 const fs = require('fs');
 const {
-	map,
 	test,
 	complement,
 	flatten,
-	splitEvery,
+	propEq,
 	compose,
-	head,
+	filter,
 	prop,
 	invoker,
 	forEach,
+	o,
+	map,
+	head,
 } = require('ramda');
+const { rejectNil } = require('ramda-extension');
 const path = require('path');
 
 const { getUnionConfig, stats } = require('./lib/utils');
+const cli = require('./lib/cli');
 const configs = require('./webpack.config');
 
 const getClientStatsList = compose(
-	map(head),
-	splitEvery(2),
+	filter(propEq('name', 'client')),
 	prop('children'),
 	invoker(0, 'toJson')
 );
 
 const prependClientStats = clientStats => {
-	const ssrPath = path.join(clientStats.outputPath, 'server');
-	// TODO: rename the target to index.js
-	const originalBundlePath = path.join(ssrPath, 'main.js');
-	const originalBundleContent = fs.readFileSync(originalBundlePath);
-	const newBundlePath = path.join(ssrPath, 'index.js');
+	const bundlePath = path.join(clientStats.outputPath, 'server', 'index.js');
+	const bundleContent = fs.readFileSync(bundlePath);
 
-	fs.unlinkSync(originalBundlePath);
 	fs.writeFileSync(
-		newBundlePath,
-		`global.CLIENT_STATS = ${JSON.stringify(clientStats)};${originalBundleContent}`
+		bundlePath,
+		`global.CLIENT_STATS = ${JSON.stringify(clientStats)};${bundleContent}`
 	);
 };
 
+const getWebpackConfigs = cli.noSSR ? map(head) : o(rejectNil, flatten);
+
 async function build() {
-	// TODO: rejectNil over flattened configs and then somehow interpolate the stats back correctly
-	const flattenedConfigs = flatten(configs);
-	const compiler = webpack(flattenedConfigs);
+	const webpackConfigs = getWebpackConfigs(configs);
+	const compiler = webpack(webpackConfigs);
 	const run = promisify(compiler.run.bind(compiler));
 
 	const buildStats = await run();

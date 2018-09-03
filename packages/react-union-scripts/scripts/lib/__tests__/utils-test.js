@@ -144,13 +144,13 @@ describe('utils', () => {
 	describe('mergeWhen', () => {
 		it('should fire function with args when condition is met and return res of the function', () => {
 			const fn = jest.fn(() => 'res');
-			const res = mergeWhen(true, fn, 'a', 'b');
+			const res = mergeWhen(true, fn, ['a', 'b']);
 			expect(res).toEqual('res');
 			expect(fn).toHaveBeenCalledWith('a', 'b');
 		});
 		it('should not fire function when condition is unmet and return {}', () => {
 			const fn = jest.fn();
-			const res = mergeWhen(false, fn, 'a', 'b');
+			const res = mergeWhen(false, fn, ['a', 'b']);
 			expect(res).toEqual({});
 			expect(fn).not.toHaveBeenCalled();
 		});

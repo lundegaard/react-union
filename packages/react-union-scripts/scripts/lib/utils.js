@@ -211,7 +211,7 @@ const getUnionConfig = () =>
 const getAppConfig = () =>
 	R.find(R.whereEq({ name: isMonoRepo ? cli.appOriginal : cli.app }), getUnionConfig());
 
-const mergeWhen = (condition, fn, ...fnArgs) => (condition ? fn(...fnArgs) : {});
+const mergeWhen = (condition, fn, args = []) => (condition ? fn(...args) : {});
 const getForMode = (debug, prod) => (cli.debug ? debug : prod);
 
 module.exports = {

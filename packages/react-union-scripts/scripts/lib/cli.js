@@ -24,10 +24,10 @@ const getArgValue = (arg, program) =>
 
 const program = process.argv;
 const programIncludes = includes(program);
-const programNotInclude = notInclude(program);
+const programNotIncludes = notInclude(program);
 
 /** optimize for development */
-const debug = programNotInclude('--release');
+const debug = programNotIncludes('--release');
 
 /** level of debugging messages */
 const verbose = programIncludes('--verbose');
@@ -36,7 +36,10 @@ const verbose = programIncludes('--verbose');
 const proxy = programIncludes('--proxy');
 
 /** if true, do not suport HMR */
-const noHmr = !debug || programIncludes('--no-hmr');
+const noHMR = programIncludes('--no-hmr');
+
+/** if true, do not do anything SSR related */
+const noSSR = programIncludes('--no-ssr');
 
 /** if true, runs analyze tool  */
 const analyze = programIncludes('--analyze');
@@ -51,6 +54,4 @@ const target = getArgValue('--target', program);
 
 const script = nth(2)(program);
 
-// TODO: add ssr or no-ssr option
-
-module.exports = { script, target, debug, verbose, proxy, noHmr, analyze, app, appOriginal };
+module.exports = { script, target, debug, verbose, proxy, noHMR, noSSR, analyze, app, appOriginal };

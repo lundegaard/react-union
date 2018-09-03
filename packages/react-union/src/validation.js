@@ -6,12 +6,10 @@ import prop from 'ramda/src/prop';
 import { invariant } from './utils';
 
 export const validateDescriptorStructures = forEach(({ widget, namespace, container }) => {
-	invariant(widget, 'Missing data-union-widget value in the widget descriptor.');
-
 	invariant(
 		namespace || container,
 		`Missing required attributes for the widget "${widget}". ` +
-			"Fill in the 'data-union-namespace' or 'data-union-container' in the widget descriptor."
+			'Fill "data-union-namespace" or "data-union-container" in the widget descriptor.'
 	);
 });
 
