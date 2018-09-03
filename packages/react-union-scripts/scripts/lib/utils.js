@@ -31,7 +31,6 @@ const DEFAULT_UNION_CONFIG = {
 	paths: {},
 	// computed in `extendsClean_`
 	clean: { options: {} },
-	generateVendorBundle: true,
 	generateTemplate: true,
 	vendorBlackList: [],
 	publicPath: '/',
