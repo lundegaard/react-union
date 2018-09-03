@@ -5,8 +5,8 @@ const NestedComponent = () => (
 	<WidgetContext.Consumer>
 		{({ namespace, data }) => (
 			<div>
-				Im nested component of Content. I have also namespace: <b>{namespace}</b> and initial data:
-				<b>{JSON.stringify(data)}</b>. But taken from context :p.
+				I am a nested component of widget Content. I also have namespace <b>{namespace}</b> and
+				initial data <b>{JSON.stringify(data)}</b>, but from <b>WidgetContext</b> :P
 			</div>
 		)}
 	</WidgetContext.Consumer>
