@@ -4,6 +4,7 @@ import { AppContainer } from 'react-hot-loader';
 
 import Root from './components/Root';
 
+// TODO: refactor to use the new `hot(module)(Root)` API
 const render = Component =>
 	justRender(
 		<AppContainer errorReporter={__DEV__ ? require('redbox-react').default : null}>
