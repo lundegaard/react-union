@@ -10,6 +10,7 @@ import compose from 'ramda/src/compose';
 
 import { validateDescriptorStructures, validateRoutesWithDescriptors } from '../validation';
 
+// NOTE: The following two imports should "share a common export interface".
 import {
 	getWidgetDescriptors as getCheerioWidgetDescriptors,
 	getCommonData as getCheerioCommonData,
@@ -20,13 +21,15 @@ import {
 	getCommonData as getDomCommonData,
 } from './descriptors/dom';
 
+const isParentCheerio = is(Function);
+
 const getWidgetDescriptors = ifElse(
-	is(Function),
+	isParentCheerio,
 	getCheerioWidgetDescriptors,
 	getDomWidgetDescriptors
 );
 
-const getCommonData = ifElse(is(Function), getCheerioCommonData, getDomCommonData);
+const getCommonData = ifElse(isParentCheerio, getCheerioCommonData, getDomCommonData);
 
 const mergeCommonDataToConfigs = commonData =>
 	map(mergeDeepRight({ descriptor: { data: commonData } }));

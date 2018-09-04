@@ -177,7 +177,7 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 			},
 			optimization(),
 			cleanPlugin(config),
-			extractCssChunksPlugin(cli.debug, isHot, outputMapper.css),
+			extractCssChunksPlugin(isHot, outputMapper.css),
 			manifestPlugin()
 		);
 

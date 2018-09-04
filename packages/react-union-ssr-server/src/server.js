@@ -11,11 +11,13 @@ module.exports = applicationHandler => {
 
 	app.use(bodyParser.text());
 
+	// NOTE: `options` will be provided by WebpackHotServerMiddleware iff we are running a dev server
+	// The signature matches the `createHandler` property
 	const makeHandleRequest = options => async (req, res, next) => {
 		try {
 			const content = await renderContent(req.body, options, { req, res });
 
-			// NOTE: res.forceEnd is defined iff we are running a dev server
+			// NOTE: `res.forceEnd` is defined iff we are running a dev server
 			if (res.forceEnd) {
 				res.forceEnd(content);
 			} else {
@@ -27,14 +29,15 @@ module.exports = applicationHandler => {
 		}
 	};
 
-	// NOTE: this global is undefined iff we are running a dev server
+	// NOTE: this global is undefined iff we are running a dev server, otherwise, it is provided
+	// in the `react-union-scripts` build script
 	if (!global.CLIENT_STATS) {
-		// NOTE: signature is the same as WebpackHotServerMiddleware's `createHandler` options property
 		return makeHandleRequest;
 	}
 
 	app.use('/health', (req, res) => {
 		res.writeHead(200);
+		// TODO: Perhaps provide more info, such as the uptime, last call, etc.
 		res.end('Running!');
 	});
 

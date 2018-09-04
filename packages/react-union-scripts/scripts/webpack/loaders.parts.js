@@ -12,19 +12,19 @@ const loadBabel = include => () => ({
 	},
 });
 
-const loadCss = include => (debug, ssr) => ({
+const loadCss = include => (includeSourceMap, isServerConfig) => ({
 	module: {
 		rules: [
 			{
 				test: /\.s?css$/,
 				include,
 				use: [
-					...(ssr ? [] : [ExtractCssChunks.loader]),
+					...(isServerConfig ? [] : [ExtractCssChunks.loader]),
 					{
-						loader: require.resolve(`css-loader${ssr ? '/locals' : ''}`),
+						loader: require.resolve(`css-loader${isServerConfig ? '/locals' : ''}`),
 						options: {
 							minimize: true,
-							sourceMap: debug,
+							sourceMap: includeSourceMap,
 							modules: true,
 							localIdentName: '[name]__[local]--[hash:base64:5]',
 						},

@@ -9,22 +9,22 @@ const webpackHotServerMiddleware = require('webpack-hot-server-middleware');
 const historyApiFallback = require('connect-history-api-fallback');
 const createHotServerHandler = require('react-union-ssr-server/middleware');
 
-const configs = require('./webpack.config');
+const webpackConfigs = require('./webpack.config');
 const cli = require('./lib/cli');
 const { stats, getAppConfig } = require('./lib/utils');
 const { responseCaptureMiddleware, proxyMiddleware } = require('./lib/middleware');
 
 async function startDevServer() {
 	invariant(
-		configs && configs.length === 1,
+		webpackConfigs.length === 1,
 		'You can start the development server only for one module at a time.'
 	);
 
-	const webpackConfigs = configs[0];
-	const clientConfig = webpackConfigs[0];
+	const webpackConfigPair = webpackConfigs[0];
+	const clientConfig = webpackConfigPair[0];
 	const unionConfig = getAppConfig();
 
-	const isSSR = webpackConfigs[1] && !cli.noSSR;
+	const isSSR = webpackConfigPair[1] && !cli.noSSR;
 
 	invariant(!cli.proxy || unionConfig.proxy.port, "Missing 'port' for proxy in your union.config.");
 	invariant(
@@ -32,9 +32,10 @@ async function startDevServer() {
 		"Missing 'target' for proxy in your union.config."
 	);
 
-	const compiler = o(webpack, rejectNil)(webpackConfigs);
+	const compiler = o(webpack, rejectNil)(webpackConfigPair);
 	const [clientCompiler] = compiler.compilers;
 
+	// TODO: this section is not very pretty, we should improve it
 	const middleware = [
 		...(isSSR ? [responseCaptureMiddleware] : []),
 		webpackDevMiddleware(isSSR ? compiler : clientCompiler, {
@@ -52,11 +53,7 @@ async function startDevServer() {
 			  ]
 			: []),
 		...(isSSR
-			? [
-					webpackHotServerMiddleware(compiler, {
-						createHandler: createHotServerHandler,
-					}),
-			  ]
+			? [webpackHotServerMiddleware(compiler, { createHandler: createHotServerHandler })]
 			: []),
 		...proxyMiddleware(clientConfig.devServer),
 	];
@@ -70,6 +67,7 @@ async function startDevServer() {
 					target: unionConfig.proxy.target,
 					middleware,
 				},
+				// TODO: we probably shouldn't serve index.ejs when running a proxy
 				serveStatic: baseDirs,
 		  }
 		: {

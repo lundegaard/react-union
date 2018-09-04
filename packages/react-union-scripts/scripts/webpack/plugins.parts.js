@@ -78,7 +78,7 @@ const limitChunkCountPlugin = () => ({
 	],
 });
 
-const extractCssChunksPlugin = (debug, hot, path) => {
+const extractCssChunksPlugin = (hot, path) => {
 	const filename = getForMode('[name].css', '[name].[chunkhash:8].css');
 	const chunkFilename = getForMode('[name].chunk.css', '[name].[chunkhash:8].chunk.css');
 

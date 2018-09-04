@@ -21,7 +21,7 @@ const path = require('path');
 
 const { getUnionConfig, stats } = require('./lib/utils');
 const cli = require('./lib/cli');
-const configs = require('./webpack.config');
+const webpackConfigs = require('./webpack.config');
 
 const getClientStatsList = compose(
 	filter(propEq('name', 'client')),
@@ -39,11 +39,11 @@ const prependClientStats = clientStats => {
 	);
 };
 
-const getWebpackConfigs = cli.noSSR ? map(head) : o(rejectNil, flatten);
+const getBuildableWebpackConfigs = cli.noSSR ? map(head) : o(rejectNil, flatten);
 
 async function build() {
-	const webpackConfigs = getWebpackConfigs(configs);
-	const compiler = webpack(webpackConfigs);
+	const buildableWebpackConfigs = getBuildableWebpackConfigs(webpackConfigs);
+	const compiler = webpack(buildableWebpackConfigs);
 	const run = promisify(compiler.run.bind(compiler));
 
 	const buildStats = await run();

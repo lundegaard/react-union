@@ -44,13 +44,14 @@ const addInitialPropsToConfigs = async (configs, context) => {
 	const promiseMap = new Map();
 
 	// NOTE: this section is ugly and contains side-effects
+	// TODO: can probably be refactored so that we only operate on configs and don't use ES6 Map
 	forEach(populatePromiseMap(promiseMap, context), configs);
 	await replacePromisesWithValues(promiseMap);
-	// NOTE: here ends the ugly section
 
 	return map(assocInitialProps(promiseMap), configs);
 };
 
+// TODO: similar to getArgValue in `lib/cli.js` of react-union-scripts, we should reuse it somehow
 const getPortArgument = () => {
 	const index = findIndex(equals('--port'), process.argv);
 	return index === -1 ? null : process.argv[index + 1];

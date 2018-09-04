@@ -14,12 +14,15 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 	const body = document_$('body');
 	const context = { head, body, ...httpContext };
 
-	// NOTE: we need to pass routes here because of getInitialProps
+	// NOTE: We need to pass routes here because of getInitialProps.
+	// In order to get the initial props, we need to get the list of all rendered components.
+	// To do that, we need to call `scan` ourselves here.
 	const render = async (reactElement, routes) => {
 		const scanResult = scan(routes, document_$);
 		const { configs } = scanResult;
 
 		// NOTE: https://github.com/faceyspacey/react-universal-component#static-hoisting
+		// Without calling this function, `getInitialProps` will not be defined.
 		hoistComponentStatics(configs);
 
 		const newConfigs = await addInitialPropsToConfigs(configs, context);
@@ -39,10 +42,11 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 		);
 
 		// NOTE: https://github.com/faceyspacey/react-universal-component/issues/74
-		// we are doing this to make sure that the next `flushChunkNames()` call will only contain
-		// the universal components from `renderToString`
+		// We are doing this to make sure that the next `flushChunkNames()` call will only contain
+		// the universal components from `renderToString`, not from other asynchronous requests.
 		flushChunkNames();
 		const rawHtml = ReactDOMServer.renderToString(wrappedElement);
+		const chunkNames = flushChunkNames();
 
 		const raw_$ = cheerio.load(rawHtml);
 
@@ -56,7 +60,7 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 		});
 
 		return {
-			chunkNames: flushChunkNames(),
+			chunkNames,
 			scanResult: newScanResult,
 		};
 	};

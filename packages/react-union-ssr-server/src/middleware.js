@@ -12,6 +12,8 @@ module.exports = (error, handleRequest) => (req, res, next) => {
 
 	try {
 		next();
+		// NOTE: We are essentially emulating the `bodyParser.text()` middleware here.
+		// `res.body` is populated using the `responseCaptureMiddleware` in the dev server.
 		req.body = res.body;
 		handleRequest(req, res, next);
 	} catch (error) {
