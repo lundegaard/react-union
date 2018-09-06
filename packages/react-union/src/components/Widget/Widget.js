@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
+import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 
-import { warning, invariant } from '../../utils';
-import { ConfigShape } from '../../shapes';
+import { warning, memoizedClearContent } from '../../utils';
 import { withErrorBoundary } from '../../decorators';
 import { WidgetContext } from '../../contexts';
-
-import Portal from '../Portal';
+import { WidgetConfigShape } from '../../shapes';
 
 /**
  * An internal component of `Union`.
@@ -17,7 +16,8 @@ import Portal from '../Portal';
  */
 export class Widget extends Component {
 	static propTypes = {
-		config: PropTypes.shape(ConfigShape).isRequired,
+		config: PropTypes.shape(WidgetConfigShape).isRequired,
+		initialProps: PropTypes.object,
 		isServer: PropTypes.bool.isRequired,
 	};
 
@@ -26,41 +26,31 @@ export class Widget extends Component {
 	};
 
 	componentDidMount() {
-		if (!this.props.config.initialProps) {
+		if (!this.props.initialProps) {
 			this.getInitialProps();
 		}
 	}
 
 	getInitialProps = async () => {
 		const { config } = this.props;
-		const { getInitialProps } = config.component;
+		const { component } = config;
+		const { getInitialProps } = component.preload ? await component.preload() : component;
 
 		if (getInitialProps) {
-			const initialProps = await getInitialProps({ config });
+			const initialProps = await getInitialProps(config);
 			this.setState({ initialProps });
 		}
 	};
 
 	render() {
 		const { config, isServer } = this.props;
-		const { component: WidgetComponent, descriptor } = config;
-		const { widget, container, namespace, data } = descriptor;
-		const resolvedNamespace = namespace || container;
+		const { component: WidgetComponent, container, data, namespace, widget } = config;
 
-		invariant(
-			!WidgetComponent || container,
-			`Missing attribute "container" for the widget "${widget}" to be rendered.`
-		);
+		const widgetProps = { data, isServer, namespace };
 
-		const widgetProps = {
-			data,
-			isServer,
-			namespace: resolvedNamespace,
-		};
-
-		// NOTE: on the server, this.state.initialProps is always null
-		// on the client, state contains client-side initialProps and props contain server-side ones
-		const initialProps = this.state.initialProps || this.props.config.initialProps;
+		// NOTE: On the server, `this.state.initialProps` is always null.
+		// On the client, state contains client-side initialProps and props contain server-side ones.
+		const initialProps = this.state.initialProps || this.props.initialProps;
 
 		const widgetElement = (
 			<WidgetContext.Provider value={widgetProps}>
@@ -79,7 +69,13 @@ export class Widget extends Component {
 			return null;
 		}
 
-		return <Portal to={domElement}>{widgetElement}</Portal>;
+		// NOTE: Because React does not support hydration of portals yet, we clear the domElement's
+		// inner HTML on the initial render. In order to prevent an ugly white flash, we need to do
+		// this immediately before rendering the actual client-side portal. Memoization is used
+		// to prevent clearing the same element more than once per multiple client-side renders.
+		// TODO: Remove next line when https://github.com/facebook/react/issues/13097 is resolved.
+		memoizedClearContent(domElement);
+		return createPortal(widgetElement, domElement);
 	}
 }
 

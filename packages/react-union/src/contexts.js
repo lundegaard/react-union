@@ -6,6 +6,7 @@ export const WidgetContext = createContext({
 });
 
 export const RenderingContext = createContext({
+	initialProps: null,
 	isServer: false,
-	scanResult: null,
+	widgetConfigs: null,
 });

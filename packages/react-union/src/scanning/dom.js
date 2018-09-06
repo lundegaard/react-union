@@ -4,8 +4,6 @@ import path from 'ramda/src/path';
 import prop from 'ramda/src/prop';
 import map from 'ramda/src/map';
 import applySpec from 'ramda/src/applySpec';
-import compose from 'ramda/src/compose';
-import { mergeDeepRightAll } from '../../utils';
 
 const selectWidgetDescriptorElements = parent => parent.querySelectorAll('[data-union-widget]');
 const selectCommonDescriptorElements = parent => parent.querySelectorAll('[data-union-common]');
@@ -36,8 +34,4 @@ export const getWidgetDescriptors = o(
 	selectWidgetDescriptorElements
 );
 
-export const getCommonData = compose(
-	mergeDeepRightAll,
-	map(parseJsonContent),
-	selectCommonDescriptorElements
-);
+export const getCommonDescriptors = o(map(parseJsonContent), selectCommonDescriptorElements);

@@ -1,11 +1,11 @@
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
 const cheerio = require('cheerio');
-const { RenderingContext, scan } = require('react-union');
+const { RenderingContext, scan, createWidgetConfigs } = require('react-union');
 const { flushChunkNames } = require('react-universal-component/server');
 const { default: flushChunks } = require('webpack-flush-chunks');
 
-const { hoistComponentStatics, addInitialPropsToConfigs } = require('./utils');
+const { hoistComponentStatics, getAllInitialProps } = require('./utils');
 
 module.exports = applicationHandler => async (originalHtml, options, httpContext) => {
 	const { clientStats, isPrebuilt } = options;
@@ -18,20 +18,20 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 	// In order to get the initial props, we need to get the list of all rendered components.
 	// To do that, we need to call `scan` ourselves here.
 	const render = async (reactElement, routes) => {
-		const scanResult = scan(routes, document_$);
-		const { configs } = scanResult;
+		const scanResult = scan(document_$);
+		const widgetConfigs = createWidgetConfigs(routes, scanResult);
 
 		// NOTE: https://github.com/faceyspacey/react-universal-component#static-hoisting
-		// Without calling this function, `getInitialProps` will not be defined.
-		hoistComponentStatics(configs);
+		// Without calling this function, `getInitialProps` statics will not be defined.
+		hoistComponentStatics(widgetConfigs);
 
-		const newConfigs = await addInitialPropsToConfigs(configs, context);
-		const newScanResult = { ...scanResult, configs: newConfigs };
+		const initialProps = await getAllInitialProps(widgetConfigs, context);
 
 		const renderingContextProps = {
 			value: {
+				initialProps,
 				isServer: true,
-				scanResult: newScanResult,
+				widgetConfigs,
 			},
 		};
 
@@ -61,11 +61,12 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 
 		return {
 			chunkNames,
-			scanResult: newScanResult,
+			scanResult,
+			initialProps,
 		};
 	};
 
-	const { chunkNames, scanResult } = await applicationHandler({ render, ...context });
+	const { chunkNames, scanResult, initialProps } = await applicationHandler({ render, ...context });
 
 	const chunks = flushChunks(clientStats, {
 		chunkNames,
@@ -81,7 +82,12 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 	body.append(cssHash.toString());
 	body.append(js.toString());
 
-	body.append(`<script>window.__SCAN_RESULT__=${JSON.stringify(scanResult)};</script>`);
+	body.prepend(
+		`<script>
+			window.__SCAN_RESULT__=${JSON.stringify(scanResult)};
+			window.__INITIAL_PROPS__=${JSON.stringify(initialProps)};
+		</script>`
+	);
 
 	return document_$.html();
 };

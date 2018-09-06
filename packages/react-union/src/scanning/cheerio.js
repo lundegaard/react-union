@@ -1,6 +1,5 @@
 import o from 'ramda/src/o';
 import unary from 'ramda/src/unary';
-import { mergeDeepRightAll } from '../../utils';
 
 const dangerouslyParseJsonContent = o(unary(JSON.parse), wrapper => wrapper.html());
 
@@ -28,9 +27,7 @@ export const getWidgetDescriptors = $ =>
 		.map((_, element) => parseDescriptor($(element)))
 		.get();
 
-export const getCommonData = $ =>
-	mergeDeepRightAll(
-		$('[data-union-common]')
-			.map((_, element) => parseJsonContent($(element)))
-			.get()
-	);
+export const getCommonDescriptors = $ =>
+	$('[data-union-common]')
+		.map((_, element) => parseJsonContent($(element)))
+		.get();

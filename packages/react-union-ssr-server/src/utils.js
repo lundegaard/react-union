@@ -1,16 +1,4 @@
-const {
-	call,
-	__,
-	map,
-	path,
-	compose,
-	forEach,
-	curry,
-	assoc,
-	invoker,
-	findIndex,
-	equals,
-} = require('ramda');
+const { call, __, map, path, compose, forEach, findIndex, equals } = require('ramda');
 const { rejectNil } = require('ramda-extension');
 
 const hoistComponentStatics = compose(
@@ -19,36 +7,20 @@ const hoistComponentStatics = compose(
 	map(path(['component', 'preloadWeak']))
 );
 
-const populatePromiseMap = curry((promiseMap, context, config) => {
-	const { getInitialProps } = config.component;
+const getInitialProps = context => ({ component, ...widgetConfig }) =>
+	component.getInitialProps
+		? component.getInitialProps({ ...context, ...widgetConfig })
+		: Promise.resolve(null);
 
-	if (getInitialProps) {
-		promiseMap.set(config, getInitialProps({ ...context, config }));
-	}
-});
-
-const getMapEntries = invoker(0, 'entries');
-
-const replacePromisesWithValues = promiseMap =>
-	compose(
-		Promise.all.bind(Promise),
-		map(async ([config, initialPropsPromise]) => promiseMap.set(config, await initialPropsPromise)),
-		Array.from,
-		getMapEntries
-	)(promiseMap);
-
-const assocInitialProps = promiseMap => config =>
-	assoc('initialProps', promiseMap.get(config), config);
-
-const addInitialPropsToConfigs = async (configs, context) => {
-	const promiseMap = new Map();
-
-	// NOTE: this section is ugly and contains side-effects
-	// TODO: can probably be refactored so that we only operate on configs and don't use ES6 Map
-	forEach(populatePromiseMap(promiseMap, context), configs);
-	await replacePromisesWithValues(promiseMap);
-
-	return map(assocInitialProps(promiseMap), configs);
+/**
+ * Returns an array of initial props with the indices corresponding to the passed widget configs.
+ *
+ * @param {Array} widgetConfigs widget configs
+ * @param {Object} context argument to call the initialProps with
+ */
+const getAllInitialProps = async (widgetConfigs, context) => {
+	const promises = map(getInitialProps(context), widgetConfigs);
+	return await Promise.all(promises);
 };
 
 // TODO: similar to getArgValue in `lib/cli.js` of react-union-scripts, we should reuse it somehow
@@ -59,6 +31,6 @@ const getPortArgument = () => {
 
 module.exports = {
 	hoistComponentStatics,
-	addInitialPropsToConfigs,
+	getAllInitialProps,
 	getPortArgument,
 };

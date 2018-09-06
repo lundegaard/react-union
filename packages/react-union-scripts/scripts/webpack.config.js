@@ -45,7 +45,7 @@ console.log(`Optimizing for ${buildMode} mode.`);
 
 const createGlobals = isServerConfig => ({
 	__DEV__: cli.debug, //  alias for `process.env.NODE_ENV === 'development'
-	'process.env.BROWSER': isServerConfig,
+	'process.env.BROWSER': !isServerConfig,
 	'process.env.BABEL_ENV': buildModeString,
 	'process.env.NODE_ENV': buildModeString,
 });

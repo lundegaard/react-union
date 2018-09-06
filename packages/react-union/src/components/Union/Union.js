@@ -2,8 +2,9 @@ import PropTypes from 'prop-types';
 import React, { Component, StrictMode, Fragment } from 'react';
 
 import { noop, invariant } from '../../utils';
-import { RouteShape } from '../../shapes';
+import { RouteShape, WidgetConfigShape } from '../../shapes';
 import scan from '../../scanning';
+import createWidgetConfigs from '../../routing';
 import { withRenderingContext } from '../../decorators';
 
 import Widget from '../Widget';
@@ -20,21 +21,25 @@ class Union extends Component {
 		 */
 		children: PropTypes.node,
 		/**
+		 * Initial props retrieved by the SSR server. Passed by `withRenderingContext`.
+		 */
+		initialProps: PropTypes.arrayOf(PropTypes.object),
+		/**
 		 * Whether the component is rendered in SSR context. Passed by `withRenderingContext`.
 		 */
 		isServer: PropTypes.bool.isRequired,
 		/**
-		 * Called after the scan of the HTML is done.
-		 */
-		onScanEnd: PropTypes.func,
-		/**
-		 *  Called when there is an error while scanning of the HTML.
+		 * Called when there is an error while scanning of the HTML.
 		 */
 		onScanError: PropTypes.func,
 		/**
-		 * Called before the scan of the HTML
+		 * Called before the scan of the HTML.
 		 */
 		onScanStart: PropTypes.func,
+		/**
+		 * Called after the scan of the HTML is successfully done.
+		 */
+		onScanSuccess: PropTypes.func,
 		/**
 		 * HTML element or Cheerio wrapper in which the scan is running. By default `document`.
 		 */
@@ -44,18 +49,18 @@ class Union extends Component {
 		 */
 		routes: PropTypes.arrayOf(PropTypes.shape(RouteShape)),
 		/**
-		 * SSR scan result which may be passed by `withRenderingContext`.
-		 */
-		scanResult: PropTypes.object,
-		/**
-		 * Enable React.Strict mode. By default `true`
+		 * Enable React.Strict mode. By default `true`.
 		 */
 		strictMode: PropTypes.bool,
+		/**
+		 * Widget configs retrieved by the SSR server. Passed by `withRenderingContext`.
+		 */
+		widgetConfigs: PropTypes.arrayOf(PropTypes.shape(WidgetConfigShape)),
 	};
 
 	static defaultProps = {
 		isServer: false,
-		onScanEnd: noop,
+		onScanSuccess: noop,
 		onScanError: noop,
 		onScanStart: noop,
 		parent: typeof document !== 'undefined' ? document : null,
@@ -63,14 +68,16 @@ class Union extends Component {
 	};
 
 	static scan = props => {
-		const { onScanStart, onScanEnd, onScanError, parent, routes } = props;
+		const { onScanStart, onScanSuccess, onScanError, parent, routes } = props;
 
 		try {
 			onScanStart();
-			const scanResult = scan(routes, parent);
-			onScanEnd(scanResult);
+			const scanResult = scan(parent);
+			const { commonData } = scanResult;
+			const widgetConfigs = createWidgetConfigs(routes, scanResult);
+			onScanSuccess({ commonData, scanResult, widgetConfigs });
 
-			return scanResult;
+			return widgetConfigs;
 		} catch (error) {
 			onScanError(error);
 
@@ -82,7 +89,7 @@ class Union extends Component {
 		if (previousState.routes !== nextProps.routes) {
 			return {
 				routes: nextProps.routes,
-				scanResult: Union.scan(nextProps),
+				widgetConfigs: Union.scan(nextProps),
 			};
 		}
 
@@ -92,7 +99,7 @@ class Union extends Component {
 	state = {
 		// NOTE: We never work with `this.state.routes`, this is because of getDerivedStateFromProps.
 		routes: this.props.routes,
-		scanResult: this.getInitialScanResult(),
+		widgetConfigs: this.getInitialWidgetConfigs(),
 	};
 
 	componentDidMount() {
@@ -100,26 +107,33 @@ class Union extends Component {
 		const { attachListeners } = props;
 
 		if (attachListeners) {
-			attachListeners(() => this.setState({ scanResult: Union.scan(props) }));
+			attachListeners(() => this.setState(Union.scan(props)));
 		}
 	}
 
 	// NOTE: not an arrow function because we want to call it in `state` property initializer
-	getInitialScanResult() {
-		const { isServer, scanResult } = this.props;
-
-		if (isServer) {
-			return scanResult || Union.scan(this.props);
+	getInitialWidgetConfigs() {
+		if (this.props.isServer) {
+			return this.props.widgetConfigs || Union.scan(this.props);
 		}
 
-		return window.__SCAN_RESULT__ || Union.scan(this.props);
+		return window.__SCAN_RESULT__
+			? createWidgetConfigs(this.props.routes, window.__SCAN_RESULT__)
+			: Union.scan(this.props);
 	}
 
-	renderWidget = config => (
+	getInitialPropsByIndex = index => {
+		const array = this.props.isServer ? this.props.initialProps : window.__INITIAL_PROPS__;
+
+		return array ? array[index] : null;
+	};
+
+	renderWidget = (widgetConfig, index) => (
 		<Widget
-			config={config}
+			config={widgetConfig}
+			initialProps={this.getInitialPropsByIndex(index)}
 			isServer={this.props.isServer}
-			key={config.descriptor.namespace || config.descriptor.container}
+			key={widgetConfig.namespace}
 		/>
 	);
 
@@ -139,7 +153,7 @@ class Union extends Component {
 		return this.resolveStrictMode(
 			<Fragment>
 				{this.props.children}
-				{this.state.scanResult.configs.map(this.renderWidget)}
+				{this.state.widgetConfigs.map(this.renderWidget)}
 			</Fragment>
 		);
 	}

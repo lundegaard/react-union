@@ -1,6 +1,8 @@
 import always from 'ramda/src/always';
 import reduce from 'ramda/src/reduce';
 import mergeDeepRight from 'ramda/src/mergeDeepRight';
+import memoizeWith from 'ramda/src/memoizeWith';
+import prop from 'ramda/src/prop';
 
 export const warning = (pred, msg) => {
 	if (pred) {
@@ -48,3 +50,5 @@ export const getDisplayName = Component => Component.displayName || Component.na
 export const noop = always(null);
 
 export const mergeDeepRightAll = reduce(mergeDeepRight, {});
+
+export const memoizedClearContent = memoizeWith(prop('id'), element => (element.innerHTML = ''));
