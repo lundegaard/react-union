@@ -1,1 +1,1 @@
-export default from './withWidgetContext';
+export { default } from './withWidgetContext';

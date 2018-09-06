@@ -1,6 +1,6 @@
 import React from 'react';
 import { JSDOM } from 'jsdom';
-import scan from '../scan';
+import scan from '../src/scan';
 
 const createDocument = (data = '', additionalStuff = '') => {
 	const { document } = new JSDOM(

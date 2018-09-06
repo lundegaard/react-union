@@ -2,5 +2,5 @@ export * from './shapes';
 export * from './dom';
 export * from './contexts';
 
-export Union from './components/Union';
-export withWidgetContext from './decorators/withWidgetContext';
+export { default as Union } from './components/Union';
+export { default as withWidgetContext } from './decorators/withWidgetContext';
