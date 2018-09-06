@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 const mockWidget = jest.fn();
-jest.mock('../../Widget', () => {
+jest.mock('../src/components/Widget', () => {
 	const WidgetMock = ({ ...props }) => {
 		mockWidget(props);
 		return <div />;
@@ -39,8 +39,8 @@ const scanResult = {
 
 const mockUnion = (res = Promise.resolve(scanResult)) => {
 	const scanFn = jest.fn(() => res);
-	jest.doMock('../../../scan', () => scanFn);
-	const Union = require('../Union').default;
+	jest.doMock('../src/scan', () => scanFn);
+	const Union = require('../src/components/Union').default;
 
 	return {
 		Union,

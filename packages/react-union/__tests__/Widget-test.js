@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Widget } from '../Widget';
+import { Widget } from '../src/components/Widget';
 
 const DummyComponent = () => <div />;
 

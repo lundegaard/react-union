@@ -1,1 +1,1 @@
-export default from './Union';
+export { default } from './Union';
