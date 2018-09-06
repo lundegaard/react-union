@@ -3,6 +3,13 @@ import reduce from 'ramda/src/reduce';
 import mergeDeepRight from 'ramda/src/mergeDeepRight';
 import memoizeWith from 'ramda/src/memoizeWith';
 import prop from 'ramda/src/prop';
+import ifElse from 'ramda/src/ifElse';
+import contains from 'ramda/src/contains';
+import o from 'ramda/src/o';
+import reject from 'ramda/src/reject';
+import isNil from 'ramda/src/isNil';
+
+import { INVALID_JSON } from './constants';
 
 export const warning = (pred, msg) => {
 	if (pred) {
@@ -50,5 +57,13 @@ export const getDisplayName = Component => Component.displayName || Component.na
 export const noop = always(null);
 
 export const mergeDeepRightAll = reduce(mergeDeepRight, {});
+
+const rejectNil = reject(isNil);
+
+export const mergeData = ifElse(
+	contains(INVALID_JSON),
+	always(INVALID_JSON),
+	o(mergeDeepRightAll, rejectNil)
+);
 
 export const memoizedClearContent = memoizeWith(prop('id'), element => (element.innerHTML = ''));

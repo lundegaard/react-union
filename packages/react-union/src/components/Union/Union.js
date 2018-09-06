@@ -6,6 +6,7 @@ import { RouteShape, WidgetConfigShape } from '../../shapes';
 import scan from '../../scanning';
 import createWidgetConfigs from '../../routing';
 import { withRenderingContext } from '../../decorators';
+import { INVALID_JSON } from '../../constants';
 
 import Widget from '../Widget';
 
@@ -74,6 +75,13 @@ class Union extends Component {
 			onScanStart();
 			const scanResult = scan(parent);
 			const { commonData } = scanResult;
+
+			invariant(
+				commonData !== INVALID_JSON,
+				'Invalid JSON data encountered in a common descriptor. ' +
+					'This is often due to a trailing comma or missing quotation marks.'
+			);
+
 			const widgetConfigs = createWidgetConfigs(routes, scanResult);
 			onScanSuccess({ commonData, scanResult, widgetConfigs });
 

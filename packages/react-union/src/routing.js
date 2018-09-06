@@ -2,9 +2,8 @@ import map from 'ramda/src/map';
 import find from 'ramda/src/find';
 import whereEq from 'ramda/src/whereEq';
 import curry from 'ramda/src/curry';
-import mergeDeepRight from 'ramda/src/mergeDeepRight';
 
-import { invariant } from './utils';
+import { invariant, mergeData } from './utils';
 
 const findRouteByDescriptor = (routes, descriptor) =>
 	find(whereEq({ path: descriptor.widget }), routes);
@@ -18,7 +17,7 @@ const findComponentByDescriptor = (routes, descriptor) => {
 const createWidgetConfig = curry((routes, scanResult, descriptor) => ({
 	...descriptor,
 	component: findComponentByDescriptor(routes, descriptor),
-	data: mergeDeepRight(scanResult.commonData, descriptor.data),
+	data: mergeData([scanResult.commonData, descriptor.data]),
 	namespace: descriptor.namespace || descriptor.container,
 }));
 

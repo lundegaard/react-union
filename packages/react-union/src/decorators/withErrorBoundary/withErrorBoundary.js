@@ -5,7 +5,7 @@ import path from 'ramda/src/path';
 import { WidgetConfigShape } from '../../shapes';
 import { getDisplayName } from '../../utils';
 
-const getWidgetName = path(['props', 'widget']);
+const getWidgetName = path(['props', 'config', 'widget']);
 
 const withErrorBoundary = NextComponent => {
 	class WithErrorBoundary extends Component {
@@ -27,8 +27,12 @@ const withErrorBoundary = NextComponent => {
 			const widgetName = getWidgetName(this);
 
 			if (this.state.hasError) {
-				// TODO: perhaps show some tips for common mistakes?
-				return `An error has occurred in widget "${widgetName}". See the console output for more details.`;
+				return (
+					<div>
+						An error has occurred in widget "{widgetName}". See the console for more details. To
+						avoid seeing this message in production, wrap this widget in an error boundary.
+					</div>
+				);
 			}
 
 			return <NextComponent {...this.props} />;

@@ -7,7 +7,7 @@ export const RouteShape = {
 
 export const WidgetDescriptorShape = {
 	container: PropTypes.string,
-	data: PropTypes.object,
+	data: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 	namespace: PropTypes.string,
 	widget: PropTypes.string.isRequired,
 };

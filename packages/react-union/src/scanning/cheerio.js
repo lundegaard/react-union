@@ -1,6 +1,8 @@
 import o from 'ramda/src/o';
 import unary from 'ramda/src/unary';
 
+import { INVALID_JSON } from '../constants';
+
 const dangerouslyParseJsonContent = o(unary(JSON.parse), wrapper => wrapper.html());
 
 const parseJsonContent = wrapper => {
@@ -8,10 +10,10 @@ const parseJsonContent = wrapper => {
 		return dangerouslyParseJsonContent(wrapper);
 	} catch (error) {
 		if (wrapper.html().trim()) {
-			throw error;
+			return INVALID_JSON;
 		}
 
-		return {};
+		return null;
 	}
 };
 

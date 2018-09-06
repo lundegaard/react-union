@@ -5,6 +5,8 @@ import prop from 'ramda/src/prop';
 import map from 'ramda/src/map';
 import applySpec from 'ramda/src/applySpec';
 
+import { INVALID_JSON } from '../constants';
+
 const selectWidgetDescriptorElements = parent => parent.querySelectorAll('[data-union-widget]');
 const selectCommonDescriptorElements = parent => parent.querySelectorAll('[data-union-common]');
 
@@ -15,10 +17,10 @@ const parseJsonContent = element => {
 		return dangerouslyParseJsonContent(element);
 	} catch (error) {
 		if (element.innerHTML.trim()) {
-			throw error;
+			return INVALID_JSON;
 		}
 
-		return {};
+		return null;
 	}
 };
 

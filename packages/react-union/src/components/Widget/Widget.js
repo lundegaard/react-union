@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 
-import { warning, memoizedClearContent } from '../../utils';
+import { invariant, memoizedClearContent } from '../../utils';
 import { withErrorBoundary } from '../../decorators';
 import { WidgetContext } from '../../contexts';
 import { WidgetConfigShape } from '../../shapes';
+import { INVALID_JSON } from '../../constants';
 
 /**
  * An internal component of `Union`.
@@ -46,6 +47,12 @@ export class Widget extends Component {
 		const { config, isServer } = this.props;
 		const { component: WidgetComponent, container, data, namespace, widget } = config;
 
+		invariant(
+			data !== INVALID_JSON,
+			`Invalid JSON data encountered while attempting to render widget "${widget}". ` +
+				'This is often due to a trailing comma or missing quotation marks.'
+		);
+
 		const widgetProps = { data, isServer, namespace };
 
 		// NOTE: On the server, `this.state.initialProps` is always null.
@@ -63,11 +70,7 @@ export class Widget extends Component {
 		}
 
 		const domElement = document.getElementById(container);
-		warning(domElement, `HTML element with ID "${container}" not found for widget "${widget}"`);
-
-		if (!domElement) {
-			return null;
-		}
+		invariant(domElement, `HTML element with ID "${container}" not found for widget "${widget}".`);
 
 		// NOTE: Because React does not support hydration of portals yet, we clear the domElement's
 		// inner HTML on the initial render. In order to prevent an ugly white flash, we need to do
