@@ -1,7 +1,7 @@
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
 const cheerio = require('cheerio');
-const { RenderingContext, scan, createWidgetConfigs } = require('react-union');
+const { ServerContext, scan, createWidgetConfigs } = require('react-union');
 const { flushChunkNames } = require('react-universal-component/server');
 const { default: flushChunks } = require('webpack-flush-chunks');
 
@@ -27,7 +27,7 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 
 		const initialProps = await getAllInitialProps(widgetConfigs, context);
 
-		const renderingContextProps = {
+		const serverContextProps = {
 			value: {
 				initialProps,
 				isServer: true,
@@ -36,8 +36,8 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 		};
 
 		const wrappedElement = React.createElement(
-			RenderingContext.Provider,
-			renderingContextProps,
+			ServerContext.Provider,
+			serverContextProps,
 			reactElement
 		);
 
@@ -54,9 +54,14 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 			const $widget = raw_$(widget);
 			const id = $widget.data('union-portal');
 			const selector = `#${id}`;
-			const widgetHtml = $widget.html();
+			const $element = document_$(selector);
 
-			document_$(selector).html(widgetHtml);
+			if (!$element) {
+				return console.error(`HTML element with ID "${id}" could not be found.`);
+			}
+
+			const widgetHtml = $widget.html();
+			$element.html(widgetHtml);
 		});
 
 		return {
@@ -84,6 +89,7 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 
 	body.prepend(
 		`<script>
+			window.__HYDRATE__=true;
 			window.__SCAN_RESULT__=${JSON.stringify(scanResult)};
 			window.__INITIAL_PROPS__=${JSON.stringify(initialProps)};
 		</script>`

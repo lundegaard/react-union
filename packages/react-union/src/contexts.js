@@ -5,7 +5,7 @@ export const WidgetContext = createContext({
 	namespace: undefined,
 });
 
-export const RenderingContext = createContext({
+export const ServerContext = createContext({
 	initialProps: null,
 	isServer: false,
 	widgetConfigs: null,

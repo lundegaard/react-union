@@ -5,7 +5,7 @@ import { noop, invariant } from '../../utils';
 import { RouteShape, WidgetConfigShape } from '../../shapes';
 import scan from '../../scanning';
 import createWidgetConfigs from '../../routing';
-import { withRenderingContext } from '../../decorators';
+import { withServerContext } from '../../decorators';
 import { INVALID_JSON } from '../../constants';
 
 import Widget from '../Widget';
@@ -22,11 +22,11 @@ class Union extends Component {
 		 */
 		children: PropTypes.node,
 		/**
-		 * Initial props retrieved by the SSR server. Passed by `withRenderingContext`.
+		 * Initial props retrieved by the SSR server. Passed by `withServerContext`.
 		 */
 		initialProps: PropTypes.arrayOf(PropTypes.object),
 		/**
-		 * Whether the component is rendered in SSR context. Passed by `withRenderingContext`.
+		 * Whether the component is rendered in SSR context. Passed by `withServerContext`.
 		 */
 		isServer: PropTypes.bool.isRequired,
 		/**
@@ -54,7 +54,7 @@ class Union extends Component {
 		 */
 		strictMode: PropTypes.bool,
 		/**
-		 * Widget configs retrieved by the SSR server. Passed by `withRenderingContext`.
+		 * Widget configs retrieved by the SSR server. Passed by `withServerContext`.
 		 */
 		widgetConfigs: PropTypes.arrayOf(PropTypes.shape(WidgetConfigShape)),
 	};
@@ -167,4 +167,4 @@ class Union extends Component {
 	}
 }
 
-export default withRenderingContext(Union);
+export default withServerContext(Union);

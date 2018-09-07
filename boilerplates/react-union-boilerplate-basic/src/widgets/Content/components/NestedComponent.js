@@ -6,7 +6,7 @@ const NestedComponent = () => (
 		{({ namespace, data }) => (
 			<div>
 				I am a nested component of widget Content. I also have namespace <b>{namespace}</b> and
-				initial data <b>{JSON.stringify(data)}</b>, but from <b>WidgetContext</b> :P
+				initial data <b>{JSON.stringify(data)}</b>, but from WidgetContext :P
 			</div>
 		)}
 	</WidgetContext.Consumer>

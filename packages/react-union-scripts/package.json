@@ -67,8 +67,5 @@
   "devDependencies": {
     "react": "^16.4.1",
     "react-dom": "^16.4.1"
-  },
-  "peerDependencies": {
-    "react-union": "^0.5.0"
   }
 }

@@ -1,3 +1,5 @@
+import React from 'react';
+import hoistNonReactStatics from 'hoist-non-react-statics';
 import always from 'ramda/src/always';
 import reduce from 'ramda/src/reduce';
 import mergeDeepRight from 'ramda/src/mergeDeepRight';
@@ -67,3 +69,14 @@ export const mergeData = ifElse(
 );
 
 export const memoizedClearContent = memoizeWith(prop('id'), element => (element.innerHTML = ''));
+
+export const createContextDecorator = (Context, displayName) => NextComponent => {
+	const Decorator = props => (
+		<Context.Consumer>{value => <NextComponent {...props} {...value} />}</Context.Consumer>
+	);
+
+	hoistNonReactStatics(Decorator, NextComponent);
+	Decorator.displayName = `With${displayName}(${getDisplayName(NextComponent)})`;
+
+	return Decorator;
+};

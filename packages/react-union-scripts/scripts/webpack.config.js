@@ -32,7 +32,7 @@ const { resolve, optimization, performanceHints, context } = require('./webpack/
 const dependenciesP = R.prop('dependencies');
 
 const buildMode = getForMode('development', 'production');
-const buildModeString = `"${buildMode}"`;
+const buildModeString = JSON.stringify(buildMode);
 
 /** if true, we are building bundles for all of the modules in 'configs' */
 const buildingAll = !cli.app;
@@ -125,7 +125,7 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 		{
 			entry: [
 				...(!isServerConfig && isHot ? [require.resolve('webpack-hot-middleware/client')] : []),
-				...(isServerConfig ? [paths.ssrIndex] : [paths.index]),
+				isServerConfig ? paths.ssrIndex : paths.index,
 			],
 			output: {
 				path: path.resolve(outputPath),
