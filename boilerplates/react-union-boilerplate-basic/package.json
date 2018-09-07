@@ -8,12 +8,13 @@
     "node": ">=8"
   },
   "dependencies": {
+    "babel-polyfill": "6.23.0",
     "classnames": "2.2.5",
     "prop-types": "15.6.1",
     "react": "16.4.1",
     "react-dom": "16.4.1",
     "react-hot-loader": "4.3.3",
-    "react-union": "^0.5.0",
+    "react-union": "^0.6.0",
     "react-universal-component": "^3.0.0"
   },
   "devDependencies": {
@@ -23,14 +24,14 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.4",
     "eslint": "4.7.2",
-    "eslint-config-react-union": "^0.4.0",
+    "eslint-config-react-union": "^0.6.0",
     "eslint-plugin-babel": "4.1.2",
     "eslint-plugin-import": "2.7.0",
     "eslint-plugin-react": "7.4.0",
     "husky": "^0.14.3",
     "lint-staged": "^7.2.0",
     "prettier": "^1.13.5",
-    "react-union-scripts": "^0.5.5",
+    "react-union-scripts": "^0.6.0",
     "react-union-ssr-server": "^0.1.0"
   },
   "scripts": {

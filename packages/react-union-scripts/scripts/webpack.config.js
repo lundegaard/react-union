@@ -124,7 +124,6 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 		{ mode: buildMode },
 		{
 			entry: [
-				...(isServerConfig ? [] : [require.resolve('babel-polyfill')]),
 				...(!isServerConfig && isHot ? [require.resolve('webpack-hot-middleware/client')] : []),
 				...(isServerConfig ? [paths.ssrIndex] : [paths.index]),
 			],

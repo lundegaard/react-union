@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import React from 'react';
 import { justRender, justUnmountComponentAtNode } from 'react-union';
 import { AppContainer } from 'react-hot-loader';
