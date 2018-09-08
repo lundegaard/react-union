@@ -12,7 +12,7 @@ const loadBabel = include => () => ({
 	},
 });
 
-const loadCss = include => (includeSourceMap, isServerConfig) => ({
+const loadCss = include => (sourceMap, isServerConfig) => ({
 	module: {
 		rules: [
 			{
@@ -23,19 +23,24 @@ const loadCss = include => (includeSourceMap, isServerConfig) => ({
 					{
 						loader: require.resolve(`css-loader${isServerConfig ? '/locals' : ''}`),
 						options: {
+							importLoaders: 2,
 							minimize: true,
-							sourceMap: includeSourceMap,
+							sourceMap,
 							modules: true,
 							localIdentName: '[name]__[local]--[hash:base64:5]',
 						},
 					},
 					{
 						loader: require.resolve('resolve-url-loader'),
+						options: {
+							// always true - needed for sass-loader
+							sourceMap: true,
+						},
 					},
 					{
 						loader: require.resolve('sass-loader'),
 						options: {
-							sourceMap: true,
+							sourceMap,
 						},
 					},
 				],
