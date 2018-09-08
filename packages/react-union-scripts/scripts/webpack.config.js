@@ -121,12 +121,9 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 	];
 
 	const commonConfig = merge(
-		{ mode: buildMode },
 		{
-			entry: [
-				...(!isServerConfig && isHot ? [require.resolve('webpack-hot-middleware/client')] : []),
-				isServerConfig ? paths.ssrIndex : paths.index,
-			],
+			mode: buildMode,
+			entry: [isServerConfig ? paths.ssrIndex : paths.index],
 			output: {
 				path: path.resolve(outputPath),
 				filename: `${outputMapper.js}/${outputFilename}`,
@@ -173,6 +170,7 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 			commonConfig,
 			{
 				name: 'client',
+				entry: isHot ? [require.resolve('webpack-hot-middleware/client')] : [],
 			},
 			optimization(),
 			cleanPlugin(config),

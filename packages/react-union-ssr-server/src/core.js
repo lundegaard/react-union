@@ -7,19 +7,19 @@ const { default: flushChunks } = require('webpack-flush-chunks');
 
 const { hoistComponentStatics, getAllInitialProps } = require('./utils');
 
-module.exports = applicationHandler => async (originalHtml, options, httpContext) => {
+const makeContentRenderer = applicationHandler => async (originalHTML, options, httpContext) => {
 	const { clientStats, isPrebuilt } = options;
-	const document_$ = cheerio.load(originalHtml);
+	const document_$ = cheerio.load(originalHTML);
 	const head = document_$('head');
 	const body = document_$('body');
-	const context = { head, body, ...httpContext };
 
 	// NOTE: We need to pass routes here because of getInitialProps.
 	// In order to get the initial props, we need to get the list of all rendered components.
 	// To do that, we need to call `scan` ourselves here.
-	const render = async (reactElement, routes) => {
+	const render = async (reactElement, routes, applicationContext) => {
 		const scanResult = scan(document_$);
 		const widgetConfigs = createWidgetConfigs(routes, scanResult);
+		const context = { head, body, ...httpContext, ...applicationContext };
 
 		// NOTE: https://github.com/faceyspacey/react-universal-component#static-hoisting
 		// Without calling this function, `getInitialProps` statics will not be defined.
@@ -45,10 +45,10 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 		// We are doing this to make sure that the next `flushChunkNames()` call will only contain
 		// the universal components from `renderToString`, not from other asynchronous requests.
 		flushChunkNames();
-		const rawHtml = ReactDOMServer.renderToString(wrappedElement);
+		const rawHTML = ReactDOMServer.renderToString(wrappedElement);
 		const chunkNames = flushChunkNames();
 
-		const raw_$ = cheerio.load(rawHtml);
+		const raw_$ = cheerio.load(rawHTML);
 
 		raw_$('[data-union-portal]').each((_, widget) => {
 			const $widget = raw_$(widget);
@@ -60,8 +60,8 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 				return console.error(`HTML element with ID "${id}" could not be found.`);
 			}
 
-			const widgetHtml = $widget.html();
-			$element.html(widgetHtml);
+			const widgetHTML = $widget.html();
+			$element.html(widgetHTML);
 		});
 
 		return {
@@ -71,7 +71,9 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 		};
 	};
 
-	const { chunkNames, scanResult, initialProps } = await applicationHandler({ render, ...context });
+	const context = { render, head, body, ...httpContext };
+	// NOTE: application handler must return the return value of calling the `render` function
+	const { chunkNames, scanResult, initialProps } = await applicationHandler(context);
 
 	const chunks = flushChunks(clientStats, {
 		chunkNames,
@@ -97,3 +99,5 @@ module.exports = applicationHandler => async (originalHtml, options, httpContext
 
 	return document_$.html();
 };
+
+module.exports = makeContentRenderer;
