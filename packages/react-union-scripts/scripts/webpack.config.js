@@ -32,7 +32,6 @@ const { resolve, optimization, performanceHints, context } = require('./webpack/
 const dependenciesP = R.prop('dependencies');
 
 const buildMode = getForMode('development', 'production');
-const buildModeString = JSON.stringify(buildMode);
 
 /** if true, we are building bundles for all of the modules in 'configs' */
 const buildingAll = !cli.app;
@@ -43,11 +42,9 @@ if (cli.proxy) {
 
 console.log(`Optimizing for ${buildMode} mode.`);
 
-const createGlobals = isServerConfig => ({
+const createGlobals = isBrowser => ({
 	__DEV__: cli.debug, //  alias for `process.env.NODE_ENV === 'development'
-	'process.env.BROWSER': !isServerConfig,
-	'process.env.BABEL_ENV': buildModeString,
-	'process.env.NODE_ENV': buildModeString,
+	'process.env.BROWSER': isBrowser,
 });
 
 const nodeModulesPath = resolveSymlink(process.cwd(), './node_modules');
@@ -137,7 +134,7 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 		loadCss(cli.debug, isServerConfig),
 		loadImages(config),
 		loadFiles(config),
-		definePlugin(createGlobals(isServerConfig)),
+		definePlugin(createGlobals(!isServerConfig)),
 		resolve(isMonoRepo ? monoRepoResolve() : uniRepoResolve()),
 		context(),
 		performanceHints(),
@@ -146,7 +143,7 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 	);
 
 	if (isServerConfig) {
-		const serverConfig = () =>
+		return mergeWebpackConfig(
 			merge(
 				commonConfig,
 				{
@@ -159,9 +156,8 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 					},
 				},
 				limitChunkCountPlugin()
-			);
-
-		return mergeWebpackConfig(serverConfig(), isServerConfig);
+			)
+		);
 	}
 
 	// NOTE: here we only handle the client-side configs
@@ -190,10 +186,7 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 
 	const clientProductionConfig = () => merge(clientConfig(), uglifyJsPlugin(cli.verbose));
 
-	return mergeWebpackConfig(
-		cli.debug ? clientDevelopmentConfig() : clientProductionConfig(),
-		isServerConfig
-	);
+	return mergeWebpackConfig(cli.debug ? clientDevelopmentConfig() : clientProductionConfig());
 };
 
 const getWebpackConfigPair_ = config => [
