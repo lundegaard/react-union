@@ -1,6 +1,6 @@
 # React-union project
 
-[![build status](https://img.shields.io/travis/lundegaard/react-union/master.svg?style=flat-square)](https://travis-ci.org/lundegaard/react-union)
+[![build status](https://img.shields.io/travis/lundegaard/react-union/master.svg?style=flat-square)](https://travis-ci.org/lundegaard/react-union) [![Greenkeeper badge](https://badges.greenkeeper.io/lundegaard/react-union.svg)](https://greenkeeper.io/)
 
 The project React-union is a collection of tools that allows you to build modern React applications which run on specific server-side environments such as Content Management Systems or Portals.
 
