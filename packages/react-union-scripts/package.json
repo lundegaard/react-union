@@ -38,7 +38,7 @@
     "ncp": "2.0.0",
     "node-sass": "4.5.3",
     "ramda": "0.25.0",
-    "ramda-extension": "0.3.7",
+    "ramda-extension": "0.5.1",
     "raw-loader": "0.5.1",
     "react-hot-loader": "4.3.3",
     "resolve-url-loader": "2.3.0",

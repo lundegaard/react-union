@@ -1406,6 +1406,37 @@ babel-preset-jest@^23.2.0:
     babel-plugin-jest-hoist "^23.2.0"
     babel-plugin-syntax-object-rest-spread "^6.13.0"
 
+babel-preset-react-union@0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/babel-preset-react-union/-/babel-preset-react-union-0.7.0.tgz#57d711884d3be8660bacb0ab4b2391f197fbe64d"
+  dependencies:
+    "@babel/cli" "^7.0.0"
+    "@babel/core" "^7.0.0"
+    "@babel/plugin-external-helpers" "^7.0.0"
+    "@babel/plugin-proposal-class-properties" "^7.0.0"
+    "@babel/plugin-proposal-decorators" "^7.0.0"
+    "@babel/plugin-proposal-do-expressions" "^7.0.0"
+    "@babel/plugin-proposal-export-default-from" "^7.0.0"
+    "@babel/plugin-proposal-export-namespace-from" "^7.0.0"
+    "@babel/plugin-proposal-function-sent" "^7.0.0"
+    "@babel/plugin-proposal-json-strings" "^7.0.0"
+    "@babel/plugin-proposal-logical-assignment-operators" "^7.0.0"
+    "@babel/plugin-proposal-nullish-coalescing-operator" "^7.0.0"
+    "@babel/plugin-proposal-numeric-separator" "^7.0.0"
+    "@babel/plugin-proposal-object-rest-spread" "^7.0.0"
+    "@babel/plugin-proposal-optional-chaining" "^7.0.0"
+    "@babel/plugin-proposal-pipeline-operator" "^7.0.0"
+    "@babel/plugin-proposal-throw-expressions" "^7.0.0"
+    "@babel/plugin-syntax-dynamic-import" "^7.0.0"
+    "@babel/plugin-syntax-import-meta" "^7.0.0"
+    "@babel/plugin-transform-modules-commonjs" "^7.0.0"
+    "@babel/plugin-transform-react-constant-elements" "^7.0.0"
+    "@babel/plugin-transform-regenerator" "^7.0.0"
+    "@babel/plugin-transform-runtime" "^7.0.0"
+    "@babel/preset-env" "^7.0.0"
+    "@babel/preset-react" "^7.0.0"
+    "@babel/runtime" "^7.0.0"
+
 babel-register@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-register/-/babel-register-6.26.0.tgz#6ed021173e2fcb486d7acb45c6009a856f647071"
@@ -3228,6 +3259,10 @@ escodegen@^1.9.1:
     optionator "^0.8.1"
   optionalDependencies:
     source-map "~0.6.1"
+
+eslint-config-react-union@0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-react-union/-/eslint-config-react-union-0.7.0.tgz#d2d3595b92a4be60b328d23a154187f722a8369d"
 
 eslint-import-resolver-node@^0.3.1:
   version "0.3.2"
@@ -7531,9 +7566,9 @@ railroad-diagrams@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/railroad-diagrams/-/railroad-diagrams-1.0.0.tgz#eb7e6267548ddedfb899c1b90e57374559cddb7e"
 
-ramda-extension@0.3.7:
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/ramda-extension/-/ramda-extension-0.3.7.tgz#9bbe66ad0507fb874b9135e7f9099c2b002d2929"
+ramda-extension@0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/ramda-extension/-/ramda-extension-0.5.1.tgz#94e3ebef9201c662ac17bab9077bc13389ff9886"
 
 ramda@0.25.0:
   version "0.25.0"
