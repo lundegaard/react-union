@@ -18,17 +18,17 @@
     "dist"
   ],
   "dependencies": {
-    "prop-types": "15.6.1",
+    "prop-types": "15.6.2",
     "ramda": "0.25.0",
     "rollup-plugin-commonjs": "^9.1.6"
   },
   "devDependencies": {
     "babel-core": "^7.0.0-0",
-    "babel-preset-react-union": "^0.7.1",
-    "cross-env": "5.1.1",
+    "babel-preset-react-union": "0.7.1",
+    "cross-env": "5.2.0",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
-    "jsdom": "^11.11.0",
+    "jsdom": "^12.0.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "rollup": "^0.65.2",
