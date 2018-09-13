@@ -54,6 +54,7 @@ const DEFAULT_UNION_CONFIG = {
 		widgetPattern: DEFAULT_WIDGET_PATTERN,
 		appPattern: DEFAULT_APP_PATTERN,
 	},
+	uglifyOptions: { sourceMap: true, parallel: true, cache: true },
 };
 
 const stats = {

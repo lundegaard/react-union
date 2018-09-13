@@ -88,6 +88,7 @@ const getWebpackConfig_ = config => {
 		publicPath,
 		outputMapper,
 		mergeWebpackConfig,
+		uglifyOptions,
 	} = config;
 
 	const getPackagesPathForSuffix = getPackagesPath(config);
@@ -190,7 +191,7 @@ const getWebpackConfig_ = config => {
 			}
 		);
 
-	const prodWebpack = () => merge(commonConfig, uglifyJsPlugin(cli.verbose));
+	const prodWebpack = () => merge(commonConfig, uglifyJsPlugin(cli.verbose, uglifyOptions));
 
 	return mergeWebpackConfig(cli.debug ? devWebpack() : prodWebpack());
 };
