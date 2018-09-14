@@ -104,14 +104,9 @@ const getWebpackConfig_ = config => {
 
 	const loadersForMonoRepo = () => getPackagesPathForSuffix('src');
 
-	const {
-		loadAsyncModules,
-		loadBabel,
-		loadCss,
-		loadScss,
-		loadImages,
-		loadFiles,
-	} = addPathsToLoaders(isMonoRepo ? loadersForMonoRepo() : loadersForUniRepo());
+	const { loadAsyncModules, loadBabel, loadCss, loadImages, loadFiles } = addPathsToLoaders(
+		isMonoRepo ? loadersForMonoRepo() : loadersForUniRepo()
+	);
 
 	const uniRepoDeps = () => require(resolveSymlink(process.cwd(), './package.json')).dependencies;
 	// TODO consider only adding deps that are intersect across the widgets and apps
@@ -162,7 +157,6 @@ const getWebpackConfig_ = config => {
 		loadAsyncModules(config),
 		loadBabel(),
 		loadCss(),
-		loadScss(cli.debug),
 		loadImages(config),
 		loadFiles(config),
 		definePlugin(GLOBALS),
