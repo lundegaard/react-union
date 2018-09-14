@@ -64,7 +64,7 @@ const publishReactUnion = async tempDir => {
 		`npx npm-cli-login@0.0.10 -u user -p password -e user@example.com -r ${customRegistryUrl} --quotes`
 	);
 	execCommand(
-		'npm run publishAll -- --skip-git --yes --force-publish=* --exact --cd-version=prerelease'
+		'npm run publishAll -- --no-push --no-git-tag-version --yes --force-publish=* --exact prerelease'
 	);
 	execCommand(`npm set registry ${originalNpmRegistryUrl}`);
 
@@ -81,7 +81,7 @@ const cleanup = verdaccio => {
 	logDone();
 };
 
-(async() => {
+(async () => {
 	let verdaccioProcess = undefined;
 	try {
 		logSegment('INSTALL REPO');
