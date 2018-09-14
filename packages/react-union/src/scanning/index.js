@@ -1,8 +1,9 @@
 import { mergeData } from '../utils';
 
-const { getWidgetDescriptors, getCommonDescriptors } = process.env.BROWSER
-	? require('./dom')
-	: require('./cheerio');
+import * as DOM from './dom';
+import * as Cheerio from './cheerio';
+
+const { getWidgetDescriptors, getCommonDescriptors } = process.env.BROWSER ? DOM : Cheerio;
 
 const scan = parent => {
 	const widgetDescriptors = getWidgetDescriptors(parent);

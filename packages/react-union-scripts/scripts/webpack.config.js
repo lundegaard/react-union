@@ -77,7 +77,15 @@ const getPackagesPath = R.useWith(R.filter, [
 ]);
 
 const getWebpackConfig_ = (config, isServerConfig) => {
-	const { paths, proxy, generateTemplate, publicPath, outputMapper, mergeWebpackConfig } = config;
+	const {
+		paths,
+		proxy,
+		generateTemplate,
+		publicPath,
+		outputMapper,
+		mergeWebpackConfig,
+		uglifyOptions,
+	} = config;
 
 	if (isServerConfig) {
 		try {
@@ -184,7 +192,8 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 			}
 		);
 
-	const clientProductionConfig = () => merge(clientConfig(), uglifyJsPlugin(cli.verbose));
+	const clientProductionConfig = () =>
+		merge(clientConfig(), uglifyJsPlugin(cli.verbose, uglifyOptions));
 
 	return mergeWebpackConfig(cli.debug ? clientDevelopmentConfig() : clientProductionConfig());
 };

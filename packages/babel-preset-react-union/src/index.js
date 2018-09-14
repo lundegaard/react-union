@@ -1,37 +1,57 @@
 module.exports = () => ({
 	presets: [
 		[
-			'env',
+			'@babel/preset-env',
 			{
 				targets: {
 					ie: 9,
 				},
-				uglify: true,
 				useBuiltIns: false,
+				modules: false,
 			},
 		],
-		'stage-1',
-		'react',
+		'@babel/preset-react',
 	],
 	plugins: [
-		'transform-class-properties',
-		'transform-object-rest-spread',
-		'transform-react-constant-elements',
+		// Stage 1
+		'@babel/plugin-proposal-export-default-from',
+		'@babel/plugin-proposal-logical-assignment-operators',
+		['@babel/plugin-proposal-optional-chaining', { loose: false }],
+		['@babel/plugin-proposal-pipeline-operator', { proposal: 'minimal' }],
+		['@babel/plugin-proposal-nullish-coalescing-operator', { loose: false }],
+		'@babel/plugin-proposal-do-expressions',
+		// Stage 2
+		['@babel/plugin-proposal-decorators', { legacy: true }],
+		'@babel/plugin-proposal-function-sent',
+		'@babel/plugin-proposal-export-namespace-from',
+		'@babel/plugin-proposal-numeric-separator',
+		'@babel/plugin-proposal-throw-expressions',
+		// Stage 3
+		'@babel/plugin-syntax-dynamic-import',
+		'@babel/plugin-syntax-import-meta',
+		['@babel/plugin-proposal-class-properties', { loose: false }],
+		'@babel/plugin-proposal-json-strings',
+		// rest
+		'@babel/plugin-proposal-object-rest-spread',
+		'@babel/plugin-transform-react-constant-elements',
 		[
-			'transform-regenerator',
+			'@babel/plugin-transform-regenerator',
 			{
 				async: false,
 			},
 		],
 		[
-			'transform-runtime',
+			'@babel/plugin-transform-runtime',
 			{
 				helpers: false,
-				polyfill: false,
 				regenerator: true,
 			},
 		],
 		'universal-import',
-		'react-hot-loader/babel',
 	],
+	env: {
+		test: {
+			presets: [['@babel/preset-env', { modules: 'commonjs' }], '@babel/preset-react'],
+		},
+	},
 });

@@ -5,6 +5,11 @@ module.exports = {
 		},
 	},
 	plugins: ['react'],
+	settings: {
+		react: {
+			version: '16.4',
+		},
+	},
 	rules: {
 		'jsx-quotes': ['error', 'prefer-double'],
 		'react/display-name': 'error',
