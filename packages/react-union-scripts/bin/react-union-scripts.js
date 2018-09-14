@@ -7,8 +7,8 @@ if (process.argv[2] === '-v' || process.argv[2] === '--version') {
 	process.exit(0);
 }
 
-if (process.versions.node.split('.')[0] < 8) {
-	console.error('ERROR: This tool requires Node.js v8 or higher.');
+if (process.versions.node.split('.')[0] < 10) {
+	console.error('ERROR: This tool requires Node.js v10 or higher.');
 	process.exit(1);
 } else {
 	require('../cli');
