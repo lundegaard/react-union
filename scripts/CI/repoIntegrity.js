@@ -58,13 +58,13 @@ const publishReactUnion = async tempDir => {
 	const registryDir = path.join(tempDir, 'registry');
 
 	const verdaccioProcess = await runVerdaccio(registryDir);
-
 	execCommand(`npm set registry ${customRegistryUrl}`);
 	execCommand(
-		`npx npm-cli-login@0.0.10 -u user -p password -e user@example.com -r ${customRegistryUrl} --quotes`
+		`cd && npx npm-auth-to-token@1.0.0 -u user -p password -e user@example.com -r ${customRegistryUrl}`
 	);
 	execCommand(
-		'npm run publishAll -- --no-push --no-git-tag-version --yes --force-publish=* --exact prerelease'
+		// eslint-disable-next-line max-len
+		'npm run publishAll -- --no-push --no-git-tag-version --yes --force-publish=* --exact --no-verify-access prerelease'
 	);
 	execCommand(`npm set registry ${originalNpmRegistryUrl}`);
 
