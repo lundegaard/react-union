@@ -64,7 +64,7 @@ const publishReactUnion = async tempDir => {
 	);
 	execCommand(
 		// eslint-disable-next-line max-len
-		'npm run publishAll -- --no-push --no-git-tag-version --yes --force-publish=* --exact --no-verify-access prerelease'
+		'npm run publishAll -- --skip-git --yes --force-publish=* --exact --cd-version=prerelease'
 	);
 	execCommand(`npm set registry ${originalNpmRegistryUrl}`);
 
