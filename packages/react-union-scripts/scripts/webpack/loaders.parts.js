@@ -34,41 +34,6 @@ const loadBabel = include => () => ({
 	},
 });
 
-const loadScss = include => debug => ({
-	module: {
-		rules: [
-			{
-				test: /\.scss$/,
-				include,
-				use: [
-					require.resolve('style-loader'),
-					{
-						loader: require.resolve('css-loader'),
-						options: {
-							importLoaders: 1,
-							minimize: true,
-							sourceMap: debug,
-						},
-					},
-					{
-						loader: require.resolve('resolve-url-loader'),
-						options: {
-							// always true - needed for sass-loader
-							sourceMap: true,
-						},
-					},
-					{
-						loader: require.resolve('sass-loader'),
-						options: {
-							sourceMap: debug,
-						},
-					},
-				],
-			},
-		],
-	},
-});
-
 const loadCss = include => () => ({
 	module: {
 		rules: [
@@ -123,7 +88,6 @@ module.exports = {
 	loadAsyncModules,
 	loadBabel,
 	loadCss,
-	loadScss,
 	loadImages,
 	loadFiles,
 };

@@ -3,7 +3,7 @@ import { Union } from 'react-union';
 
 import routes from '../../routes';
 
-import './Root.scss';
+import './Root.css';
 
 const Root = () => <Union routes={routes} />;
 
