@@ -46,7 +46,7 @@
     "husky": "0.14.3",
     "jest": "23.6.0",
     "lerna": "2.2.0",
-    "lint-staged": "7.2.0",
+    "lint-staged": "7.2.2",
     "prettier": "1.14.2",
     "rimraf": "2.6.2"
   },
@@ -67,10 +67,12 @@
     "publishAll": "lerna publish"
   },
   "lint-staged": {
-    "(packages|boilerplates)/**/*.js": [
-      "prettier --write",
-      "yarn lint:fix",
-      "git add"
-    ]
+    "linters": {
+      "(packages|boilerplates)/**/*.js": [
+        "prettier --write",
+        "yarn lint:fix",
+        "git add"
+      ]
+    }
   }
 }
