@@ -19,8 +19,7 @@
   ],
   "dependencies": {
     "prop-types": "15.6.2",
-    "ramda": "0.25.0",
-    "rollup-plugin-commonjs": "9.1.6"
+    "ramda": "0.25.0"
   },
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",
