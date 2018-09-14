@@ -48,7 +48,7 @@ const analyzeBundlePlugin = () => ({
 	plugins: [new BundleAnalyzerPlugin()],
 });
 
-const uglifyJsPlugin = (verbose, { cache, sourceMap, parallel }) => ({
+const uglifyJsPlugin = (verbose, { cache, sourceMap, parallel, mangle }) => ({
 	optimization: {
 		minimizer: [
 			new UglifyWebpackPlugin({
@@ -65,14 +65,12 @@ const uglifyJsPlugin = (verbose, { cache, sourceMap, parallel }) => ({
 						warnings: verbose,
 						comparisons: false,
 					},
-					mangle: {
-						safari10: true,
-					},
 					output: {
 						ecma: 5,
 						comments: verbose,
 						ascii_only: true,
 					},
+					mangle,
 				},
 			}),
 		],
