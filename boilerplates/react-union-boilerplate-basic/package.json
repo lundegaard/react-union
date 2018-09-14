@@ -1,6 +1,6 @@
 {
   "name": "react-union-boilerplate-basic",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "private": true,
   "license": "MIT",
   "repository": "https://github.com/lundegaard/react-union",
@@ -14,7 +14,7 @@
     "react": "16.5.0",
     "react-dom": "16.5.0",
     "react-hot-loader": "4.3.6",
-    "react-union": "^0.7.1",
+    "react-union": "^0.8.0",
     "redbox-react": "1.6.0"
   },
   "devDependencies": {
@@ -32,7 +32,7 @@
     "husky": "^0.14.3",
     "lint-staged": "^7.2.0",
     "prettier": "1.14.2",
-    "react-union-scripts": "^0.7.1"
+    "react-union-scripts": "^0.8.0"
   },
   "scripts": {
     "build": "react-union-scripts build",
