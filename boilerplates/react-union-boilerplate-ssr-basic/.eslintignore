@@ -1,0 +1,4 @@
+node_modules/*
+build/*
+stats.json
+docs/node_modules/*

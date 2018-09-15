@@ -4,9 +4,8 @@ import NestedComponent from './NestedComponent';
 
 const Root = ({ namespace, data }) => (
 	<div>
-		I am widget Content with namespace <b>{namespace}</b> and initial data
-		<b> {JSON.stringify(data)}</b>
-		<NestedComponent />
+		I am the Content widget. My namespace is <b>{namespace}</b> and my initial data is
+		<b> {JSON.stringify(data)}</b>.<NestedComponent />
 	</div>
 );
 

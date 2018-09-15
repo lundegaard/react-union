@@ -1,5 +1,5 @@
 {
-  "name": "react-union-boilerplate-basic",
+  "name": "react-union-boilerplate-ssr-basic",
   "version": "0.8.0",
   "private": true,
   "license": "MIT",
@@ -13,7 +13,7 @@
     "prop-types": "15.6.2",
     "react": "16.5.1",
     "react-dom": "16.5.1",
-    "react-hot-loader": "4.3.8",
+    "react-hot-loader": "4.3.6",
     "react-union": "0.8.0",
     "react-universal-component": "3.0.2"
   },
@@ -32,11 +32,13 @@
     "husky": "0.14.3",
     "lint-staged": "7.2.0",
     "prettier": "1.14.2",
-    "react-union-scripts": "0.8.0"
+    "react-union-scripts": "0.8.0",
+    "react-union-ssr-server": "0.1.0"
   },
   "scripts": {
     "build": "react-union-scripts build --release",
     "start": "react-union-scripts start --app SampleApp",
+    "start:ssr-server": "node build/SampleApp/server",
     "test": "react-union-scripts test",
     "lint": "yarn lint:eslint",
     "lint:eslint": "eslint --ext .js ./",

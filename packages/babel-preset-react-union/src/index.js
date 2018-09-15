@@ -47,7 +47,7 @@ module.exports = () => ({
 				regenerator: true,
 			},
 		],
-		'universal-import',
+		'babel-plugin-universal-import',
 	],
 	env: {
 		test: {

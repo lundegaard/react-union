@@ -7,9 +7,7 @@ import routes from '../../routes';
 
 import './Root.css';
 
-// NOTE: If you don't need SSR, remove the propTypes and replace the following line with:
-// const Root = () => <Union routes={routes} />;
-const Root = ({ isServer }) => <Union routes={isServer ? null : routes} />;
+const Root = () => <Union routes={routes} />;
 
 Root.propTypes = {
 	isServer: PropTypes.bool,

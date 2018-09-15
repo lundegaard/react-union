@@ -110,15 +110,6 @@ class Union extends Component {
 		widgetConfigs: this.getInitialWidgetConfigs(),
 	};
 
-	componentDidMount() {
-		const { props } = this;
-		const { attachListeners } = props;
-
-		if (attachListeners) {
-			attachListeners(() => this.setState(Union.scan(props)));
-		}
-	}
-
 	// NOTE: not an arrow function because we want to call it in `state` property initializer
 	getInitialWidgetConfigs() {
 		if (this.props.isServer) {

@@ -14,7 +14,7 @@
     "prop-types": "15.6.2",
     "react": "16.5.1",
     "react-dom": "16.5.1",
-    "react-hot-loader": "4.3.6",
+    "react-hot-loader": "4.3.8",
     "react-union": "0.8.0",
     "react-universal-component": "3.0.2",
     "redbox-react": "1.6.0"

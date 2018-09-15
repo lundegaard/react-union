@@ -11,7 +11,7 @@ export function justRender(reactElement, rootId = DEFAULT_UNION_ROOT_ID, resolve
 	render(reactElement, domElement, resolve);
 }
 
-export function justUnmountComponentAtNode(rootId = DEFAULT_UNION_ROOT_ID) {
+export function justUnmountComponentAtNode(component, rootId = DEFAULT_UNION_ROOT_ID) {
 	const rootElement = document.getElementById(rootId);
 
 	ReactDOM.unmountComponentAtNode(rootElement);

@@ -80,7 +80,7 @@ import React from 'react';
 
 const Root = ({ namespace, data }) => (
 	<div>
-		I am widget Content. With namespace: <b>{namespace}</b> and initial data:
+		I am the Content widget. My namespace is <b>{namespace}</b> and my initial data is
 		<b>{JSON.stringify(data)}</b>
 	</div>
 );
@@ -99,8 +99,9 @@ const NestedComponent = () => (
 	<WidgetContext.Consumer>
 		{({ namespace, data }) => (
 			<div>
-				Im nested component of Content. I have also namespace: <b>{namespace}</b> and initial data:
-				<b>{JSON.stringify(data)}</b>. But taken from context :p.
+				I am a nested component of the Content widget. My namespace is <b>{namespace}</b> and my
+				initial data is <b>{JSON.stringify(data)}</b> as well, but I use WidgetContext to access
+				this information.
 			</div>
 		)}
 	</WidgetContext.Consumer>

@@ -1,4 +1,3 @@
-// NOTE: If you don't need SSR, remove this file and the `react-union-ssr-server` dependency.
 import React from 'react';
 import startServer from 'react-union-ssr-server';
 
