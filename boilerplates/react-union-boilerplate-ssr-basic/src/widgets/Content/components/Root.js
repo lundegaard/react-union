@@ -5,8 +5,10 @@ import NestedComponent from './NestedComponent';
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 class Root extends Component {
-	static async getInitialProps() {
-		await sleep(1000);
+	static async getInitialProps({ req }) {
+		// NOTE: req is defined iff this method is executed in server context
+		// This is to simulate that fetching data in a local network is faster than roundtrips
+		await sleep(req ? 10 : 1000);
 		return { asyncData: 'This content was loaded after a second!' };
 	}
 

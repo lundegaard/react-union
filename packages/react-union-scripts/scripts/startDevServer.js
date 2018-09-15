@@ -7,12 +7,15 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const webpackHotServerMiddleware = require('webpack-hot-server-middleware');
 const historyApiFallback = require('connect-history-api-fallback');
-const createHotServerHandler = require('react-union-ssr-server/middleware');
+const {
+	createHotServerHandler,
+	responseCaptureMiddleware,
+} = require('react-union-ssr-server/middleware');
 
 const webpackConfigs = require('./webpack.config');
 const cli = require('./lib/cli');
 const { stats, getAppConfig } = require('./lib/utils');
-const { responseCaptureMiddleware, proxyMiddleware } = require('./lib/middleware');
+const { proxyMiddleware } = require('./lib/middleware');
 
 async function startDevServer() {
 	invariant(
@@ -44,6 +47,9 @@ async function startDevServer() {
 			serverSideRender: isSSR,
 		}),
 		webpackHotMiddleware(clientCompiler),
+		...(isSSR
+			? [webpackHotServerMiddleware(compiler, { createHandler: createHotServerHandler })]
+			: []),
 		...(!cli.proxy && unionConfig.devServer.historyApiFallback
 			? [
 					historyApiFallback({
@@ -51,9 +57,6 @@ async function startDevServer() {
 						htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
 					}),
 			  ]
-			: []),
-		...(isSSR
-			? [webpackHotServerMiddleware(compiler, { createHandler: createHotServerHandler })]
 			: []),
 		...proxyMiddleware(clientConfig.devServer),
 	];

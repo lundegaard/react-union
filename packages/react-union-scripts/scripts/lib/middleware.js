@@ -34,21 +34,6 @@ const proxyMiddleware = ({ proxy } = {}) => {
 	}, normalizedConfig);
 };
 
-const responseCaptureMiddleware = (req, res, next) => {
-	// HACK: Because browserSync only uses Connect and not Express or any other framework,
-	// we need to gather the response body ourselves. Because `res.end` is called under the hood
-	// to send the response to the client, we intercept the call and instead use `forceEnd`
-	// in the SSR server middleware instead.
-	if (req.url === '/') {
-		res.body = '';
-		res.forceEnd = res.end;
-		res.end = data => {
-			res.body += data;
-			next();
-		};
-	}
-
-	next();
+module.exports = {
+	proxyMiddleware,
 };
-
-module.exports = { proxyMiddleware, responseCaptureMiddleware };

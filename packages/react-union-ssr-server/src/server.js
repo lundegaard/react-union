@@ -17,8 +17,10 @@ module.exports = applicationHandler => {
 		try {
 			const content = await renderContent(req.body, options, { req, res });
 
-			// NOTE: `res.forceEnd` is defined iff we are running a dev server
-			if (res.forceEnd) {
+			// NOTE: `res.useForce` is true iff we are running a dev server
+			if (res.useForce) {
+				res.statusMessage = 'OK';
+				res.forceWriteHead(200);
 				res.forceEnd(content);
 			} else {
 				res.writeHead(200, { 'Content-Type': 'application/html' });
