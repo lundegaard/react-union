@@ -88,7 +88,7 @@ const getWebpackConfig_ = config => {
 		publicPath,
 		outputMapper,
 		mergeWebpackConfig,
-		uglifyOptions,
+		sourceMaps,
 	} = config;
 
 	const getPackagesPathForSuffix = getPackagesPath(config);
@@ -177,15 +177,21 @@ const getWebpackConfig_ = config => {
 	const devWebpack = () =>
 		merge(
 			commonConfig,
+			{ devtool: 'cheap-source-map' },
 			loaderOptionsPlugin(true),
 			mergeWhen(hmr, hmrPlugin),
-			mergeWhen(generateTemplate, htmlPlugin, config, outputPath),
-			{
-				devtool: 'source-map',
-			}
+			mergeWhen(generateTemplate, htmlPlugin, config, outputPath)
 		);
 
-	const prodWebpack = () => merge(commonConfig, uglifyJsPlugin(cli.verbose, uglifyOptions));
+	const prodWebpack = () =>
+		merge(
+			commonConfig,
+			{
+				bail: true,
+				devtool: sourceMaps ? 'source-map' : false,
+			},
+			uglifyJsPlugin(cli.verbose, config)
+		);
 
 	return mergeWebpackConfig(cli.debug ? devWebpack() : prodWebpack());
 };
