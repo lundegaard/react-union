@@ -1,4 +1,4 @@
-const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
+const ExtractCSSChunks = require('extract-css-chunks-webpack-plugin');
 
 const loadBabel = include => () => ({
 	module: {
@@ -12,35 +12,19 @@ const loadBabel = include => () => ({
 	},
 });
 
-const loadCss = include => (sourceMap, isServerConfig) => ({
+const loadCss = include => isServerConfig => ({
 	module: {
 		rules: [
 			{
-				test: /\.s?css$/,
+				test: /\.css$/,
 				include,
 				use: [
-					...(isServerConfig ? [] : [ExtractCssChunks.loader]),
+					...(isServerConfig ? [] : [ExtractCSSChunks.loader]),
 					{
 						loader: require.resolve(`css-loader${isServerConfig ? '/locals' : ''}`),
 						options: {
-							importLoaders: 2,
-							minimize: true,
-							sourceMap,
 							modules: true,
 							localIdentName: '[name]__[local]--[hash:base64:5]',
-						},
-					},
-					{
-						loader: require.resolve('resolve-url-loader'),
-						options: {
-							// always true - needed for sass-loader
-							sourceMap: true,
-						},
-					},
-					{
-						loader: require.resolve('sass-loader'),
-						options: {
-							sourceMap,
 						},
 					},
 				],

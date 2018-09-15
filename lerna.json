@@ -1,17 +1,14 @@
 {
-  "lerna": "2.2.0",
-  "version": "independent",
-  "command": {
-    "init": {
-      "exact": true
-    },
-    "publish": {
-      "ignore": [
-        "*.md",
-        "test/**"
-      ]
-    }
-  },
-  "npmClient": "yarn",
-  "useWorkspaces": true
+	"lerna": "2.2.0",
+	"version": "independent",
+	"command": {
+		"init": {
+			"exact": true
+		},
+		"publish": {
+			"ignore": ["*.md", "test/**"]
+		}
+	},
+	"npmClient": "yarn",
+	"useWorkspaces": true
 }

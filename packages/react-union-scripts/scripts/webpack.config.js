@@ -139,7 +139,7 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 			},
 		},
 		loadBabel(),
-		loadCss(cli.debug, isServerConfig),
+		loadCss(isServerConfig),
 		loadImages(config),
 		loadFiles(config),
 		definePlugin(createGlobals(!isServerConfig)),

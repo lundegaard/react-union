@@ -5,7 +5,7 @@ import { hot } from 'react-hot-loader';
 
 import routes from '../../routes';
 
-import './Root.scss';
+import './Root.css';
 
 // NOTE: If you don't need SSR, remove the propTypes and replace the following line with:
 // const Root = () => <Union routes={routes} />;
