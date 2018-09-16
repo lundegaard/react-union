@@ -30,6 +30,10 @@ class Union extends Component {
 		 */
 		isServer: PropTypes.bool.isRequired,
 		/**
+		 * Called after the scan of the HTML is successfully done.
+		 */
+		onScanEnd: PropTypes.func,
+		/**
 		 * Called when there is an error while scanning of the HTML.
 		 */
 		onScanError: PropTypes.func,
@@ -37,10 +41,6 @@ class Union extends Component {
 		 * Called before the scan of the HTML.
 		 */
 		onScanStart: PropTypes.func,
-		/**
-		 * Called after the scan of the HTML is successfully done.
-		 */
-		onScanSuccess: PropTypes.func,
 		/**
 		 * HTML element or Cheerio wrapper in which the scan is running. By default `document`.
 		 */
@@ -61,7 +61,7 @@ class Union extends Component {
 
 	static defaultProps = {
 		isServer: false,
-		onScanSuccess: noop,
+		onScanEnd: noop,
 		onScanError: noop,
 		onScanStart: noop,
 		parent: typeof document !== 'undefined' ? document : null,
@@ -69,7 +69,7 @@ class Union extends Component {
 	};
 
 	static scan = props => {
-		const { onScanStart, onScanSuccess, onScanError, parent, routes } = props;
+		const { onScanStart, onScanEnd, onScanError, parent, routes } = props;
 
 		try {
 			onScanStart();
@@ -83,7 +83,7 @@ class Union extends Component {
 			);
 
 			const widgetConfigs = createWidgetConfigs(routes, scanResult);
-			onScanSuccess({ commonData, scanResult, widgetConfigs });
+			onScanEnd({ commonData, scanResult, widgetConfigs });
 
 			return widgetConfigs;
 		} catch (error) {
