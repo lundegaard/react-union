@@ -31,6 +31,11 @@ const getClientStatsList = compose(
 
 const prependClientStats = clientStats => {
 	const bundlePath = path.join(clientStats.outputPath, 'server', 'index.js');
+
+	if (!fs.existsSync(bundlePath)) {
+		return;
+	}
+
 	const bundleContent = fs.readFileSync(bundlePath);
 
 	fs.writeFileSync(
@@ -49,7 +54,10 @@ async function build() {
 	const buildStats = await run();
 	console.log(buildStats.toString(stats));
 
-	forEach(prependClientStats, getClientStatsList(buildStats));
+	if (!cli.noSSR) {
+		forEach(prependClientStats, getClientStatsList(buildStats));
+	}
+
 	copyPublicFolder(getUnionConfig());
 }
 
