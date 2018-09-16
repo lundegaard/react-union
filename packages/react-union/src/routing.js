@@ -4,6 +4,7 @@ import whereEq from 'ramda/src/whereEq';
 import curry from 'ramda/src/curry';
 
 import { invariant, mergeData } from './utils';
+import { INVALID_JSON } from './constants';
 
 const findRouteByDescriptor = (routes, descriptor) =>
 	find(whereEq({ path: descriptor.widget }), routes);
@@ -22,7 +23,14 @@ const createWidgetConfig = curry((routes, scanResult, descriptor) => ({
 }));
 
 const createWidgetConfigs = (routes, scanResult) => {
-	const { widgetDescriptors } = scanResult;
+	const { commonData, widgetDescriptors } = scanResult;
+
+	invariant(
+		commonData !== INVALID_JSON,
+		'Invalid JSON data encountered in a common descriptor. ' +
+			'This is often due to a trailing comma or missing quotation marks.'
+	);
+
 	return map(createWidgetConfig(routes, scanResult), widgetDescriptors);
 };
 

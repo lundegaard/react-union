@@ -11,14 +11,14 @@ import o from 'ramda/src/o';
 import reject from 'ramda/src/reject';
 import isNil from 'ramda/src/isNil';
 
-import { INVALID_JSON } from './constants';
+import { INVALID_JSON, SHOULD_NOT_LEAK } from './constants';
 
 export const warning = (pred, msg) => {
 	if (pred) {
 		return;
 	}
 
-	if (process.env.NODE_ENV === 'production') {
+	if (SHOULD_NOT_LEAK) {
 		return;
 	}
 
@@ -30,7 +30,7 @@ export const invariant = (pred, msg) => {
 		return;
 	}
 
-	if (process.env.NODE_ENV === 'production') {
+	if (SHOULD_NOT_LEAK) {
 		throw new Error('There was an error. Use non-production build to see details.');
 	}
 
