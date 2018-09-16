@@ -3,7 +3,7 @@ const http = require('http');
 const bodyParser = require('body-parser');
 
 const makeContentRenderer = require('./core');
-const { getPortArgument } = require('./utils');
+const { getPort, printUsage } = require('./utils');
 
 module.exports = applicationHandler => {
 	const app = connect();
@@ -18,6 +18,7 @@ module.exports = applicationHandler => {
 			const content = await renderContent(req.body, options, { req, res });
 
 			// NOTE: `res.useForce` is true iff we are running a dev server
+			// TODO: more HTTP headers
 			if (res.useForce) {
 				res.statusMessage = 'OK';
 				res.forceWriteHead(200);
@@ -27,6 +28,7 @@ module.exports = applicationHandler => {
 				res.end(content);
 			}
 		} catch (error) {
+			// TODO: Modify HTTP response based on types of errors (bad portal data, React error, etc.)
 			next(error);
 		}
 	};
@@ -46,8 +48,9 @@ module.exports = applicationHandler => {
 	app.use(makeHandleRequest({ clientStats: global.CLIENT_STATS, isPrebuilt: true }));
 
 	const server = http.createServer(app);
-
-	const port = getPortArgument() || process.env.SSR_PORT || 3303;
+	const port = getPort();
 	server.listen(port);
-	console.log(`🚀 React-union SSR server is listening on port ${port} 🚀`);
+	printUsage(port);
+
+	return server;
 };

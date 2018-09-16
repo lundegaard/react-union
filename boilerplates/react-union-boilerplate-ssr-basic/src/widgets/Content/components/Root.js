@@ -9,13 +9,17 @@ class Root extends Component {
 		// NOTE: req is defined iff this method is executed in server context
 		// This is to simulate that fetching data in a local network is faster than roundtrips
 		await sleep(req ? 10 : 1000);
-		return { asyncData: 'This content was loaded after a second!' };
+		return { asyncData: 'This content was fetched asynchronously!' };
 	}
 
 	static propTypes = {
 		asyncData: PropTypes.string,
 		data: PropTypes.shape({ foo: PropTypes.string }),
 		namespace: PropTypes.string,
+	};
+
+	static defaultProps = {
+		asyncData: 'Fetching...',
 	};
 
 	render() {
@@ -25,7 +29,7 @@ class Root extends Component {
 			<div>
 				I am the Content widget. My namespace is <b>{namespace}</b> and my initial data is
 				<b> {JSON.stringify(data)}</b>.<NestedComponent />
-				<div>{asyncData || 'Fetching data...'}</div>
+				<div>{asyncData}</div>
 			</div>
 		);
 	}
