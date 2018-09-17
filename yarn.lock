@@ -1151,37 +1151,38 @@ babel-preset-jest@^23.2.0:
     babel-plugin-jest-hoist "^23.2.0"
     babel-plugin-syntax-object-rest-spread "^6.13.0"
 
-babel-preset-react-union@0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/babel-preset-react-union/-/babel-preset-react-union-0.7.1.tgz#3e232fa018bf73577fa61181a30e3b2bcc26101a"
-  dependencies:
-    "@babel/cli" "^7.0.0"
-    "@babel/core" "^7.0.0"
-    "@babel/plugin-external-helpers" "^7.0.0"
-    "@babel/plugin-proposal-class-properties" "^7.0.0"
-    "@babel/plugin-proposal-decorators" "^7.0.0"
-    "@babel/plugin-proposal-do-expressions" "^7.0.0"
-    "@babel/plugin-proposal-export-default-from" "^7.0.0"
-    "@babel/plugin-proposal-export-namespace-from" "^7.0.0"
-    "@babel/plugin-proposal-function-sent" "^7.0.0"
-    "@babel/plugin-proposal-json-strings" "^7.0.0"
-    "@babel/plugin-proposal-logical-assignment-operators" "^7.0.0"
-    "@babel/plugin-proposal-nullish-coalescing-operator" "^7.0.0"
-    "@babel/plugin-proposal-numeric-separator" "^7.0.0"
-    "@babel/plugin-proposal-object-rest-spread" "^7.0.0"
-    "@babel/plugin-proposal-optional-chaining" "^7.0.0"
-    "@babel/plugin-proposal-pipeline-operator" "^7.0.0"
-    "@babel/plugin-proposal-throw-expressions" "^7.0.0"
-    "@babel/plugin-syntax-dynamic-import" "^7.0.0"
-    "@babel/plugin-syntax-import-meta" "^7.0.0"
-    "@babel/plugin-transform-modules-commonjs" "^7.0.0"
-    "@babel/plugin-transform-react-constant-elements" "^7.0.0"
-    "@babel/plugin-transform-regenerator" "^7.0.0"
-    "@babel/plugin-transform-runtime" "^7.0.0"
-    "@babel/preset-env" "^7.0.0"
-    "@babel/preset-react" "^7.0.0"
-    "@babel/runtime" "^7.0.0"
 
+babel-preset-react-union@0.7.2:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/babel-preset-react-union/-/babel-preset-react-union-0.7.2.tgz#55551acbd7e79bfaab7527aaccd48661554a0020"
+  dependencies:
+    "@babel/cli" "7.0.0"
+    "@babel/core" "7.0.0"
+    "@babel/plugin-external-helpers" "7.0.0"
+    "@babel/plugin-proposal-class-properties" "7.0.0"
+    "@babel/plugin-proposal-decorators" "7.0.0"
+    "@babel/plugin-proposal-do-expressions" "7.0.0"
+    "@babel/plugin-proposal-export-default-from" "7.0.0"
+    "@babel/plugin-proposal-export-namespace-from" "7.0.0"
+    "@babel/plugin-proposal-function-sent" "7.0.0"
+    "@babel/plugin-proposal-json-strings" "7.0.0"
+    "@babel/plugin-proposal-logical-assignment-operators" "7.0.0"
+    "@babel/plugin-proposal-nullish-coalescing-operator" "7.0.0"
+    "@babel/plugin-proposal-numeric-separator" "7.0.0"
+    "@babel/plugin-proposal-object-rest-spread" "7.0.0"
+    "@babel/plugin-proposal-optional-chaining" "7.0.0"
+    "@babel/plugin-proposal-pipeline-operator" "7.0.0"
+    "@babel/plugin-proposal-throw-expressions" "7.0.0"
+    "@babel/plugin-syntax-dynamic-import" "7.0.0"
+    "@babel/plugin-syntax-import-meta" "7.0.0"
+    "@babel/plugin-transform-modules-commonjs" "7.0.0"
+    "@babel/plugin-transform-react-constant-elements" "7.0.0"
+    "@babel/plugin-transform-regenerator" "7.0.0"
+    "@babel/plugin-transform-runtime" "7.0.0"
+    "@babel/preset-env" "7.0.0"
+    "@babel/preset-react" "7.0.0"
+    "@babel/runtime" "7.0.0"
+    
 babel-register@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-register/-/babel-register-6.26.0.tgz#6ed021173e2fcb486d7acb45c6009a856f647071"
@@ -2163,9 +2164,9 @@ escodegen@^1.9.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-react-union@0.7.2:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/eslint-config-react-union/-/eslint-config-react-union-0.7.2.tgz#29d3c9177a886017d753b6d6634bb78bc9314ed9"
+eslint-config-react-union@0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/eslint-config-react-union/-/eslint-config-react-union-0.7.1.tgz#a5c3b771fd85c3d6cba8e69c4b20cf144d83a4cc"
 
 eslint-import-resolver-node@^0.3.1:
   version "0.3.2"
