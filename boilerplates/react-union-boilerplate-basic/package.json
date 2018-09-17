@@ -1,6 +1,6 @@
 {
   "name": "react-union-boilerplate-basic",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "private": true,
   "license": "MIT",
   "repository": "https://github.com/lundegaard/react-union",
@@ -14,25 +14,25 @@
     "react": "16.5.0",
     "react-dom": "16.5.0",
     "react-hot-loader": "4.3.8",
-    "react-union": "0.8.0",
+    "react-union": "^0.8.1",
     "redbox-react": "1.6.0"
   },
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",
-    "babel-preset-react-union": "0.7.1",
+    "babel-preset-react-union": "^0.7.2",
     "enzyme": "3.6.0",
     "enzyme-adapter-react-16": "1.5.0",
     "enzyme-to-json": "3.3.4",
     "eslint": "5.5.0",
-    "eslint-config-react-union": "0.7.1",
+    "eslint-config-react-union": "^0.7.2",
     "eslint-plugin-babel": "5.2.0",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-react": "7.11.1",
     "husky": "0.14.3",
     "lint-staged": "7.2.2",
     "prettier": "1.14.2",
-    "react-union-scripts": "0.8.0"
+    "react-union-scripts": "^0.8.1"
   },
   "scripts": {
     "build": "react-union-scripts build",

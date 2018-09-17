@@ -1,6 +1,6 @@
 {
   "name": "react-union",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "license": "MIT",
   "main": "lib/react-union.js",
   "module": "es/react-union.js",
@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",
-    "babel-preset-react-union": "0.7.1",
+    "babel-preset-react-union": "^0.7.2",
     "cross-env": "5.2.0",
     "enzyme": "3.6.0",
     "enzyme-adapter-react-16": "1.5.0",
