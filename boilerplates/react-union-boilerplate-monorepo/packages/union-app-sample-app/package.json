@@ -15,7 +15,6 @@
     "react-union": "0.8.0",
     "react-universal-component": "3.0.2",
     "union-widget-hero": "0.1.0",
-    "union-widget-content": "0.1.0",
-    "redbox-react": "1.5.0"
+    "union-widget-content": "0.1.0"
   }
 }
