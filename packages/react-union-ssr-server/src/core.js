@@ -9,15 +9,15 @@ const { hoistComponentStatics, getAllInitialProps } = require('./utils');
 
 const makeContentRenderer = applicationHandler => async (originalHTML, options, httpContext) => {
 	const { clientStats, isPrebuilt } = options;
-	const document_$ = cheerio.load(originalHTML);
-	const head = document_$('head');
-	const body = document_$('body');
+	const original_$ = cheerio.load(originalHTML);
+	const head = original_$('head');
+	const body = original_$('body');
 
 	// NOTE: We need to pass routes here because of getInitialProps.
 	// In order to get the initial props, we need to get the list of all rendered components.
 	// To do that, we need to call `scan` ourselves here.
 	const render = async (reactElement, routes, applicationContext) => {
-		const scanResult = scan(document_$);
+		const scanResult = scan(original_$);
 		const widgetConfigs = createWidgetConfigs(routes, scanResult);
 		const context = { head, body, ...httpContext, ...applicationContext };
 
@@ -45,23 +45,23 @@ const makeContentRenderer = applicationHandler => async (originalHTML, options, 
 		// We are doing this to make sure that the next `flushChunkNames()` call will only contain
 		// the universal components from `renderToString`, not from other asynchronous requests.
 		flushChunkNames();
-		const rawHTML = ReactDOMServer.renderToString(wrappedElement);
+		const reactHTML = ReactDOMServer.renderToString(wrappedElement);
 		const chunkNames = flushChunkNames();
 
-		const raw_$ = cheerio.load(rawHTML);
+		const react_$ = cheerio.load(reactHTML);
 
-		raw_$('[data-union-portal]').each((_, widget) => {
-			const $widget = raw_$(widget);
+		react_$('[data-union-portal]').each((_, widget) => {
+			const $widget = react_$(widget);
 			const id = $widget.data('union-portal');
 			const selector = `#${id}`;
-			const $element = document_$(selector);
+			const $container = original_$(selector);
 
-			if (!$element) {
+			if (!$container) {
 				return console.error(`HTML element with ID "${id}" could not be found.`);
 			}
 
 			const widgetHTML = $widget.html();
-			$element.html(widgetHTML);
+			$container.html(widgetHTML);
 		});
 
 		return {
@@ -97,7 +97,7 @@ const makeContentRenderer = applicationHandler => async (originalHTML, options, 
 		</script>`
 	);
 
-	return document_$.html();
+	return original_$.html();
 };
 
 module.exports = makeContentRenderer;

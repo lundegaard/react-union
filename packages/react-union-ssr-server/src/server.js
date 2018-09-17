@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const makeContentRenderer = require('./core');
 const { getPort, printUsage } = require('./utils');
 
+// TODO: maybe add some options as the second parameter
 module.exports = applicationHandler => {
 	const app = connect();
 	const renderContent = makeContentRenderer(applicationHandler);
