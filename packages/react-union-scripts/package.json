@@ -53,6 +53,6 @@
   },
   "devDependencies": {
     "react": "16.5.2",
-    "react-dom": "16.4.1"
+    "react-dom": "16.5.2"
   }
 }
