@@ -11,6 +11,7 @@ buildscript {
 }
 
 apply plugin: "com.liferay.plugin"
+apply plugin: "maven-publish"
 
 dependencies {
 	compileOnly group: "org.osgi", name: "org.osgi.core", version: "6.0.0"
@@ -25,5 +26,16 @@ repositories {
 
 	maven {
 		url "https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public"
+	}
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			groupId = 'eu.lundegaard.react-union-liferay'
+			artifactId = 'react-union-support'
+
+			from components.java
+		}
 	}
 }

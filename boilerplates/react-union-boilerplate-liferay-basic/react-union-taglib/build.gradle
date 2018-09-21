@@ -13,6 +13,7 @@ buildscript {
 }
 
 apply plugin: "com.liferay.plugin"
+apply plugin: "maven-publish"
 
 dependencies {
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"
@@ -29,5 +30,16 @@ repositories {
 
 	maven {
 		url "https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public"
+	}
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			groupId = 'eu.lundegaard.react-union-liferay'
+			artifactId = 'react-union-taglib'
+
+			from components.java
+		}
 	}
 }
