@@ -39,7 +39,7 @@
     "ramda": "0.25.0",
     "ramda-extension": "0.5.1",
     "raw-loader": "0.5.1",
-    "react-hot-loader": "4.3.8",
+    "react-hot-loader": "4.3.11",
     "resolve-url-loader": "2.3.1",
     "style-loader": "0.23.0",
     "uglifyjs-webpack-plugin": "2.0.1",
