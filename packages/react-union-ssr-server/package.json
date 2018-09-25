@@ -12,6 +12,7 @@
     "body-parser": "1.18.3",
     "cheerio": "1.0.0-rc.2",
     "connect": "3.6.6",
+    "invariant": "2.2.4",
     "ramda": "0.25.0",
     "ramda-extension": "0.5.1",
     "react": "16.5.1",

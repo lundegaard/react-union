@@ -45,7 +45,7 @@ const printUsage = port => {
 	log('📄 HTTP status reference:');
 	log();
 	log('    200    Business as usual. Everything is set-up properly and you can enjoy your');
-	log('           blazingly fast loading speeds and SEO.');
+	log('           blazing fast page loads and improved SEO.');
 	log();
 	log('    500    Something went wrong. This might be due to wrong configuration,');
 	log('           invalid CMS data or an unhandled application exception. Either way,');

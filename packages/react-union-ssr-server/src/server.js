@@ -6,7 +6,7 @@ const makeContentRenderer = require('./core');
 const { getPort, printUsage } = require('./utils');
 
 // TODO: maybe add some options as the second parameter
-module.exports = applicationHandler => {
+const startServer = applicationHandler => {
 	const app = connect();
 	const renderContent = makeContentRenderer(applicationHandler);
 
@@ -55,3 +55,5 @@ module.exports = applicationHandler => {
 
 	return server;
 };
+
+module.exports = startServer;

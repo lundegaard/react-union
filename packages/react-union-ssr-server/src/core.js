@@ -4,6 +4,7 @@ const cheerio = require('cheerio');
 const { ServerContext, scan, createWidgetConfigs } = require('react-union');
 const { flushChunkNames } = require('react-universal-component/server');
 const { default: flushChunks } = require('webpack-flush-chunks');
+const invariant = require('invariant');
 
 const { hoistComponentStatics, getAllInitialProps } = require('./utils');
 
@@ -12,6 +13,10 @@ const makeContentRenderer = applicationHandler => async (originalHTML, options, 
 	const original_$ = cheerio.load(originalHTML);
 	const head = original_$('head');
 	const body = original_$('body');
+
+	// NOTE: we want the user to call `render()` as a side-effect, we don't want to expose
+	// the metadata to him.
+	let renderMeta;
 
 	// NOTE: We need to pass routes here because of getInitialProps.
 	// In order to get the initial props, we need to get the list of all rendered components.
@@ -48,6 +53,8 @@ const makeContentRenderer = applicationHandler => async (originalHTML, options, 
 		const reactHTML = ReactDOMServer.renderToString(wrappedElement);
 		const chunkNames = flushChunkNames();
 
+		renderMeta = { chunkNames, scanResult, initialProps };
+
 		const react_$ = cheerio.load(reactHTML);
 
 		react_$('[data-union-portal]').each((_, widget) => {
@@ -57,23 +64,18 @@ const makeContentRenderer = applicationHandler => async (originalHTML, options, 
 			const $container = original_$(selector);
 
 			if (!$container) {
-				return console.error(`HTML element with ID "${id}" could not be found.`);
+				throw new Error(`HTML element with ID "${id}" could not be found.`);
 			}
 
 			const widgetHTML = $widget.html();
 			$container.html(widgetHTML);
 		});
-
-		return {
-			chunkNames,
-			scanResult,
-			initialProps,
-		};
 	};
 
 	const context = { render, head, body, ...httpContext };
-	// NOTE: application handler must return the return value of calling the `render` function
-	const { chunkNames, scanResult, initialProps } = await applicationHandler(context);
+	await applicationHandler(context);
+	invariant(renderMeta, 'You did not call `render` in your SSR application handler.');
+	const { chunkNames, scanResult, initialProps } = renderMeta;
 
 	const chunks = flushChunks(clientStats, {
 		chunkNames,
