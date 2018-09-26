@@ -1,14 +1,23 @@
 import ReactDOM from 'react-dom';
-import { createElementWithId } from './utils';
+import { createElementWithId, noop } from './utils';
 
 const DEFAULT_UNION_ROOT_ID = 'union';
 
-export function justRender(reactElement, rootId = DEFAULT_UNION_ROOT_ID, resolve) {
+export function justRender(reactElement, rootId = DEFAULT_UNION_ROOT_ID, resolve = noop) {
 	const domElement = createElementWithId(rootId, document.body);
-	// TODO: Use ReactDOM.hydrate once React supports hydration of portals.
-	// https://github.com/facebook/react/issues/13097
-	const render = ReactDOM[window.__HYDRATE__ ? 'render' : 'render'];
-	render(reactElement, domElement, resolve);
+
+	if (window.__SCAN_RESULT__) {
+		// TODO: Use ReactDOM.hydrate once React supports hydration of portals.
+		// https://github.com/facebook/react/issues/13097
+		ReactDOM.render(reactElement, domElement, (...args) => {
+			// NOTE: We delete window.__SCAN_RESULT__ so it is only used once. If the <Union /> element
+			// remounts for any reason, we want to call Union.scan() and not reuse SSR scan result.
+			delete window.__SCAN_RESULT__;
+			resolve(...args);
+		});
+	}
+
+	ReactDOM.render(reactElement, domElement, resolve);
 }
 
 export function justUnmountComponentAtNode(component, rootId = DEFAULT_UNION_ROOT_ID) {

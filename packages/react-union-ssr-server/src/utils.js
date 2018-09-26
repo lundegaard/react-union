@@ -7,20 +7,22 @@ const hoistComponentStatics = compose(
 	map(path(['component', 'preloadWeak']))
 );
 
-const getInitialProps = context => ({ component, ...widgetConfig }) =>
+const makeGetInitialProps = context => ({ component, ...widgetConfig }) =>
 	component.getInitialProps
 		? component.getInitialProps({ ...context, ...widgetConfig })
 		: Promise.resolve(null);
 
 /**
- * Returns an array of initial props with the indices corresponding to the passed widget configs.
+ * Asynchronously returns an array of initial props with the indices corresponding
+ * to the passed widget configs.
  *
  * @param {Array} widgetConfigs widget configs
- * @param {Object} context argument to call the initialProps with
+ * @param {Object} context argument to call the initialProps methods with
  */
-const getAllInitialProps = async (widgetConfigs, context) => {
-	const promises = map(getInitialProps(context), widgetConfigs);
-	return await Promise.all(promises);
+const resolveInitialProps = (context, widgetConfigs) => {
+	const getInitialProps = makeGetInitialProps(context);
+	const promises = map(getInitialProps, widgetConfigs);
+	return Promise.all(promises);
 };
 
 // TODO: similar to getArgValue in `lib/cli.js` of react-union-scripts, we should reuse it somehow
@@ -59,7 +61,7 @@ const printUsage = port => {
 
 module.exports = {
 	hoistComponentStatics,
-	getAllInitialProps,
+	resolveInitialProps,
 	getPort,
 	printUsage,
 };

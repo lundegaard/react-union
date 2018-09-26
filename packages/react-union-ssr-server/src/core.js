@@ -6,7 +6,7 @@ const { flushChunkNames } = require('react-universal-component/server');
 const { default: flushChunks } = require('webpack-flush-chunks');
 const invariant = require('invariant');
 
-const { hoistComponentStatics, getAllInitialProps } = require('./utils');
+const { hoistComponentStatics, resolveInitialProps } = require('./utils');
 
 const makeContentRenderer = applicationHandler => async (originalHTML, options, httpContext) => {
 	const { clientStats, isPrebuilt } = options;
@@ -30,7 +30,7 @@ const makeContentRenderer = applicationHandler => async (originalHTML, options, 
 		// Without calling this function, `getInitialProps` statics will not be defined.
 		hoistComponentStatics(widgetConfigs);
 
-		const initialProps = await getAllInitialProps(widgetConfigs, context);
+		const initialProps = await resolveInitialProps(context, widgetConfigs);
 
 		const serverContextProps = {
 			value: {
