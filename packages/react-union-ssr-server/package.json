@@ -15,12 +15,12 @@
     "invariant": "2.2.4",
     "ramda": "0.25.0",
     "ramda-extension": "0.5.1",
-    "react": "16.5.1",
-    "react-dom": "16.5.1",
+    "react": "16.5.2",
+    "react-dom": "16.5.2",
     "webpack-flush-chunks": "2.0.1"
   },
   "peerDependencies": {
-    "react-union": "^0.8.0",
-    "react-universal-component": "^3.0.2"
+    "react-union": "^0.8.1",
+    "react-universal-component": "^3.0.3"
   }
 }

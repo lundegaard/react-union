@@ -84,7 +84,7 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 		publicPath,
 		outputMapper,
 		mergeWebpackConfig,
-		uglifyOptions,
+		sourceMaps,
 	} = config;
 
 	if (isServerConfig) {
@@ -188,12 +188,19 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 			loaderOptionsPlugin(true),
 			mergeWhen(generateTemplate, htmlPlugin, [config, outputPath]),
 			{
-				devtool: 'source-map',
+				devtool: 'cheap-source-map',
 			}
 		);
 
 	const clientProductionConfig = () =>
-		merge(clientConfig(), uglifyJsPlugin(cli.verbose, uglifyOptions));
+		merge(
+			clientConfig(),
+			{
+				bail: true,
+				devtool: sourceMaps ? 'source-map' : false,
+			},
+			uglifyJsPlugin(cli.verbose, config)
+		);
 
 	return mergeWebpackConfig(cli.debug ? clientDevelopmentConfig() : clientProductionConfig());
 };
