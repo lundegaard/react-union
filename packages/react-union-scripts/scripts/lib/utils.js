@@ -31,7 +31,6 @@ const DEFAULT_UNION_CONFIG = {
 	// computed in `extendClean_`
 	clean: { options: {} },
 	generateTemplate: true,
-	vendorBlackList: [],
 	publicPath: '/',
 	templateFilename: 'index.ejs',
 	copyToPublicIgnore: /\.ejs$/,
