@@ -32,7 +32,7 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "9.0.0",
+    "babel-eslint": "10.0.0",
     "babel-jest": "23.4.2",
     "babel-loader": "8.0.3",
     "babel-preset-react-union": "0.7.2",
