@@ -30,7 +30,7 @@
     "eslint-plugin-babel": "5.2.1",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-react": "7.11.1",
-    "husky": "0.14.3",
+    "husky": "1.0.0",
     "lint-staged": "7.3.0",
     "mkdirp": "0.5.1",
     "prettier": "1.14.3",
@@ -44,9 +44,7 @@
     "start:proxy": "react-union-scripts start --app SampleApp --proxy --target liferay",
     "test": "react-union-scripts test",
     "lint": "yarn lint:eslint",
-    "lint:eslint": "eslint --ext .js ./",
-    "precommit": "lint-staged",
-    "prepush": "yarn lint && yarn test --release"
+    "lint:eslint": "eslint --ext .js ./"
   },
   "lint-staged": {
     "linters": {
