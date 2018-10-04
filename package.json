@@ -60,8 +60,6 @@
     "lint:fix": "yarn lint --fix",
     "test": "jest",
     "postinstall": "cd packages/react-union && yarn build",
-    "precommit": "lint-staged",
-    "prepush": "yarn lint",
     "pretty": "prettier --write \"packages/**/*.js\" \"boilerplates/**/*.js\"",
     "format": "yarn pretty && yarn lint:fix",
     "publishAll": "lerna publish"

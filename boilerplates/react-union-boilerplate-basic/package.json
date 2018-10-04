@@ -39,9 +39,7 @@
     "start": "react-union-scripts start --app SampleApp",
     "test": "react-union-scripts test",
     "lint": "yarn lint:eslint",
-    "lint:eslint": "eslint --ext .js ./",
-    "precommit": "lint-staged",
-    "prepush": "yarn lint && yarn test --release"
+    "lint:eslint": "eslint --ext .js ./"
   },
   "jest": {
     "snapshotSerializers": [
