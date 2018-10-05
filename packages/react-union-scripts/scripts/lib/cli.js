@@ -24,10 +24,10 @@ const getArgValue = (arg, program) =>
 
 const program = process.argv;
 const programIncludes = includes(program);
-const programNotIncludes = notInclude(program);
+const programNotInclude = notInclude(program);
 
 /** optimize for development */
-const debug = programNotIncludes('--release');
+const debug = programNotInclude('--release');
 
 /** level of debugging messages */
 const verbose = programIncludes('--verbose');

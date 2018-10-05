@@ -186,7 +186,7 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 		merge(
 			clientConfig(),
 			loaderOptionsPlugin(true),
-			mergeWhen(generateTemplate, htmlPlugin, [config, outputPath]),
+			mergeWhen(generateTemplate, htmlPlugin, config, outputPath),
 			{
 				devtool: 'cheap-source-map',
 			}
