@@ -10,7 +10,7 @@ export function justRender(reactElement, rootId = DEFAULT_UNION_ROOT_ID, resolve
 		// TODO: Use ReactDOM.hydrate once React supports hydration of portals.
 		// https://github.com/facebook/react/issues/13097
 		ReactDOM.render(reactElement, domElement, (...args) => {
-			// NOTE: We the globals so they're only used once. If the <Union /> element
+			// NOTE: We unset the globals so they're only used once. If the <Union /> element
 			// remounts for any reason, we want to call Union.scan() and not reuse SSR scan result.
 			delete window.__HYDRATE__;
 			delete window.__SCAN_RESULT__;

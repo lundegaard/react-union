@@ -25,7 +25,7 @@ const getProxyMiddleware = ({ proxy } = {}) => {
 	let normalizedConfig = proxy;
 	if (!R_.isArray(proxy)) {
 		normalizedConfig = R.pipe(
-			R_.mapObjIndexed((target, context) => {
+			R.mapObjIndexed((target, context) => {
 				// for more info see https://github.com/webpack/webpack-dev-server/blob/master/lib/Server.js#L193
 				const correctedContext = R.o(R.replace(/\/\*$/, ''), R.replace(/^\*$/, '**'))(context);
 				if (R_.isString(target)) {
