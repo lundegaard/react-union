@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component, StrictMode, Fragment } from 'react';
+import map from 'ramda/src/map';
+import path from 'ramda/src/path';
 
 import { noop, invariant } from '../../utils';
 import { RouteShape, WidgetConfigShape } from '../../shapes';
@@ -23,7 +25,7 @@ class Union extends Component {
 		/**
 		 * Initial props retrieved by the SSR server. Passed by `withServerContext`.
 		 */
-		initialProps: PropTypes.arrayOf(PropTypes.object),
+		initialProps: PropTypes.objectOf(PropTypes.object),
 		/**
 		 * Whether the component is rendered in SSR context. Passed by `withServerContext`.
 		 */
@@ -115,20 +117,18 @@ class Union extends Component {
 			: Union.scan(this.props);
 	}
 
-	getInitialPropsByIndex = index => {
-		const array = this.props.isServer ? this.props.initialProps : window.__INITIAL_PROPS__;
+	renderWidget = widgetConfig => {
+		const initialProps = this.props.isServer ? this.props.initialProps : window.__INITIAL_PROPS__;
 
-		return array ? array[index] : null;
+		return (
+			<Widget
+				config={widgetConfig}
+				initialProps={path([widgetConfig.namespace], initialProps)}
+				isServer={this.props.isServer}
+				key={widgetConfig.namespace}
+			/>
+		);
 	};
-
-	renderWidget = (widgetConfig, index) => (
-		<Widget
-			config={widgetConfig}
-			initialProps={this.getInitialPropsByIndex(index)}
-			isServer={this.props.isServer}
-			key={widgetConfig.namespace}
-		/>
-	);
 
 	resolveStrictMode = union => (this.props.strictMode ? <StrictMode>{union}</StrictMode> : union);
 
@@ -136,7 +136,7 @@ class Union extends Component {
 		return this.resolveStrictMode(
 			<Fragment>
 				{this.props.children}
-				{this.state.widgetConfigs.map(this.renderWidget)}
+				{map(this.renderWidget, this.state.widgetConfigs)}
 			</Fragment>
 		);
 	}

@@ -1,10 +1,10 @@
-const { call, __, map, path, compose, forEach, findIndex, equals } = require('ramda');
+const R = require('ramda');
 const { rejectNil } = require('ramda-extension');
 
-const hoistComponentStatics = compose(
-	forEach(call(__)),
+const hoistComponentStatics = R.compose(
+	R.forEach(R.call(R.__)),
 	rejectNil,
-	map(path(['component', 'preloadWeak']))
+	R.map(R.path(['component', 'preloadWeak']))
 );
 
 const makeGetInitialProps = context => ({ component, ...widgetConfig }) =>
@@ -19,15 +19,17 @@ const makeGetInitialProps = context => ({ component, ...widgetConfig }) =>
  * @param {Array} widgetConfigs widget configs
  * @param {Object} context argument to call the initialProps methods with
  */
-const resolveInitialProps = (context, widgetConfigs) => {
+const resolveInitialProps = async (context, widgetConfigs) => {
 	const getInitialProps = makeGetInitialProps(context);
-	const promises = map(getInitialProps, widgetConfigs);
-	return Promise.all(promises);
+	const promises = R.map(getInitialProps, widgetConfigs);
+	const namespaces = R.map(R.prop('namespace'), widgetConfigs);
+
+	return R.zipObj(namespaces, await Promise.all(promises));
 };
 
 // TODO: similar to getArgValue in `lib/cli.js` of react-union-scripts, we should reuse it somehow
 const getPort = () => {
-	const index = findIndex(equals('--port'), process.argv);
+	const index = R.findIndex(R.equals('--port'), process.argv);
 	const argument = index === -1 ? null : process.argv[index + 1];
 	return argument || process.env.SSR_PORT || 3303;
 };
