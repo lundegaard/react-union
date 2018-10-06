@@ -6,9 +6,9 @@ const { flushChunkNames } = require('react-universal-component/server');
 const { default: flushChunks } = require('webpack-flush-chunks');
 const invariant = require('invariant');
 
-const { hoistComponentStatics, resolveInitialProps } = require('./utils');
+const { hoistComponentStatics, resolveInitialProps } = require('./utils/initialProps');
 
-const makeContentRenderer = applicationHandler => async (originalHTML, options, httpContext) => {
+const makeRender = applicationHandler => async (originalHTML, options, httpContext) => {
 	const { clientStats, isPrebuilt } = options;
 	const original_$ = cheerio.load(originalHTML);
 	const head = original_$('head');
@@ -94,4 +94,4 @@ const makeContentRenderer = applicationHandler => async (originalHTML, options, 
 	return original_$.html();
 };
 
-module.exports = makeContentRenderer;
+module.exports = makeRender;

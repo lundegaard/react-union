@@ -1,1 +1,4 @@
-module.exports = require('./src/middleware');
+module.exports = {
+	createHotServerHandler: require('./src/middleware/createHotServerHandler'),
+	responseCaptureMiddleware: require('./src/middleware/responseCaptureMiddleware'),
+};
