@@ -2,6 +2,8 @@ import map from 'ramda/src/map';
 import find from 'ramda/src/find';
 import whereEq from 'ramda/src/whereEq';
 import curry from 'ramda/src/curry';
+import o from 'ramda/src/o';
+import prop from 'ramda/src/prop';
 
 import { invariant, mergeData } from './utils';
 import { INVALID_JSON } from './constants';
@@ -15,15 +17,18 @@ const findComponentByDescriptor = (routes, descriptor) => {
 	return route.component;
 };
 
-const createWidgetConfig = curry((routes, scanResult, descriptor) => ({
+const createWidgetConfig = curry((routes, commonData, descriptor) => ({
 	...descriptor,
 	component: findComponentByDescriptor(routes, descriptor),
-	data: mergeData([scanResult.commonData, descriptor.data]),
+	data: mergeData([commonData, descriptor.data]),
 	namespace: descriptor.namespace || descriptor.container,
 }));
 
-const createWidgetConfigs = (routes, scanResult) => {
-	const { commonData, widgetDescriptors } = scanResult;
+const getCommonData = o(mergeData, map(prop('data')));
+
+const route = (routes, scanResult) => {
+	const { commonDescriptors, widgetDescriptors } = scanResult;
+	const commonData = getCommonData(commonDescriptors);
 
 	invariant(
 		commonData !== INVALID_JSON,
@@ -31,7 +36,9 @@ const createWidgetConfigs = (routes, scanResult) => {
 			'This is often due to a trailing comma or missing quotation marks.'
 	);
 
-	return map(createWidgetConfig(routes, scanResult), widgetDescriptors);
+	const widgetConfigs = map(createWidgetConfig(routes, commonData), widgetDescriptors);
+
+	return { commonData, widgetConfigs, scanResult, routes };
 };
 
-export default createWidgetConfigs;
+export default route;

@@ -5,8 +5,7 @@ export const WidgetContext = createContext({
 	namespace: undefined,
 });
 
-export const ServerContext = createContext({
-	initialProps: null,
-	isServer: false,
-	widgetConfigs: null,
+export const PrescanContext = createContext({
+	initialProps: undefined,
+	widgetConfigs: undefined,
 });

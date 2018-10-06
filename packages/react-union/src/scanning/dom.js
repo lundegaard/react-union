@@ -10,11 +10,11 @@ import { INVALID_JSON } from '../constants';
 const selectWidgetDescriptorElements = parent => parent.querySelectorAll('[data-union-widget]');
 const selectCommonDescriptorElements = parent => parent.querySelectorAll('[data-union-common]');
 
-const dangerouslyParseJsonContent = o(unary(JSON.parse), prop('innerHTML'));
+const dangerouslyParseJSONContent = o(unary(JSON.parse), prop('innerHTML'));
 
-const parseJsonContent = element => {
+const parseJSONContent = element => {
 	try {
-		return dangerouslyParseJsonContent(element);
+		return dangerouslyParseJSONContent(element);
 	} catch (error) {
 		if (element.innerHTML.trim()) {
 			return INVALID_JSON;
@@ -28,7 +28,7 @@ const parseWidgetDescriptorElement = applySpec({
 	widget: path(['dataset', 'unionWidget']),
 	container: path(['dataset', 'unionContainer']),
 	namespace: path(['dataset', 'unionNamespace']),
-	data: parseJsonContent,
+	data: parseJSONContent,
 });
 
 export const getWidgetDescriptors = o(
@@ -36,4 +36,11 @@ export const getWidgetDescriptors = o(
 	selectWidgetDescriptorElements
 );
 
-export const getCommonDescriptors = o(map(parseJsonContent), selectCommonDescriptorElements);
+const parseCommonDescriptorElement = applySpec({
+	data: parseJSONContent,
+});
+
+export const getCommonDescriptors = o(
+	map(parseCommonDescriptorElement),
+	selectCommonDescriptorElements
+);

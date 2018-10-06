@@ -1,6 +1,6 @@
 import { createContextDecorator } from '../utils';
-import { ServerContext, WidgetContext } from '../contexts';
+import { PrescanContext, WidgetContext } from '../contexts';
 
 export { default as withErrorBoundary } from './withErrorBoundary';
-export const withServerContext = createContextDecorator(ServerContext, 'ServerContext');
+export const withPrescanContext = createContextDecorator(PrescanContext, 'PrescanContext');
 export const withWidgetContext = createContextDecorator(WidgetContext, 'WidgetContext');

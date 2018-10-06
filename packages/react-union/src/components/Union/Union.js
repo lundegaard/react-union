@@ -6,8 +6,9 @@ import path from 'ramda/src/path';
 import { noop, invariant } from '../../utils';
 import { RouteShape, WidgetConfigShape } from '../../shapes';
 import scan from '../../scanning';
-import createWidgetConfigs from '../../routing';
-import { withServerContext } from '../../decorators';
+import route from '../../routing';
+import { withPrescanContext } from '../../decorators';
+import { IS_SERVER } from '../../constants';
 
 import Widget from '../Widget';
 
@@ -23,13 +24,9 @@ class Union extends Component {
 		 */
 		children: PropTypes.node,
 		/**
-		 * Initial props retrieved by the SSR server. Passed by `withServerContext`.
+		 * Pre-scanned initial props.
 		 */
 		initialProps: PropTypes.objectOf(PropTypes.object),
-		/**
-		 * Whether the component is rendered in SSR context. Passed by `withServerContext`.
-		 */
-		isServer: PropTypes.bool.isRequired,
 		/**
 		 * Called after the scan of the HTML is successfully done.
 		 */
@@ -55,17 +52,16 @@ class Union extends Component {
 		 */
 		strictMode: PropTypes.bool,
 		/**
-		 * Widget configs retrieved by the SSR server. Passed by `withServerContext`.
+		 * Pre-scanned widget configs.
 		 */
 		widgetConfigs: PropTypes.arrayOf(PropTypes.shape(WidgetConfigShape)),
 	};
 
 	static defaultProps = {
-		isServer: false,
 		onScanEnd: noop,
 		onScanError: noop,
 		onScanStart: noop,
-		parent: typeof document !== 'undefined' ? document : null,
+		parent: IS_SERVER ? null : document,
 		strictMode: true,
 	};
 
@@ -77,11 +73,10 @@ class Union extends Component {
 		try {
 			onScanStart();
 			const scanResult = scan(parent);
-			const { commonData } = scanResult;
-			const widgetConfigs = createWidgetConfigs(routes, scanResult);
-			onScanEnd({ commonData, scanResult, widgetConfigs });
+			const routeResult = route(routes, scanResult);
+			onScanEnd(routeResult);
 
-			return widgetConfigs;
+			return routeResult.widgetConfigs;
 		} catch (error) {
 			onScanError(error);
 
@@ -90,9 +85,9 @@ class Union extends Component {
 	};
 
 	static getDerivedStateFromProps(nextProps, previousState) {
-		if (previousState.routes !== nextProps.routes) {
+		if (previousState.routesReference !== nextProps.routes) {
 			return {
-				routes: nextProps.routes,
+				routesReference: nextProps.routes,
 				widgetConfigs: Union.scan(nextProps),
 			};
 		}
@@ -101,34 +96,17 @@ class Union extends Component {
 	}
 
 	state = {
-		// NOTE: We never work with `this.state.routes`, this is because of getDerivedStateFromProps.
-		routes: this.props.routes,
-		widgetConfigs: this.getInitialWidgetConfigs(),
+		routesReference: this.props.routes,
+		widgetConfigs: this.props.widgetConfigs || Union.scan(this.props),
 	};
 
-	// NOTE: not an arrow function because we want to call it in `state` property initializer
-	getInitialWidgetConfigs() {
-		if (this.props.isServer) {
-			return this.props.widgetConfigs || Union.scan(this.props);
-		}
-
-		return window.__SCAN_RESULT__
-			? createWidgetConfigs(this.props.routes, window.__SCAN_RESULT__)
-			: Union.scan(this.props);
-	}
-
-	renderWidget = widgetConfig => {
-		const initialProps = this.props.isServer ? this.props.initialProps : window.__INITIAL_PROPS__;
-
-		return (
-			<Widget
-				config={widgetConfig}
-				initialProps={path([widgetConfig.namespace], initialProps)}
-				isServer={this.props.isServer}
-				key={widgetConfig.namespace}
-			/>
-		);
-	};
+	renderWidget = widgetConfig => (
+		<Widget
+			config={widgetConfig}
+			initialProps={path([widgetConfig.namespace], this.props.initialProps)}
+			key={widgetConfig.namespace}
+		/>
+	);
 
 	resolveStrictMode = union => (this.props.strictMode ? <StrictMode>{union}</StrictMode> : union);
 
@@ -142,4 +120,4 @@ class Union extends Component {
 	}
 }
 
-export default withServerContext(Union);
+export default withPrescanContext(Union);

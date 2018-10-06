@@ -1,13 +1,14 @@
 import o from 'ramda/src/o';
 import unary from 'ramda/src/unary';
+import applySpec from 'ramda/src/applySpec';
 
 import { INVALID_JSON } from '../constants';
 
-const dangerouslyParseJsonContent = o(unary(JSON.parse), wrapper => wrapper.html());
+const dangerouslyParseJSONContent = o(unary(JSON.parse), wrapper => wrapper.html());
 
-const parseJsonContent = wrapper => {
+const parseJSONContent = wrapper => {
 	try {
-		return dangerouslyParseJsonContent(wrapper);
+		return dangerouslyParseJSONContent(wrapper);
 	} catch (error) {
 		if (wrapper.html().trim()) {
 			return INVALID_JSON;
@@ -17,19 +18,23 @@ const parseJsonContent = wrapper => {
 	}
 };
 
-const parseDescriptor = wrapper => ({
+const parseWidgetDescriptorWrapper = wrapper => ({
 	widget: wrapper.data('union-widget'),
 	container: wrapper.data('union-container'),
 	namespace: wrapper.data('union-namespace'),
-	data: parseJsonContent(wrapper),
+	data: parseJSONContent(wrapper),
 });
 
 export const getWidgetDescriptors = $ =>
 	$('[data-union-widget]')
-		.map((_, element) => parseDescriptor($(element)))
+		.map((_, element) => parseWidgetDescriptorWrapper($(element)))
 		.get();
+
+const parseCommonDescriptorWrapper = applySpec({
+	data: parseJSONContent,
+});
 
 export const getCommonDescriptors = $ =>
 	$('[data-union-common]')
-		.map((_, element) => parseJsonContent($(element)))
+		.map((_, element) => parseCommonDescriptorWrapper($(element)))
 		.get();

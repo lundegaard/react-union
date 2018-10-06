@@ -6,7 +6,10 @@ import { invariant, memoizedClearContent } from '../../utils';
 import { withErrorBoundary } from '../../decorators';
 import { WidgetContext } from '../../contexts';
 import { WidgetConfigShape } from '../../shapes';
-import { INVALID_JSON } from '../../constants';
+import { INVALID_JSON, IS_SERVER } from '../../constants';
+
+const getGlobalInitialProps = props =>
+	!IS_SERVER && window.__INITIAL_PROPS__ && window.__INITIAL_PROPS__[props.config.namespace];
 
 /**
  * An internal component of `Union`.
@@ -19,33 +22,27 @@ export class Widget extends Component {
 	static propTypes = {
 		config: PropTypes.shape(WidgetConfigShape).isRequired,
 		initialProps: PropTypes.object,
-		isServer: PropTypes.bool.isRequired,
 	};
 
 	state = {
-		initialProps: null,
+		initialProps: this.props.initialProps || getGlobalInitialProps(this.props) || null,
 	};
 
-	componentDidMount() {
-		if (!this.props.initialProps) {
-			this.getInitialProps();
+	async componentDidMount() {
+		if (!this.state.initialProps) {
+			const { config } = this.props;
+			const { component } = config;
+			const { getInitialProps } = component.preload ? await component.preload() : component;
+
+			if (getInitialProps) {
+				// eslint-disable-next-line react/no-did-mount-set-state
+				this.setState({ initialProps: await getInitialProps(config) });
+			}
 		}
 	}
 
-	getInitialProps = async () => {
-		const { config } = this.props;
-		const { component } = config;
-		const { getInitialProps } = component.preload ? await component.preload() : component;
-
-		if (getInitialProps) {
-			const initialProps = await getInitialProps(config);
-			this.setState({ initialProps });
-		}
-	};
-
 	render() {
-		const { config, isServer } = this.props;
-		const { component: WidgetComponent, container, data, namespace, widget } = config;
+		const { component: WidgetComponent, container, data, namespace, widget } = this.props.config;
 
 		invariant(
 			data !== INVALID_JSON,
@@ -53,19 +50,15 @@ export class Widget extends Component {
 				'This is often due to a trailing comma or missing quotation marks.'
 		);
 
-		const widgetProps = { data, isServer, namespace };
-
-		// NOTE: On the server, `this.state.initialProps` is always null.
-		// On the client, state contains client-side initialProps and props contain server-side ones.
-		const initialProps = this.state.initialProps || this.props.initialProps;
+		const widgetProps = { data, namespace };
 
 		const widgetElement = (
 			<WidgetContext.Provider value={widgetProps}>
-				<WidgetComponent {...widgetProps} {...initialProps} />
+				<WidgetComponent {...widgetProps} {...this.state.initialProps} />
 			</WidgetContext.Provider>
 		);
 
-		if (isServer) {
+		if (IS_SERVER) {
 			return <div data-union-portal={container}>{widgetElement}</div>;
 		}
 

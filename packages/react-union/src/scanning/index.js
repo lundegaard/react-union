@@ -1,19 +1,14 @@
-import { mergeData } from '../utils';
+import applySpec from 'ramda/src/applySpec';
 
+import { IS_SERVER } from '../constants';
 import * as DOM from './dom';
 import * as Cheerio from './cheerio';
 
-const { getWidgetDescriptors, getCommonDescriptors } =
-	typeof document === 'undefined' ? Cheerio : DOM;
+const { getWidgetDescriptors, getCommonDescriptors } = IS_SERVER ? Cheerio : DOM;
 
-const scan = parent => {
-	const widgetDescriptors = getWidgetDescriptors(parent);
-	const commonDescriptors = getCommonDescriptors(parent);
-
-	return {
-		commonData: mergeData(commonDescriptors),
-		widgetDescriptors,
-	};
-};
+const scan = applySpec({
+	commonDescriptors: getCommonDescriptors,
+	widgetDescriptors: getWidgetDescriptors,
+});
 
 export default scan;
