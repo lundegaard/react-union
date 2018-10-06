@@ -2,7 +2,7 @@
 // The signature matches the `createHandler` property
 module.exports = (render, options) => async (req, res, next) => {
 	try {
-		const content = await render(req.body, options, { req, res });
+		const content = await render(req.body, options.clientStats, { req, res });
 
 		// NOTE: `res.useForce` is true iff we are running a dev server
 		// TODO: more HTTP headers

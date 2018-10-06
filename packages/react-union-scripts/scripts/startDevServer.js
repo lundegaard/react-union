@@ -55,6 +55,8 @@ async function startDevServer() {
 		'You can start the development server only for one module at a time.'
 	);
 
+	global.IS_DEV_SERVER = true;
+
 	const webpackConfigPair = webpackConfigs[0];
 	const clientConfig = webpackConfigPair[0];
 	const unionConfig = getAppConfig();

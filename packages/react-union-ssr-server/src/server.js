@@ -11,20 +11,14 @@ const makeHealthHandler = require('./routes/health');
 // TODO: maybe add some options as the second parameter
 const startServer = applicationHandler => {
 	const render = makeRender(applicationHandler);
-	// NOTE: this global is undefined iff we are running a dev server, otherwise, it is provided
-	// in the `react-union-scripts` build script
-	if (!global.CLIENT_STATS) {
+
+	if (global.IS_DEV_SERVER) {
 		return R.partial(makeRenderHandler, [render]);
 	}
 
-	const options = {
-		clientStats: global.CLIENT_STATS,
-		isPrebuilt: true,
-	};
-
 	const app = connect();
 	app.use(bodyParser.text());
-	app.use('/', makeRenderHandler(render, options));
+	app.use('/', makeRenderHandler(render, { clientStats: global.CLIENT_STATS }));
 	app.use('/health', makeHealthHandler());
 
 	const server = http.createServer(app);

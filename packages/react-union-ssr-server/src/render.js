@@ -8,8 +8,7 @@ const invariant = require('invariant');
 
 const { hoistComponentStatics, resolveInitialProps } = require('./utils/initialProps');
 
-const makeRender = applicationHandler => async (originalHTML, options, httpContext) => {
-	const { clientStats, isPrebuilt } = options;
+const makeRender = applicationHandler => async (originalHTML, clientStats, httpContext) => {
 	const original_$ = cheerio.load(originalHTML);
 	const head = original_$('head');
 	const body = original_$('body');
@@ -66,31 +65,22 @@ const makeRender = applicationHandler => async (originalHTML, options, httpConte
 	// NOTE: Here is where all the application-specific magic happens. SIDE EFFECTS!
 	await applicationHandler(context);
 
-	invariant(chunkNames, 'You did not call `render` in your SSR application handler.');
+	if (clientStats) {
+		const chunks = flushChunks(clientStats, {
+			chunkNames,
+			before: global.IS_DEV_SERVER ? [] : ['runtime', 'vendor'],
+			after: global.IS_DEV_SERVER ? [] : ['main'],
+		});
 
-	const chunks = flushChunks(clientStats, {
-		chunkNames,
-		// NOTE: If the server is not prebuilt (we are running a dev server), the dev server
-		// will output these chunks for us (and we don't want to insert them twice).
-		// TODO: This definitely won't be this easy, we need some additional checks to see
-		// if we should actually insert the scripts into the application.
-		before: isPrebuilt ? ['runtime', 'vendor'] : [],
-		after: isPrebuilt ? ['main'] : [],
-	});
+		const { styles, cssHash, js } = chunks;
 
-	const { styles, cssHash, js } = chunks;
+		head.append(styles.toString());
+		body.append(cssHash.toString());
+		body.append(js.toString());
+	}
 
-	head.append(styles.toString());
-	body.append(cssHash.toString());
-	body.append(js.toString());
-
-	body.prepend(
-		`<script>
-			window.__HYDRATE__=true;
-			window.__INITIAL_PROPS__=${JSON.stringify(initialProps)};
-		</script>`
-	);
-
+	body.prepend(`<script>window.__INITIAL_PROPS__=${JSON.stringify(initialProps)}</script>`);
+	body.prepend('<script>window.__HYDRATE__=true</script>');
 	return original_$.html();
 };
 
