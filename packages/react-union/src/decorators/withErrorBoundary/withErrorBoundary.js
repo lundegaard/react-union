@@ -22,8 +22,9 @@ const withErrorBoundary = NextComponent => {
 
 		render() {
 			const widgetName = getWidgetName(this);
+			const { hasError } = this.state;
 
-			if (this.state.hasError) {
+			if (hasError) {
 				// TODO: perhaps show some tips for common mistakes?
 				return `An error has occurred in widget "${widgetName}". See the console output for more details.`;
 			}

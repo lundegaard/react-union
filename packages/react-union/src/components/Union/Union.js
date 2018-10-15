@@ -61,7 +61,8 @@ class Union extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.routes !== this.props.routes) {
+		const { routes } = this.props;
+		if (prevProps.routes !== routes) {
 			this.scan(prevProps);
 		}
 	}
@@ -86,13 +87,17 @@ class Union extends Component {
 		<Widget key={config.descriptor.namespace || config.descriptor.container} {...config} />
 	);
 
+	// eslint-disable-next-line react/destructuring-assignment
 	resolveStrictMode = union => (this.props.strictMode ? <StrictMode>{union}</StrictMode> : union);
 
 	render() {
+		const { children } = this.props;
+		const { configs } = this.state;
+
 		return this.resolveStrictMode(
 			<Fragment>
-				{this.props.children}
-				{this.state.configs.map(this.renderWidget)}
+				{children}
+				{configs.map(this.renderWidget)}
 			</Fragment>
 		);
 	}
