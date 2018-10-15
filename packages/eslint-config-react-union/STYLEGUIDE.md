@@ -212,7 +212,7 @@ Rule: [*space-before-function-paren*](https://eslint.org/docs/rules/space-before
 
 Severity: error
 
-Other options: `["never"]`
+Other options: `[{"anonymous":"never","named":"never","asyncArrow":"always"}]`
 
 ### Require spacing around infix operators
 
@@ -245,6 +245,15 @@ Rule: [*jsx-quotes*](https://eslint.org/docs/rules/jsx-quotes)
 Severity: error
 
 Other options: `["prefer-double"]`
+
+### Enforce consistent usage of destructuring assignment of props, state, and context
+
+
+Rule: [*react/destructuring-assignment*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/destructuring-assignment.md)
+
+Severity: error
+
+Other options: `["always",{"ignoreClassFields":true}]`
 
 ### Enforce boolean attributes notation in JSX
 
@@ -319,12 +328,26 @@ Severity: error
 
 Other options: `[{"maximum":3}]`
 
+### Prevent using string literals in React component definition
+
+
+Rule: [*react/jsx-no-literals*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/jsx-no-literals.md)
+
+Severity: off
+
 ### Enforce PascalCase for user-defined JSX components
 
 
 Rule: [*react/jsx-pascal-case*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/jsx-pascal-case.md)
 
 Severity: error
+
+### Enforce props alphabetical sorting
+
+
+Rule: [*react/jsx-sort-props*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/jsx-sort-props.md)
+
+Severity: off
 
 ### Validate whitespace in and around the JSX opening and closing brackets
 
@@ -335,6 +358,13 @@ Severity: error
 
 Other options: `[{"beforeSelfClosing":"always"}]`
 
+### Prevent missing parentheses around multilines JSX
+
+
+Rule: [*react/jsx-wrap-multilines*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/jsx-wrap-multilines.md)
+
+Severity: error
+
 ### Prevent multiple component definition per file
 
 
@@ -342,12 +372,35 @@ Rule: [*react/no-multi-comp*](https://github.com/yannickcr/eslint-plugin-react/t
 
 Severity: off
 
+### Prevent usage of setState
+
+
+Rule: [*react/no-set-state*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/no-set-state.md)
+
+Severity: off
+
+### Prevent common typos
+
+
+Rule: [*react/no-typos*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/no-typos.md)
+
+Severity: warn
+
 ### Enforce ES5 or ES6 class for React Components
 
 
 Rule: [*react/prefer-es6-class*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/prefer-es6-class.md)
 
 Severity: error
+
+### Enforce stateless components to be written as a pure function
+
+
+Rule: [*react/prefer-stateless-function*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/prefer-stateless-function.md)
+
+Severity: error
+
+Other options: `[{"ignorePureComponents":true}]`
 
 ### Prevent extra closing tags for components without children
 
@@ -369,43 +422,6 @@ Severity: error
 Rule: [*react/sort-prop-types*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/sort-prop-types.md)
 
 Severity: error
-
-### Prevent missing parentheses around multilines JSX
-
-
-Rule: [*react/jsx-wrap-multilines*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/jsx-wrap-multilines.md)
-
-Severity: error
-
-### Prevent using string literals in React component definition
-
-
-Rule: [*react/jsx-no-literals*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/jsx-no-literals.md)
-
-Severity: off
-
-### Enforce props alphabetical sorting
-
-
-Rule: [*react/jsx-sort-props*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/jsx-sort-props.md)
-
-Severity: off
-
-### Prevent usage of setState
-
-
-Rule: [*react/no-set-state*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/no-set-state.md)
-
-Severity: off
-
-### Enforce stateless components to be written as a pure function
-
-
-Rule: [*react/prefer-stateless-function*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/prefer-stateless-function.md)
-
-Severity: error
-
-Other options: `[{"ignorePureComponents":true}]`
 
 ## ECMAScript 6
 
@@ -541,6 +557,27 @@ Rule: [*react/display-name*](https://github.com/yannickcr/eslint-plugin-react/tr
 
 Severity: error
 
+### Forbid certain propTypes
+
+
+Rule: [*react/forbid-prop-types*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/forbid-prop-types.md)
+
+Severity: off
+
+### Prevents usage of Function.prototype.bind and arrow functions in React component props
+
+
+Rule: [*react/jsx-no-bind*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/jsx-no-bind.md)
+
+Severity: off
+
+### Forbid target="_blank" attribute without rel="noopener noreferrer"
+
+
+Rule: [*react/jsx-no-target-blank*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/jsx-no-target-blank.md)
+
+Severity: off
+
 ### Prevent React to be marked as unused
 
 
@@ -583,6 +620,13 @@ Rule: [*react/no-did-update-set-state*](https://github.com/yannickcr/eslint-plug
 
 Severity: error
 
+### Prevent usage of isMounted
+
+
+Rule: [*react/no-is-mounted*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/no-is-mounted.md)
+
+Severity: error
+
 ### Prevent usage of the return value of React.render
 
 
@@ -590,10 +634,10 @@ Rule: [*react/no-render-return-value*](https://github.com/yannickcr/eslint-plugi
 
 Severity: error
 
-### Prevent usage of isMounted
+### Prevent string definitions for references and prevent referencing this.refs
 
 
-Rule: [*react/no-is-mounted*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/no-is-mounted.md)
+Rule: [*react/no-string-refs*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/no-string-refs.md)
 
 Severity: error
 
@@ -604,40 +648,19 @@ Rule: [*react/prop-types*](https://github.com/yannickcr/eslint-plugin-react/tree
 
 Severity: error
 
-### Prevent string definitions for references and prevent referencing this.refs
-
-
-Rule: [*react/no-string-refs*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/no-string-refs.md)
-
-Severity: warn
-
-### Prevents usage of Function.prototype.bind and arrow functions in React component props
-
-
-Rule: [*react/jsx-no-bind*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/jsx-no-bind.md)
-
-Severity: off
-
-### Forbid target="_blank" attribute without rel="noopener noreferrer"
-
-
-Rule: [*react/jsx-no-target-blank*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/jsx-no-target-blank.md)
-
-Severity: off
-
-### Forbid certain propTypes
-
-
-Rule: [*react/forbid-prop-types*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/forbid-prop-types.md)
-
-Severity: off
-
 ### Enforce React components to have a shouldComponentUpdate method
 
 
 Rule: [*react/require-optimization*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/require-optimization.md)
 
 Severity: off
+
+### Prevent passing of children to void DOM elements (e.g. <br />).
+
+
+Rule: [*react/void-dom-elements-no-children*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/void-dom-elements-no-children.md)
+
+Severity: error
 
 ## Possible Errors
 
@@ -697,6 +720,20 @@ Rule: [*no-unreachable*](https://eslint.org/docs/rules/no-unreachable)
 
 Severity: error
 
+### Report missing `key` props in iterators/collection literals
+
+
+Rule: [*react/jsx-key*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/jsx-key.md)
+
+Severity: off
+
+### Comments inside children section of tag should be placed inside braces
+
+
+Rule: [*react/jsx-no-comment-textnodes*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/jsx-no-comment-textnodes.md)
+
+Severity: error
+
 ### Enforce no duplicate props
 
 
@@ -708,13 +745,6 @@ Severity: error
 
 
 Rule: [*react/jsx-no-undef*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/jsx-no-undef.md)
-
-Severity: error
-
-### Comments inside children section of tag should be placed inside braces
-
-
-Rule: [*react/jsx-no-comment-textnodes*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/jsx-no-comment-textnodes.md)
 
 Severity: error
 
@@ -732,6 +762,13 @@ Rule: [*react/no-unknown-property*](https://github.com/yannickcr/eslint-plugin-r
 
 Severity: error
 
+### Detect unescaped HTML entities, which might represent malformed tags
+
+
+Rule: [*react/no-unescaped-entities*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/no-unescaped-entities.md)
+
+Severity: error
+
 ### Prevent missing React when using JSX
 
 
@@ -745,13 +782,6 @@ Severity: error
 Rule: [*react/require-render-return*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/require-render-return.md)
 
 Severity: error
-
-### Report missing `key` props in iterators/collection literals
-
-
-Rule: [*react/jsx-key*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/jsx-key.md)
-
-Severity: off
 
 ## Variables
 
