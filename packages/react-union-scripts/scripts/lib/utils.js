@@ -201,7 +201,7 @@ const getUnionConfig = () =>
  * @param {string} app Name of the app
  */
 const getAppConfig = () =>
-	R.find(R.whereEq({ name: isMonoRepo ? cli.appOriginal : cli.app }), getUnionConfig());
+	R.find(R.whereEq({ name: cli.app }), getUnionConfig());
 
 const resolveAsyncSuffix = R.cond([
 	[R.is(RegExp), R.identity],

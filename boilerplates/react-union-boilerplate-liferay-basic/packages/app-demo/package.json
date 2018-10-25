@@ -1,0 +1,25 @@
+{
+	"name": "app-demo",
+	"version": "0.1.0",
+	"private": true,
+	"license": "UNLICENSED",
+	"engines": {
+		"node": ">=8"
+	},
+	"dependencies": {
+		"@babel/polyfill": "^7.0.0",
+		"prop-types": "^15.6.2",
+		"ramda": "^0.25.0",
+		"ramda-extension": "^0.6.1",
+		"react": "^16.4.1",
+		"react-dom": "^16.4.1",
+		"react-hot-loader": "^4.3.3",
+		"react-union": "0.8.1",
+		"document-ready": "2.0.1",
+		"redbox-react": "1.5.0",
+		"redux": "^4.0.1",
+		"redux-devtools-extension": "^2.13.5",
+		"widget-content": "0.1.0",
+		"widget-hero": "0.1.0"
+	}
+}

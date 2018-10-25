@@ -1,3 +1,5 @@
-build
-hero-portlet
-liferay-amd-loader
+node_modules/*
+build/*
+liferay/*
+packages/*/node_modules/*
+packages/*/build/*

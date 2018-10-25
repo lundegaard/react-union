@@ -1,5 +1,4 @@
-node_modules
-
+node_modules/
 packages/*/node_modules
 packages/*/dist
 packages/*/es
@@ -10,5 +9,4 @@ boilerplates/*/dist
 boilerplates/*/*/node_modules
 boilerplates/*/*/build
 boilerplates/*/*/dist
-boilerplates/react-union-boilerplate-liferay-basic/liferay-amd-loader
-
+boilerplates/react-union-boilerplate-liferay-basic/liferay

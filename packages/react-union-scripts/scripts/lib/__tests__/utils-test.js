@@ -109,8 +109,7 @@ describe('utils', () => {
 			utilsFs.__setAppPath('packages/sample-app');
 
 			const getUnionConfig = mockUnionConfig(null, ['sample-app'], {
-				app: 'SampleApp',
-				appOriginal: 'sample-app',
+				app: 'sample-app',
 			});
 			// basically there is no much to check
 			// only differences that modules are loaded from workspaces path and has different default paths.
@@ -181,17 +180,13 @@ describe('utils', () => {
 			jest.resetAllMocks();
 			jest.doMock('../fs');
 			jest.doMock('../cli', () => ({
-				app: 'SampleApp',
-				appOriginal: 'sample-app',
+				app: 'sample-app',
 			}));
 			jest.doMock(UNION_CONFIG_PATH, () => null, { virtual: true });
-			require('../fs').__setMockDirs(['SampleApp', 'sample-app']);
+			require('../fs').__setMockDirs(['sample-app']);
 		});
-		it('should get config when is not monorepo by cli.app', () => {
-			const { getAppConfig } = require('../utils');
-			expect(getAppConfig()).toMatchObject({ name: 'SampleApp' });
-		});
-		it('should get config when is monorepo by cli.appOriginal', () => {
+
+		it('should get config when is monorepo by cli.app', () => {
 			const utilsFs = require('../fs');
 			utilsFs.__setWsPattern(['packages/*']);
 			utilsFs.__setWsApps(['sample-app']);
