@@ -60,7 +60,6 @@ function startDevServer() {
 
 	return new Promise(resolve => {
 		const compiler = webpack(webpackConfig);
-		const handleCompilerComplete = () => {
 			const middleware = [
 				webpackDevMiddleware(compiler, {
 					publicPath: webpackConfig.output.publicPath,
@@ -78,7 +77,7 @@ function startDevServer() {
 				...getProxyMiddleware(webpackConfig.devServer),
 			];
 
-			const baseDirs = [webpackConfig.output.path, unionConfig.paths.public];
+			const baseDirs = [unionConfig.paths.public];
 
 			const config = cli.proxy
 				? {
@@ -104,9 +103,6 @@ function startDevServer() {
 				},
 				resolve
 			);
-		};
-
-		compiler.run(handleCompilerComplete);
 	});
 }
 module.exports = startDevServer;

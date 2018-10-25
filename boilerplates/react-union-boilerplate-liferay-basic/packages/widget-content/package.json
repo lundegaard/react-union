@@ -1,0 +1,21 @@
+{
+	"name": "widget-content",
+	"version": "0.1.0",
+	"private": true,
+	"license": "UNLICENSED",
+	"engines": {
+		"node": ">=8"
+	},
+	"main": "src/content.widget.js",
+	"dependencies": {
+		"@babel/polyfill": "^7.0.0",
+		"prop-types": "^15.6.2",
+		"ramda": "^0.25.0",
+		"ramda-extension": "^0.6.1",
+		"react": "^16.4.1",
+		"react-dom": "^16.4.1"
+	},
+	"devDependencies": {
+		"enzyme": "3.6.0"
+	}
+}

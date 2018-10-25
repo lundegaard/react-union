@@ -21,6 +21,7 @@
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.0.0",
+    "babel-plugin-dynamic-import-node": "^2.2.0",
     "babel-preset-react-union": "^0.7.2",
     "enzyme": "3.6.0",
     "enzyme-adapter-react-16": "1.6.0",
@@ -38,14 +39,17 @@
     "rimraf": "2.6.2"
   },
   "scripts": {
-    "build": "react-union-scripts build",
-    "build:liferay": "react-union-scripts build --release --target liferay && node ./tools/amdLoaderScripts.js SampleApp",
-    "start": "react-union-scripts start --app SampleApp",
-    "start:proxy": "react-union-scripts start --app SampleApp --proxy --target liferay",
+    "build": "react-union-scripts build --release --target liferay && node ./tools/amdLoaderScripts.js --release",
+    "build:dev": "react-union-scripts build --target liferay && node ./tools/amdLoaderScripts.js",
+    "start": "react-union-scripts start --app app-demo",
+    "start:proxy": "yarn start --proxy --target liferay",
     "test": "react-union-scripts test",
     "lint": "yarn lint:eslint",
     "lint:eslint": "eslint --ext .js ./"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "lint-staged": {
     "linters": {
       "**/*.js": [

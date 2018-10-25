@@ -56,7 +56,7 @@
   ],
   "scripts": {
     "example:basic": "cd boilerplates/react-union-boilerplate-basic && yarn start",
-    "lint": "eslint \"packages/**/*.js\" \"boilerplates/**/*.js\"",
+    "lint": "eslint \"packages/**/*.js\"",
     "lint:fix": "yarn lint --fix",
     "test": "jest",
     "postinstall": "cd packages/react-union && yarn build",
