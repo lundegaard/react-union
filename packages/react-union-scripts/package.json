@@ -26,7 +26,7 @@
     "clean-webpack-plugin": "0.1.19",
     "connect-history-api-fallback": "1.5.0",
     "cross-env": "5.2.0",
-    "css-loader": "1.0.0",
+    "css-loader": "1.0.1",
     "del": "3.0.0",
     "file-loader": "2.0.0",
     "fs-extra": "7.0.1",
