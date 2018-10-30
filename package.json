@@ -35,7 +35,7 @@
     "babel-eslint": "10.0.0",
     "babel-jest": "23.4.2",
     "babel-loader": "8.0.3",
-    "babel-preset-react-union": "0.7.2",
+    "babel-preset-react-union": "0.8.0",
     "enzyme": "3.6.0",
     "enzyme-adapter-react-16": "1.6.0",
     "eslint": "5.5.0",
