@@ -31,16 +31,15 @@
   "repository": "https://github.com/lundegaard/react-union",
   "license": "UNLICENSED",
   "devDependencies": {
-    "@babel/core": "^7.1.2",
     "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "babel-core": "^7.0.0-bridge",
     "babel-eslint": "10.0.0",
     "babel-jest": "23.4.2",
-    "babel-loader": "8.0.3",
-    "babel-preset-react-union": "0.7.2",
     "enzyme": "3.6.0",
     "enzyme-adapter-react-16": "1.6.0",
     "eslint": "5.5.0",
-    "eslint-config-react-union": "0.7.2",
+    "eslint-config-react-union": "0.8.0",
     "eslint-plugin-babel": "5.2.1",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-react": "7.11.1",
@@ -52,8 +51,7 @@
     "rimraf": "2.6.2"
   },
   "workspaces": [
-    "packages/*",
-    "boilerplates/*"
+    "packages/*"
   ],
   "scripts": {
     "example:basic": "cd boilerplates/react-union-boilerplate-basic && yarn start",

@@ -107,12 +107,18 @@ const cleanup = verdaccio => {
 		const boilerplateDir = path.join(tempDir, 'boilerplates');
 		fs.readdirSync(boilerplateDir).forEach(project => {
 			const projectPath = path.join(boilerplateDir, project);
+
+			if (!fs.lstatSync(projectPath).isDirectory()) {
+				return;
+			}
+
 			logTask('bootstrapping', projectPath);
-			const execCommandInProject = (command, opts = {}) =>
+			const execCommandInProject = (command, opts = {}) => (
 				execCommand(command, {
 					cwd: projectPath,
 					...opts,
-				});
+				})
+			);
 			execCommandInProject(`yarn config set registry ${customRegistryUrl}`);
 			execCommandInProject(`npm set registry ${customRegistryUrl}`);
 			execCommandInProject('yarn');
@@ -129,6 +135,8 @@ const cleanup = verdaccio => {
 		});
 		logDone();
 	} catch (e) {
+		console.log(e);
+
 		console.log('!!! YOU RUINED IT !!!');
 		cleanup(verdaccioProcess);
 		process.exit(1);

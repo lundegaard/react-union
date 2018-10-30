@@ -3,6 +3,7 @@ import babel from 'rollup-plugin-babel';
 import replace from 'rollup-plugin-replace';
 import commonjs from 'rollup-plugin-commonjs';
 import { terser } from 'rollup-plugin-terser';
+import path from 'path';
 
 const env = process.env.NODE_ENV;
 
@@ -17,6 +18,8 @@ const globals = {
 	'react-dom': 'ReactDOM',
 };
 
+const ROOT_PATH = path.join(__dirname, '../..');
+
 if (env === 'es' || env === 'cjs') {
 	config.output = {
 		format: env,
@@ -27,14 +30,16 @@ if (env === 'es' || env === 'cjs') {
 		nodeResolve({
 			jsnext: true,
 		}),
-		babel()
+		babel({
+			cwd: ROOT_PATH,
+		})
 	);
 }
 
 if (env === 'development' || env === 'production') {
 	config.output = {
 		format: 'umd',
-		name: 'Redux',
+		name: 'ReactUnion',
 		indent: false,
 		globals,
 	};
@@ -44,6 +49,7 @@ if (env === 'development' || env === 'production') {
 			jsnext: true,
 		}),
 		babel({
+			cwd: ROOT_PATH,
 			exclude: '**/node_modules/**',
 		}),
 		replace({
@@ -52,7 +58,11 @@ if (env === 'development' || env === 'production') {
 	);
 }
 
-config.plugins.push(commonjs());
+config.plugins.push(
+	commonjs({
+		include: /node_modules/,
+	})
+);
 
 if (env === 'production') {
 	config.plugins.push(

@@ -19,6 +19,7 @@
     "redbox-react": "1.6.0"
   },
   "devDependencies": {
+    "babel-core": "^7.0.0-bridge",
     "@babel/core": "^7.1.2",
     "babel-eslint": "10.0.0",
     "babel-plugin-dynamic-import-node": "^2.2.0",

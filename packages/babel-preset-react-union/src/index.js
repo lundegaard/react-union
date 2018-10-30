@@ -1,3 +1,9 @@
+const { NODE_ENV, BABEL_ENV } = process.env;
+
+const cjs = NODE_ENV === 'test' || BABEL_ENV === 'commonjs';
+
+const loose = true;
+
 module.exports = () => ({
 	presets: [
 		[
@@ -16,9 +22,9 @@ module.exports = () => ({
 		// Stage 1
 		'@babel/plugin-proposal-export-default-from',
 		'@babel/plugin-proposal-logical-assignment-operators',
-		['@babel/plugin-proposal-optional-chaining', { loose: false }],
+		['@babel/plugin-proposal-optional-chaining', { loose }],
 		['@babel/plugin-proposal-pipeline-operator', { proposal: 'minimal' }],
-		['@babel/plugin-proposal-nullish-coalescing-operator', { loose: false }],
+		['@babel/plugin-proposal-nullish-coalescing-operator', { loose }],
 		'@babel/plugin-proposal-do-expressions',
 		// Stage 2
 		['@babel/plugin-proposal-decorators', { legacy: true }],
@@ -29,7 +35,7 @@ module.exports = () => ({
 		// Stage 3
 		'@babel/plugin-syntax-dynamic-import',
 		'@babel/plugin-syntax-import-meta',
-		['@babel/plugin-proposal-class-properties', { loose: false }],
+		['@babel/plugin-proposal-class-properties', { loose }],
 		'@babel/plugin-proposal-json-strings',
 		// rest
 		'@babel/plugin-proposal-object-rest-spread',
@@ -47,10 +53,6 @@ module.exports = () => ({
 				regenerator: true,
 			},
 		],
-	],
-	env: {
-		test: {
-			presets: [['@babel/preset-env', { modules: 'commonjs' }], '@babel/preset-react'],
-		},
-	},
+		cjs && ['@babel/plugin-transform-modules-commonjs', { loose }],
+	].filter(Boolean),
 });

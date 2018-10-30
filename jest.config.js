@@ -5,13 +5,12 @@ module.exports = {
 		'/.history/',
 		'/node_modules/',
 		'<rootDir>/boilerplates/',
-		'<rootDir>/packages/react-union-scripts/scripts/test.js',
-		'<rootDir>/packages/react-union/es',
-		'<rootDir>/packages/react-union/dist',
-		'<rootDir>/packages/react-union/lib',
+		'/scripts/test.js',
+		'/es',
+		'/dist',
+		'/lib',
 	],
-	setupTestFrameworkScriptFile: '<rootDir>/testsSetup.js',
-	transform: {
-		'^.+\\.js$': 'babel-jest',
-	},
+	projects: [
+		'<rootDir>/packages/*',
+	],
 };
