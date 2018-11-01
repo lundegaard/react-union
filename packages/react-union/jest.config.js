@@ -1,4 +1,11 @@
 const path = require('path');
 
-// eslint-disable-next-line import/no-dynamic-require
-module.exports = require(path.join(process.cwd(), 'tests/jest-enzyme.config.js'));
+module.exports = {
+	// eslint-disable-next-line import/no-dynamic-require
+	...require(path.join(process.cwd(), 'tests/jest-enzyme.config.js')),
+	testPathIgnorePatterns: [
+		'/es',
+		'/dist',
+		'/lib',
+	],
+};
