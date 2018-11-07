@@ -55,6 +55,6 @@
   "devDependencies": {
     "babel-core": "^7.0.0-bridge",
     "react": "16.6.1",
-    "react-dom": "16.6.0"
+    "react-dom": "16.6.1"
   }
 }
