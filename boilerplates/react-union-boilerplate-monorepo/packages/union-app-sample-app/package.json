@@ -10,7 +10,7 @@
   "dependencies": {
     "@babel/polyfill": "7.0.0",
     "react": "16.6.1",
-    "react-dom": "16.6.0",
+    "react-dom": "16.6.1",
     "react-hot-loader": "4.3.11",
     "react-union": "0.8.1",
     "union-widget-hero": "0.1.0",
