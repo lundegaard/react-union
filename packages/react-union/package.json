@@ -29,8 +29,8 @@
     "enzyme-adapter-react-16": "1.6.0",
     "enzyme-to-json": "^3.3.4",
     "jsdom": "12.2.0",
-    "react": "16.6.0",
-    "react-dom": "16.6.0",
+    "react": "16.6.1",
+    "react-dom": "16.6.1",
     "rollup": "0.66.5",
     "rollup-plugin-babel": "4.0.3",
     "rollup-plugin-commonjs": "9.2.0",
@@ -39,8 +39,8 @@
     "rollup-plugin-terser": "3.0.0"
   },
   "peerDependencies": {
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0"
+    "react": "^16.6.1",
+    "react-dom": "^16.6.1"
   },
   "scripts": {
     "build:commonjs": "cross-env NODE_ENV=cjs rollup -c -o lib/react-union.js",

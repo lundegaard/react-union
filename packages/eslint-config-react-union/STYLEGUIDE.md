@@ -125,6 +125,13 @@ Severity: off
 
 Other options: `[{"capIsNew":true,"newIsCap":true}]`
 
+### Disallow `Array` constructors
+
+
+Rule: [*no-array-constructor*](https://eslint.org/docs/rules/no-array-constructor)
+
+Severity: error
+
 ### Disallow multiple empty lines
 
 
@@ -423,65 +430,14 @@ Rule: [*react/sort-prop-types*](https://github.com/yannickcr/eslint-plugin-react
 
 Severity: error
 
-## ECMAScript 6
-
-### Enforce consistent spacing before and after the arrow in arrow functions
-
-
-Rule: [*arrow-spacing*](https://eslint.org/docs/rules/arrow-spacing)
-
-Severity: error
-
-### Require parentheses around arrow function arguments
-
-
-Rule: [*arrow-parens*](https://eslint.org/docs/rules/arrow-parens)
-
-Severity: off
-
-### Enforce consistent spacing around `*` operators in generator functions
-
-
-Rule: [*generator-star-spacing*](https://eslint.org/docs/rules/generator-star-spacing)
-
-Severity: error
-
-### Require `let` or `const` instead of `var`
-
-
-Rule: [*no-var*](https://eslint.org/docs/rules/no-var)
-
-Severity: error
-
-### Require or disallow method and property shorthand syntax for object literals
-
-
-Rule: [*object-shorthand*](https://eslint.org/docs/rules/object-shorthand)
-
-Severity: error
-
-### Require using arrow functions for callbacks
-
-
-Rule: [*prefer-arrow-callback*](https://eslint.org/docs/rules/prefer-arrow-callback)
-
-Severity: off
-
-### Require `const` declarations for variables that are never reassigned after declared
-
-
-Rule: [*prefer-const*](https://eslint.org/docs/rules/prefer-const)
-
-Severity: error
-
-### Require template literals instead of string concatenation
-
-
-Rule: [*prefer-template*](https://eslint.org/docs/rules/prefer-template)
-
-Severity: error
-
 ## Best Practices
+
+### Enforce `return` statements in callbacks of array methods
+
+
+Rule: [*array-callback-return*](https://eslint.org/docs/rules/array-callback-return)
+
+Severity: error
 
 ### Require `return` statements to either always or never specify values
 
@@ -528,6 +484,13 @@ Severity: error
 Rule: [*no-case-declarations*](https://eslint.org/docs/rules/no-case-declarations)
 
 Severity: off
+
+### Disallow `function` declarations and expressions inside loop statements
+
+
+Rule: [*no-loop-func*](https://eslint.org/docs/rules/no-loop-func)
+
+Severity: error
 
 ### Disallow multiple spaces
 
@@ -659,6 +622,78 @@ Severity: off
 
 
 Rule: [*react/void-dom-elements-no-children*](https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules/void-dom-elements-no-children.md)
+
+Severity: error
+
+## ECMAScript 6
+
+### Enforce consistent spacing before and after the arrow in arrow functions
+
+
+Rule: [*arrow-spacing*](https://eslint.org/docs/rules/arrow-spacing)
+
+Severity: error
+
+### Require parentheses around arrow function arguments
+
+
+Rule: [*arrow-parens*](https://eslint.org/docs/rules/arrow-parens)
+
+Severity: off
+
+### Enforce consistent spacing around `*` operators in generator functions
+
+
+Rule: [*generator-star-spacing*](https://eslint.org/docs/rules/generator-star-spacing)
+
+Severity: error
+
+### Disallow reassigning `const` variables
+
+
+Rule: [*no-const-assign*](https://eslint.org/docs/rules/no-const-assign)
+
+Severity: error
+
+### Require `let` or `const` instead of `var`
+
+
+Rule: [*no-var*](https://eslint.org/docs/rules/no-var)
+
+Severity: error
+
+### Require or disallow method and property shorthand syntax for object literals
+
+
+Rule: [*object-shorthand*](https://eslint.org/docs/rules/object-shorthand)
+
+Severity: error
+
+### Require using arrow functions for callbacks
+
+
+Rule: [*prefer-arrow-callback*](https://eslint.org/docs/rules/prefer-arrow-callback)
+
+Severity: off
+
+### Require `const` declarations for variables that are never reassigned after declared
+
+
+Rule: [*prefer-const*](https://eslint.org/docs/rules/prefer-const)
+
+Severity: error
+
+### Require template literals instead of string concatenation
+
+
+Rule: [*prefer-template*](https://eslint.org/docs/rules/prefer-template)
+
+Severity: error
+
+### Require spread operators instead of `.apply()`
+
+
+Rule: [*prefer-spread*](https://eslint.org/docs/rules/prefer-spread)
 
 Severity: error
 
