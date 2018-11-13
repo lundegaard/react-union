@@ -39,7 +39,7 @@
     "rollup-plugin-terser": "3.0.0"
   },
   "peerDependencies": {
-    "react": "^16.6.1",
+    "react": "^16.6.2",
     "react-dom": "^16.6.1"
   },
   "scripts": {
