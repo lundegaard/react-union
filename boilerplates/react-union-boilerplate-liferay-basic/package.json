@@ -13,7 +13,7 @@
     "document-ready": "2.0.1",
     "prop-types": "15.6.2",
     "react": "16.6.2",
-    "react-dom": "16.6.1",
+    "react-dom": "16.6.2",
     "react-hot-loader": "4.3.11",
     "react-union": "^0.9.1",
     "redbox-react": "1.6.0"
