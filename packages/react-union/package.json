@@ -40,7 +40,7 @@
   },
   "peerDependencies": {
     "react": "^16.6.2",
-    "react-dom": "^16.6.1"
+    "react-dom": "^16.6.2"
   },
   "scripts": {
     "build:commonjs": "cross-env NODE_ENV=cjs rollup -c -o lib/react-union.js",
