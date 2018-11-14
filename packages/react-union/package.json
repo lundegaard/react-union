@@ -28,7 +28,7 @@
     "enzyme": "3.6.0",
     "enzyme-adapter-react-16": "1.6.0",
     "enzyme-to-json": "^3.3.4",
-    "jsdom": "12.2.0",
+    "jsdom": "13.0.0",
     "react": "16.6.1",
     "react-dom": "16.6.1",
     "rollup": "0.66.5",
