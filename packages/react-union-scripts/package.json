@@ -37,7 +37,7 @@
     "jest": "23.6.0",
     "mkdirp": "0.5.1",
     "ncp": "2.0.0",
-    "ramda": "0.25.0",
+    "ramda": "0.26.0",
     "ramda-extension": "0.7.0",
     "raw-loader": "0.5.1",
     "react-hot-loader": "4.3.11",

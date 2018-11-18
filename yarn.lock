@@ -2226,10 +2226,10 @@ clean-css@4.2.x:
   dependencies:
     source-map "~0.6.0"
 
-clean-webpack-plugin@0.1.19:
-  version "0.1.19"
-  resolved "https://registry.yarnpkg.com/clean-webpack-plugin/-/clean-webpack-plugin-0.1.19.tgz#ceda8bb96b00fe168e9b080272960d20fdcadd6d"
-  integrity sha512-M1Li5yLHECcN2MahoreuODul5LkjohJGFxLPTjl3j1ttKrF5rgjZET1SJduuqxLAuT1gAPOdkhg03qcaaU1KeA==
+clean-webpack-plugin@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/clean-webpack-plugin/-/clean-webpack-plugin-1.0.0.tgz#f184b9c26d12983d639828e0548ae2080e84b6a7"
+  integrity sha512-+f96f52UIET4tOFBbCqezx7KH+w7lz/p4fA1FEjf0hC6ugxqwZedBtENzekN2FnmoTF/bn1LrlkvebOsDZuXKw==
   dependencies:
     rimraf "^2.6.1"
 
@@ -7522,15 +7522,20 @@ railroad-diagrams@^1.0.0:
   resolved "https://registry.yarnpkg.com/railroad-diagrams/-/railroad-diagrams-1.0.0.tgz#eb7e6267548ddedfb899c1b90e57374559cddb7e"
   integrity sha1-635iZ1SN3t+4mcG5Dlc3RVnN234=
 
-ramda-extension@0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/ramda-extension/-/ramda-extension-0.6.0.tgz#04233f84da9af12d939633ce1898492abeacfdb6"
-  integrity sha512-Yya+6qEVmnpzNW80SfzOTFohUnRpvCNxgAUMw3SPfyHdtyHPz5FgnNKBaOjskUuJE5L5RCHnGTfDPn4tOf37Ow==
+ramda-extension@0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/ramda-extension/-/ramda-extension-0.7.0.tgz#400a83858c20a041f3939976ae3267d64ff0c36e"
+  integrity sha512-DitD27RcNGVbZdPMyFXwyGeHu7S5TK8gn1D56e2A0D57jnjDs4BL2DJMrk+u3mxhFWaH9zGivJ6lLVBsTRCozg==
 
 ramda@0.25.0:
   version "0.25.0"
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.25.0.tgz#8fdf68231cffa90bc2f9460390a0cb74a29b29a9"
   integrity sha512-GXpfrYVPwx3K7RQ6aYT8KPS8XViSXUVJT1ONhoKPE9VAleW42YE+U+8VEyGWt41EnEQW7gwecYJriTI0pKoecQ==
+
+ramda@0.26.0:
+  version "0.26.0"
+  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.26.0.tgz#3cbe059f5c18fbc0eb86f2396ab1f8320705424c"
+  integrity sha512-maK1XqpgsOo5DwjhROjqDvpm1vkphLQbpleVv+b3t5Y9uOQ0t8hTHT582+mDs7RLrex1kd4lWYizNXWLVjsq9w==
 
 randexp@0.4.6:
   version "0.4.6"
