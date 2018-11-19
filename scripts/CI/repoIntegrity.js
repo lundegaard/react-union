@@ -78,6 +78,10 @@ const cleanup = verdaccio => {
 	verdaccio && verdaccio.kill();
 	execCommand(`yarn config set registry ${originalYarnRegistryUrl}`);
 	execCommand(`npm set registry ${originalNpmRegistryUrl}`);
+	execCommand('cd packages/react-union && yarn unlink && cd ../..');
+	execCommand('cd packages/react-union-scripts && yarn unlink && cd ../..');
+	execCommand('cd packages/babel-preset-react-union && yarn unlink && cd ../..');
+	execCommand('cd packages/eslint-config-react-union && yarn unlink && cd ../..');
 	logDone();
 };
 
@@ -98,6 +102,12 @@ const cleanup = verdaccio => {
 		const tempDir = execCommand(createTempDir).trim();
 		logDone(tempDir);
 
+		logSegment('CREATE YARN LINKS FOR BOILERPLATES');
+		execCommand('cd packages/react-union && yarn link && cd ../..');
+		execCommand('cd packages/react-union-scripts && yarn link && cd ../..');
+		execCommand('cd packages/babel-preset-react-union && yarn link && cd ../..');
+		execCommand('cd packages/eslint-config-react-union && yarn link && cd ../..');
+
 		logSegment('PUBLISH REACT-UNION TO TEMP REGISTRY');
 		verdaccioProcess = await publishReactUnion(tempDir);
 		logDone();
@@ -113,17 +123,21 @@ const cleanup = verdaccio => {
 			}
 
 			logTask('bootstrapping', projectPath);
-			const execCommandInProject = (command, opts = {}) => (
+			const execCommandInProject = (command, opts = {}) =>
 				execCommand(command, {
 					cwd: projectPath,
 					...opts,
-				})
-			);
+				});
 			execCommandInProject(`yarn config set registry ${customRegistryUrl}`);
 			execCommandInProject(`npm set registry ${customRegistryUrl}`);
+			execCommandInProject('yarn link react-union');
+			execCommandInProject('yarn link react-union-scripts');
+			execCommandInProject('yarn link eslint-config-react-union');
+			execCommandInProject('yarn link babel-preset-react-union');
 			execCommandInProject('yarn');
 			execCommandInProject(`yarn config set registry ${originalYarnRegistryUrl}`);
 			execCommandInProject(`npm set registry ${originalNpmRegistryUrl}`);
+
 			logTask('running test&lint');
 			execCommandInProject('yarn test --release');
 			logTask('webpack build');

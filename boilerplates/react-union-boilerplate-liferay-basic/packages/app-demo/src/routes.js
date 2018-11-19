@@ -1,5 +1,5 @@
-import loadHero from 'widget-hero';
-import loadContent from 'widget-content';
+import loadHero from '@union-app/widget-hero';
+import loadContent from '@union-app/widget-content';
 
 export default [
 	{

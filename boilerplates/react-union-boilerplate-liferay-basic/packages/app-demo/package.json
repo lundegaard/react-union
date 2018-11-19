@@ -1,5 +1,5 @@
 {
-	"name": "app-demo",
+	"name": "@union-app/app-demo",
 	"version": "0.1.0",
 	"private": true,
 	"license": "UNLICENSED",
@@ -19,7 +19,7 @@
 		"redbox-react": "1.5.0",
 		"redux": "^4.0.1",
 		"redux-devtools-extension": "^2.13.5",
-		"widget-content": "0.1.0",
-		"widget-hero": "0.1.0"
+		"@union-app/widget-content": "0.1.0",
+		"@union-app/widget-hero": "0.1.0"
 	}
 }
