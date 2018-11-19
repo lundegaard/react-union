@@ -40,6 +40,7 @@ const readAllWorkspacesFlatten = R_.memoizeWithIdentity(() =>
 	R.o(R.flatten, R.map(glob.sync))(getWorkspacesPatterns())
 );
 
+// TODO: fse.readJson
 const readPackagesJSONOnPathsTransducer = R.o(R.map(readEncodedFile), R.map(JSON.parse));
 
 const getWorkspacesPatterns = () => {

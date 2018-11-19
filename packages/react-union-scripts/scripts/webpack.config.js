@@ -28,7 +28,8 @@ const {
 } = require('./webpack/plugins.parts');
 const { resolve, vendorBundle, performanceHints, context } = require('./webpack/common.parts');
 
-const dependenciesP = R.prop('dependencies');
+const getPackageDependencies = R.prop('dependencies');
+const getPackageDependenciesNames = R.o(R.keys, getPackageDependencies);
 
 const buildMode = getForMode('development', 'production');
 const buildModeString = getForMode('"development"', '"production"');
@@ -53,15 +54,26 @@ const nodeModulesPath = resolveSymlink(process.cwd(), './node_modules');
 const isNotJsLoader = R_.notInclude([loaders.loadBabel, loaders.loadAsyncModules]);
 const addPathsToLoaders = srcs =>
 	R.map(value => (isNotJsLoader(value) ? value([...srcs, nodeModulesPath]) : value(srcs)), loaders);
+const removeScope = R.o(R.last, R.split('/'));
 
+/**
+ * Returns list of widget names without scope of the app configured in `UnionConfig`.
+ *
+ * @sig UnionConfig -> [String]
+ */
 const appsWidgetList = ({ name: appName, workspaces: { widgetPattern } }) => {
 	return R.pipe(
-		dependenciesP,
-		R.keys,
-		R.filter(R.test(resolveWorkspacesPackagePattern(widgetPattern)))
+		getPackageDependenciesNames,
+		R.filter(R.test(resolveWorkspacesPackagePattern(widgetPattern))),
+		R.map(removeScope)
 	)(getAppPackageJSON(appName));
 };
 
+/**
+ * Finds all widgets that are used by an app and merge them with all other packages in workspace.
+ *
+ * @sig UnionConfig -> [String]
+ */
 const getUsedPackagesForApp = config => {
 	const widgetList = appsWidgetList(config);
 	// TODO maybe filter all non union packages by package.json from all of the widgets and apps.
@@ -69,6 +81,7 @@ const getUsedPackagesForApp = config => {
 		config.workspaces.appPattern,
 		config.workspaces.widgetPattern
 	);
+
 	const withApp = [config.name, ...widgetList, ...allNonUnionPackages];
 	return pkg => R.find(R.contains(R.__, pkg), withApp);
 };
@@ -109,15 +122,16 @@ const getWebpackConfig_ = config => {
 	);
 
 	const uniRepoDeps = () => require(resolveSymlink(process.cwd(), './package.json')).dependencies;
+
 	// TODO consider only adding deps that are intersect across the widgets and apps
 	const monoRepoDeps = () =>
 		R.pipe(
 			R.into(
 				[],
-				R.compose(
-					R.filter(R.either(R.contains(appName), getUsedPackagesForApp(config))),
+				R.pipe(
+					R.map(getPackageDependencies),
 					readPackagesJSONOnPathsTransducer,
-					R.map(dependenciesP)
+					R.filter(R.either(R.contains(appName), getUsedPackagesForApp(config)))
 				)
 			),
 			R.mergeAll

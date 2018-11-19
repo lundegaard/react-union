@@ -1,5 +1,5 @@
 {
-  "name": "union-app-sample-app",
+  "name": "@union-app/app-sample",
   "version": "0.7.0",
   "private": true,
   "license": "MIT",
@@ -13,8 +13,8 @@
     "react-dom": "16.6.1",
     "react-hot-loader": "4.3.11",
     "react-union": "0.8.1",
-    "union-widget-hero": "0.1.0",
-    "union-widget-content": "0.1.0",
+    "@union-app/widget-hero": "0.1.0",
+    "@union-app/widget-content": "0.1.0",
     "redbox-react": "1.6.0"
   }
 }

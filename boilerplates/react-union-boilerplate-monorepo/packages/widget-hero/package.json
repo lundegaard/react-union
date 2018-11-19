@@ -1,9 +1,9 @@
 {
-  "name": "union-widget-content",
+  "name": "@union-app/widget-hero",
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "main": "src/content.widget.js",
+  "main": "src/hero.widget.js",
   "repository": "https://github.com/lundegaard/react-union",
   "engines": {
     "node": ">=8"
@@ -11,5 +11,8 @@
   "dependencies": {
     "react": "16.6.1",
     "react-dom": "16.6.1"
+  },
+  "devDependencies": {
+    "enzyme": "3.6.0"
   }
 }
