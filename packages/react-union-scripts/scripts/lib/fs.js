@@ -1,6 +1,6 @@
 const R = require('ramda');
 const R_ = require('ramda-extension');
-const fs = require('fs');
+const fs = require('fs-extra');
 const invariant = require('invariant');
 const path = require('path');
 const mkdirp = require('mkdirp');
@@ -30,18 +30,15 @@ const readDirs = dir =>
 
 const resolveSymlink = (...args) => fs.realpathSync(path.resolve(...args));
 
-const readEncodedFile = file => fs.readFileSync(file, { encoding: 'utf8' });
-
 const getRootPackageJSON = R_.memoizeWithIdentity(() =>
-	JSON.parse(readEncodedFile(path.join(process.cwd(), 'package.json')))
+	fs.readJsonSync(path.join(process.cwd(), 'package.json'))
 );
 
 const readAllWorkspacesFlatten = R_.memoizeWithIdentity(() =>
 	R.o(R.flatten, R.map(glob.sync))(getWorkspacesPatterns())
 );
 
-// TODO: fse.readJson
-const readPackagesJSONOnPathsTransducer = R.o(R.map(readEncodedFile), R.map(JSON.parse));
+const readPackagesJSONOnPathsTransducer = R.map(x => fs.readJsonSync(x));
 
 const getWorkspacesPatterns = () => {
 	const rootPackage = getRootPackageJSON();
