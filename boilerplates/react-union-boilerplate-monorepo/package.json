@@ -31,7 +31,7 @@
   },
   "scripts": {
     "build": "react-union-scripts build",
-    "start": "react-union-scripts start --app union-app-sample-app",
+    "start": "react-union-scripts start --app app-sample",
     "test": "react-union-scripts test",
     "lint": "yarn lint:eslint",
     "lint:eslint": "eslint --ext .js ./"
