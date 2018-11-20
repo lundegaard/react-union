@@ -27,7 +27,7 @@
     "enzyme-to-json": "3.3.4",
     "eslint": "5.5.0",
     "eslint-config-react-union": "^0.8.0",
-    "eslint-plugin-babel": "5.2.1",
+    "eslint-plugin-babel": "5.3.0",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-react": "7.11.1",
     "husky": "1.1.3",
