@@ -5,7 +5,8 @@ const path = require('path'); // eslint-disable-line import/no-extraneous-depend
 const rimraf = require('rimraf'); // eslint-disable-line import/no-extraneous-dependencies
 const glob = require('glob'); // eslint-disable-line import/no-extraneous-dependencies
 const R = require('ramda'); // eslint-disable-line import/no-extraneous-dependencies
-const R_ = require('ramda-extension'); // eslint-disable-line import/no-extraneous-dependencies
+const R_ = require('ramda-extension');
+// eslint-disable-line import/no-extraneous-dependencies
 
 const appDirectory = fs.realpathSync(process.cwd());
 const srcPackagesFolder = path.join(appDirectory, 'packages');
