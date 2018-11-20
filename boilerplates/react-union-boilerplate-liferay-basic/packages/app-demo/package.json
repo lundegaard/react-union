@@ -12,8 +12,6 @@
 		"@union-app/widget-hero": "0.1.0",
 		"document-ready": "2.0.1",
 		"prop-types": "^15.6.2",
-		"ramda": "^0.26.0",
-		"ramda-extension": "^0.7.0",
 		"react": "^16.4.1",
 		"react-dom": "^16.4.1",
 		"react-hot-loader": "^4.3.3",
