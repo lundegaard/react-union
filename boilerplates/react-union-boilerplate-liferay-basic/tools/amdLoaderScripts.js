@@ -22,7 +22,10 @@ const vendorBundleFileName = `${vendorBundleName}.js`;
 const manifestFileName = 'assetManifest.json';
 
 const buildFolder = path.join(appDirectory, 'build');
-const targetFolder = path.join(appDirectory, 'liferay/amd-loader/src/main/resources/META-INF/resources');
+const targetFolder = path.join(
+	appDirectory,
+	'liferay/amd-loader/src/main/resources/META-INF/resources'
+);
 const configFilePath = path.join(targetFolder, 'config.js');
 
 const joinNonEmpty = xs => xs.filter(Boolean).join('.');
@@ -87,7 +90,6 @@ function createLiferayConfig() {
 	R.forEach(currentApp => {
 		const manifestFilePath = path.join(buildFolder, currentApp, manifestFileName);
 		const manifest = fs.readJsonSync(manifestFilePath, 'utf8');
-
 		const ctx = {
 			currentApp,
 			appExports: R_.toCamelCase(currentApp),
