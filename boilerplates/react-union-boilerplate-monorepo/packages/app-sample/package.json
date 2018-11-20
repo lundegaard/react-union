@@ -9,12 +9,12 @@
   },
   "dependencies": {
     "@babel/polyfill": "7.0.0",
-    "react": "16.6.1",
-    "react-dom": "16.6.1",
-    "react-hot-loader": "4.3.11",
-    "react-union": "0.8.1",
-    "@union-app/widget-hero": "0.1.0",
     "@union-app/widget-content": "0.1.0",
+    "@union-app/widget-hero": "0.1.0",
+    "react": "16.6.3",
+    "react-dom": "16.6.3",
+    "react-hot-loader": "4.3.12",
+    "react-union": "0.9.2",
     "redbox-react": "1.6.0"
   }
 }
