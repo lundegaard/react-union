@@ -32,7 +32,7 @@
     "eslint-plugin-babel": "5.3.0",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-react": "7.11.1",
-    "husky": "1.1.4",
+    "husky": "1.2.0",
     "lint-staged": "8.0.5",
     "mkdirp": "0.5.1",
     "prettier": "1.15.2",
