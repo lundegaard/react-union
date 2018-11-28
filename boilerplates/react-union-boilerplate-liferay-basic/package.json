@@ -36,7 +36,7 @@
     "lint-staged": "8.1.0",
     "mkdirp": "0.5.1",
     "prettier": "1.15.2",
-    "ramda": "^0.26.0",
+    "ramda": "^0.26.1",
     "ramda-extension": "^0.7.1",
     "react-union-scripts": "^0.10.0",
     "rimraf": "2.6.2"
