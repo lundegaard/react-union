@@ -26,7 +26,7 @@
     "eslint-plugin-react": "7.11.1",
     "husky": "1.2.0",
     "lint-staged": "8.1.0",
-    "prettier": "1.15.2",
+    "prettier": "1.15.3",
     "react-union-scripts": "^0.10.0"
   },
   "scripts": {
