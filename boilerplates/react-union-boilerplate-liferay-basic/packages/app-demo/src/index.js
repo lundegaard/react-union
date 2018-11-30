@@ -6,13 +6,11 @@ import ready from 'document-ready';
 
 import Root from './components/Root';
 
-const render = () => justRender(<Root />);
-
 ready(() => {
-	render();
+	justRender(<Root />);
 
 	if (window.Liferay) {
-		window.Liferay.on('startNavigate', justUnmountComponentAtNode);
-		window.Liferay.on('endNavigate', render);
+		window.Liferay.on('startNavigate', () => justUnmountComponentAtNode());
+		window.Liferay.on('endNavigate', () => justRender(<Root />));
 	}
 });
