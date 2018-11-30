@@ -1,11 +1,11 @@
-import always from 'ramda/src/always';
+import { SHOULD_NOT_LEAK } from './constants';
 
 export const warning = (pred, msg) => {
 	if (pred) {
 		return;
 	}
 
-	if (process.env.NODE_ENV === 'production') {
+	if (SHOULD_NOT_LEAK) {
 		return;
 	}
 
@@ -17,30 +17,11 @@ export const invariant = (pred, msg) => {
 		return;
 	}
 
-	if (process.env.NODE_ENV === 'production') {
+	if (SHOULD_NOT_LEAK) {
 		throw new Error('There was an error. Use non-production build to see details.');
 	}
 
 	throw new Error(msg);
 };
-
-export const createElement = (id, parent, elementType) => {
-	const newElement = document.createElement(elementType);
-	const idAttr = document.createAttribute('id');
-	idAttr.value = id;
-
-	newElement.setAttributeNode(idAttr);
-	parent.appendChild(newElement);
-
-	return newElement;
-};
-
-export const createElementWithId = (id, parent, elementType = 'div') => {
-	const element = document.getElementById(id);
-
-	return element ? element : createElement(id, parent, elementType);
-};
-
-export const noop = always(null);
 
 export const getDisplayName = Component => Component.displayName || Component.name || 'Component';

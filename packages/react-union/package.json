@@ -18,8 +18,10 @@
     "dist"
   ],
   "dependencies": {
-    "prop-types": "15.6.2",
-    "ramda": "0.26.1"
+    "hoist-non-react-statics": "^3.2.0",
+    "prop-types": "^15.6.2",
+    "ramda": "^0.26.1",
+    "ramda-extension": "^0.7.1"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
