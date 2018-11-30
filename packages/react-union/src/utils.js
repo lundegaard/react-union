@@ -18,7 +18,7 @@ export const invariant = (pred, msg) => {
 	}
 
 	if (SHOULD_NOT_LEAK) {
-		throw new Error('There was an error. Use non-production build to see details.');
+		throw new Error('An error occurred. Use a non-production build to see the details.');
 	}
 
 	throw new Error(msg);

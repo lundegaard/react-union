@@ -1,16 +1,18 @@
+const ignorePatterns = [
+	'/.history/',
+	'/node_modules/',
+	'/es',
+	'/dist',
+	'/lib',
+	'<rootDir>/boilerplates/',
+	'/scripts/test.js',
+];
+
 module.exports = {
 	bail: true,
 	verbose: true,
-	testPathIgnorePatterns: [
-		'/.history/',
-		'/node_modules/',
-		'<rootDir>/boilerplates/',
-		'/scripts/test.js',
-		'/es',
-		'/dist',
-		'/lib',
-	],
-	projects: [
-		'<rootDir>/packages/*',
-	],
+	testPathIgnorePatterns: ignorePatterns,
+	coveragePathIgnorePatterns: ignorePatterns,
+	snapshotSerializers: ['enzyme-to-json/serializer'],
+	setupTestFrameworkScriptFile: '<rootDir>/tests/enzymeSetup.js',
 };
