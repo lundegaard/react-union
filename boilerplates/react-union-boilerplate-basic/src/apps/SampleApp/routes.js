@@ -1,17 +1,12 @@
-import loadHeroWidget from '../../widgets/Hero/hero.widget';
-import loadContentWidget from '../../widgets/Content/content.widget';
+import universal from 'react-universal-component';
 
 export default [
 	{
 		path: 'hero',
-		getComponent: done => {
-			loadHeroWidget(mod => done(mod.default));
-		},
+		component: universal(import('../../widgets/Hero')),
 	},
 	{
 		path: 'content',
-		getComponent: done => {
-			loadContentWidget(mod => done(mod.default));
-		},
+		component: universal(import('../../widgets/Content')),
 	},
 ];
