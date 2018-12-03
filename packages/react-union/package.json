@@ -10,7 +10,7 @@
     "Tomas Konrady <tomas.konrady@lundegaard.eu>",
     "Vaclav Jancarik <vaclav.jancarik@lundegaard.eu>"
   ],
-  "description": "React component that allows assembling React application with a single virtual DOM from distributed HTML segments.",
+  "description": "Assemble a single React application from distributed HTML segments.",
   "files": [
     "src",
     "lib",

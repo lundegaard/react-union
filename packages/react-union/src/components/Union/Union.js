@@ -32,7 +32,7 @@ class Union extends Component {
 		 */
 		onScanEnd: PropTypes.func,
 		/**
-		 * Called when there is an error while scanning of the HTML.
+		 * Called when an error happens while scanning the HTML.
 		 */
 		onScanError: PropTypes.func,
 		/**
@@ -40,7 +40,7 @@ class Union extends Component {
 		 */
 		onScanStart: PropTypes.func,
 		/**
-		 * HTML element or Cheerio wrapper in which the scan is running. By default `document`.
+		 * HTML element or Cheerio wrapper in which the scan is running. Defaults to `document`.
 		 */
 		parent: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
 		/**
