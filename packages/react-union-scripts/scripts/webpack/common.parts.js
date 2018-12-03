@@ -11,14 +11,10 @@ const optimization = () => ({
 			automaticNameDelimiter: '~',
 			name: true,
 			cacheGroups: {
-				vendor: {
+				vendors: {
 					test: /[\\/]node_modules[\\/]/,
-					priority: -10,
-				},
-				default: {
-					minChunks: 2,
-					priority: -20,
-					reuseExistingChunk: true,
+					name: 'vendor',
+					chunks: 'initial',
 				},
 			},
 		},
