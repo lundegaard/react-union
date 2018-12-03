@@ -77,31 +77,6 @@ describe('fs', () => {
 			expect(utilsFs.getAppPath('union-app-sample-app')).toEqual('package/union-app-sample-app');
 		});
 	});
-	describe('getAllWorkspacesWithFullPathSuffixed', () => {
-		it('should get full path of all packages in workspaces with custom suffix', () => {
-			createMockRootPkgJSON();
-			createMockGlob();
-			const utilsFs = require('../fs');
-			expect(utilsFs.getAllWorkspacesWithFullPathSuffixed('src')).toEqual(
-				['package/union-app-sample-app/src', 'package/union-widget-sample-widget/src'].map(
-					entry => `${process.cwd()}/${entry}`
-				)
-			);
-		});
-	});
-	describe('getAppPackageJSON', () => {
-		it('should get packageJSON of concrete app', () => {
-			const pkgJson = {
-				name: 'union-app-sample-app',
-				private: true,
-				workspaces: ['packages/*'],
-			};
-			createMockRootPkgJSON(pkgJson);
-			createMockGlob();
-			const utilsFs = require('../fs');
-			expect(utilsFs.getAppPackageJSON('union-app-sample-app')).toEqual(pkgJson);
-		});
-	});
 	describe('resolveWorkspacesPackagePattern', () => {
 		it('should return unchanged regexp when is regexp', () => {
 			const reg = /ahoj/;
@@ -140,19 +115,6 @@ describe('fs', () => {
 				'union-app-test',
 				'union-app-test1',
 			]);
-		});
-	});
-	describe('readAllNonUnionPackages', () => {
-		it('should read all non union packages from workspace', () => {
-			createMockRootPkgJSON();
-			createMockGlob([
-				'package/union-app-test',
-				'package/union-app-test1',
-				'package/union-widget-test',
-				'package/custom-pkg',
-			]);
-			const utilsFs = require('../fs');
-			expect(utilsFs.readAllNonUnionPackages('union-app', 'union-widget')).toEqual(['custom-pkg']);
 		});
 	});
 });

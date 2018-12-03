@@ -1,6 +1,5 @@
 const R = require('ramda');
-const R_ = require('ramda-extension');
-const { normalizeConfig, UNION_CONFIG_PATH, mergeWhen, resolveAsyncSuffix } = require('../utils');
+const { normalizeConfig, UNION_CONFIG_PATH, mergeWhen } = require('../utils');
 
 describe('utils', () => {
 	describe('normalizeConfig', () => {
@@ -153,25 +152,6 @@ describe('utils', () => {
 			const res = mergeWhen(false, fn, 'a', 'b');
 			expect(res).toEqual({});
 			expect(fn).not.toHaveBeenCalled();
-		});
-	});
-	describe('resolveAsyncSuffix', () => {
-		it('should return unchanged regexp when is regexp', () => {
-			const reg = /ahoj/;
-			expect(resolveAsyncSuffix(reg)).toBe(reg);
-		});
-		it('should return regexp constructed from string', () => {
-			const expected = R_.constructRegExp('.ahoj.js$', 'i');
-			expect(resolveAsyncSuffix('ahoj')).toEqual(expected);
-		});
-		it('should return regexp constructed from array of strings', () => {
-			const expected = R_.constructRegExp('.(ahoj|ahoj|ahoj).js$', 'i');
-			expect(resolveAsyncSuffix(['ahoj', 'ahoj', 'ahoj'])).toEqual(expected);
-		});
-		it('should throw error when is something different', () => {
-			expect(() => {
-				resolveAsyncSuffix({}).toThrowError();
-			});
 		});
 	});
 	describe('getAppConfig', () => {
