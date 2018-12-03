@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component, StrictMode, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import { map, path } from 'ramda';
 import { noop } from 'ramda-extension';
 
@@ -48,10 +48,6 @@ class Union extends Component {
 		 */
 		routes: PropTypes.arrayOf(PropTypes.shape(RouteShape)),
 		/**
-		 * Enable React.Strict mode. By default `true`.
-		 */
-		strictMode: PropTypes.bool,
-		/**
 		 * Pre-scanned widget configs.
 		 */
 		widgetConfigs: PropTypes.arrayOf(PropTypes.shape(WidgetConfigShape)),
@@ -62,7 +58,6 @@ class Union extends Component {
 		onScanError: noop,
 		onScanStart: noop,
 		parent: IS_SERVER ? null : document,
-		strictMode: true,
 	};
 
 	static scan = props => {
@@ -116,17 +111,11 @@ class Union extends Component {
 		);
 	};
 
-	resolveStrictMode = element => {
-		const { strictMode } = this.props;
-
-		return strictMode ? <StrictMode>{element}</StrictMode> : element;
-	};
-
 	render() {
 		const { children } = this.props;
 		const { widgetConfigs } = this.state;
 
-		return this.resolveStrictMode(
+		return (
 			<Fragment>
 				{children}
 				{map(this.renderWidget, widgetConfigs)}
