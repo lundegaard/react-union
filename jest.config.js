@@ -1,10 +1,10 @@
 const ignorePatterns = [
 	'/.history/',
 	'/node_modules/',
-	'/es',
-	'/dist',
-	'/lib',
-	'<rootDir>/boilerplates/',
+	'/packages/*/es',
+	'/packages/*/dist',
+	'/packages/*/lib',
+	'/boilerplates/',
 	'/scripts/test.js',
 ];
 
