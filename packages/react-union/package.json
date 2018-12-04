@@ -27,7 +27,7 @@
     "cross-env": "5.2.0",
     "enzyme": "3.7.0",
     "enzyme-adapter-react-16": "1.7.0",
-    "enzyme-to-json": "^3.3.4",
+    "enzyme-to-json": "^3.3.5",
     "jsdom": "13.0.0",
     "react": "16.6.3",
     "react-dom": "16.6.3",
