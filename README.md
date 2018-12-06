@@ -6,8 +6,8 @@ The React-union project is a collection of tools that allows you to build modern
 
 ## Tools and libraries
 
-* [react-union](https://github.com/lundegaard/react-union/tree/master/packages/react-union) - React component that can assemble an application with one virtual DOM from multiple HTML fragments.
-* [react-union-scripts](https://github.com/lundegaard/react-union/tree/master/packages/react-union-scripts) - JavaScript SDK focused on a large codebase. Supports multiple entry points, async code-splitting, sharing the code between modules, etc.
+* [React-union](https://github.com/lundegaard/react-union/tree/master/packages/react-union) - React component that can assemble an application with one virtual DOM from multiple HTML fragments.
+* [React-union-scripts](https://github.com/lundegaard/react-union/tree/master/packages/react-union-scripts) - JavaScript SDK focused on a large codebase. Supports multiple entry points, async code-splitting, sharing the code between modules, etc.
 * [eslint-config-react-union](https://github.com/lundegaard/react-union/tree/master/packages/eslint-config-react-union) - ESLint configuration that is used within the React-union project.
 * [babel-preset-react-union](https://github.com/lundegaard/react-union/tree/master/packages/babel-preset-react-union) - Babel preset uset within the React-union project and the boilerplates.
 
