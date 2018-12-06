@@ -126,11 +126,11 @@ const cleanup = verdaccio => {
 				});
 			execCommandInProject(`yarn config set registry ${customRegistryUrl}`);
 			execCommandInProject(`npm set registry ${customRegistryUrl}`);
+			execCommandInProject('yarn');
 			execCommandInProject('yarn link react-union');
 			execCommandInProject('yarn link react-union-scripts');
 			execCommandInProject('yarn link eslint-config-react-union');
 			execCommandInProject('yarn link babel-preset-react-union');
-			execCommandInProject('yarn');
 			execCommandInProject(`yarn config set registry ${originalYarnRegistryUrl}`);
 			execCommandInProject(`npm set registry ${originalNpmRegistryUrl}`);
 
