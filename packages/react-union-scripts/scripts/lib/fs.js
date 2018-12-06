@@ -28,8 +28,6 @@ const readDirs = dir =>
 		  )(dir)
 		: [];
 
-const resolveSymlink = (...args) => fs.realpathSync(path.resolve(...args));
-
 const getRootPackageJSON = R_.memoizeWithIdentity(() =>
 	fs.readJsonSync(path.join(process.cwd(), 'package.json'))
 );
@@ -37,8 +35,6 @@ const getRootPackageJSON = R_.memoizeWithIdentity(() =>
 const readAllWorkspacesFlatten = R_.memoizeWithIdentity(() =>
 	R.o(R.flatten, R.map(glob.sync))(getWorkspacesPatterns())
 );
-
-const readPackagesJSONOnPathsTransducer = R.map(x => fs.readJsonSync(x));
 
 const getWorkspacesPatterns = () => {
 	const rootPackage = getRootPackageJSON();
@@ -66,25 +62,7 @@ const readAllAppsFromWorkspaces = appPattern =>
 		readAllWorkspacesFlatten()
 	);
 
-const readAllNonUnionPackages = (appPattern, widgetPattern) =>
-	intoArray(
-		R.compose(
-			takePackageName,
-			R.reject(R.test(resolveWorkspacesPackagePattern(appPattern))),
-			R.reject(R.test(resolveWorkspacesPackagePattern(widgetPattern)))
-		)
-	)(readAllWorkspacesFlatten());
-
 const getAppPath = name => R.find(R.contains(name), readAllWorkspacesFlatten());
-const getAppPackageJSON = name => {
-	const filterByAppName = R.filter(R.contains(name));
-	return R.o(R.head, intoArray(R.o(filterByAppName, readPackagesJSONOnPathsTransducer)))(
-		getAllWorkspacesWithFullPathSuffixed('package.json')
-	);
-};
-
-const getAllWorkspacesWithFullPathSuffixed = (suffix = '') =>
-	R.map(pkg => path.resolve(process.cwd(), pkg, suffix), readAllWorkspacesFlatten());
 
 module.exports = {
 	isDirectory,
@@ -95,11 +73,6 @@ module.exports = {
 	getWorkspacesPatterns,
 	readAllAppsFromWorkspaces,
 	getAppPath,
-	resolveSymlink,
 	readAllWorkspacesFlatten,
-	readAllNonUnionPackages,
-	getAllWorkspacesWithFullPathSuffixed,
-	readPackagesJSONOnPathsTransducer,
-	getAppPackageJSON,
 	resolveWorkspacesPackagePattern,
 };
