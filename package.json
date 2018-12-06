@@ -2,7 +2,7 @@
   "private": true,
   "name": "react-union-project",
   "version": "0.1.0",
-  "description": "The project React-union is a collection of tools that allows you to build modern React applications which run on specific server-side environments such as Content Management Systems or portals.",
+  "description": "The React Union project is a collection of tools that allow you to build modern React applications for content management systems or enterprise portals.",
   "keywords": [
     "react",
     "redux",

@@ -1,25 +1,25 @@
-# React-union project
+# React Union
 
 [![build status](https://img.shields.io/travis/lundegaard/react-union/master.svg?style=flat-square)](https://travis-ci.org/lundegaard/react-union) [![Greenkeeper badge](https://badges.greenkeeper.io/lundegaard/react-union.svg)](https://greenkeeper.io/)
 
-The React-union project is a collection of tools that allows you to build modern React applications which run on specific server-side environments such as Content Management Systems or Portals.
+The React Union project is a collection of tools that allow you to build modern React applications for content management systems or enterprise portals.
 
 ## Tools and libraries
 
-* [React-union](https://github.com/lundegaard/react-union/tree/master/packages/react-union) - React component that can assemble an application with one virtual DOM from multiple HTML fragments.
-* [React-union-scripts](https://github.com/lundegaard/react-union/tree/master/packages/react-union-scripts) - JavaScript SDK focused on a large codebase. Supports multiple entry points, async code-splitting, sharing the code between modules, etc.
-* [eslint-config-react-union](https://github.com/lundegaard/react-union/tree/master/packages/eslint-config-react-union) - ESLint configuration that is used within the React-union project.
-* [babel-preset-react-union](https://github.com/lundegaard/react-union/tree/master/packages/babel-preset-react-union) - Babel preset uset within the React-union project and the boilerplates.
+* [React Union](https://github.com/lundegaard/react-union/tree/master/packages/react-union) - React component that can assemble an application with one virtual DOM from multiple HTML fragments.
+* [React Union Scripts](https://github.com/lundegaard/react-union/tree/master/packages/react-union-scripts) - JavaScript SDK focused on a large codebase. Supports multiple entry points, async code-splitting, sharing the code between modules, etc.
+* [ESLint config](https://github.com/lundegaard/react-union/tree/master/packages/eslint-config-react-union) - ESLint configuration that is used within the React Union project.
+* [Babel preset](https://github.com/lundegaard/react-union/tree/master/packages/babel-preset-react-union) - Babel preset used within the React Union project.
 
 ## Examples
 
-* [Basic boilerplate](https://github.com/lundegaard/react-union/tree/master/boilerplates/react-union-boilerplate-basic) - Shows usage of [React-union-scripts](https://github.com/lundegaard/react-union/tree/master/packages/react-union-scripts) and the [React-union](https://github.com/lundegaard/react-union/tree/master/packages/react-union) component in a simple React application.
-* [Monorepo boilerplate](https://github.com/lundegaard/react-union/tree/master/boilerplates/react-union-boilerplate-monorepo) - For larger projects, the usage of a monorepo (Yarn Workspaces) is a good choice. 
+* [Basic boilerplate](https://github.com/lundegaard/react-union/tree/master/boilerplates/react-union-boilerplate-basic) - Reference usage of React Union in a simple application.
+* [Monorepo boilerplate](https://github.com/lundegaard/react-union/tree/master/boilerplates/react-union-boilerplate-monorepo) - For larger projects, a monorepo (Yarn Workspaces) is a good choice. 
 * [Integration with Liferay](https://github.com/lundegaard/react-union/tree/master/boilerplates/react-union-boilerplate-liferay-basic)
 
 More examples are coming! See the [roadmap](https://github.com/lundegaard/react-union/blob/master/ROADMAP.md).
 
-## Content Management Systems, Portals and React applications
+## Content management systems, enterprise portals and React applications
 
 There are some problems in these types of systems that need to be addressed in order to achieve a proper developer experience. This includes features such as HMR, application state time travel, ECMAScript 7+ syntax, etc. Additionally, there are problems regarding the nature of CMS and Portal solutions.
 

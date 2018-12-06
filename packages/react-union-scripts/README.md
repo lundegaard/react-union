@@ -1,6 +1,6 @@
-# React-union-scripts
+# React Union Scripts
 
-Extendable and configurable set of scripts for building and running your React applications that is designed for Content Management Systems (CMS) or Java Portals.
+Extendable and configurable set of scripts for building and running your React applications that is designed for content management systems (CMS) or enterprise portals.
 
 ## Main features
 
