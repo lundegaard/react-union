@@ -9,10 +9,13 @@ The project React-union is a collection of tools that allows you to build modern
 * [React-union](https://github.com/lundegaard/react-union/tree/master/packages/react-union) - React component that can assemble an application with one virtual DOM from multiple HTML fragments.
 * [React-union-scripts](https://github.com/lundegaard/react-union/tree/master/packages/react-union-scripts) - JavaScript SDK focused on a large codebase. Supports multiple entry points, async code-splitting, sharing the code between modules, etc.
 * [eslint-config-react-union](https://github.com/lundegaard/react-union/tree/master/packages/eslint-config-react-union) - ESLint configuration that is used within the React-union project.
+* [babel-preset-react-union](https://github.com/lundegaard/react-union/tree/master/packages/babel-preset-react-union)
 
 ## Examples
 
 * [Basic boilerplate](https://github.com/lundegaard/react-union/tree/master/boilerplates/react-union-boilerplate-basic) - Displays the usage of [React-union-scripts](https://github.com/lundegaard/react-union/tree/master/packages/react-union-scripts) and the [React-union](https://github.com/lundegaard/react-union/tree/master/packages/react-union) component in simple React application.
+* [Monorepo boilerplate](https://github.com/lundegaard/react-union/tree/master/boilerplates/react-union-boilerplate-monorepo) - For larger project is usage of monorepo/workspaces good choice. 
+* [Integration to Liferay](https://github.com/lundegaard/react-union/tree/master/boilerplates/react-union-boilerplate-liferay-basic)
 
 More examples are coming! See the [roadmap](https://github.com/lundegaard/react-union/blob/master/ROADMAP.md).
 
