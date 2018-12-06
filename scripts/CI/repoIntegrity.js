@@ -78,10 +78,6 @@ const cleanup = verdaccio => {
 	verdaccio && verdaccio.kill();
 	execCommand(`yarn config set registry ${originalYarnRegistryUrl}`);
 	execCommand(`npm set registry ${originalNpmRegistryUrl}`);
-	execCommand('cd packages/react-union && yarn unlink && cd ../..');
-	execCommand('cd packages/react-union-scripts && yarn unlink && cd ../..');
-	execCommand('cd packages/babel-preset-react-union && yarn unlink && cd ../..');
-	execCommand('cd packages/eslint-config-react-union && yarn unlink && cd ../..');
 	logDone();
 };
 
@@ -103,10 +99,10 @@ const cleanup = verdaccio => {
 		logDone(tempDir);
 
 		logSegment('CREATE YARN LINKS FOR BOILERPLATES');
-		execCommand('cd packages/react-union && yarn link && cd ../..');
-		execCommand('cd packages/react-union-scripts && yarn link && cd ../..');
-		execCommand('cd packages/babel-preset-react-union && yarn link && cd ../..');
-		execCommand('cd packages/eslint-config-react-union && yarn link && cd ../..');
+		execCommand('cd packages/react-union && yarn && yarn link && cd ../..');
+		execCommand('cd packages/react-union-scripts && yarn && yarn link && cd ../..');
+		execCommand('cd packages/babel-preset-react-union && yarn && yarn link && cd ../..');
+		execCommand('cd packages/eslint-config-react-union && yarn && yarn link && cd ../..');
 
 		logSegment('PUBLISH REACT-UNION TO TEMP REGISTRY');
 		verdaccioProcess = await publishReactUnion(tempDir);
