@@ -6,6 +6,8 @@ const path = require('path');
 const mkdirp = require('mkdirp');
 const glob = require('glob');
 
+const resolveSymlink = (...args) => fs.realpathSync(path.resolve(...args));
+
 const intoArray = R.into([]);
 
 const writeFile = (file, contents) =>
@@ -75,4 +77,5 @@ module.exports = {
 	getAppPath,
 	readAllWorkspacesFlatten,
 	resolveWorkspacesPackagePattern,
+	resolveSymlink,
 };
