@@ -1,17 +1,12 @@
-import loadHero from '@union-app/widget-hero';
-import loadContent from '@union-app/widget-content';
+import universal from 'react-universal-component';
 
 export default [
 	{
 		path: 'hero',
-		getComponent(done) {
-			loadHero(mod => done(mod.default));
-		},
+		component: universal(import('@union-app/widget-hero')),
 	},
 	{
 		path: 'content',
-		getComponent(done) {
-			loadContent(mod => done(mod.default));
-		},
+		component: universal(import('@union-app/widget-content')),
 	},
 ];

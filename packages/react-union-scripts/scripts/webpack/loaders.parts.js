@@ -1,57 +1,31 @@
-const { resolveAsyncSuffix } = require('../lib/utils');
-
-const loadAsyncModules = include => ({ asyncSuffix }) => ({
-	module: {
-		rules: [
-			{
-				test: resolveAsyncSuffix(asyncSuffix),
-				include,
-				exclude: /node_modules/,
-				use: [
-					require.resolve('babel-loader'),
-					{
-						loader: require.resolve('bundle-loader'),
-						options: {
-							lazy: true,
-							name: '[name]',
-						},
-					},
-				],
-			},
-		],
-	},
-});
-
-const loadBabel = include => () => ({
+const loadJS = () => ({
 	module: {
 		rules: [
 			{
 				test: /\.jsx?$/,
-				include,
+				exclude: /node_modules/,
 				use: [require.resolve('babel-loader')],
 			},
 		],
 	},
 });
 
-const loadCss = include => () => ({
+const loadCSS = () => ({
 	module: {
 		rules: [
 			{
 				test: /\.css$/,
-				include,
 				use: [require.resolve('style-loader'), require.resolve('css-loader')],
 			},
 		],
 	},
 });
 
-const loadImages = include => ({ outputMapper }) => ({
+const loadImages = ({ outputMapper }) => ({
 	module: {
 		rules: [
 			{
 				test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,
-				include,
 				use: [
 					{
 						loader: require.resolve('url-loader'),
@@ -65,12 +39,11 @@ const loadImages = include => ({ outputMapper }) => ({
 	},
 });
 
-const loadFiles = include => ({ outputMapper }) => ({
+const loadFiles = ({ outputMapper }) => ({
 	module: {
 		rules: [
 			{
 				test: /\.(eot|ttf|wav|mp3|otf)$/,
-				include,
 				use: [
 					{
 						loader: require.resolve('file-loader'),
@@ -85,9 +58,8 @@ const loadFiles = include => ({ outputMapper }) => ({
 });
 
 module.exports = {
-	loadAsyncModules,
-	loadBabel,
-	loadCss,
+	loadJS,
+	loadCSS,
 	loadImages,
 	loadFiles,
 };

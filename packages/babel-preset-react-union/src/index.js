@@ -54,5 +54,6 @@ module.exports = () => ({
 			},
 		],
 		cjs && ['@babel/plugin-transform-modules-commonjs', { loose }],
+		'babel-plugin-universal-import',
 	].filter(Boolean),
 });

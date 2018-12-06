@@ -2,20 +2,10 @@
 const invariant = require('invariant');
 const merge = require('webpack-merge');
 const path = require('path');
-const R = require('ramda');
-const R_ = require('ramda-extension');
 
 const cli = require('./lib/cli');
-const { getUnionConfig, getAppConfig, mergeWhen, getForMode, isMonoRepo } = require('./lib/utils');
-const {
-	resolveSymlink,
-	getAllWorkspacesWithFullPathSuffixed,
-	getAppPackageJSON,
-	resolveWorkspacesPackagePattern,
-	readPackagesJSONOnPathsTransducer,
-	readAllNonUnionPackages,
-} = require('./lib/fs');
-const loaders = require('./webpack/loaders.parts');
+const { getUnionConfig, getAppConfig, mergeWhen, getForMode } = require('./lib/utils');
+const { loadCSS, loadFiles, loadImages, loadJS } = require('./webpack/loaders.parts');
 const {
 	loaderOptionsPlugin,
 	definePlugin,
@@ -26,10 +16,7 @@ const {
 	uglifyJsPlugin,
 	cleanPlugin,
 } = require('./webpack/plugins.parts');
-const { resolve, vendorBundle, performanceHints, context } = require('./webpack/common.parts');
-
-const getPackageDependencies = R.prop('dependencies');
-const getPackageDependenciesNames = R.o(R.keys, getPackageDependencies);
+const { optimization, performanceHints, context } = require('./webpack/common.parts');
 
 const buildMode = getForMode('development', 'production');
 const buildModeString = getForMode('"development"', '"production"');
@@ -50,61 +37,17 @@ const GLOBALS = {
 	'process.env.NODE_ENV': buildModeString,
 };
 
-const nodeModulesPath = resolveSymlink(process.cwd(), './node_modules');
-const isNotJsLoader = R_.notInclude([loaders.loadBabel, loaders.loadAsyncModules]);
-const addPathsToLoaders = srcs =>
-	R.map(value => (isNotJsLoader(value) ? value([...srcs, nodeModulesPath]) : value(srcs)), loaders);
-const removeScope = R.o(R.last, R.split('/'));
-
-/**
- * Returns list of widget names without scope of the app configured in `UnionConfig`.
- *
- * @sig UnionConfig -> [String]
- */
-const appsWidgetList = ({ name: appName, workspaces: { widgetPattern } }) => {
-	return R.pipe(
-		getPackageDependenciesNames,
-		R.filter(R.test(resolveWorkspacesPackagePattern(widgetPattern))),
-		R.map(removeScope)
-	)(getAppPackageJSON(appName));
-};
-
-/**
- * Finds all widgets that are used by an app and merge them with all other packages in workspace.
- *
- * @sig UnionConfig -> [String]
- */
-const getUsedPackagesForApp = config => {
-	const widgetList = appsWidgetList(config);
-	// TODO maybe filter all non union packages by package.json from all of the widgets and apps.
-	const allNonUnionPackages = readAllNonUnionPackages(
-		config.workspaces.appPattern,
-		config.workspaces.widgetPattern
-	);
-
-	const withApp = [config.name, ...widgetList, ...allNonUnionPackages];
-	return pkg => R.find(R.contains(R.__, pkg), withApp);
-};
-
-const getPackagesPath = R.useWith(R.filter, [
-	getUsedPackagesForApp,
-	getAllWorkspacesWithFullPathSuffixed,
-]);
-
 const getWebpackConfig_ = config => {
 	const {
 		paths,
 		name: appName,
 		proxy,
 		generateTemplate,
-		generateVendorBundle,
 		publicPath,
 		outputMapper,
 		mergeWebpackConfig,
 		sourceMaps,
 	} = config;
-
-	const getPackagesPathForSuffix = getPackagesPath(config);
 
 	const hmr = cli.script === 'start' && cli.debug && !cli.noHmr;
 
@@ -112,43 +55,6 @@ const getWebpackConfig_ = config => {
 
 	const outputFilename = getForMode('[name].bundle.js', '[name].[chunkhash:8].bundle.js');
 	const outputChunkname = getForMode('[name].chunk.js', '[name].[chunkhash:8].chunk.js');
-
-	const loadersForUniRepo = () => [resolveSymlink(process.cwd(), './src')];
-
-	const loadersForMonoRepo = () => getPackagesPathForSuffix('src');
-
-	const { loadAsyncModules, loadBabel, loadCss, loadImages, loadFiles } = addPathsToLoaders(
-		isMonoRepo ? loadersForMonoRepo() : loadersForUniRepo()
-	);
-
-	const uniRepoDeps = () => require(resolveSymlink(process.cwd(), './package.json')).dependencies;
-
-	// TODO consider only adding deps that are intersect across the widgets and apps
-	const monoRepoDeps = () =>
-		R.pipe(
-			R.into(
-				[],
-				R.pipe(
-					R.map(getPackageDependencies),
-					readPackagesJSONOnPathsTransducer,
-					R.filter(R.either(R.contains(appName), getUsedPackagesForApp(config)))
-				)
-			),
-			R.mergeAll
-		)(getAllWorkspacesWithFullPathSuffixed('package.json'));
-
-	const uniRepoResolve = () => [
-		path.resolve(__dirname, '../node_modules'),
-		path.resolve(process.cwd(), './src'),
-		path.resolve(process.cwd(), './node_modules'),
-		path.resolve(process.cwd(), '../../node_modules'),
-	];
-
-	const monoRepoResolve = () => [
-		path.resolve(process.cwd(), './node_modules'),
-		...getPackagesPathForSuffix('src'),
-		...getPackagesPathForSuffix('node_modules'),
-	];
 
 	const commonConfig = merge(
 		{ mode: buildMode },
@@ -168,23 +74,16 @@ const getWebpackConfig_ = config => {
 				pathinfo: cli.debug,
 			},
 		},
-		loadAsyncModules(config),
-		loadBabel(),
-		loadCss(),
+		loadJS(),
+		loadCSS(),
 		loadImages(config),
 		loadFiles(config),
 		definePlugin(GLOBALS),
 		cleanPlugin(config),
-		resolve(isMonoRepo ? monoRepoResolve() : uniRepoResolve()),
 		context(),
 		performanceHints,
 		mergeWhen(cli.analyze, analyzeBundlePlugin),
-		mergeWhen(
-			generateVendorBundle,
-			vendorBundle,
-			config,
-			isMonoRepo ? monoRepoDeps() : uniRepoDeps()
-		),
+		optimization(),
 		manifestPlugin()
 	);
 

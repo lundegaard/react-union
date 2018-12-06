@@ -15,7 +15,7 @@
     "react-dom": "16.6.3",
     "react-hot-loader": "4.3.12",
     "react-union": "^0.10.0",
-    "redbox-react": "1.6.0"
+    "react-universal-component": "^3.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",

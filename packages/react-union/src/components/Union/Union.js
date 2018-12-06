@@ -1,9 +1,14 @@
 import PropTypes from 'prop-types';
-import React, { Component, StrictMode, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
+import { map, path } from 'ramda';
+import { noop } from 'ramda-extension';
 
-import { noop } from '../../utils';
-import { RouteShape } from '../../shapes';
-import scan from '../../scan';
+import { invariant } from '../../utils';
+import { RouteShape, WidgetConfigShape } from '../../shapes';
+import scan from '../../scanning';
+import route from '../../routing';
+import { withPrescanContext } from '../../decorators';
+import { IS_SERVER } from '../../constants';
 
 import Widget from '../Widget';
 
@@ -19,88 +24,104 @@ class Union extends Component {
 		 */
 		children: PropTypes.node,
 		/**
-		 * Called after the scan of the HTML is done.
+		 * Pre-scanned initial props.
+		 */
+		initialProps: PropTypes.objectOf(PropTypes.object),
+		/**
+		 * Called after the scan of the HTML is successfully done.
 		 */
 		onScanEnd: PropTypes.func,
 		/**
-		 *  Called when there is an error while scanning of the HTML.
+		 * Called when an error happens while scanning the HTML.
 		 */
 		onScanError: PropTypes.func,
 		/**
-		 * Called before the scan of the HTML
+		 * Called before the scan of the HTML.
 		 */
 		onScanStart: PropTypes.func,
 		/**
-		 * Element in which the scan is running. By default `document`.
+		 * HTML element or Cheerio wrapper in which the scan is running. Defaults to `document`.
 		 */
-		parent: PropTypes.object,
+		parent: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
 		/**
-		 *  Array of routes that are supported by your application.
+		 * Array of routes that are supported by your application.
 		 */
-		routes: PropTypes.arrayOf(PropTypes.shape(RouteShape)).isRequired,
+		routes: PropTypes.arrayOf(PropTypes.shape(RouteShape)),
 		/**
-		 * Enable React.Strict mode. By default `true`
+		 * Pre-scanned widget configs.
 		 */
-		strictMode: PropTypes.bool,
+		widgetConfigs: PropTypes.arrayOf(PropTypes.shape(WidgetConfigShape)),
 	};
 
 	static defaultProps = {
 		onScanEnd: noop,
 		onScanError: noop,
 		onScanStart: noop,
-		strictMode: true,
+		parent: IS_SERVER ? null : document,
 	};
 
-	state = {
-		configs: [],
-		commonData: null,
-	};
-
-	componentDidMount() {
-		this.scan(this.props);
-	}
-
-	componentDidUpdate(prevProps) {
-		const { routes } = this.props;
-		if (prevProps.routes !== routes) {
-			this.scan(prevProps);
-		}
-	}
-
-	scan = props => {
+	static scan = props => {
 		const { onScanStart, onScanEnd, onScanError, parent, routes } = props;
 
-		onScanStart();
+		invariant(routes, 'Missing `routes` prop in <Union />.');
 
-		const domParent = parent || document;
+		try {
+			onScanStart();
+			const scanResult = scan(parent);
+			const routeResult = route(routes, scanResult);
+			onScanEnd(routeResult);
 
-		scan(routes, domParent).then(
-			result => {
-				onScanEnd(result);
-				this.setState(result);
-			},
-			error => onScanError(error)
+			return routeResult.widgetConfigs;
+		} catch (error) {
+			onScanError(error);
+
+			throw error;
+		}
+	};
+
+	static getDerivedStateFromProps(nextProps, previousState) {
+		if (previousState.routesReference !== nextProps.routes) {
+			return {
+				routesReference: nextProps.routes,
+				widgetConfigs: Union.scan(nextProps),
+			};
+		}
+
+		return null;
+	}
+
+	constructor(props, context) {
+		super(props, context);
+
+		this.state = {
+			routesReference: props.routes,
+			widgetConfigs: props.widgetConfigs || Union.scan(props),
+		};
+	}
+
+	renderWidget = widgetConfig => {
+		const { initialProps } = this.props;
+
+		return (
+			<Widget
+				config={widgetConfig}
+				initialProps={path([widgetConfig.namespace], initialProps)}
+				key={widgetConfig.namespace}
+			/>
 		);
 	};
 
-	renderWidget = config => (
-		<Widget key={config.descriptor.namespace || config.descriptor.container} {...config} />
-	);
-
-	// eslint-disable-next-line react/destructuring-assignment
-	resolveStrictMode = union => (this.props.strictMode ? <StrictMode>{union}</StrictMode> : union);
-
 	render() {
 		const { children } = this.props;
-		const { configs } = this.state;
+		const { widgetConfigs } = this.state;
 
-		return this.resolveStrictMode(
+		return (
 			<Fragment>
 				{children}
-				{configs.map(this.renderWidget)}
+				{map(this.renderWidget, widgetConfigs)}
 			</Fragment>
 		);
 	}
 }
 
-export default Union;
+export default withPrescanContext(Union);
