@@ -49,7 +49,7 @@
     "webpack-dev-middleware": "3.4.0",
     "webpack-hot-middleware": "2.24.3",
     "webpack-manifest-plugin": "2.0.4",
-    "webpack-merge": "4.1.4"
+    "webpack-merge": "4.1.5"
   },
   "devDependencies": {
     "babel-core": "^7.0.0-bridge",
