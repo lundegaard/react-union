@@ -696,7 +696,7 @@
     "@babel/helper-regex" "^7.0.0"
     regexpu-core "^4.1.3"
 
-"@babel/polyfill@7.0.0", "@babel/polyfill@^7.0.0":
+"@babel/polyfill@7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.0.0.tgz#c8ff65c9ec3be6a1ba10113ebd40e8750fb90bff"
   dependencies:
@@ -1352,12 +1352,52 @@ babel-plugin-syntax-object-rest-spread@^6.13.0:
   version "6.13.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-syntax-object-rest-spread/-/babel-plugin-syntax-object-rest-spread-6.13.0.tgz#fd6536f2bce13836ffa3a5458c4903a597bb3bf5"
 
+babel-plugin-universal-import@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/babel-plugin-universal-import/-/babel-plugin-universal-import-3.1.2.tgz#1ccd9e46c038c57bb317f6119a382f6e28b49e8c"
+  integrity sha512-p5GISLeu57DHRnFE5uLbzm2yFnYArWVTnMdSObHZfV4yhXrkLITGQkhwQwfAPIfu78pNdBAk3bsvp2Gj3Qo7XQ==
+  dependencies:
+    "@babel/helper-module-imports" "^7.0.0"
+
 babel-preset-jest@^23.2.0:
   version "23.2.0"
   resolved "https://registry.yarnpkg.com/babel-preset-jest/-/babel-preset-jest-23.2.0.tgz#8ec7a03a138f001a1a8fb1e8113652bf1a55da46"
   dependencies:
     babel-plugin-jest-hoist "^23.2.0"
     babel-plugin-syntax-object-rest-spread "^6.13.0"
+
+babel-preset-react-union@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/babel-preset-react-union/-/babel-preset-react-union-0.11.0.tgz#20f26c4d8dd577ddcad8ca9521501f27cb140de1"
+  integrity sha512-iCocQzJ8KyqnblUomUQpCyzaYffW2mQU2TXw/36z/Ai0H6MFPos+H+0D3cH3C6UX/fRKQDBn8q3NrX0xWYqIDw==
+  dependencies:
+    "@babel/cli" "^7.1.2"
+    "@babel/core" "^7.1.2"
+    "@babel/plugin-external-helpers" "7.0.0"
+    "@babel/plugin-proposal-class-properties" "7.1.0"
+    "@babel/plugin-proposal-decorators" "7.1.6"
+    "@babel/plugin-proposal-do-expressions" "7.0.0"
+    "@babel/plugin-proposal-export-default-from" "7.0.0"
+    "@babel/plugin-proposal-export-namespace-from" "7.0.0"
+    "@babel/plugin-proposal-function-sent" "7.1.0"
+    "@babel/plugin-proposal-json-strings" "7.0.0"
+    "@babel/plugin-proposal-logical-assignment-operators" "7.0.0"
+    "@babel/plugin-proposal-nullish-coalescing-operator" "7.0.0"
+    "@babel/plugin-proposal-numeric-separator" "7.0.0"
+    "@babel/plugin-proposal-object-rest-spread" "7.0.0"
+    "@babel/plugin-proposal-optional-chaining" "7.0.0"
+    "@babel/plugin-proposal-pipeline-operator" "7.0.0"
+    "@babel/plugin-proposal-throw-expressions" "7.0.0"
+    "@babel/plugin-syntax-dynamic-import" "7.0.0"
+    "@babel/plugin-syntax-import-meta" "7.0.0"
+    "@babel/plugin-transform-modules-commonjs" "7.1.0"
+    "@babel/plugin-transform-react-constant-elements" "7.0.0"
+    "@babel/plugin-transform-regenerator" "7.0.0"
+    "@babel/plugin-transform-runtime" "7.1.0"
+    "@babel/preset-env" "^7.1.0"
+    "@babel/preset-react" "7.0.0"
+    "@babel/runtime" "^7.1.2"
+    babel-plugin-universal-import "^3.1.2"
 
 babel-preset-react-union@^0.9.0:
   version "0.9.0"
@@ -6155,7 +6195,7 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-dom@16.6.3, react-dom@^16.4.1:
+react-dom@16.6.3:
   version "16.6.3"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.6.3.tgz#8fa7ba6883c85211b8da2d0efeffc9d3825cccc0"
   dependencies:
@@ -6164,7 +6204,7 @@ react-dom@16.6.3, react-dom@^16.4.1:
     prop-types "^15.6.2"
     scheduler "^0.11.2"
 
-react-hot-loader@4.3.12, react-hot-loader@^4.3.3:
+react-hot-loader@4.3.12:
   version "4.3.12"
   resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.3.12.tgz#0d56688884e7330c63a00a17217866280616b07a"
   dependencies:
@@ -6232,7 +6272,7 @@ react-union-scripts@^0.10.0:
     webpack-manifest-plugin "2.0.4"
     webpack-merge "4.1.4"
 
-react-union@0.10.0, react-union@^0.10.0:
+react-union@^0.10.0:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/react-union/-/react-union-0.10.0.tgz#f181886471ac67dd388f2f5455341f3a075478fa"
   dependencies:
@@ -6247,7 +6287,7 @@ react-universal-component@^3.0.3:
     hoist-non-react-statics "^2.2.1"
     prop-types "^15.5.10"
 
-react@16.6.3, react@^16.4.1:
+react@16.6.3:
   version "16.6.3"
   resolved "https://registry.yarnpkg.com/react/-/react-16.6.3.tgz#25d77c91911d6bbdd23db41e70fb094cc1e0871c"
   dependencies:
