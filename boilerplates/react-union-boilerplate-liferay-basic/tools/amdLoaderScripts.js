@@ -5,8 +5,7 @@ const path = require('path'); // eslint-disable-line import/no-extraneous-depend
 const rimraf = require('rimraf'); // eslint-disable-line import/no-extraneous-dependencies
 const glob = require('glob'); // eslint-disable-line import/no-extraneous-dependencies
 const R = require('ramda'); // eslint-disable-line import/no-extraneous-dependencies
-const R_ = require('ramda-extension');
-// eslint-disable-line import/no-extraneous-dependencies
+const R_ = require('ramda-extension'); // eslint-disable-line import/no-extraneous-dependencies
 
 const appDirectory = fs.realpathSync(process.cwd());
 const srcPackagesFolder = path.join(appDirectory, 'packages');
@@ -20,6 +19,8 @@ const DEBUG = !process.argv.includes('--release');
 
 const vendorBundleName = 'vendor';
 const vendorBundleFileName = `${vendorBundleName}.js`;
+const runtimeBundleName = 'runtime';
+const runtimeBundleFileName = `${runtimeBundleName}.js`;
 const manifestFileName = 'assetManifest.json';
 
 const buildFolder = path.join(appDirectory, 'build');
@@ -47,6 +48,7 @@ function createLiferayConfigSource({ name, exportsObject, path = null, dependenc
 
 function getEntryBundlesFromManifest({ currentApp, manifest }) {
 	return R.filter(Boolean, {
+		runtime: manifest[runtimeBundleFileName],
 		vendor: manifest[vendorBundleFileName],
 		app: manifest[`${currentApp}.js`],
 	});
@@ -57,7 +59,7 @@ function getHashPart(x) {
 }
 
 /**
- * Hash is sum of hash of entry and vendor bundle
+ * Hash is sum of hash of runtime, entry and vendor bundle
  */
 function getHash(ctx) {
 	if (DEBUG) {
@@ -66,7 +68,7 @@ function getHash(ctx) {
 
 	const paths = getEntryBundlesFromManifest(ctx);
 
-	return `${getHashPart(paths.app)}${getHashPart(paths.vendor)}`;
+	return `${getHashPart(paths.app)}${getHashPart(paths.vendor)}${getHashPart(paths.runtime)}`;
 }
 
 const getLoadScriptsSrc = R.o(R.values, R.map(x => `Liferay.Loader._loadScript({ url: '${x}' });`));
