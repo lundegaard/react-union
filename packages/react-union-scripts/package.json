@@ -16,11 +16,11 @@
     "node": ">=8"
   },
   "dependencies": {
-    "@babel/core": "^7.1.2",
+    "@babel/core": "7.2.0",
     "babel-core": "^7.0.0-bridge",
     "babel-jest": "23.6.0",
     "babel-loader": "8.0.4",
-    "babel-preset-react-union": "^0.11.0",
+    "babel-preset-react-union": "0.11.0",
     "browser-sync": "2.26.3",
     "clean-webpack-plugin": "1.0.0",
     "connect-history-api-fallback": "1.5.0",
@@ -52,7 +52,6 @@
     "webpack-merge": "4.1.4"
   },
   "devDependencies": {
-    "babel-core": "^7.0.0-bridge",
     "react": "16.6.3",
     "react-dom": "16.6.3"
   }

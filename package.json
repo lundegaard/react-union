@@ -31,8 +31,8 @@
   "repository": "https://github.com/lundegaard/react-union",
   "license": "UNLICENSED",
   "devDependencies": {
-    "@babel/cli": "^7.1.2",
-    "@babel/core": "^7.1.2",
+    "@babel/cli": "7.2.0",
+    "@babel/core": "7.2.0",
     "babel-core": "^7.0.0-bridge",
     "babel-eslint": "10.0.1",
     "babel-jest": "23.6.0",

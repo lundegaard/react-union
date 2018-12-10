@@ -1,5 +1,5 @@
 {
-  "name": "react-union-boilerplate-monorepo",
+  "name": "react-union-boilerplate-ssr-basic",
   "version": "0.9.1",
   "private": true,
   "license": "MIT",
@@ -7,14 +7,20 @@
   "engines": {
     "node": ">=8"
   },
-  "workspaces": [
-    "packages/*"
-  ],
+  "dependencies": {
+    "@babel/polyfill": "7.0.0",
+    "classnames": "2.2.6",
+    "prop-types": "15.6.2",
+    "react": "16.6.3",
+    "react-dom": "16.6.3",
+    "react-hot-loader": "4.3.12",
+    "react-union": "0.11.0",
+    "react-universal-component": "3.0.3"
+  },
   "devDependencies": {
     "@babel/core": "7.2.0",
     "babel-core": "^7.0.0-bridge",
     "babel-eslint": "10.0.1",
-    "babel-plugin-dynamic-import-node": "2.2.0",
     "babel-preset-react-union": "0.11.0",
     "enzyme": "3.7.0",
     "enzyme-adapter-react-16": "1.7.0",
@@ -27,27 +33,29 @@
     "husky": "1.2.0",
     "lint-staged": "8.1.0",
     "prettier": "1.15.3",
-    "react-union-scripts": "0.11.0"
+    "react-union-scripts": "0.11.0",
+    "react-union-ssr-server": "0.11.0"
   },
   "scripts": {
-    "build": "react-union-scripts build",
-    "start": "react-union-scripts start --app app-sample",
+    "build": "react-union-scripts build --release",
+    "start": "react-union-scripts start --app SampleApp",
+    "start:server": "node build/SampleApp/server",
     "test": "react-union-scripts test",
     "lint": "yarn lint:eslint",
-    "lint:eslint": "eslint --ext .js ./"
-  },
-  "lint-staged": {
-    "linters": {
-      "**/*.js": [
-        "prettier --write",
-        "yarn lint --fix",
-        "git add"
-      ]
-    }
+    "lint:eslint": "eslint --ext .js ./",
+    "precommit": "lint-staged",
+    "prepush": "yarn lint && yarn test --release"
   },
   "jest": {
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
+    ]
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "prettier --write",
+      "yarn lint --fix",
+      "git add"
     ]
   }
 }
