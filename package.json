@@ -71,7 +71,8 @@
     "lint:fix": "yarn lint --fix",
     "test": "jest",
     "build": "lerna exec --scope react-union -- rollup -c=../../rollup.config.js",
-    "prepublish": "yarn build"
+    "prepublish": "yarn build",
+    "publishAll": "lerna publish --preid=ci"
   },
   "lint-staged": {
     "linters": {
