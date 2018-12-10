@@ -1,7 +1,8 @@
 {
   "name": "react-union-ssr-server",
-  "version": "0.1.0",
+  "version": "0.11.0",
   "description": "HTTP server for server-side rendering.",
+  "private": true,
   "main": "src/index.js",
   "repository": "https://github.com/lundegaard/react-union",
   "contributors": [
@@ -15,12 +16,12 @@
     "invariant": "2.2.4",
     "ramda": "0.26.1",
     "ramda-extension": "0.7.1",
-    "react": "16.6.3",
-    "react-dom": "16.6.3",
     "webpack-flush-chunks": "2.0.3"
   },
   "peerDependencies": {
-    "react-union": "^0.10.0",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-union": "^0.11.0",
     "react-universal-component": "^3.0.3"
   }
 }
