@@ -63,7 +63,8 @@
     "rollup-plugin-terser": "3.0.0"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "boilerplates/*"
   ],
   "scripts": {
     "example:basic": "cd boilerplates/react-union-boilerplate-basic && yarn start",
