@@ -9,6 +9,7 @@ const middleware = require('../middleware');
 const startServer = (applicationHandler, options) => {
 	const renderer = makeRenderer(applicationHandler, options);
 
+	// NOTE: This global is set in `responseCapturerMiddleware`.
 	if (global.DEV_MIDDLEWARE) {
 		return middleware.rendering(renderer);
 	}

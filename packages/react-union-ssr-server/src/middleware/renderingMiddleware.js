@@ -1,4 +1,5 @@
 const { curry } = require('ramda');
+const { isRequestForHTML } = require('../utils');
 
 // NOTE: `options` will be provided by WebpackHotServerMiddleware iff we are running a dev server
 // The signature matches the `createHandler` property
@@ -6,6 +7,10 @@ const { curry } = require('ramda');
 const renderingMiddleware = curry((renderer, options) => async (req, res, next) => {
 	try {
 		if (global.DEV_MIDDLEWARE) {
+			if (!isRequestForHTML(req)) {
+				return next();
+			}
+
 			const content = await renderer(res.body, options.clientStats, { req, res });
 			res.statusMessage = 'OK';
 			res.originals.writeHead(200);
