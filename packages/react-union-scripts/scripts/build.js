@@ -15,10 +15,12 @@ const getClientStatsList = o(filter(propEq('name', 'client')), prop('children'))
 const prependClientStats = clientStats => {
 	const bundlePath = path.join(clientStats.outputPath, 'server', 'index.js');
 
-	fs.writeFileSync(
-		bundlePath,
-		`global.clientStats=${JSON.stringify(clientStats)};${fs.readFileSync(bundlePath)}`
-	);
+	if (fs.existsSync(bundlePath)) {
+		fs.writeFileSync(
+			bundlePath,
+			`global.clientStats=${JSON.stringify(clientStats)};${fs.readFileSync(bundlePath)}`
+		);
+	}
 };
 
 const getWebpackConfigsToBuild = cli.noSSR ? map(head) : o(rejectNil, flatten);
