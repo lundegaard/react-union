@@ -8,7 +8,7 @@ const path = require('path');
 const utilsFs = require('./fs');
 const cli = require('./cli');
 
-const isMonoRepo = utilsFs.getWorkspacesPatterns();
+const isMonoRepo = Boolean(utilsFs.getWorkspacesPatterns());
 
 const DEFAULT_WIDGET_PATTERN = 'union-widget';
 const DEFAULT_APP_PATTERN = 'union-app';
