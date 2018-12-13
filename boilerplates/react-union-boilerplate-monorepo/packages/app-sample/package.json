@@ -1,5 +1,5 @@
 {
-  "name": "@union-app/app-sample",
+  "name": "@union-monorepo/app-sample",
   "version": "0.7.0",
   "private": true,
   "license": "MIT",
@@ -9,12 +9,12 @@
   },
   "dependencies": {
     "@babel/polyfill": "7.0.0",
-    "@union-app/widget-content": "0.1.0",
-    "@union-app/widget-hero": "0.1.0",
+    "@union-monorepo/widget-content": "0.1.0",
+    "@union-monorepo/widget-hero": "0.1.0",
     "react": "16.6.3",
     "react-dom": "16.6.3",
-    "react-hot-loader": "4.3.12",
-    "react-union": "0.10.0",
-    "react-universal-component": "^3.0.3"
+    "react-hot-loader": "4.6.0",
+    "react-union": "0.11.0",
+    "react-universal-component": "3.0.3"
   }
 }
