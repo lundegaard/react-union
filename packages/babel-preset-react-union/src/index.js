@@ -49,7 +49,7 @@ module.exports = () => ({
 				regenerator: true,
 			},
 		],
-		['@babel/plugin-transform-modules-commonjs', { loose }],
+		'@babel/plugin-transform-modules-commonjs',
 		'babel-plugin-universal-import',
 	].filter(Boolean),
 });
