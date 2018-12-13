@@ -9,7 +9,7 @@ class Root extends Component {
 		// NOTE: req is defined iff this method is executed in server context
 		// This is to simulate that fetching data in a local network is faster than roundtrips
 		await sleep(req ? 10 : 1000);
-		return { asyncData: 'This content was fetched asynchronously!' };
+		return { asyncData: 'This is some async content!' };
 	}
 
 	static propTypes = {
