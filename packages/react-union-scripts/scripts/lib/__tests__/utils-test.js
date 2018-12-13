@@ -117,6 +117,7 @@ describe('utils', () => {
 				build: `${process.cwd()}/build/sample-app`,
 				public: `${process.cwd()}/packages/sample-app/public`,
 				index: `${process.cwd()}/packages/sample-app/src/index`,
+				ssrIndex: `${process.cwd()}/packages/sample-app/src/index.ssr`,
 			});
 		});
 	});

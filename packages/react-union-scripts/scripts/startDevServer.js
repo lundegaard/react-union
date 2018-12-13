@@ -5,9 +5,12 @@ const R = require('ramda');
 const R_ = require('ramda-extension');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
+const webpackHotServerMiddleware = require('webpack-hot-server-middleware');
 const proxyMiddleware = require('http-proxy-middleware');
-const historyApiFallback = require('connect-history-api-fallback');
-const configs = require('./webpack.config');
+const historyAPIFallback = require('connect-history-api-fallback');
+const responseCapturerMiddleware = require('react-union-ssr-server/dev-middleware');
+
+const webpackConfigs = require('./webpack.config');
 const cli = require('./lib/cli');
 const { stats, getAppConfig } = require('./lib/utils');
 
@@ -43,66 +46,69 @@ const getProxyMiddleware = ({ proxy } = {}) => {
 	}, normalizedConfig);
 };
 
-function startDevServer() {
+async function startDevServer() {
 	invariant(
-		configs && configs.length === 1,
-		'You can start DEV Sever only for one module at the same time.'
+		webpackConfigs.length === 1,
+		'You can start the development server only for one module at a time.'
 	);
 
-	const webpackConfig = configs[0];
+	const webpackConfigPair = webpackConfigs[0];
+	const clientConfig = webpackConfigPair[0];
 	const unionConfig = getAppConfig();
+
+	const isSSR = webpackConfigPair[1] && !cli.noSSR;
 
 	invariant(!cli.proxy || unionConfig.proxy.port, "Missing 'port' for proxy in your union.config.");
 	invariant(
 		!cli.proxy || unionConfig.proxy.target,
-		"Missing 'target' for proxy in your union.config"
+		"Missing 'target' for proxy in your union.config."
 	);
 
-	return new Promise(resolve => {
-		const compiler = webpack(webpackConfig);
-			const middleware = [
-				webpackDevMiddleware(compiler, {
-					publicPath: webpackConfig.output.publicPath,
-					stats,
-				}),
-				webpackHotMiddleware(compiler),
-				...(!cli.proxy && unionConfig.devServer.historyApiFallback
-					? [
-							historyApiFallback({
-								disableDotRule: true,
-								htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
-							}),
-					  ]
-					: []),
-				...getProxyMiddleware(webpackConfig.devServer),
-			];
+	const compiler = R.o(webpack, R_.rejectNil)(webpackConfigPair);
+	const [clientCompiler] = compiler.compilers;
 
-			const baseDirs = [unionConfig.paths.public];
+	const shouldUseHistoryAPIFallback = !cli.proxy && unionConfig.devServer.historyApiFallback;
 
-			const config = cli.proxy
-				? {
-						port: unionConfig.proxy.port,
-						proxy: {
-							target: unionConfig.proxy.target,
-							middleware,
-						},
-						serveStatic: baseDirs,
-				  }
-				: {
-						port: unionConfig.devServer.port,
-						server: {
-							baseDir: baseDirs,
-							middleware,
-						},
-				  };
+	const middleware = R_.rejectNil([
+		isSSR && responseCapturerMiddleware(),
+		webpackDevMiddleware(isSSR ? compiler : clientCompiler, {
+			publicPath: clientConfig.output.publicPath,
+			stats,
+			serverSideRender: isSSR,
+		}),
+		webpackHotMiddleware(clientCompiler),
+		isSSR && webpackHotServerMiddleware(compiler),
+		shouldUseHistoryAPIFallback &&
+			historyAPIFallback({
+				disableDotRule: true,
+				htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
+			}),
+		...getProxyMiddleware(clientConfig.devServer),
+	]);
 
-			browserSync.create().init(
-				{
-					ui: false,
-					...config,
+	const baseDirs = [unionConfig.paths.public];
+
+	const config = cli.proxy
+		? {
+				port: unionConfig.proxy.port,
+				proxy: {
+					target: unionConfig.proxy.target,
+					middleware,
 				},
-				resolve
-			);
+				// TODO: we probably shouldn't serve index.ejs when running a proxy
+				serveStatic: baseDirs,
+		  }
+		: {
+				port: unionConfig.devServer.port,
+				server: {
+					baseDir: baseDirs,
+					middleware,
+				},
+		  };
+
+	browserSync.create().init({
+		ui: false,
+		...config,
 	});
 }
 module.exports = startDevServer;
