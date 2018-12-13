@@ -80,7 +80,7 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 		loadFiles(config),
 		definePlugin(createGlobals(!isServerConfig)),
 		context(),
-		performanceHints,
+		performanceHints(),
 		mergeWhen(cli.analyze, analyzeBundlePlugin),
 		mergeWhen(isHot, hmrPlugin)
 	);
