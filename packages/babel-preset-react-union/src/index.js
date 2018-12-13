@@ -1,7 +1,3 @@
-const { NODE_ENV, BABEL_ENV } = process.env;
-
-const cjs = NODE_ENV === 'test' || BABEL_ENV === 'commonjs';
-
 const loose = true;
 
 module.exports = () => ({
@@ -53,7 +49,7 @@ module.exports = () => ({
 				regenerator: true,
 			},
 		],
-		cjs && ['@babel/plugin-transform-modules-commonjs', { loose }],
+		['@babel/plugin-transform-modules-commonjs', { loose }],
 		'babel-plugin-universal-import',
 	].filter(Boolean),
 });

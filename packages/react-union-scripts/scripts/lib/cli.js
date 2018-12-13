@@ -36,7 +36,10 @@ const verbose = programIncludes('--verbose');
 const proxy = programIncludes('--proxy');
 
 /** if true, do not suport HMR */
-const noHmr = !debug || programIncludes('--no-hmr');
+const noHMR = programIncludes('--no-hmr');
+
+/** if true, do not do anything SSR related */
+const noSSR = programIncludes('--no-ssr');
 
 /** if true, runs analyze tool  */
 const analyze = programIncludes('--analyze');
@@ -48,4 +51,4 @@ const target = getArgValue('--target', program);
 
 const script = nth(2)(program);
 
-module.exports = { script, target, debug, verbose, proxy, noHmr, analyze, app };
+module.exports = { script, target, debug, verbose, proxy, noHMR, noSSR, analyze, app };

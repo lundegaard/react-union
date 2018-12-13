@@ -1,4 +1,3 @@
-/* eslint-disable import/no-dynamic-require */
 const invariant = require('invariant');
 const merge = require('webpack-merge');
 const path = require('path');
@@ -13,13 +12,14 @@ const {
 	hmrPlugin,
 	manifestPlugin,
 	analyzeBundlePlugin,
-	uglifyJsPlugin,
+	uglifyJSPlugin,
 	cleanPlugin,
+	limitChunkCountPlugin,
+	extractCSSChunksPlugin,
 } = require('./webpack/plugins.parts');
 const { optimization, performanceHints, context } = require('./webpack/common.parts');
 
 const buildMode = getForMode('development', 'production');
-const buildModeString = getForMode('"development"', '"production"');
 
 /** if true, we are building bundles for all of the modules in 'configs' */
 const buildingAll = !cli.app;
@@ -30,17 +30,14 @@ if (cli.proxy) {
 
 console.log(`Optimizing for ${buildMode} mode.`);
 
-const GLOBALS = {
+const createGlobals = isBrowser => ({
 	__DEV__: cli.debug, //  alias for `process.env.NODE_ENV === 'development'
-	'process.env.BROWSER': true,
-	'process.env.BABEL_ENV': buildModeString,
-	'process.env.NODE_ENV': buildModeString,
-};
+	'process.env.BROWSER': isBrowser,
+});
 
-const getWebpackConfig_ = config => {
+const getWebpackConfig_ = (config, isServerConfig) => {
 	const {
 		paths,
-		name: appName,
 		proxy,
 		generateTemplate,
 		publicPath,
@@ -49,7 +46,15 @@ const getWebpackConfig_ = config => {
 		sourceMaps,
 	} = config;
 
-	const hmr = cli.script === 'start' && cli.debug && !cli.noHmr;
+	if (isServerConfig) {
+		try {
+			require.resolve(paths.ssrIndex);
+		} catch (error) {
+			return null;
+		}
+	}
+
+	const isHot = cli.script === 'start' && cli.debug && !cli.noHMR;
 
 	const outputPath = paths.build;
 
@@ -57,14 +62,9 @@ const getWebpackConfig_ = config => {
 	const outputChunkname = getForMode('[name].chunk.js', '[name].[chunkhash:8].chunk.js');
 
 	const commonConfig = merge(
-		{ mode: buildMode },
 		{
-			entry: {
-				[appName]: [
-					...(hmr ? [require.resolve('webpack-hot-middleware/client')] : []),
-					paths.index,
-				],
-			},
+			mode: buildMode,
+			entry: [isServerConfig ? paths.ssrIndex : paths.index],
 			output: {
 				path: path.resolve(outputPath),
 				filename: `${outputMapper.js}/${outputFilename}`,
@@ -75,48 +75,84 @@ const getWebpackConfig_ = config => {
 			},
 		},
 		loadJS(),
-		loadCSS(),
+		loadCSS(isServerConfig),
 		loadImages(config),
 		loadFiles(config),
-		definePlugin(GLOBALS),
-		cleanPlugin(config),
+		definePlugin(createGlobals(!isServerConfig)),
 		context(),
 		performanceHints,
 		mergeWhen(cli.analyze, analyzeBundlePlugin),
-		optimization(),
-		manifestPlugin()
+		mergeWhen(isHot, hmrPlugin)
 	);
 
-	const devWebpack = () =>
+	if (isServerConfig) {
+		return mergeWebpackConfig(
+			merge(
+				commonConfig,
+				{
+					name: 'server',
+					target: 'node',
+					output: {
+						path: path.join(path.resolve(outputPath), 'server'),
+						filename: 'index.js',
+						libraryTarget: 'umd',
+					},
+				},
+				limitChunkCountPlugin()
+			)
+		);
+	}
+
+	// NOTE: here we only handle the client-side configs
+	const clientConfig = () =>
 		merge(
 			commonConfig,
-			{ devtool: 'cheap-source-map' },
-			loaderOptionsPlugin(true),
-			mergeWhen(hmr, hmrPlugin),
-			mergeWhen(generateTemplate, htmlPlugin, config, outputPath)
+			{
+				name: 'client',
+				entry: isHot ? [require.resolve('webpack-hot-middleware/client')] : [],
+			},
+			optimization(),
+			cleanPlugin(config),
+			extractCSSChunksPlugin(isHot, outputMapper.css),
+			manifestPlugin()
 		);
 
-	const prodWebpack = () =>
+	const clientDevelopmentConfig = () =>
 		merge(
-			commonConfig,
+			clientConfig(),
+			loaderOptionsPlugin(true),
+			mergeWhen(generateTemplate, htmlPlugin, config, outputPath),
+			{
+				devtool: 'cheap-source-map',
+			}
+		);
+
+	const clientProductionConfig = () =>
+		merge(
+			clientConfig(),
 			{
 				bail: true,
 				devtool: sourceMaps ? 'source-map' : false,
 			},
-			uglifyJsPlugin(cli.verbose, config)
+			uglifyJSPlugin(cli.verbose, config)
 		);
 
-	return mergeWebpackConfig(cli.debug ? devWebpack() : prodWebpack());
+	return mergeWebpackConfig(cli.debug ? clientDevelopmentConfig() : clientProductionConfig());
 };
+
+const getWebpackConfigPair_ = config => [
+	getWebpackConfig_(config, false),
+	getWebpackConfig_(config, true),
+];
 
 const buildSingle_ = () => {
 	const config = getAppConfig();
 	invariant(config, `Missing configuration for the app called '${cli.app}'.`);
 
-	return [getWebpackConfig_(config)];
+	return [getWebpackConfigPair_(config)];
 };
 
-const buildAll_ = () => getUnionConfig().map(getWebpackConfig_);
+const buildAll_ = () => getUnionConfig().map(getWebpackConfigPair_);
 
 /**
  * If building from root directory all modules in `union.config.js` are built.
