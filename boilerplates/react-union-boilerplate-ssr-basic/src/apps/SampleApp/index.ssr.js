@@ -1,4 +1,3 @@
-// TODO: Implementation in react-union-scripts
 import React from 'react';
 import startServer from 'react-union-ssr-server';
 
