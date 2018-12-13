@@ -33,11 +33,11 @@ const resolve = modules => ({
 	},
 });
 
-const performanceHints = {
+const performanceHints = () => ({
 	performance: {
 		hints: false,
 	},
-};
+});
 
 const context = () => ({
 	context: path.resolve(path.join(process.cwd(), './src')),
