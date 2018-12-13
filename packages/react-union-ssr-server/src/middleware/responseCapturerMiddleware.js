@@ -1,4 +1,5 @@
 const { noop } = require('ramda-extension');
+const { isRequestForHTML } = require('../utils');
 
 /**
  * Because browserSync only uses Connect and not Express or any other framework,
@@ -11,7 +12,7 @@ const responseCapturerMiddleware = () => {
 
 	return (req, res, next) => {
 		// TODO: Handle other URLs as well, but don't handle any assets.
-		if (req.url === '/') {
+		if (isRequestForHTML(req)) {
 			res.body = null;
 			res.originals = { ...res };
 
