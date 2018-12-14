@@ -1,4 +1,4 @@
-const { always, compose, equals, findIndex, ifElse, when, nth, identity } = require('ramda');
+const { always, compose, equals, findIndex, ifElse, nth } = require('ramda');
 const { includes, notInclude } = require('ramda-extension');
 
 /**
