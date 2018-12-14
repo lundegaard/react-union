@@ -19,7 +19,7 @@ const startServer = (applicationHandler, options) => {
 	app.use('/health', middleware.health());
 
 	const server = http.createServer(app);
-	const port = getArgValue('--port', process.argv) || process.env.SSR_PORT || 3303;
+	const port = getArgValue('--port', process.argv) || process.env.PORT || 3303;
 	server.listen(port);
 	console.log(`🚀 React Union SSR server is listening on port ${port}.`);
 
