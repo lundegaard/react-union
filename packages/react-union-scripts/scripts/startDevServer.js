@@ -8,7 +8,7 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const webpackHotServerMiddleware = require('webpack-hot-server-middleware');
 const proxyMiddleware = require('http-proxy-middleware');
 const historyAPIFallback = require('connect-history-api-fallback');
-const responseCapturerMiddleware = require('react-union-ssr-server/dev-middleware');
+const responseCapturerMiddleware = require('react-union-ssr-server/middleware');
 
 const webpackConfigs = require('./webpack.config');
 const cli = require('./lib/cli');
@@ -59,7 +59,10 @@ async function startDevServer() {
 	const isSSR = webpackConfigPair[1] && !cli.noSSR;
 
 	if (isSSR) {
-		global.ssr_isMiddleware = true;
+		global.ReactUnionSSRServerOptions = {
+			...unionConfig.ssrServer,
+			isMiddleware: true,
+		};
 	}
 
 	invariant(!cli.proxy || unionConfig.proxy.port, "Missing 'port' for proxy in your union.config.");
@@ -73,7 +76,7 @@ async function startDevServer() {
 
 	const shouldUseHistoryAPIFallback = !cli.proxy && unionConfig.devServer.historyApiFallback;
 
-	const middleware = R_.rejectNil([
+	const middleware = R.filter(Boolean, [
 		isSSR && responseCapturerMiddleware(),
 		webpackDevMiddleware(isSSR ? compiler : clientCompiler, {
 			publicPath: clientConfig.output.publicPath,
@@ -81,7 +84,7 @@ async function startDevServer() {
 			serverSideRender: isSSR,
 		}),
 		webpackHotMiddleware(clientCompiler),
-		isSSR && webpackHotServerMiddleware(compiler),
+		isSSR && webpackHotServerMiddleware(compiler, { chunkName: unionConfig.name }),
 		shouldUseHistoryAPIFallback &&
 			historyAPIFallback({
 				disableDotRule: true,

@@ -24,6 +24,8 @@ const UNION_CONFIG_PATH = path.resolve(process.cwd(), './union.config.js');
 const DEFAULT_UNI_REPO_APP_DIR = path.resolve(process.cwd(), SRC_FOLDER, APPS_FOLDER);
 
 const DEFAULT_PORT = 3300;
+const DEFAULT_SSR_PORT = 3303;
+
 const DEFAULT_UNION_CONFIG = {
 	// computed in `extendPaths_`
 	paths: {},
@@ -37,6 +39,13 @@ const DEFAULT_UNION_CONFIG = {
 		historyApiFallback: true,
 		port: DEFAULT_PORT,
 	},
+	ssrServer: {
+		port: DEFAULT_SSR_PORT,
+		beforeChunks: ['runtime', 'vendor'],
+		// computed in `extendAfterChunks_`
+		afterChunks: null,
+		skipFlushing: false,
+	},
 	proxy: {
 		port: DEFAULT_PORT,
 		target: '',
@@ -49,7 +58,6 @@ const DEFAULT_UNION_CONFIG = {
 		index: 'index.html',
 	},
 	mergeWebpackConfig: R.identity,
-	asyncSuffix: 'widget',
 	workspaces: {
 		widgetPattern: DEFAULT_WIDGET_PATTERN,
 		appPattern: DEFAULT_APP_PATTERN,
@@ -121,6 +129,14 @@ const extendOutputMapper_ = R.evolve({
 	outputMapper: R.o(R.map(trimSlashes), R.merge(DEFAULT_UNION_CONFIG.outputMapper)),
 });
 
+const extendAfterChunks_ = config => ({
+	...config,
+	ssrServer: {
+		...config.ssrServer,
+		afterChunks: config.ssrServer.afterChunks || [config.name],
+	},
+});
+
 const getCommonUnionConfig_ = R.omit([APPS_FOLDER]);
 
 const extendConfigs = R.map(
@@ -128,7 +144,8 @@ const extendConfigs = R.map(
 		R.compose(
 			extendClean_,
 			extendPaths_,
-			extendOutputMapper_
+			extendOutputMapper_,
+			extendAfterChunks_
 		),
 		R.mergeDeepRight(DEFAULT_UNION_CONFIG)
 	)

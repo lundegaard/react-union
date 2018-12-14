@@ -89,7 +89,7 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 	);
 
 	if (isServerConfig) {
-		return mergeWebpackConfig(
+		const webpackConfig = mergeWebpackConfig(
 			merge(
 				commonConfig,
 				{
@@ -104,6 +104,15 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 				limitChunkCountPlugin()
 			)
 		);
+
+		// NOTE: In the `build` script, we need to access the union config by webpack config.
+		// If we didn't use `enumerable: false`, webpack would not be happy with the schema.
+		Object.defineProperty(webpackConfig, 'unionConfig', {
+			value: config,
+			enumerable: false,
+		});
+
+		return webpackConfig;
 	}
 
 	// NOTE: here we only handle the client-side configs
