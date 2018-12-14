@@ -2,7 +2,7 @@ const connect = require('connect');
 const http = require('http');
 const bodyParser = require('body-parser');
 
-const { getArgValue } = require('../utils');
+const { getCLIParameter } = require('../utils');
 const makeRenderer = require('../rendering');
 const middleware = require('../middleware');
 
@@ -19,7 +19,7 @@ const startServer = (applicationHandler, options) => {
 	app.use('/health', middleware.health());
 
 	const server = http.createServer(app);
-	const port = getArgValue('--port', process.argv) || process.env.PORT || 3303;
+	const port = getCLIParameter('--port', process.argv) || process.env.PORT || 3303;
 	server.listen(port);
 	console.log(`🚀 React Union SSR server is listening on port ${port}.`);
 
