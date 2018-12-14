@@ -14,7 +14,7 @@ const startServer = (applicationHandler, options) => {
 	}
 
 	const app = connect();
-	app.use(bodyParser.text());
+	app.use(bodyParser.text({ type: 'text/*' }));
 	app.use('/', middleware.rendering(renderer, { clientStats: global.ssr_clientStats }));
 	app.use('/health', middleware.health());
 
