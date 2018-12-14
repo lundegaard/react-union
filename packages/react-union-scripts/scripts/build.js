@@ -18,7 +18,7 @@ const prependClientStats = clientStats => {
 	if (fs.existsSync(bundlePath)) {
 		fs.writeFileSync(
 			bundlePath,
-			`global.clientStats=${JSON.stringify(clientStats)};${fs.readFileSync(bundlePath)}`
+			`global.ssr_clientStats=${JSON.stringify(clientStats)};${fs.readFileSync(bundlePath)}`
 		);
 	}
 };

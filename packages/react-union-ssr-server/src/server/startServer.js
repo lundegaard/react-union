@@ -2,27 +2,26 @@ const connect = require('connect');
 const http = require('http');
 const bodyParser = require('body-parser');
 
-const cli = require('../cli');
+const { getArgValue } = require('../utils');
 const makeRenderer = require('../rendering');
 const middleware = require('../middleware');
 
 const startServer = (applicationHandler, options) => {
 	const renderer = makeRenderer(applicationHandler, options);
 
-	// NOTE: This global is set in `responseCapturerMiddleware`.
-	if (global.DEV_MIDDLEWARE) {
+	if (global.ssr_isMiddleware) {
 		return middleware.rendering(renderer);
 	}
 
 	const app = connect();
 	app.use(bodyParser.text());
-	app.use('/', middleware.rendering(renderer, { clientStats: global.clientStats }));
+	app.use('/', middleware.rendering(renderer, { clientStats: global.ssr_clientStats }));
 	app.use('/health', middleware.health());
 
 	const server = http.createServer(app);
-	const port = cli.getPort();
+	const port = getArgValue('--port', process.argv) || process.env.SSR_PORT || 3303;
 	server.listen(port);
-	cli.printUsage(port);
+	console.log(`🚀 React Union SSR server is listening on port ${port}.`);
 
 	return server;
 };

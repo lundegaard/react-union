@@ -7,27 +7,22 @@ const { isRequestForHTML } = require('../utils');
  * to send the response to the client, we intercept the call and use the original one
  * in the SSR server middleware instead.
  */
-const responseCapturerMiddleware = () => {
-	global.DEV_MIDDLEWARE = true;
+const responseCapturerMiddleware = () => (req, res, next) => {
+	if (isRequestForHTML(req)) {
+		res.body = null;
+		res.originals = { ...res };
 
-	return (req, res, next) => {
-		// TODO: Handle other URLs as well, but don't handle any assets.
-		if (isRequestForHTML(req)) {
-			res.body = null;
-			res.originals = { ...res };
+		res.end = data => {
+			res.body = res.body || data;
+			next();
+		};
 
-			res.end = data => {
-				res.body = res.body || data;
-				next();
-			};
+		res.setHeader = noop;
+		res.write = noop;
+		res.writeHead = noop;
+	}
 
-			res.setHeader = noop;
-			res.write = noop;
-			res.writeHead = noop;
-		}
-
-		next();
-	};
+	next();
 };
 
 module.exports = responseCapturerMiddleware;

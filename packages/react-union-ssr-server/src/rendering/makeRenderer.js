@@ -73,8 +73,8 @@ const makeRenderer = applicationHandler => {
 			const chunks = flushChunks(clientStats, {
 				chunkNames,
 				// TODO: Allow skipping of these chunks using `options`.
-				before: global.DEV_MIDDLEWARE ? [] : ['runtime', 'vendor'],
-				after: global.DEV_MIDDLEWARE ? [] : ['main'],
+				before: global.ssr_isMiddleware ? [] : ['runtime', 'vendor'],
+				after: global.ssr_isMiddleware ? [] : ['main'],
 			});
 
 			const { styles, cssHash, js } = chunks;
