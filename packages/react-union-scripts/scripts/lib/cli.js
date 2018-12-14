@@ -45,7 +45,7 @@ const noSSR = programIncludes('--no-ssr');
 const analyze = programIncludes('--analyze');
 
 /** if exist, runs single app. Value is provided as is in original form */
-const app = when(Boolean, identity)(getArgValue('--app', program));
+const app = getArgValue('--app', program);
 
 const target = getArgValue('--target', program);
 
