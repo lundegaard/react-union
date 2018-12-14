@@ -13,7 +13,7 @@ const webpackConfigs = require('./webpack.config');
 const getClientStatsList = o(filter(propEq('name', 'client')), prop('children'));
 
 const prependClientStats = clientStats => {
-	const bundlePath = path.join(clientStats.outputPath, 'server', 'index.js');
+	const bundlePath = path.join(clientStats.outputPath, 'server.js');
 
 	if (fs.existsSync(bundlePath)) {
 		fs.writeFileSync(
