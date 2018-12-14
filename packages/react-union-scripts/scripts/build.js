@@ -10,15 +10,35 @@ const { getUnionConfig, stats } = require('./lib/utils');
 const cli = require('./lib/cli');
 const webpackConfigs = require('./webpack.config');
 
+const getServerWebpackConfigs = filter(propEq('name', 'server'));
 const getClientStatsList = o(filter(propEq('name', 'client')), prop('children'));
+
+const prependUnionOptions = webpackConfig => {
+	const bundlePath = path.join(webpackConfig.output.path, webpackConfig.output.filename);
+
+	if (fs.existsSync(bundlePath)) {
+		const optionsIdentifier = 'global.ReactUnionSSRServerOptions';
+		const options = {
+			...webpackConfig.unionConfig.ssrServer,
+			isMiddleware: false,
+		};
+
+		fs.writeFileSync(
+			bundlePath,
+			`${optionsIdentifier}=${JSON.stringify(options)};${fs.readFileSync(bundlePath)}`
+		);
+	}
+};
 
 const prependClientStats = clientStats => {
 	const bundlePath = path.join(clientStats.outputPath, 'server.js');
 
 	if (fs.existsSync(bundlePath)) {
+		const clientStatsIdentifier = 'global.ReactUnionSSRServerOptions.clientStats';
+
 		fs.writeFileSync(
 			bundlePath,
-			`global.ssr_clientStats=${JSON.stringify(clientStats)};${fs.readFileSync(bundlePath)}`
+			`${clientStatsIdentifier}=${JSON.stringify(clientStats)};${fs.readFileSync(bundlePath)}`
 		);
 	}
 };
@@ -35,6 +55,7 @@ async function build() {
 
 	if (!cli.noSSR) {
 		forEach(prependClientStats, getClientStatsList(buildStats.toJson()));
+		forEach(prependUnionOptions, getServerWebpackConfigs(webpackConfigsToBuild));
 	}
 
 	copyPublicFolder(getUnionConfig());

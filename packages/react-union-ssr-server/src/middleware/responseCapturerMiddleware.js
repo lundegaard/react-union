@@ -1,5 +1,5 @@
 const { noop } = require('ramda-extension');
-const { isRequestForHTML } = require('../utils');
+const isRequestForHTML = require('../core/isRequestForHTML');
 
 /**
  * Because browserSync only uses Connect and not Express or any other framework,
