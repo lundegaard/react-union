@@ -1,12 +1,19 @@
 const ExtractCSSChunks = require('extract-css-chunks-webpack-plugin');
 
-const loadJS = () => ({
+const loadJS = cache => ({
 	module: {
 		rules: [
 			{
 				test: /\.jsx?$/,
 				exclude: /node_modules/,
-				use: [require.resolve('babel-loader')],
+				use: [
+					{
+						loader: require.resolve('babel-loader'),
+						options: {
+							cacheDirectory: cache,
+						},
+					},
+				],
 			},
 		],
 	},
