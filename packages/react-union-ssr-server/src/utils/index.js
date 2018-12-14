@@ -1,4 +1,4 @@
 module.exports = {
-	getArgValue: require('./getArgValue'),
+	getCLIParameter: require('./getCLIParameter'),
 	isRequestForHTML: require('./isRequestForHTML'),
 };
