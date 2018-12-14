@@ -6,7 +6,7 @@ const { isRequestForHTML } = require('../utils');
 // TODO: Modify HTTP response based on types of errors (bad portal data, React error, etc.)
 const renderingMiddleware = curry((renderer, options) => async (req, res, next) => {
 	try {
-		if (global.DEV_MIDDLEWARE) {
+		if (global.ssr_isMiddleware) {
 			if (!isRequestForHTML(req)) {
 				return next();
 			}

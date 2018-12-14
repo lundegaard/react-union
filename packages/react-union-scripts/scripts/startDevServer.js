@@ -58,6 +58,10 @@ async function startDevServer() {
 
 	const isSSR = webpackConfigPair[1] && !cli.noSSR;
 
+	if (isSSR) {
+		global.ssr_isMiddleware = true;
+	}
+
 	invariant(!cli.proxy || unionConfig.proxy.port, "Missing 'port' for proxy in your union.config.");
 	invariant(
 		!cli.proxy || unionConfig.proxy.target,
