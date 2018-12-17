@@ -5,7 +5,7 @@ const { PrescanContext, scan, route } = require('react-union');
 const { flushChunkNames } = require('react-universal-component/server');
 const { default: flushChunks } = require('webpack-flush-chunks');
 const invariant = require('invariant');
-const { forEach, call, __, compose, map, path } = require('ramda');
+const { forEach, call, __, compose, map, path, isEmpty } = require('ramda');
 const { rejectNil } = require('ramda-extension');
 
 const resolveInitialProps = require('./resolveInitialProps');
@@ -16,25 +16,33 @@ const hoistComponentStatics = compose(
 	map(path(['component', 'preloadWeak']))
 );
 
-const render = async ({ handleRequest, options, originalHTML, req, res }) => {
-	const { clientStats, isMiddleware, skipFlushing, beforeChunks = [], afterChunks = [] } = options;
+const renderApplication = async ({ handleRequest, options, originalHTML, req, res }) => {
+	const {
+		isMiddleware = false,
+		clientStats = null,
+		waveReduction = true,
+		skipEmptyScan = true,
+		beforeChunks = [],
+		afterChunks = [],
+	} = options;
 
 	const original_$ = cheerio.load(originalHTML);
 	const head = original_$('head');
 	const body = original_$('body');
 
-	let wasRenderCalled = false;
 	let chunkNames;
 	let initialProps;
 
 	// NOTE: We need to pass routes here because of getInitialProps.
 	// In order to get the initial props, we need to get the list of all rendered components.
 	// To do that, we need to call `scan` ourselves here.
-	const doRender = async (reactElement, routes, applicationContext) => {
-		wasRenderCalled = true;
-
+	const render = async (reactElement, routes, applicationContext) => {
 		const scanResult = scan(original_$);
 		const { widgetConfigs } = route(routes, scanResult);
+
+		if (isEmpty(widgetConfigs)) {
+			return widgetConfigs;
+		}
 
 		// NOTE: https://github.com/faceyspacey/react-universal-component#static-hoisting
 		// Without calling this function, `getInitialProps` statics will not be defined.
@@ -71,12 +79,18 @@ const render = async ({ handleRequest, options, originalHTML, req, res }) => {
 			const widgetHTML = $widget.html();
 			$container.html(widgetHTML);
 		});
+
+		return widgetConfigs;
 	};
 
-	await handleRequest({ render: doRender, head, body, req, res });
-	invariant(wasRenderCalled, 'You did not call `render(<Root />)` in your SSR request handler.');
+	const widgetConfigs = await handleRequest({ render, head, body, req, res });
+	invariant(widgetConfigs, 'You did not call `render(<Root />)` in your SSR request handler.');
 
-	if (clientStats && !skipFlushing) {
+	if (skipEmptyScan && isEmpty(widgetConfigs)) {
+		return originalHTML;
+	}
+
+	if (clientStats && waveReduction) {
 		const chunks = flushChunks(clientStats, {
 			chunkNames,
 			before: isMiddleware ? [] : beforeChunks,
@@ -95,4 +109,4 @@ const render = async ({ handleRequest, options, originalHTML, req, res }) => {
 	return original_$.html();
 };
 
-module.exports = render;
+module.exports = renderApplication;

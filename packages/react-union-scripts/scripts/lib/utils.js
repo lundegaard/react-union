@@ -41,10 +41,11 @@ const DEFAULT_UNION_CONFIG = {
 	},
 	ssrServer: {
 		port: DEFAULT_SSR_PORT,
+		waveReduction: true,
+		skipEmptyScan: true,
 		beforeChunks: ['runtime', 'vendor'],
 		// computed in `extendAfterChunks_`
 		afterChunks: null,
-		skipFlushing: false,
 	},
 	proxy: {
 		port: DEFAULT_PORT,
