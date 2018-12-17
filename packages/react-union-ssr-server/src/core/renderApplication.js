@@ -29,9 +29,7 @@ const renderApplication = async ({ handleRequest, options, originalHTML, req, re
 	const original_$ = cheerio.load(originalHTML);
 	const head = original_$('head');
 	const body = original_$('body');
-
-	let chunkNames;
-	let initialProps;
+	const context = { head, body, req, res };
 
 	// NOTE: We need to pass routes here because of getInitialProps.
 	// In order to get the initial props, we need to get the list of all rendered components.
@@ -48,8 +46,8 @@ const renderApplication = async ({ handleRequest, options, originalHTML, req, re
 		// Without calling this function, `getInitialProps` statics will not be defined.
 		hoistComponentStatics(widgetConfigs);
 
-		initialProps = await resolveInitialProps(
-			{ head, body, req, res, ...applicationContext },
+		const initialProps = await resolveInitialProps(
+			{ ...context, ...applicationContext },
 			widgetConfigs
 		);
 
@@ -64,7 +62,7 @@ const renderApplication = async ({ handleRequest, options, originalHTML, req, re
 		// the universal components from `renderToString`, not from other asynchronous requests.
 		flushChunkNames();
 		const reactHTML = ReactDOMServer.renderToString(wrappedElement);
-		chunkNames = flushChunkNames();
+		const chunkNames = flushChunkNames();
 
 		const react_$ = cheerio.load(reactHTML);
 
@@ -80,10 +78,10 @@ const renderApplication = async ({ handleRequest, options, originalHTML, req, re
 			$container.html(widgetHTML);
 		});
 
-		return widgetConfigs;
+		return { widgetConfigs, chunkNames, initialProps };
 	};
 
-	const widgetConfigs = await handleRequest({ render, head, body, req, res });
+	const { widgetConfigs, chunkNames, initialProps } = await handleRequest({ render, ...context });
 	invariant(widgetConfigs, 'You did not call `render(<Root />)` in your SSR request handler.');
 
 	if (skipEmptyScan && isEmpty(widgetConfigs)) {
