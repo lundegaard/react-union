@@ -52,7 +52,7 @@
     "ramda": "0.26.1",
     "ramda-extension": "0.7.1",
     "react": "16.7.0",
-    "react-dom": "16.6.3",
+    "react-dom": "16.7.0",
     "rimraf": "2.6.2",
     "rollup": "0.67.3",
     "rollup-plugin-auto-external": "2.0.0",
