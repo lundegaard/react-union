@@ -13,7 +13,7 @@
     "document-ready": "2.0.1",
     "prop-types": "15.6.2",
     "react": "16.7.0",
-    "react-dom": "16.6.3",
+    "react-dom": "16.7.0",
     "react-hot-loader": "4.3.12",
     "react-union": "^0.10.0",
     "react-universal-component": "^3.0.3"
