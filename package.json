@@ -51,7 +51,7 @@
     "prettier": "1.15.3",
     "ramda": "0.26.1",
     "ramda-extension": "0.7.1",
-    "react": "16.6.3",
+    "react": "16.7.0",
     "react-dom": "16.6.3",
     "rimraf": "2.6.2",
     "rollup": "0.67.3",
