@@ -1,14 +1,13 @@
-/* eslint-disable no-console */
-const fs = require('fs-extra'); // eslint-disable-line import/no-extraneous-dependencies
-const mkdirp = require('mkdirp'); // eslint-disable-line import/no-extraneous-dependencies
-const path = require('path'); // eslint-disable-line import/no-extraneous-dependencies
-const rimraf = require('rimraf'); // eslint-disable-line import/no-extraneous-dependencies
-const glob = require('glob'); // eslint-disable-line import/no-extraneous-dependencies
-const R = require('ramda'); // eslint-disable-line import/no-extraneous-dependencies
-const R_ = require('ramda-extension'); // eslint-disable-line import/no-extraneous-dependencies
+const fs = require('fs-extra');
+const mkdirp = require('mkdirp');
+const path = require('path');
+const rimraf = require('rimraf');
+const glob = require('glob');
+const R = require('ramda');
+const R_ = require('ramda-extension');
 
 const appDirectory = fs.realpathSync(process.cwd());
-const srcPackagesFolder = path.join(appDirectory, 'packages');
+const srcPackagesDirectory = path.join(appDirectory, 'packages');
 
 const getAvailableApps = R.compose(
 	R.map(R.unary(path.basename)),
@@ -17,40 +16,41 @@ const getAvailableApps = R.compose(
 
 const DEBUG = !process.argv.includes('--release');
 
-const vendorBundleName = 'vendor';
-const vendorBundleFileName = `${vendorBundleName}.js`;
-const runtimeBundleName = 'runtime';
-const runtimeBundleFileName = `${runtimeBundleName}.js`;
+const vendorFileName = 'vendor.js';
+const runtimeFileName = 'runtime.js';
+const mainFileName = 'main.js';
 const manifestFileName = 'assetManifest.json';
 
-const buildFolder = path.join(appDirectory, 'build');
-const targetFolder = path.join(
+const buildDirectory = path.join(appDirectory, 'build');
+const targetDirectory = path.join(
 	appDirectory,
 	'liferay/amd-loader/src/main/resources/META-INF/resources'
 );
-const configFilePath = path.join(targetFolder, 'config.js');
+const configFilePath = path.join(targetDirectory, 'config.js');
 
 const joinNonEmpty = xs => xs.filter(Boolean).join('.');
-const getLfrFilePath = (appName, hash) =>
-	path.join(targetFolder, `${joinNonEmpty([appName, hash])}.js`);
-const getLfrContextPath = (appName, hash) =>
+
+const getLiferayFilePath = (appName, hash) =>
+	path.join(targetDirectory, `${joinNonEmpty([appName, hash])}.js`);
+
+const getLiferayContextPath = (appName, hash) =>
 	`/o/liferay-amd-loader/${joinNonEmpty([appName, hash])}.js`;
 
-function createLiferayConfigSource({ name, exportsObject, path = null, dependencies = [] }) {
+function createLiferayConfigSource({ name, exportsIdentifier, path = null, dependencies = [] }) {
 	return `Liferay.Loader.addModule({
 	dependencies: ${JSON.stringify(dependencies)},
 	name: ${JSON.stringify(name)},
-	exports: ${JSON.stringify(exportsObject)},
+	exports: ${JSON.stringify(exportsIdentifier)},
 	path: ${JSON.stringify(path || name)},
 	type: 'js'
 });\n`;
 }
 
-function getEntryBundlesFromManifest({ currentApp, manifest }) {
+function getEntryBundlesFromManifest(manifest) {
 	return R.filter(Boolean, {
-		runtime: manifest[runtimeBundleFileName],
-		vendor: manifest[vendorBundleFileName],
-		app: manifest[`${currentApp}.js`],
+		runtime: manifest[runtimeFileName],
+		vendor: manifest[vendorFileName],
+		app: manifest[mainFileName],
 	});
 }
 
@@ -58,71 +58,59 @@ function getHashPart(x) {
 	return x ? x.split('.')[1] : '';
 }
 
-/**
- * Hash is sum of hash of runtime, entry and vendor bundle
- */
-function getHash(ctx) {
+function getHash(appName, manifest) {
 	if (DEBUG) {
 		return '';
 	}
 
-	const paths = getEntryBundlesFromManifest(ctx);
+	const paths = getEntryBundlesFromManifest(manifest);
 
 	return `${getHashPart(paths.app)}${getHashPart(paths.vendor)}${getHashPart(paths.runtime)}`;
 }
 
 const getLoadScriptsSrc = R.o(R.values, R.map(x => `Liferay.Loader._loadScript({ url: '${x}' });`));
 
-const joinByNewLine = R.join('\n');
+const joinByNewline = R.join('\n');
 
-function getLoaderSource(ctx) {
-	const paths = getEntryBundlesFromManifest(ctx);
+function getLoaderSource(appName, manifest) {
+	const paths = getEntryBundlesFromManifest(manifest);
 	const loadScripts = getLoadScriptsSrc(paths);
 
-	return `${joinByNewLine(loadScripts)}\nwindow.${ctx.appExports} = {};\n`;
+	return `${joinByNewline(loadScripts)}\nwindow.${R_.toCamelCase(appName)} = {};\n`;
 }
 
 function createLiferayConfig() {
-	mkdirp.sync(targetFolder);
+	mkdirp.sync(targetDirectory);
 
 	const appsAvailable = getAvailableApps('**/app-*/', {
-		cwd: srcPackagesFolder,
+		cwd: srcPackagesDirectory,
 		ignore: ['node_modules/**'],
 	});
 
-	R.forEach(currentApp => {
-		const manifestFilePath = path.join(buildFolder, currentApp, manifestFileName);
+	R.forEach(appName => {
+		const manifestFilePath = path.join(buildDirectory, appName, manifestFileName);
 		const manifest = fs.readJsonSync(manifestFilePath, 'utf8');
-		const ctx = {
-			currentApp,
-			appExports: R_.toCamelCase(currentApp),
-			manifest,
-			appsAvailable,
-		};
-		const hash = getHash(ctx);
+		const hash = getHash(appName, manifest);
 
-		fs.writeFileSync(getLfrFilePath(currentApp, hash), getLoaderSource(ctx), 'utf8');
+		fs.writeFileSync(getLiferayFilePath(appName, hash), getLoaderSource(appName, manifest), 'utf8');
 
 		fs.appendFileSync(
 			configFilePath,
 			createLiferayConfigSource({
-				name: currentApp,
-				exportsObject: ctx.appExports,
-				path: getLfrContextPath(currentApp, hash),
+				name: appName,
+				exportsIdentifier: R_.toCamelCase(appName),
+				path: getLiferayContextPath(appName, hash),
 			}),
 			'utf8'
 		);
 
-		fs.copySync(
-			path.join(buildFolder, currentApp, 'js'),
-			path.join(targetFolder, currentApp, 'js')
-		);
+		fs.copySync(buildDirectory, targetDirectory);
 	})(appsAvailable);
 }
 
-console.log('🚀 Starting creation of Liferay AMD 🚀');
-console.log(`Cleaning ${targetFolder} folder...`);
-rimraf.sync(targetFolder, {}, null);
+console.log('🚀 Starting Liferay AMD loader scripts 🚀');
+console.log(`Cleaning ${targetDirectory} directory...`);
+rimraf.sync(targetDirectory, {}, null);
 console.log('Creating Liferay AMD configuration...');
 createLiferayConfig();
 console.log('✨ Successfully finished ✨');
