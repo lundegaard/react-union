@@ -104,7 +104,7 @@ function createLiferayConfig() {
 			'utf8'
 		);
 
-		fs.copySync(buildDirectory, targetDirectory);
+		fs.copySync(path.join(buildDirectory, appName), path.join(targetDirectory, appName));
 	})(appsAvailable);
 }
 
