@@ -84,7 +84,7 @@ async function startDevServer() {
 			serverSideRender: isSSR,
 		}),
 		webpackHotMiddleware(clientCompiler),
-		isSSR && webpackHotServerMiddleware(compiler, { chunkName: unionConfig.name }),
+		isSSR && webpackHotServerMiddleware(compiler),
 		shouldUseHistoryAPIFallback &&
 			historyAPIFallback({
 				disableDotRule: true,
