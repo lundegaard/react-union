@@ -38,7 +38,6 @@ const createGlobals = isBrowser => ({
 const getWebpackConfig_ = (config, isServerConfig) => {
 	const {
 		paths,
-		name: appName,
 		proxy,
 		generateTemplate,
 		publicPath,
@@ -65,9 +64,7 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 	const commonConfig = merge(
 		{
 			mode: buildMode,
-			entry: {
-				[appName]: [isServerConfig ? paths.ssrIndex : paths.index],
-			},
+			entry: [isServerConfig ? paths.ssrIndex : paths.index],
 			output: {
 				path: path.resolve(outputPath),
 				filename: `${outputMapper.js}/${outputFilename}`,
@@ -121,9 +118,7 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 			commonConfig,
 			{
 				name: 'client',
-				entry: {
-					[appName]: isHot ? [require.resolve('webpack-hot-middleware/client')] : [],
-				},
+				entry: isHot ? [require.resolve('webpack-hot-middleware/client')] : [],
 			},
 			optimization(),
 			cleanPlugin(config),
