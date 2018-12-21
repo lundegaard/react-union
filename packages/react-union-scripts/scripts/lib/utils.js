@@ -42,10 +42,9 @@ const DEFAULT_UNION_CONFIG = {
 	ssrServer: {
 		port: DEFAULT_SSR_PORT,
 		waveReduction: true,
-		skipEmptyScan: true,
+		skipEmptyScans: false,
 		beforeChunks: ['runtime', 'vendor'],
-		// computed in `extendAfterChunks_`
-		afterChunks: null,
+		afterChunks: ['main'],
 	},
 	proxy: {
 		port: DEFAULT_PORT,
@@ -130,14 +129,6 @@ const extendOutputMapper_ = R.evolve({
 	outputMapper: R.o(R.map(trimSlashes), R.merge(DEFAULT_UNION_CONFIG.outputMapper)),
 });
 
-const extendAfterChunks_ = config => ({
-	...config,
-	ssrServer: {
-		...config.ssrServer,
-		afterChunks: config.ssrServer.afterChunks || [config.name],
-	},
-});
-
 const getCommonUnionConfig_ = R.omit([APPS_FOLDER]);
 
 const extendConfigs = R.map(
@@ -145,8 +136,7 @@ const extendConfigs = R.map(
 		R.compose(
 			extendClean_,
 			extendPaths_,
-			extendOutputMapper_,
-			extendAfterChunks_
+			extendOutputMapper_
 		),
 		R.mergeDeepRight(DEFAULT_UNION_CONFIG)
 	)

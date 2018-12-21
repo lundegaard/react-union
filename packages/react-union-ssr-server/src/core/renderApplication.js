@@ -21,7 +21,7 @@ const renderApplication = async ({ handleRequest, options, originalHTML, req, re
 		isMiddleware = false,
 		clientStats = null,
 		waveReduction = true,
-		skipEmptyScan = true,
+		skipEmptyScans = false,
 		beforeChunks = [],
 		afterChunks = [],
 	} = options;
@@ -36,11 +36,12 @@ const renderApplication = async ({ handleRequest, options, originalHTML, req, re
 	// To do that, we need to call `scan` ourselves here.
 	const render = async (reactElement, routes, applicationContext) => {
 		const scanResult = scan(original_$);
-		const { widgetConfigs } = route(routes, scanResult);
 
-		if (isEmpty(widgetConfigs)) {
-			return widgetConfigs;
+		if (skipEmptyScans && isEmpty(scanResult.widgetDescriptors)) {
+			return { widgetConfigs: [], chunkNames: [], initialProps: {} };
 		}
+
+		const { widgetConfigs } = route(routes, scanResult);
 
 		// NOTE: https://github.com/faceyspacey/react-universal-component#static-hoisting
 		// Without calling this function, `getInitialProps` statics will not be defined.
@@ -84,7 +85,7 @@ const renderApplication = async ({ handleRequest, options, originalHTML, req, re
 	const { widgetConfigs, chunkNames, initialProps } = await handleRequest({ render, ...context });
 	invariant(widgetConfigs, 'You did not call `render(<Root />)` in your SSR request handler.');
 
-	if (skipEmptyScan && isEmpty(widgetConfigs)) {
+	if (skipEmptyScans && isEmpty(widgetConfigs)) {
 		return originalHTML;
 	}
 

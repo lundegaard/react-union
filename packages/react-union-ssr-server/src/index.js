@@ -25,8 +25,8 @@ const startServer = (handleRequest, options = global.ReactUnionSSRServerOptions)
 	app.use(morgan('combined'));
 	app.use(bodyParser.text({ type: 'text/*', limit: '10mb' }));
 
-	app.use('/', renderingMiddleware(handleRequest, options));
 	app.use('/health', healthMiddleware());
+	app.use('/', renderingMiddleware(handleRequest, options));
 
 	const server = http.createServer(app);
 
