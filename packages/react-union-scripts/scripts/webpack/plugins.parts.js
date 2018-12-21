@@ -90,6 +90,7 @@ const extractCSSChunksPlugin = (hot, path) => {
 		plugins: [
 			new ExtractCSSChunks({
 				hot,
+				cssModules: true,
 				filename: `${path}/${filename}`,
 				chunkFilename: `${path}/${chunkFilename}`,
 			}),
