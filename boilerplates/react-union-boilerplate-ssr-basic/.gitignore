@@ -1,7 +1,7 @@
 build/
 
-# Created by https://www.gitignore.io/api/vim,node,macos,linux,emacs,windows,sublimetext,intellij+all,visualstudiocode
-# Edit at https://www.gitignore.io/?templates=vim,node,macos,linux,emacs,windows,sublimetext,intellij+all,visualstudiocode
+# Created by https://www.gitignore.io/api/vim,node,emacs,linux,macos,gradle,windows,sublimetext,intellij+all,visualstudiocode
+# Edit at https://www.gitignore.io/?templates=vim,node,emacs,linux,macos,gradle,windows,sublimetext,intellij+all,visualstudiocode
 
 ### Emacs ###
 # -*- mode: gitignore; -*-
@@ -236,6 +236,7 @@ typings/
 
 # dotenv environment variables file
 .env
+.env.test
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -255,7 +256,7 @@ typings/
 # FuseBox cache
 .fusebox/
 
-#DynamoDB Local files
+# DynamoDB Local files
 .dynamodb/
 
 ### SublimeText ###
@@ -344,4 +345,23 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.gitignore.io/api/vim,node,macos,linux,emacs,windows,sublimetext,intellij+all,visualstudiocode
+### Gradle ###
+.gradle
+/build/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Cache of project
+.gradletasknamecache
+
+# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
+
+### Gradle Patch ###
+**/build/
+
+# End of https://www.gitignore.io/api/vim,node,emacs,linux,macos,gradle,windows,sublimetext,intellij+all,visualstudiocode
