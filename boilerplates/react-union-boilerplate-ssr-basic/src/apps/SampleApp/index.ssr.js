@@ -1,9 +1,9 @@
 import React from 'react';
-import startServer from 'react-union-ssr-server';
+import run from 'react-union-rendering-service';
 
 import Root from './components/Root';
 import routes from './routes';
 
 const handleRequest = ({ render }) => render(<Root />, routes);
 
-export default startServer(handleRequest);
+export default run(handleRequest);

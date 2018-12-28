@@ -7,7 +7,7 @@ const morgan = require('morgan');
 const healthMiddleware = require('./middleware/healthMiddleware');
 const renderingMiddleware = require('./middleware/renderingMiddleware');
 
-const startServer = (handleRequest, options = global.ReactUnionSSRServerOptions) => {
+const startServer = (handleRequest, options = global.ReactUnionRenderingServiceOptions) => {
 	invariant(handleRequest, 'SSR request handler is undefined.');
 	invariant(options, 'SSR server options are undefined.');
 

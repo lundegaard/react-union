@@ -17,7 +17,7 @@ const prependUnionOptions = webpackConfig => {
 	const bundlePath = path.join(webpackConfig.output.path, webpackConfig.output.filename);
 
 	if (fs.existsSync(bundlePath)) {
-		const optionsIdentifier = 'global.ReactUnionSSRServerOptions';
+		const optionsIdentifier = 'global.ReactUnionRenderingServiceOptions';
 		const options = {
 			...webpackConfig.unionConfig.ssrServer,
 			isMiddleware: false,
@@ -34,7 +34,7 @@ const prependClientStats = clientStats => {
 	const bundlePath = path.join(clientStats.outputPath, 'server.js');
 
 	if (fs.existsSync(bundlePath)) {
-		const clientStatsIdentifier = 'global.ReactUnionSSRServerOptions.clientStats';
+		const clientStatsIdentifier = 'global.ReactUnionRenderingServiceOptions.clientStats';
 
 		fs.writeFileSync(
 			bundlePath,
