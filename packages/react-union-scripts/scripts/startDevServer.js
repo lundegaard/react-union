@@ -8,7 +8,7 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const webpackHotServerMiddleware = require('webpack-hot-server-middleware');
 const proxyMiddleware = require('http-proxy-middleware');
 const historyAPIFallback = require('connect-history-api-fallback');
-const responseCapturerMiddleware = require('react-union-ssr-server/middleware');
+const responseCapturerMiddleware = require('react-union-rendering-service/middleware');
 
 const webpackConfigs = require('./webpack.config');
 const cli = require('./lib/cli');
@@ -59,7 +59,7 @@ async function startDevServer() {
 	const isSSR = webpackConfigPair[1] && !cli.noSSR;
 
 	if (isSSR) {
-		global.ReactUnionSSRServerOptions = {
+		global.ReactUnionRenderingServiceOptions = {
 			...unionConfig.ssrServer,
 			isMiddleware: true,
 		};

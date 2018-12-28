@@ -34,8 +34,8 @@
     "husky": "1.2.0",
     "lint-staged": "8.1.0",
     "prettier": "1.15.3",
-    "react-union-scripts": "0.11.0",
-    "react-union-ssr-server": "0.11.0"
+    "react-union-rendering-service": "0.11.0",
+    "react-union-scripts": "0.11.0"
   },
   "scripts": {
     "build": "react-union-scripts build --release",
