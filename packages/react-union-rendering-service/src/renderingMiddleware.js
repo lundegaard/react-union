@@ -1,5 +1,5 @@
-const renderApplication = require('../core/renderApplication');
-const isRequestForHTML = require('../core/isRequestForHTML');
+const renderApplication = require('./renderApplication');
+const isRequestForHTML = require('./isRequestForHTML');
 
 const renderingMiddleware = (handleRequest, options) => async (req, res, next) => {
 	const context = { handleRequest, options, req, res };

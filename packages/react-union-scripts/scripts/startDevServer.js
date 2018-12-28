@@ -8,7 +8,7 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const webpackHotServerMiddleware = require('webpack-hot-server-middleware');
 const proxyMiddleware = require('http-proxy-middleware');
 const historyAPIFallback = require('connect-history-api-fallback');
-const responseCapturerMiddleware = require('react-union-rendering-service/middleware');
+const { outputBufferingMiddleware } = require('react-union-rendering-service');
 
 const webpackConfigs = require('./webpack.config');
 const cli = require('./lib/cli');
@@ -77,7 +77,7 @@ async function startDevServer() {
 	const shouldUseHistoryAPIFallback = !cli.proxy && unionConfig.devServer.historyApiFallback;
 
 	const middleware = R.filter(Boolean, [
-		isSSR && responseCapturerMiddleware(),
+		isSSR && outputBufferingMiddleware(),
 		webpackDevMiddleware(isSSR ? compiler : clientCompiler, {
 			publicPath: clientConfig.output.publicPath,
 			stats,
