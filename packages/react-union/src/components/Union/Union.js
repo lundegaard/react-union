@@ -4,11 +4,11 @@ import { map, path } from 'ramda';
 import { noop } from 'ramda-extension';
 
 import { invariant } from '../../utils';
-import { RouteShape, WidgetConfigShape } from '../../shapes';
+import { RouteShape } from '../../shapes';
 import scan from '../../scanning';
 import route from '../../routing';
-import { withPrescanContext } from '../../decorators';
 import { IS_SERVER } from '../../constants';
+import { PrescanContext } from '../../contexts';
 
 import Widget from '../Widget';
 
@@ -23,10 +23,6 @@ class Union extends Component {
 		 * Children of the `Union` component.
 		 */
 		children: PropTypes.node,
-		/**
-		 * Pre-scanned initial props.
-		 */
-		initialProps: PropTypes.objectOf(PropTypes.object),
 		/**
 		 * Called after the scan of the HTML is successfully done.
 		 */
@@ -47,11 +43,9 @@ class Union extends Component {
 		 * Array of routes that are supported by your application.
 		 */
 		routes: PropTypes.arrayOf(PropTypes.shape(RouteShape)),
-		/**
-		 * Pre-scanned widget configs.
-		 */
-		widgetConfigs: PropTypes.arrayOf(PropTypes.shape(WidgetConfigShape)),
 	};
+
+	static contextType = PrescanContext;
 
 	static defaultProps = {
 		onScanEnd: noop,
@@ -92,15 +86,16 @@ class Union extends Component {
 
 	constructor(props, context) {
 		super(props, context);
+		const { widgetConfigs } = this.context || {};
 
 		this.state = {
 			routesReference: props.routes,
-			widgetConfigs: props.widgetConfigs || Union.scan(props),
+			widgetConfigs: widgetConfigs || Union.scan(props),
 		};
 	}
 
 	renderWidget = widgetConfig => {
-		const { initialProps } = this.props;
+		const { initialProps } = this.context || {};
 
 		return (
 			<Widget
@@ -124,4 +119,4 @@ class Union extends Component {
 	}
 }
 
-export default withPrescanContext(Union);
+export default Union;
