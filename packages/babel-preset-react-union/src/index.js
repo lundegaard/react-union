@@ -1,8 +1,6 @@
 const loose = true;
-const { NODE_ENV } = process.env;
-const test = NODE_ENV === 'test';
 
-module.exports = (api, { library }) => ({
+module.exports = (api, { library, test }) => ({
 	presets: [
 		[
 			'@babel/preset-env',
