@@ -11,6 +11,9 @@ module.exports = {
 		jest: true,
 		node: true,
 	},
+	globals: {
+		__DEV__: true,
+	},
 	plugins: ['babel', 'import'],
 	rules: {
 		'array-bracket-spacing': ['error', 'never'],

@@ -30,11 +30,6 @@ if (cli.proxy) {
 
 console.log(`Optimizing for ${buildMode} mode.`);
 
-const createGlobals = isBrowser => ({
-	__DEV__: cli.debug, //  alias for `process.env.NODE_ENV === 'development'
-	'process.env.BROWSER': isBrowser,
-});
-
 const getWebpackConfig_ = (config, isServerConfig) => {
 	const {
 		paths,
@@ -78,7 +73,10 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 		loadCSS(isServerConfig),
 		loadImages(config),
 		loadFiles(config),
-		definePlugin(createGlobals(!isServerConfig)),
+		definePlugin({
+			__DEV__: cli.debug,
+			'process.env.BROWSER': !isServerConfig,
+		}),
 		context(),
 		performanceHints(),
 		mergeWhen(cli.analyze, analyzeBundlePlugin),
