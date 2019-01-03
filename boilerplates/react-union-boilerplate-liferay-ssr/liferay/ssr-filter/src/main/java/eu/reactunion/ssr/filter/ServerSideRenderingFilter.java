@@ -12,6 +12,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 
 @Component(
         immediate = true,
@@ -28,6 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 public class ServerSideRenderingFilter extends BaseFilter {
     private static final Log _log = LogFactoryUtil.getLog(ServerSideRenderingFilter.class);
 
+    private static final String SSR_FLAG = "SSR";
+
     private final RenderingServerApi renderingServerApi = Feign
             .builder()
             .target(RenderingServerApi.class, "http://localhost:3303");
@@ -42,35 +45,43 @@ public class ServerSideRenderingFilter extends BaseFilter {
 
     @Override
     protected void processFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws Exception {
-        BufferCacheServletResponse bufferCacheServletResponse = new BufferCacheServletResponse(response);
+        if (isDummyLayoutRequest(request)) {
+            super.processFilter(request, response, filterChain);
+            return;
+        }
 
-        if (renderingServerUp) {
+        BufferCacheServletResponse bufferCacheServletResponse = new BufferCacheServletResponse(response);
+        boolean requestAlreadyFlagged = isRequestFlagged(request);
+
+        if (renderingServerUp && !requestAlreadyFlagged) {
             flagRequestForServerSideRendering(request);
+        } else {
+            flagRequestForClientSideRendering(request);
         }
 
         super.processFilter(request, bufferCacheServletResponse, filterChain);
+        String content = bufferCacheServletResponse.getString();
+        PrintWriter responseWriter = response.getWriter();
 
-        // TODO: Stop if no Union widget has been rendered.
-        if (renderingServerUp && isRenderable(request, response)) {
+        if (renderingServerUp && !requestAlreadyFlagged && isResponseRenderable(response)) {
             try {
-                String content = bufferCacheServletResponse.getString();
-                response.getWriter().write(renderingServerApi.render(content));
+                responseWriter.write(renderingServerApi.render(content));
             } catch (Exception ex) {
-                _log.error("Node.js rendering server failed to render.", ex);
-                // FIXME: The request is still marked for SSR and will not include the JavaScript bundle.
-                response.getWriter().write(bufferCacheServletResponse.getString());
+                _log.error("Rendering server failed to render.", ex);
+                checkRenderingServerHealth();
+                processFilter(request, response, filterChain);
             }
         } else {
-            response.getWriter().write(bufferCacheServletResponse.getString());
+            responseWriter.write(content);
         }
     }
 
-    private boolean isRenderable(HttpServletRequest request, HttpServletResponse response) {
-        if (response.getContentType() == null || !response.getContentType().contains("text/html")) {
-            return false;
-        }
+    private boolean isResponseRenderable(HttpServletResponse response) {
+        return response.getContentType() != null && response.getContentType().contains("text/html");
+    }
 
-        return request.getRequestURI() != null && !request.getRequestURI().startsWith("/c/portal/layout");
+    private boolean isDummyLayoutRequest(HttpServletRequest request) {
+        return request.getRequestURI() != null && request.getRequestURI().startsWith("/c/portal/layout");
     }
 
     private void checkRenderingServerHealth() {
@@ -79,13 +90,27 @@ public class ServerSideRenderingFilter extends BaseFilter {
             renderingServerUp = true;
         } catch (Exception ex) {
             renderingServerUp = false;
-            _log.error("Health check of Node.js rendering server failed.", ex);
+            _log.error("Health check of rendering server failed.", ex);
         }
     }
 
     private void flagRequestForServerSideRendering(HttpServletRequest request) {
-        // TODO: Move "SSR" to constants.
-        request.setAttribute("SSR", true);
+        request.setAttribute(SSR_FLAG, true);
+    }
+
+    private void flagRequestForClientSideRendering(HttpServletRequest request) {
+        request.setAttribute(SSR_FLAG, false);
+    }
+
+    @SuppressWarnings("unused")
+    private boolean isRequestFlagged(HttpServletRequest request) {
+        try {
+            boolean flagged = (boolean) request.getAttribute(SSR_FLAG);
+        } catch (NullPointerException ex) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
