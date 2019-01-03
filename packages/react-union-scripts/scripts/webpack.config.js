@@ -69,7 +69,7 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 				pathinfo: cli.debug,
 			},
 		},
-		loadJS(cli.debug),
+		loadJS(cli.debug, isServerConfig),
 		loadCSS(isServerConfig),
 		loadImages(config),
 		loadFiles(config),

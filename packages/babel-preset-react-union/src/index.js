@@ -1,6 +1,4 @@
-const loose = true;
-
-module.exports = (api, { library, test }) => ({
+module.exports = (api, { library = false, test = false, loose = true }) => ({
 	presets: [
 		[
 			'@babel/preset-env',
@@ -42,7 +40,10 @@ module.exports = (api, { library, test }) => ({
 		'@babel/plugin-transform-react-constant-elements',
 		'@babel/plugin-transform-regenerator',
 		'@babel/plugin-transform-runtime',
-		(!library || test) && '@babel/plugin-transform-modules-commonjs',
+		// NOTE: This plugin is also used when building the server in `react-union-scripts`.
+		// NOTE: In order to allow passing e.g. `import * as reducers from './reducers'` as an object,
+		// loose option must be false.
+		test && ['@babel/plugin-transform-modules-commonjs', { loose: false }],
 		'babel-plugin-universal-import',
 	].filter(Boolean),
 });
