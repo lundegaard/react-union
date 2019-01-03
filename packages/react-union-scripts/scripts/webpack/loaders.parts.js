@@ -1,6 +1,6 @@
 const ExtractCSSChunks = require('extract-css-chunks-webpack-plugin');
 
-const loadJS = cache => ({
+const loadJS = (cache, isServerConfig) => ({
 	module: {
 		rules: [
 			{
@@ -11,6 +11,9 @@ const loadJS = cache => ({
 						loader: require.resolve('babel-loader'),
 						options: {
 							cacheDirectory: cache,
+							plugins: isServerConfig
+								? [['@babel/plugin-transform-modules-commonjs', { loose: false }]]
+								: [],
 						},
 					},
 				],
