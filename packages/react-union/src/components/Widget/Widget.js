@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import { memoizeWith, prop } from 'ramda';
+import { isFunction } from 'ramda-extension';
 
 import { invariant } from '../../utils';
 import { withErrorBoundary } from '../../decorators';
@@ -35,20 +36,29 @@ export class Widget extends Component {
 		};
 	}
 
-	async componentDidMount() {
+	// NOTE: We do not use an async function to avoid bundle size issues with regenerator runtime.
+	componentDidMount() {
 		const { initialProps } = this.state;
 
 		if (!initialProps) {
 			const { config } = this.props;
 			const { component } = config;
-			const { getInitialProps } = component.preload ? await component.preload() : component;
 
-			if (getInitialProps) {
-				// eslint-disable-next-line react/no-did-mount-set-state
-				this.setState({ initialProps: await getInitialProps(config) });
+			if (isFunction(component.preload)) {
+				return component.preload().then(this.getInitialProps);
 			}
+
+			this.getInitialProps(component);
 		}
 	}
+
+	getInitialProps = component => {
+		const { config } = this.props;
+
+		if (isFunction(component.getInitialProps)) {
+			component.getInitialProps(config).then(initialProps => this.setState({ initialProps }));
+		}
+	};
 
 	render() {
 		const { config } = this.props;
