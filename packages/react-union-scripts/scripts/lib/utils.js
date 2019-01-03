@@ -63,7 +63,11 @@ const DEFAULT_UNION_CONFIG = {
 		appPattern: DEFAULT_APP_PATTERN,
 	},
 	sourceMaps: false,
-	uglifyOptions: { parallel: true, cache: true, mangle: false },
+	uglifyOptions: {
+		parallel: true,
+		cache: true,
+		mangle: true,
+	},
 };
 
 const stats = {
