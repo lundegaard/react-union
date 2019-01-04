@@ -56,7 +56,7 @@ async function startDevServer() {
 	const clientConfig = webpackConfigPair[0];
 	const unionConfig = getAppConfig();
 
-	const isSSR = webpackConfigPair[1] && !cli.noSSR;
+	const isSSR = webpackConfigPair[1] && !cli.noSSR && !cli.proxy;
 
 	if (isSSR) {
 		global.ReactUnionRenderingServiceOptions = {
