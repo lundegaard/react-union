@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --max_old_space_size=8192
 const fs = require('fs');
 
 if (process.argv[2] === '-v' || process.argv[2] === '--version') {
