@@ -62,7 +62,7 @@ const DEFAULT_UNION_CONFIG = {
 		widgetPattern: DEFAULT_WIDGET_PATTERN,
 		appPattern: DEFAULT_APP_PATTERN,
 	},
-	sourceMaps: false,
+	sourceMaps: 'nosources',
 	uglifyOptions: {
 		parallel: true,
 		cache: true,
