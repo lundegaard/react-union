@@ -56,7 +56,7 @@ const uglifyJSPlugin = (verbose, { sourceMaps, uglifyOptions: { cache, parallel,
 			new UglifyWebpackPlugin({
 				cache,
 				parallel,
-				sourceMap: sourceMaps,
+				sourceMap: Boolean(sourceMaps),
 				uglifyOptions: {
 					mangle,
 					warnings: verbose,

@@ -1,6 +1,7 @@
 const invariant = require('invariant');
 const merge = require('webpack-merge');
 const path = require('path');
+const { cond, identity, equals, always, T } = require('ramda');
 
 const cli = require('./lib/cli');
 const { getUnionConfig, getAppConfig, mergeWhen, getForMode } = require('./lib/utils');
@@ -130,7 +131,7 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 			loaderOptionsPlugin(true),
 			mergeWhen(generateTemplate, htmlPlugin, config, outputPath),
 			{
-				devtool: 'cheap-source-map',
+				devtool: 'cheap-module-eval-source-map',
 			}
 		);
 
@@ -139,7 +140,12 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 			clientConfig(),
 			{
 				bail: true,
-				devtool: sourceMaps ? 'source-map' : false,
+				devtool: cond([
+					[equals(true), always('source-map')],
+					[equals('hidden'), always('hidden-source-map')],
+					[equals('nosources'), always('nosources-source-map')],
+					[T, identity],
+				])(sourceMaps),
 			},
 			uglifyJSPlugin(cli.verbose, config)
 		);
