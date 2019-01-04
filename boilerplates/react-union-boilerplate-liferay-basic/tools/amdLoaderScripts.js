@@ -36,29 +36,29 @@ const getLiferayFilePath = (appName, hash) =>
 const getLiferayContextPath = (appName, hash) =>
 	`/o/liferay-amd-loader/${joinNonEmpty([appName, hash])}.js`;
 
-function createLiferayConfigSource({ name, exportsIdentifier, path = null, dependencies = [] }) {
-	return `Liferay.Loader.addModule({
+const createLiferayConfigSource = ({
+	name,
+	exportsIdentifier,
+	path = null,
+	dependencies = [],
+}) => `Liferay.Loader.addModule({
 	dependencies: ${JSON.stringify(dependencies)},
 	name: ${JSON.stringify(name)},
 	exports: ${JSON.stringify(exportsIdentifier)},
 	path: ${JSON.stringify(path || name)},
 	type: 'js'
 });\n`;
-}
 
-function getEntryBundlesFromManifest(manifest) {
-	return R.filter(Boolean, {
+const getEntryBundlesFromManifest = manifest =>
+	R.filter(Boolean, {
 		runtime: manifest[runtimeFileName],
 		vendor: manifest[vendorFileName],
 		app: manifest[mainFileName],
 	});
-}
 
-function getHashPart(x) {
-	return x ? x.split('.')[1] : '';
-}
+const getHashPart = x => (x ? x.split('.')[1] : '');
 
-function getHash(appName, manifest) {
+const getHash = (appName, manifest) => {
 	if (DEBUG) {
 		return '';
 	}
@@ -66,20 +66,20 @@ function getHash(appName, manifest) {
 	const paths = getEntryBundlesFromManifest(manifest);
 
 	return `${getHashPart(paths.app)}${getHashPart(paths.vendor)}${getHashPart(paths.runtime)}`;
-}
+};
 
 const getLoadScriptsSrc = R.o(R.values, R.map(x => `Liferay.Loader._loadScript({ url: '${x}' });`));
 
 const joinByNewline = R.join('\n');
 
-function getLoaderSource(appName, manifest) {
+const getLoaderSource = (appName, manifest) => {
 	const paths = getEntryBundlesFromManifest(manifest);
 	const loadScripts = getLoadScriptsSrc(paths);
 
 	return `${joinByNewline(loadScripts)}\nwindow.${R_.toCamelCase(appName)} = {};\n`;
-}
+};
 
-function createLiferayConfig() {
+const createLiferayConfig = () => {
 	mkdirp.sync(targetDirectory);
 
 	const appsAvailable = getAvailableApps('**/app-*/', {
@@ -106,7 +106,7 @@ function createLiferayConfig() {
 
 		fs.copySync(path.join(buildDirectory, appName), path.join(targetDirectory, appName));
 	})(appsAvailable);
-}
+};
 
 console.log('🚀 Starting Liferay AMD loader scripts 🚀');
 console.log(`Cleaning ${targetDirectory} directory...`);
