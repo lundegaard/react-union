@@ -96,10 +96,9 @@ const renderApplication = async ({ handleRequest, options, originalHTML, req, re
 			after: isMiddleware ? [] : afterChunks,
 		});
 
-		const { styles, cssHash, js } = chunks;
+		const { styles, js } = chunks;
 
 		head.append(styles.toString());
-		body.append(cssHash.toString());
 		body.append(js.toString());
 	}
 

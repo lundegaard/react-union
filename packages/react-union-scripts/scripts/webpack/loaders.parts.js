@@ -30,10 +30,11 @@ const loadCSS = isServerConfig => ({
 				use: [
 					...(isServerConfig ? [] : [ExtractCSSChunks.loader]),
 					{
-						loader: require.resolve(`css-loader${isServerConfig ? '/locals' : ''}`),
+						loader: require.resolve('css-loader'),
 						options: {
 							modules: true,
 							localIdentName: '[name]__[local]--[hash:base64:5]',
+							exportOnlyLocals: isServerConfig,
 						},
 					},
 				],

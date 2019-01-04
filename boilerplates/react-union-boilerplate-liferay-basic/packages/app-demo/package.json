@@ -7,14 +7,14 @@
     "node": ">=8"
   },
   "dependencies": {
-    "@babel/polyfill": "7.0.0",
+    "@babel/polyfill": "7.2.5",
     "@union-liferay/widget-content": "0.1.0",
     "@union-liferay/widget-hero": "0.1.0",
     "document-ready": "2.0.2",
     "prop-types": "15.6.2",
-    "react": "16.6.3",
-    "react-dom": "16.6.3",
-    "react-hot-loader": "4.3.12",
+    "react": "16.7.0",
+    "react-dom": "16.7.0",
+    "react-hot-loader": "4.6.3",
     "react-union": "0.11.0",
     "react-universal-component": "3.0.3"
   }
