@@ -60,7 +60,7 @@ async function startDevServer() {
 
 	if (isSSR) {
 		global.ReactUnionRenderingServiceOptions = {
-			...unionConfig.ssrServer,
+			...unionConfig.renderingService,
 			isMiddleware: true,
 		};
 	}

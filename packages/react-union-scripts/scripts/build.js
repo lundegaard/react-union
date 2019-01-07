@@ -19,7 +19,7 @@ const prependUnionOptions = webpackConfig => {
 	if (fs.existsSync(bundlePath)) {
 		const optionsIdentifier = 'global.ReactUnionRenderingServiceOptions';
 		const options = {
-			...webpackConfig.unionConfig.ssrServer,
+			...webpackConfig.unionConfig.renderingService,
 			isMiddleware: false,
 		};
 
