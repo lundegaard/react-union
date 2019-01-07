@@ -39,7 +39,7 @@ const DEFAULT_UNION_CONFIG = {
 		historyApiFallback: true,
 		port: DEFAULT_PORT,
 	},
-	ssrServer: {
+	renderingService: {
 		port: DEFAULT_SSR_PORT,
 		waveReduction: true,
 		skipEmptyScans: false,
