@@ -29,7 +29,7 @@ const optimization = () => ({
 const resolve = modules => ({
 	resolve: {
 		modules,
-		extensions: ['.webpack.js', '.web.js', '.js', '.json'],
+		extensions: ['.webpack.js', '.web.js', '.mjs', '.js', '.json'],
 	},
 });
 
