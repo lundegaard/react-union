@@ -53,26 +53,36 @@ public class ServerSideRenderingFilter extends BaseFilter {
         BufferCacheServletResponse bufferCacheServletResponse = new BufferCacheServletResponse(response);
         boolean requestAlreadyFlagged = isRequestFlagged(request);
 
-        if (renderingServerUp && !requestAlreadyFlagged) {
-            flagRequestForServerSideRendering(request);
-        } else {
-            flagRequestForClientSideRendering(request);
+        synchronized (this) {
+            if (renderingServerUp && !requestAlreadyFlagged) {
+                flagRequestForServerSideRendering(request);
+            } else {
+                flagRequestForClientSideRendering(request);
+            }
         }
 
         super.processFilter(request, bufferCacheServletResponse, filterChain);
         String content = bufferCacheServletResponse.getString();
         PrintWriter responseWriter = response.getWriter();
 
-        if (renderingServerUp && !requestAlreadyFlagged && isResponseRenderable(response)) {
-            try {
-                responseWriter.write(renderingServerApi.render(content));
-            } catch (Exception ex) {
-                _log.error("Rendering server failed to render.", ex);
-                checkRenderingServerHealth();
-                processFilter(request, response, filterChain);
+        boolean shouldRetry = false;
+
+        synchronized (this) {
+            if (renderingServerUp && !requestAlreadyFlagged && isResponseRenderable(response)) {
+                try {
+                    responseWriter.write(renderingServerApi.render(content));
+                } catch (Exception ex) {
+                    _log.error("Rendering server failed to render.", ex);
+                    checkRenderingServerHealth();
+                    shouldRetry = true;
+                }
+            } else {
+                responseWriter.write(content);
             }
-        } else {
-            responseWriter.write(content);
+        }
+
+        if (shouldRetry) {
+            processFilter(request, response, filterChain);
         }
     }
 
