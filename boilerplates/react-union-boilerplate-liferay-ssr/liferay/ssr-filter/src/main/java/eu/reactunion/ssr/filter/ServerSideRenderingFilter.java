@@ -94,7 +94,7 @@ public class ServerSideRenderingFilter extends BaseFilter {
         return request.getRequestURI() != null && request.getRequestURI().startsWith("/c/portal/layout");
     }
 
-    private void checkRenderingServerHealth() {
+    private synchronized void checkRenderingServerHealth() {
         try {
             renderingServerApi.checkHealth();
             renderingServerUp = true;
