@@ -3,5 +3,5 @@ Renders React widgets.
 --%>
 <%@ include file="./init.jsp" %>
 
-<react-union:widget unionWidget="hero" />
-<react-union:widget unionWidget="content" />
+<react-union:widget name="hero" />
+<react-union:widget name="content" />
