@@ -4,12 +4,13 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.BaseFilter;
 import com.liferay.portal.kernel.servlet.BufferCacheServletResponse;
-import feign.Feign;
+import eu.reactunion.ssr.service.RenderingException;
+import eu.reactunion.ssr.service.RenderingService;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
@@ -27,21 +28,13 @@ import java.io.PrintWriter;
         service = Filter.class
 )
 public class ServerSideRenderingFilter extends BaseFilter {
-    static final String SSR_FLAG = "SSR";
 
-    private static final Log _log = LogFactoryUtil.getLog(ServerSideRenderingFilter.class);
+    public static final String SSR_KEY = "SSR";
 
-    private final RenderingServiceApi renderingServiceApi = Feign
-            .builder()
-            .target(RenderingServiceApi.class, "http://localhost:3303");
+    private static final Log log = LogFactoryUtil.getLog(ServerSideRenderingFilter.class);
 
-    private boolean renderingServerUp = true;
-
-    @Override
-    public void init(FilterConfig filterConfig) {
-        super.init(filterConfig);
-        checkRenderingServerHealth();
-    }
+    @Reference
+    private RenderingService renderingService;
 
     @Override
     protected void processFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws Exception {
@@ -50,43 +43,27 @@ public class ServerSideRenderingFilter extends BaseFilter {
             return;
         }
 
-        // TODO: Investigate if BufferCacheServletResponse has any disadvantages when used as a buffer.
+        // TODO: Investigate if BufferCacheServletResponse has any disadvantages when used only as a buffer.
         // https://dev.liferay.com/en/develop/tutorials/-/knowledge_base/7-0/jsp-overrides-using-portlet-filters
         BufferCacheServletResponse bufferCacheServletResponse = new BufferCacheServletResponse(response);
 
         // NOTE: Used to prevent loops when rendering fails and is retried by calling processFilter();
-        boolean requestAlreadyFlagged = isRequestFlagged(request);
-
-        synchronized (this) {
-            if (renderingServerUp && !requestAlreadyFlagged) {
-                flagRequestForServerSideRendering(request);
-            } else {
-                flagRequestForClientSideRendering(request);
-            }
-        }
+        boolean retrying = isRequestMarked(request);
+        markRequest(request, renderingService.isServiceUp() && !retrying);
 
         super.processFilter(request, bufferCacheServletResponse, filterChain);
         String content = bufferCacheServletResponse.getString();
         PrintWriter responseWriter = response.getWriter();
 
-        boolean shouldRetry = false;
-
-        synchronized (this) {
-            if (renderingServerUp && !requestAlreadyFlagged && isResponseRenderable(response)) {
-                try {
-                    responseWriter.write(renderingServiceApi.render(content));
-                } catch (Exception ex) {
-                    _log.error("Rendering server failed to render.", ex);
-                    checkRenderingServerHealth();
-                    shouldRetry = true;
-                }
-            } else {
-                responseWriter.write(content);
+        if (renderingService.isServiceUp() && !retrying && isResponseRenderable(response)) {
+            try {
+                responseWriter.write(renderingService.render(content));
+            } catch (RenderingException ex) {
+                log.error("Rendering server failed to render.", ex);
+                processFilter(request, response, filterChain);
             }
-        }
-
-        if (shouldRetry) {
-            processFilter(request, response, filterChain);
+        } else {
+            responseWriter.write(content);
         }
     }
 
@@ -98,28 +75,14 @@ public class ServerSideRenderingFilter extends BaseFilter {
         return request.getRequestURI() != null && request.getRequestURI().startsWith("/c/portal/layout");
     }
 
-    private synchronized void checkRenderingServerHealth() {
-        try {
-            renderingServiceApi.checkHealth();
-            renderingServerUp = true;
-        } catch (Exception ex) {
-            renderingServerUp = false;
-            _log.error("Health check of rendering server failed.", ex);
-        }
-    }
-
-    private void flagRequestForServerSideRendering(HttpServletRequest request) {
-        request.setAttribute(SSR_FLAG, true);
-    }
-
-    private void flagRequestForClientSideRendering(HttpServletRequest request) {
-        request.setAttribute(SSR_FLAG, false);
+    private void markRequest(HttpServletRequest request, boolean value) {
+        request.setAttribute(SSR_KEY, value);
     }
 
     @SuppressWarnings("unused")
-    private boolean isRequestFlagged(HttpServletRequest request) {
+    private boolean isRequestMarked(HttpServletRequest request) {
         try {
-            boolean flagged = (boolean) request.getAttribute(SSR_FLAG);
+            boolean marked = (boolean) request.getAttribute(SSR_KEY);
         } catch (NullPointerException ex) {
             return false;
         }
@@ -129,6 +92,6 @@ public class ServerSideRenderingFilter extends BaseFilter {
 
     @Override
     protected Log getLog() {
-        return _log;
+        return log;
     }
 }
