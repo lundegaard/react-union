@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+### Added
+- (_react-union_): `rescan()`, a function to imperatively rescan the document for widget descriptors. Callable from anywhere!
+- (_babel-preset-react-union_): The preset is now configurable with options.
+
+### Changed
+
+- (_react-union-scripts_): Default value of `mangle` is now true (UglifyJS).
+- (_react-union-scripts_): `devtools` related to source maps are now easier to customize.
+- (_react-union-scripts_): The webpack entry is now an array instead of an object. As a result, the output is now named `main` instead of `<app-name>`. If you're using React Union with Liferay, see the updated AMD Loader Scripts.
+
 ## [0.11.0] – 2018-12-06
 
 Many changes for future SSR support!
