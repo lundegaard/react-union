@@ -3,7 +3,7 @@ package eu.reactunion.ssr.filter;
 import feign.Headers;
 import feign.RequestLine;
 
-public interface RenderingServerApi {
+public interface RenderingServiceApi {
     @RequestLine("POST /")
     @Headers({
             "Content-Type: text/html",
