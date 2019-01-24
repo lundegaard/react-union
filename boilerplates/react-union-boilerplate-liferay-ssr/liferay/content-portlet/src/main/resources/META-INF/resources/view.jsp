@@ -4,7 +4,7 @@ Renders React widgets.
 <%@ include file="./init.jsp" %>
 
 <%--suppress JSUnresolvedVariable, JSUnresolvedFunction --%>
-<c:if test="${!liferayPortletRequest.httpServletRequest.getAttribute('SSR')}">
+<c:if test="${!SSR}">
     <script type="text/javascript">
         Liferay.Loader.require("app-demo");
     </script>

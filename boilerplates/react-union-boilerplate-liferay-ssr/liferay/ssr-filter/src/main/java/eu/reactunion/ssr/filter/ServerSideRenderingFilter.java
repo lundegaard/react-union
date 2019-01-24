@@ -27,13 +27,13 @@ import java.io.PrintWriter;
         service = Filter.class
 )
 public class ServerSideRenderingFilter extends BaseFilter {
+    static final String SSR_FLAG = "SSR";
+
     private static final Log _log = LogFactoryUtil.getLog(ServerSideRenderingFilter.class);
 
-    private static final String SSR_FLAG = "SSR";
-
-    private final RenderingServerApi renderingServerApi = Feign
+    private final RenderingServiceApi renderingServiceApi = Feign
             .builder()
-            .target(RenderingServerApi.class, "http://localhost:3303");
+            .target(RenderingServiceApi.class, "http://localhost:3303");
 
     private boolean renderingServerUp = true;
 
@@ -50,7 +50,11 @@ public class ServerSideRenderingFilter extends BaseFilter {
             return;
         }
 
+        // TODO: Investigate if BufferCacheServletResponse has any disadvantages when used as a buffer.
+        // https://dev.liferay.com/en/develop/tutorials/-/knowledge_base/7-0/jsp-overrides-using-portlet-filters
         BufferCacheServletResponse bufferCacheServletResponse = new BufferCacheServletResponse(response);
+
+        // NOTE: Used to prevent loops when rendering fails and is retried by calling processFilter();
         boolean requestAlreadyFlagged = isRequestFlagged(request);
 
         synchronized (this) {
@@ -70,7 +74,7 @@ public class ServerSideRenderingFilter extends BaseFilter {
         synchronized (this) {
             if (renderingServerUp && !requestAlreadyFlagged && isResponseRenderable(response)) {
                 try {
-                    responseWriter.write(renderingServerApi.render(content));
+                    responseWriter.write(renderingServiceApi.render(content));
                 } catch (Exception ex) {
                     _log.error("Rendering server failed to render.", ex);
                     checkRenderingServerHealth();
@@ -96,7 +100,7 @@ public class ServerSideRenderingFilter extends BaseFilter {
 
     private synchronized void checkRenderingServerHealth() {
         try {
-            renderingServerApi.checkHealth();
+            renderingServiceApi.checkHealth();
             renderingServerUp = true;
         } catch (Exception ex) {
             renderingServerUp = false;
