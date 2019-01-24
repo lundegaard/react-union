@@ -1,5 +1,5 @@
 node_modules/*
 build/*
-stats.json
-docs/node_modules/*
-liferay-theme/*
+liferay/*
+packages/*/node_modules/*
+packages/*/build/*

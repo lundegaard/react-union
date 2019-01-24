@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
-import path from 'ramda/src/path';
+import PropTypes from 'prop-types';
+import { path } from 'ramda';
 
-import { ConfigShape } from '../../shapes';
+import { WidgetConfigShape } from '../../shapes';
+import { getDisplayName } from '../../utils';
 
-const getName = path(['props', 'descriptor', 'name']);
+const getWidgetName = path(['props', 'config', 'widget']);
 
-const withErrorBoundary = WrappedComponent => {
-	class UnionWidgetErrorBoundary extends Component {
-		static propTypes = ConfigShape;
+const withErrorBoundary = NextComponent => {
+	class WithErrorBoundary extends Component {
+		static propTypes = {
+			config: PropTypes.shape(WidgetConfigShape).isRequired,
+		};
+
+		static displayName = `WithErrorBoundary(${getDisplayName(NextComponent)})`;
 
 		state = {
 			hasError: false,
@@ -18,18 +24,23 @@ const withErrorBoundary = WrappedComponent => {
 		}
 
 		render() {
-			const name = getName(this);
+			const { hasError } = this.state;
+			const widgetName = getWidgetName(this);
 
-			if (this.state.hasError) {
-				// TODO: perhaps show some tips for common mistakes?
-				return `An error has occured in widget "${name}". See the console output for more details.`;
+			if (hasError) {
+				return (
+					<div>
+						{`An error has occurred in widget "${widgetName}". See the console for more details. To
+						avoid seeing this message in production, wrap this widget in an error boundary.`}
+					</div>
+				);
 			}
 
-			return <WrappedComponent {...this.props} />;
+			return <NextComponent {...this.props} />;
 		}
 	}
 
-	return UnionWidgetErrorBoundary;
+	return WithErrorBoundary;
 };
 
 export default withErrorBoundary;

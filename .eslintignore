@@ -1,5 +1,5 @@
-node_modules
-
+node_modules/
+boilerplates/
 packages/*/node_modules
 packages/*/dist
 packages/*/es
@@ -10,5 +10,4 @@ boilerplates/*/dist
 boilerplates/*/*/node_modules
 boilerplates/*/*/build
 boilerplates/*/*/dist
-boilerplates/react-union-boilerplate-liferay-basic/liferay-theme
-
+boilerplates/react-union-boilerplate-liferay-basic/liferay

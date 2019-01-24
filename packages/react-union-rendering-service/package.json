@@ -1,0 +1,33 @@
+{
+  "name": "react-union-rendering-service",
+  "version": "0.11.0",
+  "description": "HTTP service for server-side rendering.",
+  "main": "src/index.js",
+  "repository": "https://github.com/lundegaard/react-union",
+  "contributors": [
+    "Vaclav Jancarik <vaclav.jancarik@lundegaard.eu>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "1.18.3",
+    "cheerio": "1.0.0-rc.2",
+    "connect": "3.6.6",
+    "invariant": "2.2.4",
+    "morgan": "1.9.1",
+    "ramda": "0.26.1",
+    "ramda-extension": "0.7.2",
+    "webpack-flush-chunks": "2.0.3"
+  },
+  "peerDependencies": {
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-union": "^0.11.0",
+    "react-universal-component": "^3.0.3"
+  },
+  "devDependencies": {
+    "react": "16.7.0",
+    "react-dom": "16.7.0",
+    "react-union": "0.11.0",
+    "react-universal-component": "3.0.3"
+  }
+}

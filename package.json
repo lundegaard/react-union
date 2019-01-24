@@ -2,7 +2,7 @@
   "private": true,
   "name": "react-union-project",
   "version": "0.1.0",
-  "description": "The project React-union is a collection of tools that allows you to build modern React applications which run on specific server-side environments such as Content Management Systems or portals.",
+  "description": "The React Union project is a collection of tools that allow you to build modern React applications for content management systems or enterprise portals.",
   "keywords": [
     "react",
     "redux",
@@ -24,43 +24,71 @@
   "author": "Tomas Konrady <tomas.konrady@lundegaard.eu>",
   "contributors": [
     "Tomas Konrady <tomas.konrady@lundegaard.eu>",
-    "Vaclav Jancarik <vaclav.jancarik@lundegaard.eu>"
+    "Vaclav Jancarik <vaclav.jancarik@lundegaard.eu>",
+    "Lukas Sulik <lukas.sulik@lundegaard.eu>",
+    "Jakub Kohout <jakub.kohout@lundegaard.eu>"
   ],
   "repository": "https://github.com/lundegaard/react-union",
   "license": "UNLICENSED",
   "devDependencies": {
-    "babel-eslint": "8.0.1",
-    "eslint": "4.17.0",
-    "eslint-config-prettier": "2.9.0",
-    "eslint-config-react-union": "0.1.3",
-    "eslint-plugin-babel": "4.1.2",
-    "eslint-plugin-import": "2.7.0",
-    "eslint-plugin-prettier": "2.6.0",
-    "eslint-plugin-react": "7.4.0",
-    "husky": "0.14.3",
+    "@babel/cli": "7.2.3",
+    "@babel/core": "7.2.2",
+    "@babel/plugin-proposal-class-properties": "7.2.3",
+    "@babel/plugin-proposal-object-rest-spread": "7.2.0",
+    "@babel/plugin-transform-modules-commonjs": "7.2.0",
+    "@babel/plugin-transform-react-jsx": "7.2.0",
+    "@babel/plugin-transform-runtime": "7.2.0",
+    "@babel/preset-env": "7.2.3",
+    "babel-core": "^7.0.0-bridge",
+    "babel-eslint": "10.0.1",
+    "babel-jest": "23.6.0",
+    "babel-preset-react-union": "0.11.0",
+    "enzyme": "3.8.0",
+    "enzyme-adapter-react-16": "1.7.1",
+    "enzyme-to-json": "3.3.5",
+    "eslint": "5.12.1",
+    "eslint-config-react-union": "0.9.0",
+    "eslint-plugin-babel": "5.3.0",
+    "eslint-plugin-import": "2.14.0",
+    "eslint-plugin-react": "7.12.3",
+    "husky": "1.3.1",
+    "jest": "23.6.0",
     "lerna": "2.2.0",
-    "lint-staged": "7.0.0",
-    "prettier": "1.10.2",
-    "rimraf": "2.6.2"
+    "lint-staged": "8.1.0",
+    "prettier": "1.15.3",
+    "ramda": "0.26.1",
+    "ramda-extension": "0.7.2",
+    "react": "16.7.0",
+    "react-dom": "16.7.0",
+    "rimraf": "2.6.3",
+    "rollup": "1.1.0",
+    "rollup-plugin-babel": "4.3.0",
+    "rollup-plugin-commonjs": "9.2.0",
+    "rollup-plugin-node-resolve": "4.0.0",
+    "rollup-plugin-replace": "2.1.0",
+    "rollup-plugin-terser": "4.0.2"
   },
   "workspaces": [
     "packages/*",
-    "boilerplates/*"
+    "boilerplates/*",
+    "boilerplates/*/packages/*"
   ],
   "scripts": {
-    "bootstrap": "lerna bootstrap",
     "example:basic": "cd boilerplates/react-union-boilerplate-basic && yarn start",
-    "lint": "eslint \"packages/**/*.js\" \"boilerplates/**/*.js\"",
+    "lint": "eslint --ext .js ./",
     "lint:fix": "yarn lint --fix",
-    "postinstall": "cd packages/react-union && yarn build",
-    "precommit": "lint-staged",
-    "prepush": "yarn lint",
-    "publishAll": "lerna publish"
+    "test": "jest",
+    "build": "lerna exec --scope react-union -- rollup -c=../../rollup.config.js",
+    "prepublish": "yarn build",
+    "publishAll": "lerna publish --preid=ci"
   },
   "lint-staged": {
-    "(packages|boilerplates)/**/*.js": [
-      "yarn lint:fix",
-      "git add"
-    ]
+    "linters": {
+      "(packages|boilerplates)/**/*.js": [
+        "prettier --write",
+        "yarn lint:fix",
+        "git add"
+      ]
+    }
   }
 }

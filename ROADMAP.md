@@ -5,12 +5,13 @@ Breaking Changes:
 * store arg is not in route.getComponent
 * START_SCAN, END_SCAN instead of START_BOOT, END_BOOT
 * diffrent run of scan - Using Union component
+* Updated to react 16.4 - Using new context and lifecycles. Breaks the compatibility with older React.
 
 ```
 [*] Monorepo with Yarn workspaces
-[ ] Travis build/release
-[ ] Prettier
-[ ] Husky
+[*] Travis build/release
+[*] Prettier
+[*] Husky
 [ ] react-union-scripts init
 	[ ] new widget
 	[ ] new project from boilerplate
@@ -21,21 +22,21 @@ Breaking Changes:
 [ ] Examples/Recipes
 	[*] Basic
 	[ ] Basic with Redux
-	[ ] Liferay 7 + Senna
-	[ ] Real world - widget communication, styles, resources, JWT, INTL, Persmissions
+	[*] Liferay 7 + Senna
+	[ ] Real world - widget communication, styles, resources, JWT, INTL, Permissions
 	[ ] Other CMS - Wordpress, Joomla, KeystoneJS, ...
 [ ] Tests
-[ ] Own repos for:
-	[ ] R.injectableStore
+[*] Own repos for:
+	[*] R.injectableStore
 [ ] union.config.js validator
 	[ ] missing options
 	[ ] name of the module cannot contain special characters
 [ ] Minor tasks
 	[*] Fix hardcoded webpack resolver for eslint import plugin
 	[ ] Update babel
-	[ ] Fill in "package.json"s
-		[ ] repository
-		[ ] authors
+	[*] Fill in "package.json"s
+		[*] repository
+		[*] authors
 		[ ] VIVO to keywords?
 	[ ] Possible integrations "xo"
 ```

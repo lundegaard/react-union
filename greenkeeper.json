@@ -1,0 +1,25 @@
+{
+	"groups": {
+		"default": {
+			"packages": [
+				"boilerplates/react-union-boilerplate-basic/package.json",
+				"boilerplates/react-union-boilerplate-liferay-basic/package.json",
+				"boilerplates/react-union-boilerplate-liferay-basic/packages/app-demo/package.json",
+				"boilerplates/react-union-boilerplate-liferay-basic/packages/widget-content/package.json",
+				"boilerplates/react-union-boilerplate-liferay-basic/packages/widget-hero/package.json",
+				"boilerplates/react-union-boilerplate-monorepo/package.json",
+				"boilerplates/react-union-boilerplate-monorepo/packages/app-sample/package.json",
+				"boilerplates/react-union-boilerplate-monorepo/packages/widget-content/package.json",
+				"boilerplates/react-union-boilerplate-monorepo/packages/widget-hero/package.json",
+				"boilerplates/react-union-boilerplate-ssr-basic/package.json",
+				"package.json",
+				"packages/babel-preset-react-union/package.json",
+				"packages/eslint-config-react-union/package.json",
+				"packages/react-union-scripts/package.json",
+				"packages/react-union/package.json",
+				"packages/react-union-rendering-service/package.json"
+			]
+		}
+	},
+	"ignore": ["lerna"]
+}
