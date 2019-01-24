@@ -1,14 +1,8 @@
 package eu.reactunion.boilerplate.portlet;
 
 import javax.portlet.Portlet;
-import javax.portlet.PortletException;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import java.io.IOException;
 
-import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
-import eu.reactunion.boilerplate.configuration.HeroConfigurationUtil;
 import eu.reactunion.boilerplate.constants.HeroPortletKeys;
 import org.osgi.service.component.annotations.Component;
 
@@ -18,7 +12,6 @@ import org.osgi.service.component.annotations.Component;
  * @author Roman Srom (roman.srom@lundegaard.eu)
  */
 @Component(
-	configurationPid = HeroPortletKeys.CONFIGURATION,
 	immediate = true,
 	property = {
 		"com.liferay.portlet.display-category=category.sample",
@@ -32,16 +25,4 @@ import org.osgi.service.component.annotations.Component;
 	service = Portlet.class
 )
 public class HeroPortlet extends MVCPortlet {
-
-	@Override
-	public void render(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
-		try {
-			HeroConfigurationUtil.addConfigurationContext(renderRequest);
-		} catch (ConfigurationException e) {
-			throw new PortletException("Configuration error", e);
-		}
-
-		super.render(renderRequest, renderResponse);
-	}
-
 }

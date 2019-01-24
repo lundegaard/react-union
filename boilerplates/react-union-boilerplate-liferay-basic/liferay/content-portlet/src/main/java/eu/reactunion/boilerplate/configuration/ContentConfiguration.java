@@ -17,14 +17,12 @@ import eu.reactunion.boilerplate.constants.ContentPortletKeys;
 public interface ContentConfiguration {
 
     @Meta.AD(
-            required = true,
-            deflt = ""
+            required = true
     )
     String heading();
 
     @Meta.AD(
-            required = true,
-            deflt = ""
+            required = true
     )
     String content();
 

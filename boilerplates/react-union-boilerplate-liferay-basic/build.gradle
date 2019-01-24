@@ -12,18 +12,20 @@ buildscript {
 apply plugin: 'com.moowork.node'
 
 node {
-    version = '8.9.1'
-    yarnVersion = '1.3.2'
+    version = '10.15.0'
+    yarnVersion = '1.13.0'
     download = true
 }
 
 // task that builds react union app for liferay
 task buildForLiferay(type: YarnTask) {
-    args = ['build:liferay']
+    args = ['build']
 }
 
-// processes your package.json before running yarn build:liferay
-buildForLiferay.dependsOn 'yarn_install'
+// processes your package.json before running buildForLiferay
+// yarn install has to be run in react union root, not in boilerplate subproject. Therefore it is not run
+// automatically
+// buildForLiferay.dependsOn 'yarn_install'
 
 // runs "build for liferay" as part of gradle build
 task build(dependsOn: 'buildForLiferay') {

@@ -26,12 +26,12 @@ const targetDirectory = path.join(
 	appDirectory,
 	'liferay/amd-loader/src/main/resources/META-INF/resources'
 );
-const configFilePath = path.join(targetDirectory, 'config.js');
+const configFilePath = path.join(buildDirectory, 'config.js');
 
 const joinNonEmpty = xs => xs.filter(Boolean).join('.');
 
 const getLiferayFilePath = (appName, hash) =>
-	path.join(targetDirectory, `${joinNonEmpty([appName, hash])}.js`);
+	path.join(buildDirectory, `${joinNonEmpty([appName, hash])}.js`);
 
 const getLiferayContextPath = (appName, hash) =>
 	`/o/liferay-amd-loader/${joinNonEmpty([appName, hash])}.js`;
@@ -80,8 +80,6 @@ const getLoaderSource = (appName, manifest) => {
 };
 
 const createLiferayConfig = () => {
-	mkdirp.sync(targetDirectory);
-
 	const appsAvailable = getAvailableApps('**/app-*/', {
 		cwd: srcPackagesDirectory,
 		ignore: ['node_modules/**'],
@@ -104,13 +102,10 @@ const createLiferayConfig = () => {
 			'utf8'
 		);
 
-		fs.copySync(path.join(buildDirectory, appName), path.join(targetDirectory, appName));
 	})(appsAvailable);
 };
 
 console.log('🚀 Starting Liferay AMD loader scripts 🚀');
-console.log(`Cleaning ${targetDirectory} directory...`);
-rimraf.sync(targetDirectory, {}, null);
 console.log('Creating Liferay AMD configuration...');
 createLiferayConfig();
 console.log('✨ Successfully finished ✨');

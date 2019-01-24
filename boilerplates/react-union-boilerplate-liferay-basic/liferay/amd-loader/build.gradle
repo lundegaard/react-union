@@ -31,8 +31,10 @@ task deleteResources(type:Delete) {
 }
 
 task copyResources(type: Copy, dependsOn: deleteResources) {
-    from '../build/loader'
+    from '../../build'
     into 'src/main/resources/META-INF/resources'
 }
 
-build.dependsOn(copyResources)
+processResources.dependsOn(copyResources)
+
+build.dependsOn(rootProject.tasks.build)
