@@ -1,11 +1,27 @@
+apply from: 'dependencies.gradle'
+
 buildscript {
+    repositories {
+        maven {
+            url "https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public"
+        }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenLocal()
+    }
+
+    dependencies {
+        classpath "com.liferay:com.liferay.gradle.plugins:3.3.9"
+        classpath "com.moowork.gradle:gradle-node-plugin:1.2.0"
+    }
+}
+
+allprojects {
     repositories {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
-    }
-    dependencies {
-        classpath "com.moowork.gradle:gradle-node-plugin:1.2.0"
     }
 }
 
