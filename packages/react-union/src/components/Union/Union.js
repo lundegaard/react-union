@@ -7,7 +7,7 @@ import { invariant } from '../../utils';
 import { RouteShape } from '../../shapes';
 import scan from '../../scanning';
 import route from '../../routing';
-import { IS_SERVER } from '../../constants';
+import { IS_SERVER, RESCAN } from '../../constants';
 import { PrescanContext } from '../../contexts';
 
 import Widget from '../Widget';
@@ -93,6 +93,19 @@ class Union extends Component {
 			widgetConfigs: widgetConfigs || Union.scan(props),
 		};
 	}
+
+	componentDidMount() {
+		document.addEventListener(RESCAN, this.rescan);
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener(RESCAN, this.rescan);
+	}
+
+	rescan = () =>
+		this.setState({
+			widgetConfigs: Union.scan(this.props),
+		});
 
 	renderWidget = widgetConfig => {
 		const { initialProps } = this.context || {};
