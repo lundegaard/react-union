@@ -1,0 +1,12 @@
+apply plugin: "com.liferay.plugin"
+
+dependencies {
+	compileOnly globalDependency.portalKernel
+	compileOnly globalDependency.portalUtilTaglib
+	compileOnly globalDependency.portalConfigurationMetatype
+	compileOnly globalDependency.portletApi
+	compileOnly globalDependency.servletApi
+	compileOnly globalDependency.jstl
+	compileOnly globalDependency.osgiCmpn
+	compileOnly globalDependency.bndLib
+}
