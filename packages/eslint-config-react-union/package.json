@@ -12,8 +12,8 @@
     "babel-eslint": "10.0.1",
     "eslint": "5.12.1",
     "eslint-plugin-babel": "5.3.0",
-    "eslint-plugin-import": "2.14.0",
-    "eslint-plugin-react": "7.12.3"
+    "eslint-plugin-import": "2.16.0",
+    "eslint-plugin-react": "7.12.4"
   },
   "peerDependencies": {
     "babel-eslint": "^10.0.0",
