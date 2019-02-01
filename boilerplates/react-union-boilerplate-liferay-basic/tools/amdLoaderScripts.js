@@ -22,10 +22,6 @@ const mainFileName = 'main.js';
 const manifestFileName = 'assetManifest.json';
 
 const buildDirectory = path.join(appDirectory, 'build');
-const targetDirectory = path.join(
-	appDirectory,
-	'liferay/amd-loader/src/main/resources/META-INF/resources'
-);
 const configFilePath = path.join(buildDirectory, 'config.js');
 
 const joinNonEmpty = xs => xs.filter(Boolean).join('.');
