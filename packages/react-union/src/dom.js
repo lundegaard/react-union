@@ -1,6 +1,8 @@
 import ReactDOM from 'react-dom';
 import { noop } from 'ramda-extension';
 
+import { RESCAN } from './constants';
+
 const DEFAULT_UNION_ROOT_ID = 'union';
 
 const createElement = (id, parent, elementType) => {
@@ -39,3 +41,9 @@ export function justUnmountComponentAtNode(rootId = DEFAULT_UNION_ROOT_ID) {
 
 	ReactDOM.unmountComponentAtNode(rootElement);
 }
+
+export const rescan = () => {
+	const event = document.createEvent('Event');
+	event.initEvent(RESCAN, true, true);
+	document.dispatchEvent(event);
+};
