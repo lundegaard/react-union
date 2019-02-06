@@ -11,7 +11,7 @@
     "@babel/polyfill": "7.2.5",
     "@union-monorepo/widget-content": "0.1.0",
     "@union-monorepo/widget-hero": "0.1.0",
-    "react": "16.7.0",
+    "react": "16.8.0",
     "react-dom": "16.7.0",
     "react-hot-loader": "4.6.5",
     "react-union": "0.11.0",
