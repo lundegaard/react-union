@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [0.12.0] – 20198-02-06
+
 ### Added
 - (_react-union_): `rescan()`, a function to imperatively rescan the document for widget descriptors. Callable from anywhere!
 - (_babel-preset-react-union_): The preset is now configurable with options.
