@@ -1,5 +1,5 @@
 {
-  "version": "0.11.0",
+  "version": "0.12.0",
   "name": "react-union-scripts",
   "description": "Provides scripts for building JS web apps targeted on either CMS or Portal solutions.",
   "license": "MIT",
@@ -20,7 +20,7 @@
     "babel-core": "^7.0.0-bridge",
     "babel-jest": "24.0.0",
     "babel-loader": "8.0.5",
-    "babel-preset-react-union": "0.11.0",
+    "babel-preset-react-union": "^0.12.0",
     "browser-sync": "2.26.3",
     "clean-webpack-plugin": "1.0.1",
     "connect-history-api-fallback": "1.6.0",
