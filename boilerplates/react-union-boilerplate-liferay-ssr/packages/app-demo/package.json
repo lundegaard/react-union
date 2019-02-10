@@ -11,7 +11,7 @@
     "@union-liferay-ssr/widget-content": "^0.12.0",
     "@union-liferay-ssr/widget-hero": "^0.12.0",
     "document-ready": "2.0.2",
-    "prop-types": "15.6.2",
+    "prop-types": "15.7.0",
     "react": "16.8.0",
     "react-dom": "16.8.0",
     "react-hot-loader": "4.6.5",
