@@ -8,8 +8,7 @@ Common jsp for all jsps. It defines taglibs and liferay and portlet objects.
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
 taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
-taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
-taglib uri="http://lundegaard.eu/tld/react-union" prefix="react-union" %>
+taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <liferay-theme:defineObjects />
 
