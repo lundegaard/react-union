@@ -14,6 +14,8 @@ import org.osgi.service.component.annotations.Component;
 import eu.lundegaard.reactunion.support.ReactWidgetSupport;
 
 /**
+ * Implementation of {@link ReactWidgetSupport} which returns Init data from portlet instance configuration.
+ *
  * @author Roman Srom (roman.srom@lundegaard.eu)
  */
 @Component(
