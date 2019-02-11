@@ -1,6 +1,6 @@
 # eslint-config-react-union
 
-The package provides React Unions's .eslintrc as an extensible shared config.
+The package provides React Unions's `.eslintrc.*` as an extensible shared config.
 
 ## Usage
 
@@ -13,19 +13,18 @@ The default export contains all of our ESLint rules, including ECMAScript 6+ and
 ### Installation
 
 ```sh
-npm install eslint-config-react-union eslint@4.7.2 babel-eslint@8.0.1 eslint-plugin-babel@4.1.2 eslint-plugin-react@7.4.0 eslint-plugin-import@2.7.0 --save-dev
+npm install eslint-config-react-union eslint@5.5.0 babel-eslint@10.0.0 eslint-plugin-babel@5.2.1 eslint-plugin-react@7.11.1 eslint-plugin-import@2.14.0 --save-dev
 ```
-
 or
 
 ```sh
-yarn add eslint-config-react-union eslint@4.7.2 babel-eslint@8.0.1 eslint-plugin-babel@4.1.2 eslint-plugin-react@7.4.0 eslint-plugin-import@2.7.0 -D
+yarn add eslint-config-react-union eslint@5.5.0 babel-eslint@10.0.0 eslint-plugin-babel@5.2.1 eslint-plugin-react@7.11.1 eslint-plugin-import@2.14.0 -D
 ```
 
-And add `"extends": "union"` to your .eslintrc.
+And add `"extends": "react-union"` to your .eslintrc.
 
 ### eslint-config-react-union/base
 
 The eslint-config-react-union without excluding rules for React.
 
-Add `"extends": "eslint-config-react-union/base"` to your .eslintrc
+Add `"extends": "eslint-config-react-union/base"` to your `.eslintrc.*`.

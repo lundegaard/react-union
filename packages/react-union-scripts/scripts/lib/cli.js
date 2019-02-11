@@ -1,5 +1,5 @@
-const { always, compose, equals, findIndex, ifElse, when, nth } = require('ramda');
-const { toPascalCase, includes, notInclude } = require('ramda-extension');
+const { always, compose, equals, findIndex, ifElse, nth } = require('ramda');
+const { includes, notInclude } = require('ramda-extension');
 
 /**
  *
@@ -17,7 +17,10 @@ const { toPascalCase, includes, notInclude } = require('ramda-extension');
  * 		) // "AppName"
  */
 const getArgValue = (arg, program) =>
-	compose(ifElse(equals(-1), always(null), x => program[x + 1]), findIndex(equals(arg)))(program);
+	compose(
+		ifElse(equals(-1), always(null), x => program[x + 1]),
+		findIndex(equals(arg))
+	)(program);
 
 const program = process.argv;
 const programIncludes = includes(program);
@@ -33,16 +36,19 @@ const verbose = programIncludes('--verbose');
 const proxy = programIncludes('--proxy');
 
 /** if true, do not suport HMR */
-const noHmr = !debug || programIncludes('--no-hmr');
+const noHMR = programIncludes('--no-hmr');
+
+/** if true, do not do anything SSR related */
+const noSSR = programIncludes('--no-ssr');
 
 /** if true, runs analyze tool  */
 const analyze = programIncludes('--analyze');
 
-/** if exist, runs single app. Value is converted from dash-case to PascalCase. */
-const app = when(Boolean, toPascalCase)(getArgValue('--app', program));
+/** if exist, runs single app. Value is provided as is in original form */
+const app = getArgValue('--app', program);
 
 const target = getArgValue('--target', program);
 
 const script = nth(2)(program);
 
-module.exports = { script, target, debug, verbose, proxy, noHmr, analyze, app };
+module.exports = { script, target, debug, verbose, proxy, noHMR, noSSR, analyze, app };

@@ -1,9 +1,14 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { map, path } from 'ramda';
+import { noop } from 'ramda-extension';
 
-import { noop } from '../../utils';
+import { invariant } from '../../utils';
 import { RouteShape } from '../../shapes';
-import scan from '../../scan';
+import scan from '../../scanning';
+import route from '../../routing';
+import { IS_SERVER } from '../../constants';
+import { PrescanContext } from '../../contexts';
 
 import Widget from '../Widget';
 
@@ -19,73 +24,97 @@ class Union extends Component {
 		 */
 		children: PropTypes.node,
 		/**
-		 * Called after the scan of the HTML is done.
+		 * Called after the scan of the HTML is successfully done.
 		 */
 		onScanEnd: PropTypes.func,
 		/**
-		 *  Called when there is an error while scanning of the HTML.
+		 * Called when an error happens while scanning the HTML.
 		 */
 		onScanError: PropTypes.func,
 		/**
-		 * Called before the scan of the HTML
+		 * Called before the scan of the HTML.
 		 */
 		onScanStart: PropTypes.func,
 		/**
-		 * Element in which the scan is running. By default `document.body`.
+		 * HTML element or Cheerio wrapper in which the scan is running. Defaults to `document`.
 		 */
-		parent: PropTypes.object,
+		parent: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
 		/**
-		 *  Array of routes that are supported by your application.
+		 * Array of routes that are supported by your application.
 		 */
-		routes: PropTypes.arrayOf(PropTypes.shape(RouteShape)).isRequired,
+		routes: PropTypes.arrayOf(PropTypes.shape(RouteShape)),
 	};
+
+	static contextType = PrescanContext;
 
 	static defaultProps = {
 		onScanEnd: noop,
 		onScanError: noop,
 		onScanStart: noop,
+		parent: IS_SERVER ? null : document,
 	};
 
-	state = {
-		configs: [],
-	};
-
-	componentDidMount() {
-		this.scan(this.props);
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.routes !== this.props.routes) {
-			this.scan(nextProps);
-		}
-	}
-
-	scan = props => {
+	static scan = props => {
 		const { onScanStart, onScanEnd, onScanError, parent, routes } = props;
 
-		onScanStart();
+		invariant(routes, 'Missing `routes` prop in <Union />.');
 
-		const domParent = parent || document.body;
+		try {
+			onScanStart();
+			const scanResult = scan(parent);
+			const routeResult = route(routes, scanResult);
+			onScanEnd(routeResult);
 
-		scan(routes, domParent).then(
-			configs => {
-				onScanEnd(configs);
-				this.setState({ configs });
-			},
-			error => onScanError(error)
+			return routeResult.widgetConfigs;
+		} catch (error) {
+			onScanError(error);
+
+			throw error;
+		}
+	};
+
+	static getDerivedStateFromProps(nextProps, previousState) {
+		if (previousState.routesReference !== nextProps.routes) {
+			return {
+				routesReference: nextProps.routes,
+				widgetConfigs: Union.scan(nextProps),
+			};
+		}
+
+		return null;
+	}
+
+	constructor(props, context) {
+		super(props, context);
+		const { widgetConfigs } = this.context || {};
+
+		this.state = {
+			routesReference: props.routes,
+			widgetConfigs: widgetConfigs || Union.scan(props),
+		};
+	}
+
+	renderWidget = widgetConfig => {
+		const { initialProps } = this.context || {};
+
+		return (
+			<Widget
+				config={widgetConfig}
+				initialProps={path([widgetConfig.namespace], initialProps)}
+				key={widgetConfig.namespace}
+			/>
 		);
 	};
 
-	renderWidget = config => (
-		<Widget key={config.descriptor.namespace || config.descriptor.container} {...config} />
-	);
-
 	render() {
+		const { children } = this.props;
+		const { widgetConfigs } = this.state;
+
 		return (
-			<div>
-				{this.props.children}
-				{this.state.configs.map(this.renderWidget)}
-			</div>
+			<Fragment>
+				{children}
+				{map(this.renderWidget, widgetConfigs)}
+			</Fragment>
 		);
 	}
 }
