@@ -53,7 +53,7 @@
     "webpack-merge": "4.2.1"
   },
   "devDependencies": {
-    "react": "16.8.0",
+    "react": "16.8.2",
     "react-dom": "16.8.0"
   }
 }
