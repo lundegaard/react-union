@@ -1,38 +1,22 @@
-buildscript {
-	dependencies {
-		classpath group: "com.liferay", name: "com.liferay.gradle.plugins", version: "3.3.9"
-	}
-
-	repositories {
-		maven {
-			url "https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public"
-		}
-	}
-}
 apply plugin: "com.liferay.plugin"
 
 dependencies {
-	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"
-	compileOnly group: 'com.liferay.webjars', name: 'liferay-amd-loader', version: '1.4.1'
-	compileOnly group: "org.osgi", name: "osgi.cmpn", version: "6.0.0"
+    compileOnly globalDependency.portalKernel
+    compileOnly globalDependency.osgiCmpn
+    compileOnly globalDependency.portalAmdLoader
 }
 
-
-repositories {
-	mavenLocal()
-
-	maven {
-		url "https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public"
-	}
-}
-
-task deleteResources(type:Delete) {
+task deleteResources(type: Delete) {
     delete fileTree('src/main/resources/META-INF/resources').include('**/*')
 }
 
 task copyResources(type: Copy, dependsOn: deleteResources) {
-    from '../build/loader'
+    from '../../build'
     into 'src/main/resources/META-INF/resources'
 }
 
-build.dependsOn(copyResources)
+// copy built widget javascript from react app
+processResources.dependsOn(copyResources)
+
+// build first react-app
+build.dependsOn(rootProject.tasks.build)

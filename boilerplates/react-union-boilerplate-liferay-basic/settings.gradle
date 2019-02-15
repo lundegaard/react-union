@@ -1,0 +1,5 @@
+rootProject.name = 'react-app'
+
+include 'liferay/amd-loader'
+include 'liferay/hero-portlet'
+include 'liferay/content-portlet'
