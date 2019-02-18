@@ -1,0 +1,43 @@
+ext {
+    version = [
+            portalKernel                            : '2.0.0',
+            portalUtilTaglib                        : '2.0.0',
+            portalConfigurationMetatype             : '2.0.0',
+            portalAmdLoader                         : '1.4.1',
+
+            portletApi                              : '2.0',
+            servletApi                              : '3.0.1',
+            servletJspApi                           : '2.3.0',
+            jstl                                    : '1.2',
+            osgiCmpn                                : '6.0.0',
+            bndLib                                  : '3.5.0',
+            osgiCore                                : '6.0.0',
+            osgiComponentAnnotations                : '1.3.0',
+            osgiComponent                           : '1.3.0',
+            feignCore                               : '10.1.0',
+
+            liferayGradlePlugin                     : '3.3.9',
+            nodePlugin                              : '1.2.0'
+    ]
+
+    globalDependency = [
+            portalKernel                            : "com.liferay.portal:com.liferay.portal.kernel:${version.portalKernel}",
+            portalUtilTaglib                        : "com.liferay.portal:com.liferay.util.taglib:${version.portalUtilTaglib}",
+            portalConfigurationMetatype             : "com.liferay:com.liferay.portal.configuration.metatype:${version.portalConfigurationMetatype}",
+            portalAmdLoader                         : "com.liferay.webjars:liferay-amd-loader:${version.portalAmdLoader}",
+
+            portletApi                              : "javax.portlet:portlet-api:${version.portletApi}",
+            servletApi                              : "javax.servlet:javax.servlet-api:${version.servletApi}",
+            servletJspApi                           : "javax.servlet.jsp:javax.servlet.jsp-api:${version.servletJspApi}",
+            jstl                                    : "jstl:jstl:${version.jstl}",
+            osgiCmpn                                : "org.osgi:osgi.cmpn:${version.osgiCmpn}",
+            bndLib                                  : "biz.aQute.bnd:biz.aQute.bndlib:${version.bndLib}",
+            osgiCore                                : "org.osgi:org.osgi.core:${version.osgiCore}",
+            osgiComponentAnnotations                : "org.osgi:org.osgi.service.component.annotations:${version.osgiComponentAnnotations}",
+            osgiComponent                           : "org.osgi:org.osgi.service.component:${version.osgiComponent}",
+            feignCore                               : "io.github.openfeign:feign-core:${version.feignCore}",
+
+            liferayGradlePlugin                     : "com.liferay:com.liferay.gradle.plugins:${version.liferayGradlePlugin}",
+            nodePlugin                              : "com.moowork.gradle:gradle-node-plugin:${version.nodePlugin}"
+    ]
+}

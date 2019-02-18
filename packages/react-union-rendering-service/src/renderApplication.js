@@ -82,8 +82,9 @@ const renderApplication = async ({ handleRequest, options, originalHTML, req, re
 		return { widgetConfigs, chunkNames, initialProps };
 	};
 
-	const { widgetConfigs, chunkNames, initialProps } = await handleRequest({ render, ...context });
-	invariant(widgetConfigs, 'You did not call `render(<Root />)` in your SSR request handler.');
+	const renderResult = await handleRequest({ render, ...context });
+	invariant(renderResult, 'You did not call `render(<Root />)` in your SSR request handler.');
+	const { widgetConfigs, chunkNames, initialProps } = renderResult;
 
 	if (skipEmptyScans && isEmpty(widgetConfigs)) {
 		return originalHTML;
