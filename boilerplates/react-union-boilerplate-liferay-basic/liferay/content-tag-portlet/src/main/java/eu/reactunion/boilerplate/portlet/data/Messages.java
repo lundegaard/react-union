@@ -1,6 +1,8 @@
 package eu.reactunion.boilerplate.portlet.data;
 
 /**
+ * Configuration data object for react widget named content.
+ *
  * @author Roman Srom (roman.srom@lundegaard.eu)
  */
 public class Messages {
