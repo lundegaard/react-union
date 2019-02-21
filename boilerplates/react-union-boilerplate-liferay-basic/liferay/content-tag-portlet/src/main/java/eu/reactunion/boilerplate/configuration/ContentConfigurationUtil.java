@@ -42,10 +42,10 @@ public class ContentConfigurationUtil {
     public static void addConfigurationContext(HttpServletRequest request) throws ConfigurationException {
         final ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         if (themeDisplay != null) {
-            ContentConfiguration ContentConfiguration = getContentConfiguration(themeDisplay);
+            ContentConfiguration contentConfiguration = getContentConfiguration(themeDisplay);
 
-            request.setAttribute(ATTR_HEADING, ContentConfiguration.heading());
-            request.setAttribute(ATTR_CONTENT, ContentConfiguration.content());
+            request.setAttribute(ATTR_HEADING, contentConfiguration.heading());
+            request.setAttribute(ATTR_CONTENT, contentConfiguration.content());
         }
     }
 
