@@ -1,5 +1,0 @@
-Bundle-Name: React Union Support
-Bundle-SymbolicName: eu.lundegaard.reactunion.support
-Bundle-Version: 1.0.0
-Export-Package: eu.lundegaard.reactunion.support,
-    eu.lundegaard.reactunion.support.exception
