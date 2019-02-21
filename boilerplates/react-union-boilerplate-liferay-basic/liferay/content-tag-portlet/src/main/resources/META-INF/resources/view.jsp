@@ -3,9 +3,5 @@ Renders React widgets.
 --%>
 <%@ include file="./init.jsp" %>
 
-<%--suppress JSUnresolvedVariable, JSUnresolvedFunction --%>
-<script type="text/javascript">
-	Liferay.Loader.require("app-demo");
-</script>
-
+<react-union:app name="app-demo" />
 <react-union:widget name="content" />
