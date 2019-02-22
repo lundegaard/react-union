@@ -24,6 +24,13 @@ import eu.lundegaard.reactunion.support.ReactWidgetSupport;
 )
 public class ContentReactWidgetSupport extends ReactWidgetSupport {
 
+//    /**
+//     * If you need to render more than 1 widget in the portlet, you can use these method
+//     * to prepare init data for all widgets.
+//     *
+//     * @param request
+//     * @return map with widget name as a key and initData object as a value
+//     */
 //    @Override
 //    public Map<String, Object> getWidgetsInitData(RenderRequest request) {
 //        Map<String, Object> initDataMap = new HashMap<>();
