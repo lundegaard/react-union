@@ -7,16 +7,16 @@
     "node": ">=8"
   },
   "dependencies": {
-    "@babel/polyfill": "7.2.5",
+    "@babel/polyfill": "^7.2.5",
     "@union-liferay-ssr/widget-content": "^0.12.0",
     "@union-liferay-ssr/widget-hero": "^0.12.0",
-    "document-ready": "2.0.2",
-    "prop-types": "15.6.2",
-    "react": "16.8.3",
-    "react-dom": "16.8.3",
-    "react-hot-loader": "4.6.5",
+    "document-ready": "^2.0.2",
+    "prop-types": "^15.6.2",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
+    "react-hot-loader": "^4.6.5",
     "react-union": "^0.12.0",
     "react-union-rendering-service": "^0.12.0",
-    "react-universal-component": "3.0.3"
+    "react-universal-component": "^4.0.0"
   }
 }
