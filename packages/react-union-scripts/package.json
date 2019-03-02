@@ -45,7 +45,7 @@
     "uglifyjs-webpack-plugin": "2.1.1",
     "url-loader": "1.1.2",
     "webpack": "4.29.0",
-    "webpack-bundle-analyzer": "3.0.4",
+    "webpack-bundle-analyzer": "3.1.0",
     "webpack-dev-middleware": "3.5.1",
     "webpack-hot-middleware": "2.24.3",
     "webpack-hot-server-middleware": "0.6.0",
