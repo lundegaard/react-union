@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "react": "16.8.4",
-    "react-dom": "16.8.3"
+    "react-dom": "16.8.4"
   },
   "devDependencies": {
     "enzyme": "3.8.0"
