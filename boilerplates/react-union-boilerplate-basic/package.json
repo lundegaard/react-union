@@ -11,7 +11,7 @@
     "@babel/polyfill": "7.2.5",
     "classnames": "2.2.6",
     "prop-types": "15.6.2",
-    "react": "16.8.3",
+    "react": "16.8.4",
     "react-dom": "16.8.3",
     "react-hot-loader": "4.6.5",
     "react-union": "^0.12.0",
