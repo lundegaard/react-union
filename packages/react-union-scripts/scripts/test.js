@@ -25,7 +25,7 @@ const supportedKeys = [
 
 const pickSupported = pick(supportedKeys);
 const pickUnsupported = omit(supportedKeys);
-const containsSetupOption = has('setupTestFrameworkScriptFile');
+const containsSetupOption = has('setupFilesAfterEnv');
 
 const filePattern =
 	'\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$';
@@ -46,7 +46,7 @@ They will be ignored.`
 
 	if (containsSetupOption(unsupported)) {
 		console.log(
-			`Instead of using "setupTestFrameworkScriptFile" inside package.json#jest,
+			`Instead of using "setupFilesAfterEnv" inside package.json#jest,
 create "testsSetup.js" file in root of your project.`
 		);
 	}
@@ -64,7 +64,7 @@ create "testsSetup.js" file in root of your project.`
 			[filePattern]: resolveSymlink(__dirname, 'jest/fileTransformer.js'),
 		},
 		rootDir,
-		setupTestFrameworkScriptFile: setupTestsFile,
+		setupFilesAfterEnv: [setupTestsFile],
 		moduleFileExtensions: ['web.js', 'js', 'json', 'web.jsx', 'jsx', 'node'],
 		transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
 		...sanitizedConfig,

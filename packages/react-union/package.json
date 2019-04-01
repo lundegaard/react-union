@@ -18,7 +18,7 @@
     "dist"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.3.4",
+    "@babel/runtime": "^7.4.2",
     "hoist-non-react-statics": "^3.2.0",
     "prop-types": "^15.6.2",
     "ramda": "^0.26.1",
@@ -26,8 +26,8 @@
   },
   "devDependencies": {
     "enzyme": "^3.8.0",
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   },
   "peerDependencies": {
     "react": "^16.8.3",

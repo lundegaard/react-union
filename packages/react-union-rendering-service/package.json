@@ -25,8 +25,8 @@
     "react-universal-component": "^4.0.0"
   },
   "devDependencies": {
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-union": "^0.12.1",
     "react-universal-component": "^4.0.0"
   }
