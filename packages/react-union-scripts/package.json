@@ -48,7 +48,7 @@
     "webpack": "^4.29.0",
     "webpack-bundle-analyzer": "^3.0.4",
     "webpack-dev-middleware": "^3.5.1",
-    "webpack-hot-middleware": "^2.24.3",
+    "webpack-hot-middleware": "^2.24.4",
     "webpack-hot-server-middleware": "^0.6.0",
     "webpack-manifest-plugin": "^2.0.4",
     "webpack-merge": "^4.2.1"
