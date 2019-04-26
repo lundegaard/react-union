@@ -9,7 +9,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.18.3",
+    "body-parser": "^1.19.0",
     "cheerio": "^1.0.0-rc.2",
     "connect": "^3.6.6",
     "invariant": "^2.2.4",
