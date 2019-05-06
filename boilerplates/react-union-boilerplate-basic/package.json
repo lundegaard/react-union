@@ -22,7 +22,7 @@
     "babel-core": "^7.0.0-bridge",
     "babel-eslint": "^10.0.1",
     "babel-preset-react-union": "^0.12.1",
-    "enzyme": "^3.8.0",
+    "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.8.0",
     "enzyme-to-json": "^3.3.5",
     "eslint": "^5.12.1",
