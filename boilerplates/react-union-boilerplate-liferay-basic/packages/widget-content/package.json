@@ -8,10 +8,10 @@
 	},
 	"main": "src/index.js",
 	"dependencies": {
-		"@babel/polyfill": "^7.2.5",
+		"@babel/polyfill": "^7.4.4",
 		"prop-types": "^15.7.2",
-		"react": "^16.8.3",
-		"react-dom": "^16.8.3"
+		"react": "^16.8.6",
+		"react-dom": "^16.8.6"
 	},
 	"devDependencies": {
 		"enzyme": "^3.8.0"

@@ -29,8 +29,6 @@ const DEFAULT_SSR_PORT = 3303;
 const DEFAULT_UNION_CONFIG = {
 	// computed in `extendPaths_`
 	paths: {},
-	// computed in `extendClean_`
-	clean: { options: {} },
 	generateTemplate: true,
 	publicPath: '/',
 	templateFilename: 'index.ejs',
@@ -89,18 +87,6 @@ const trimSlashes = R.o(R.dropWhile(equalsSlash_), R.dropLastWhile(equalsSlash_)
 
 const getApps_ = R.path([APPS_FOLDER]);
 
-const extendClean_ = config => ({
-	...config,
-	clean: {
-		paths: [config.paths.build],
-		...config.clean,
-		options: {
-			root: process.cwd(),
-			...config.clean.options,
-		},
-	},
-});
-
 const defaultUniRepoPaths = config => ({
 	build: path.resolve(process.cwd(), BUILD_FOLDER, config.name),
 	// directory for resources and template
@@ -136,12 +122,9 @@ const extendOutputMapper_ = R.evolve({
 const getCommonUnionConfig_ = R.omit([APPS_FOLDER]);
 
 const extendConfigs = R.map(
-	R.o(
-		R.compose(
-			extendClean_,
-			extendPaths_,
-			extendOutputMapper_
-		),
+	R.compose(
+		extendPaths_,
+		extendOutputMapper_,
 		R.mergeDeepRight(DEFAULT_UNION_CONFIG)
 	)
 );

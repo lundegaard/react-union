@@ -16,5 +16,5 @@ module.exports = {
 	testPathIgnorePatterns: ignorePatterns,
 	coveragePathIgnorePatterns: ignorePatterns,
 	snapshotSerializers: ['enzyme-to-json/serializer'],
-	setupTestFrameworkScriptFile: '<rootDir>/tests/enzymeSetup.js',
+	setupFilesAfterEnv: ['<rootDir>/tests/enzymeSetup.js'],
 };

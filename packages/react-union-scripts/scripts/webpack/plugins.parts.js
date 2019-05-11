@@ -16,8 +16,8 @@ const loaderOptionsPlugin = debug => ({
 	],
 });
 
-const cleanPlugin = ({ clean: { paths, options } = {} }) => ({
-	plugins: [new CleanWebpackPlugin(paths, options)],
+const cleanPlugin = () => ({
+	plugins: [new CleanWebpackPlugin()],
 });
 
 const definePlugin = globals => ({

@@ -9,8 +9,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "cheerio": "^1.0.0-rc.2",
+    "body-parser": "^1.19.0",
+    "cheerio": "^1.0.0-rc.3",
     "connect": "^3.6.6",
     "invariant": "^2.2.4",
     "morgan": "^1.9.1",
@@ -25,8 +25,8 @@
     "react-universal-component": "^4.0.0"
   },
   "devDependencies": {
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-union": "^0.12.1",
     "react-universal-component": "^4.0.0"
   }

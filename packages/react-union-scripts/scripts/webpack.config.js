@@ -120,7 +120,7 @@ const getWebpackConfig_ = (config, isServerConfig) => {
 				entry: isHot ? [require.resolve('webpack-hot-middleware/client')] : [],
 			},
 			optimization(),
-			cleanPlugin(config),
+			cleanPlugin(),
 			extractCSSChunksPlugin(isHot, outputMapper.css),
 			manifestPlugin()
 		);
