@@ -11,7 +11,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "cheerio": "^1.0.0-rc.2",
-    "connect": "^3.6.6",
+    "connect": "^3.6.7",
     "invariant": "^2.2.4",
     "morgan": "^1.9.1",
     "ramda": "^0.26.1",
