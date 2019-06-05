@@ -38,7 +38,7 @@
     "ncp": "^2.0.0",
     "ramda": "^0.26.1",
     "ramda-extension": "^0.7.2",
-    "raw-loader": "^1.0.0",
+    "raw-loader": "^3.0.0",
     "react-hot-loader": "^4.6.5",
     "react-union-rendering-service": "^0.12.1",
     "react-universal-component": "^4.0.0",
