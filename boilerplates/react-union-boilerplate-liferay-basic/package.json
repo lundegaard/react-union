@@ -28,7 +28,7 @@
     "mkdirp": "^0.5.1",
     "prettier": "^1.16.3",
     "ramda": "^0.26.1",
-    "ramda-extension": "^0.7.2",
+    "ramda-extension": "^0.8.0",
     "react-union-scripts": "^0.12.1",
     "rimraf": "^2.6.3"
   },
