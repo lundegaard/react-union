@@ -37,7 +37,7 @@
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
     "ramda": "^0.26.1",
-    "ramda-extension": "^0.7.2",
+    "ramda-extension": "^0.8.0",
     "raw-loader": "^1.0.0",
     "react-hot-loader": "^4.6.5",
     "react-union-rendering-service": "^0.12.1",
