@@ -15,7 +15,7 @@
     "invariant": "^2.2.4",
     "morgan": "^1.9.1",
     "ramda": "^0.26.1",
-    "ramda-extension": "^0.7.2",
+    "ramda-extension": "^0.9.0",
     "webpack-flush-chunks": "^2.0.3"
   },
   "peerDependencies": {
