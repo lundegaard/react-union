@@ -32,9 +32,10 @@ const loadCSS = isServerConfig => ({
 					{
 						loader: require.resolve('css-loader'),
 						options: {
-							modules: true,
-							localIdentName: '[name]__[local]--[hash:base64:5]',
-							exportOnlyLocals: isServerConfig,
+							modules: {
+								localIdentName: '[name]__[local]--[hash:base64:5]',
+												},
+							onlyLocals: isServerConfig,
 						},
 					},
 				],
