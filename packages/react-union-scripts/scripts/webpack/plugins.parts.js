@@ -62,7 +62,6 @@ const uglifyJSPlugin = (verbose, { sourceMaps, uglifyOptions: { cache, parallel,
 					warnings: verbose,
 					compress: {
 						comparisons: false,
-						warnings: verbose,
 					},
 					output: {
 						comments: verbose,
