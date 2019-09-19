@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+- (_react-union-scripts_) - [Liferay basic example fails on yarn build](https://github.com/lundegaard/react-union/issues/412) 
+
 ## [0.12.1] – 2019-03-12
 
 ### Changed
