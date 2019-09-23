@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
@@ -16,8 +16,8 @@ const loaderOptionsPlugin = debug => ({
 	],
 });
 
-const cleanPlugin = ({ clean: { paths, options } = {} }) => ({
-	plugins: [new CleanWebpackPlugin(paths, options)],
+const cleanPlugin = ({ clean: { options } = {} }) => ({
+	plugins: [new CleanWebpackPlugin(options)],
 });
 
 const definePlugin = globals => ({
@@ -62,7 +62,6 @@ const uglifyJSPlugin = (verbose, { sourceMaps, uglifyOptions: { cache, parallel,
 					warnings: verbose,
 					compress: {
 						comparisons: false,
-						warnings: verbose,
 					},
 					output: {
 						comments: verbose,
