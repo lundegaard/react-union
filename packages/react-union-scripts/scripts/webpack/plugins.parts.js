@@ -4,7 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
-const UglifyWebpackPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const ExtractCSSChunks = require('extract-css-chunks-webpack-plugin');
 const { getForMode } = require('../lib/utils');
 
@@ -53,21 +53,29 @@ const analyzeBundlePlugin = () => ({
 const uglifyJSPlugin = (verbose, { sourceMaps, uglifyOptions: { cache, parallel, mangle } }) => ({
 	optimization: {
 		minimizer: [
-			new UglifyWebpackPlugin({
-				cache,
-				parallel,
-				sourceMap: Boolean(sourceMaps),
-				uglifyOptions: {
-					mangle,
-					warnings: verbose,
+			new TerserPlugin({
+				terserOptions: {
+					parse: {
+						ecma: 8,
+					},
 					compress: {
+						ecma: 5,
+						warnings: false,
 						comparisons: false,
+						inline: 2,
+					},
+					mangle: mangle || {
+						safari10: true,
 					},
 					output: {
-						comments: verbose,
+						ecma: 5,
+						comments: false,
 						ascii_only: true,
 					},
 				},
+				cache,
+				parallel,
+				sourceMap: Boolean(sourceMaps),
 			}),
 		],
 	},
