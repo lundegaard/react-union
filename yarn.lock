@@ -4744,6 +4744,11 @@ escodegen@^1.9.1:
   optionalDependencies:
     source-map "~0.6.1"
 
+eslint-config-react-union@^0.12.0:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/eslint-config-react-union/-/eslint-config-react-union-0.12.1.tgz#79c0738b97d9a006b37dc59f907dddead9878bfa"
+  integrity sha512-1r1FqiU3D5ekdlBr9vjWtO0HPYPJnSvmwOFh7Ne2lqvwHBtmmxqBBdKPvXMJrDI5spQ5K+EpaF7Kf6uuq52U6A==
+
 eslint-import-resolver-node@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/eslint-import-resolver-node/-/eslint-import-resolver-node-0.3.2.tgz#58f15fb839b8d0576ca980413476aab2472db66a"
