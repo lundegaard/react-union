@@ -1,9 +1,9 @@
 const ignorePatterns = [
 	'/.history/',
 	'/node_modules/',
-	'/packages/*/es',
-	'/packages/*/dist',
-	'/packages/*/lib',
+	'/es/',
+	'/dist/',
+	'/lib/',
 	'/boilerplates/',
 	'/scripts/test.js',
 	// FIXME: The tests in react-union-scripts have been broken for some time. :(
