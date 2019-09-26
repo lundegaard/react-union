@@ -8,7 +8,7 @@ module.exports = (api, { library = false, test = false, loose = true }) => ({
 				},
 				loose,
 				useBuiltIns: library ? false : 'entry',
-				corejs: "3.1.3",
+				corejs: '3.1.3',
 				modules: library ? false : 'auto',
 			},
 		],
