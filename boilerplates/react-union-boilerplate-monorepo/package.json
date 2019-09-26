@@ -37,13 +37,12 @@
     "lint:eslint": "eslint --ext .js ./"
   },
   "lint-staged": {
-    "linters": {
       "**/*.js": [
         "prettier --write",
         "yarn lint --fix",
         "git add"
       ]
-    }
+
   },
   "jest": {
     "snapshotSerializers": [
