@@ -1,6 +1,6 @@
 {
   "name": "@union-monorepo/app-sample",
-  "version": "0.12.1",
+  "version": "0.13.0",
   "private": true,
   "license": "MIT",
   "repository": "https://github.com/lundegaard/react-union",
@@ -14,7 +14,7 @@
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-hot-loader": "^4.6.5",
-    "react-union": "^0.12.1",
+    "react-union": "^0.13.0",
     "react-universal-component": "^4.0.0"
   }
 }
