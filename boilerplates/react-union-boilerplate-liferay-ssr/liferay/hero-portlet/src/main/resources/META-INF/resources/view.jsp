@@ -6,7 +6,7 @@ Renders React widgets.
 <%--suppress JSUnresolvedVariable, JSUnresolvedFunction --%>
 <c:if test="${!SSR}">
     <script type="text/javascript">
-        Liferay.Loader.require("app-demo");
+        Liferay.Loader.require("react-union-boilerplate-liferay-ssr@0.13.1/app-demo");
     </script>
 </c:if>
 
