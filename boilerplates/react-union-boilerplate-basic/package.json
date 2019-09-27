@@ -48,12 +48,10 @@
     ]
   },
   "lint-staged": {
-    "linters": {
       "**/*.js": [
         "prettier --write",
         "yarn lint --fix",
         "git add"
       ]
-    }
   }
 }
