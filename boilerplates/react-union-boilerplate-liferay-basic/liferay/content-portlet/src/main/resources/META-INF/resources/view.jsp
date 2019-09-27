@@ -5,7 +5,7 @@ Renders React widgets.
 
 <%--suppress JSUnresolvedVariable, JSUnresolvedFunction --%>
 <script type="text/javascript">
-	Liferay.Loader.require("app-demo");
+	Liferay.Loader.require("react-union-boilerplate-liferay-basic@0.13.1/app-demo");
 </script>
 
 <div id="${ns}content"></div>
