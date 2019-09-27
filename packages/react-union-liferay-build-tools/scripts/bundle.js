@@ -48,7 +48,6 @@ const createLiferayConfig = () => {
 	R.forEach(appName => {
 		const manifestFilePath = path.join(buildDirectory, appName, manifestFileName);
 		const manifest = fs.readJsonSync(manifestFilePath, 'utf8');
-		// const hash = getHash(appName, manifest);
 
 		fs.writeFileSync(
 			path.join(buildDirectory, `${appName}.js`),
@@ -58,7 +57,12 @@ const createLiferayConfig = () => {
 	})(appsAvailable);
 };
 
-console.log('🚀 Starting Liferay AMD loader scripts 🚀');
-console.log('Creating Liferay AMD configuration...');
-createLiferayConfig();
-console.log('✨ Successfully finished ✨');
+async function bundle() {
+	console.log('Creating Liferay AMD configuration...');
+	createLiferayConfig();
+	console.log('✨ Successfully finished ✨');
+
+	return Promise.resolve();
+}
+
+module.exports = bundle;
