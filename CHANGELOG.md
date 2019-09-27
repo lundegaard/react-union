@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+- [Removing @babel/polyfill](https://github.com/lundegaard/react-union/issues/424)
+  
 ## [0.13.1] – 2019-09-26	
 
 ### Changed
