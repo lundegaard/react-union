@@ -1,3 +1,0 @@
-Bundle-SymbolicName: eu.reactunion.boilerplate.liferay-amd-loader
-Web-ContextPath: /liferay-amd-loader
-Liferay-JS-Config: /META-INF/resources/config.js

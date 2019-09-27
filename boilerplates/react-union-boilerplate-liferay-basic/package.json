@@ -50,13 +50,11 @@
     "packages/*"
   ],
   "lint-staged": {
-
       "**/*.js": [
         "prettier --write",
         "yarn lint --fix",
         "git add"
       ]
-
   },
   "jest": {
     "snapshotSerializers": [
