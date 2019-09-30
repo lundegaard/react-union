@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-react-union",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "ESLint for React Union",
   "main": "index.js",
   "repository": "https://github.com/lundegaard/react-union",

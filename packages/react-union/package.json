@@ -1,6 +1,6 @@
 {
   "name": "react-union",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "license": "MIT",
   "main": "lib/react-union.js",
   "module": "es/react-union.js",

@@ -1,6 +1,6 @@
 {
 	"name": "react-union-polyfills",
-	"version": "0.1.0",
+	"version": "0.14.0",
 	"description": "Polyfills package for react-union.",
 	"main": "src/index.js",
 	"repository": "https://github.com/lundegaard/react-union",

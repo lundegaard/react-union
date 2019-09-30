@@ -1,6 +1,6 @@
 {
   "name": "@union-liferay-ssr/app-demo",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "private": true,
   "license": "UNLICENSED",
   "engines": {
@@ -8,15 +8,15 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
-    "@union-liferay-ssr/widget-content": "^0.12.1",
-    "@union-liferay-ssr/widget-hero": "^0.12.1",
+    "@union-liferay-ssr/widget-content": "^0.14.0",
+    "@union-liferay-ssr/widget-hero": "^0.14.0",
     "document-ready": "^2.0.2",
     "prop-types": "^15.6.2",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-hot-loader": "^4.6.5",
-    "react-union": "^0.13.0",
-    "react-union-rendering-service": "^0.13.0",
+    "react-union": "^0.14.0",
+    "react-union-rendering-service": "^0.14.0",
     "react-universal-component": "^4.0.0"
   }
 }
