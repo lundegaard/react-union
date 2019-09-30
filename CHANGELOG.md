@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [0.14.0] – 2019-09-30	
+
 ### Changed
 - [Removing @babel/polyfill](https://github.com/lundegaard/react-union/issues/424)
 - [Updated Liferay boilerplates to work with Liferay 7.2](https://github.com/lundegaard/react-union/pull/430)
