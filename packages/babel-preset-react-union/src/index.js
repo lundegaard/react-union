@@ -1,4 +1,4 @@
-module.exports = (api, { library = false, test = false, loose = true }) => ({
+module.exports = (api, { library = false, test = false, loose = true, universal = true }) => ({
 	presets: [
 		[
 			'@babel/preset-env',
@@ -45,6 +45,6 @@ module.exports = (api, { library = false, test = false, loose = true }) => ({
 		// NOTE: In order to allow passing e.g. `import * as reducers from './reducers'` as an object,
 		// loose option must be false.
 		test && ['@babel/plugin-transform-modules-commonjs', { loose: false }],
-		'babel-plugin-universal-import',
+		universal && 'babel-plugin-universal-import',
 	].filter(Boolean),
 });
