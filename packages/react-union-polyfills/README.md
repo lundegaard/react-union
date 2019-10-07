@@ -2,14 +2,22 @@
 
 Library, that imports polyfills instead of deprecated @babel/polyfills
 
-##Usage
+## Usage
 
 Just import package in react-union root package
 
-#### `import { importPolyfills } from 'react-union-polyfills';`
+```js
+import { importPolyfills } from 'react-union-polyfills';
+```
 
-###Internet Explorer
+### Internet Explorer
 
-If you need to support Internet Explorer 11, call `importPolyfills.ie11();` in ready function.
+If you need to support older versions of Internet Explorer, call:
 
-If you need to support Internet Explorer 9, call `importPolyfills.ie9();`, ie11 is called automatically.
+```js
+// for IE 11:
+importPolyfills.ie11();
+
+// for IE 10:
+importPolyfills.ie9();
+```
