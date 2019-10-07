@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [0.14.2] – 2019-10-07
+
+### Changed
+- [Adding `universal` options to babel preset](https://github.com/lundegaard/react-union/issues/324)
+
 ## [0.14.1] – 2019-10-07
 
 ### Changed
