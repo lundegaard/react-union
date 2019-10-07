@@ -1,6 +1,6 @@
 {
   "name": "react-union-boilerplate-monorepo",
-  "version": "0.14.1",
+  "version": "0.14.2",
   "private": true,
   "license": "MIT",
   "repository": "https://github.com/lundegaard/react-union",
@@ -15,7 +15,7 @@
     "babel-core": "^7.0.0-bridge",
     "babel-eslint": "^10.0.1",
     "babel-plugin-dynamic-import-node": "^2.2.0",
-    "babel-preset-react-union": "^0.14.1",
+    "babel-preset-react-union": "^0.14.2",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.8.0",
     "enzyme-to-json": "^3.3.5",
