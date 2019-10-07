@@ -2,9 +2,15 @@
 	"name": "react-union-polyfills",
 	"version": "0.14.0",
 	"description": "Polyfills package for react-union.",
-	"main": "src/index.js",
+	"main": "src/stable.js",
+  "files": [
+    "src/ie9.js",
+    "src/ie11.js",
+    "src/stable.js"
+  ],
 	"repository": "https://github.com/lundegaard/react-union",
 	"contributors": [
+		"Tomas Konrady <tomas.konrady@lundegaard.eu>",
 		"Josef Kvapil <josef.kvapil@lundegaard.eu>"
 	],
 	"license": "MIT",
