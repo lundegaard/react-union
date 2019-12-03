@@ -18,6 +18,7 @@ module.exports = {
 	rules: {
 		'array-bracket-spacing': ['error', 'never'],
 		'array-callback-return': 'error',
+		'arrow-body-style': ['error', 'as-needed'],
 		'arrow-spacing': 'error',
 		'arrow-parens': 'off',
 		'babel/new-cap': 'error',
@@ -35,6 +36,7 @@ module.exports = {
 		'computed-property-spacing': ['error', 'never'],
 		'consistent-this': ['error', 'self'],
 		'consistent-return': 'off',
+		curly: 'error',
 		'dot-notation': 'error',
 		'dot-location': ['error', 'property'],
 		eqeqeq: ['error', 'smart'],

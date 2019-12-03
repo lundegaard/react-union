@@ -34,7 +34,7 @@ const loadCSS = isServerConfig => ({
 						options: {
 							modules: {
 								localIdentName: '[name]__[local]--[hash:base64:5]',
-												},
+							},
 							onlyLocals: isServerConfig,
 						},
 					},
