@@ -8,7 +8,7 @@
     "node": ">=8"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.2.5",
+    "@babel/polyfill": "^7.7.0",
     "@union-monorepo/widget-content": "^0.15.0",
     "@union-monorepo/widget-hero": "^0.15.0",
     "react": "^16.8.3",
