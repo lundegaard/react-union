@@ -1,6 +1,6 @@
 {
   "name": "@union-liferay/app-demo",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "private": true,
   "license": "UNLICENSED",
   "engines": {
@@ -15,7 +15,7 @@
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-hot-loader": "^4.6.5",
-    "react-union": "^0.15.0",
+    "react-union": "^0.15.1",
     "react-universal-component": "^4.0.0"
   }
 }

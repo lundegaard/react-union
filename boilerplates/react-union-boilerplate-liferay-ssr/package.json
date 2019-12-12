@@ -1,6 +1,6 @@
 {
   "name": "react-union-boilerplate-liferay-ssr",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "private": true,
   "license": "MIT",
   "repository": "https://github.com/lundegaard/react-union",
@@ -12,7 +12,7 @@
     "babel-core": "^7.0.0-bridge",
     "babel-eslint": "^10.0.1",
     "babel-plugin-dynamic-import-node": "^2.2.0",
-    "babel-preset-react-union": "^0.15.0",
+    "babel-preset-react-union": "^0.15.1",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.8.0",
     "enzyme-to-json": "^3.3.5",
@@ -29,7 +29,7 @@
     "ramda": "^0.26.1",
     "ramda-extension": "^0.10.1",
     "react-union-liferay-build-tools": "^0.15.0",
-    "react-union-scripts": "^0.15.0",
+    "react-union-scripts": "^0.15.1",
     "rimraf": "^3.0.0"
   },
   "scripts": {
