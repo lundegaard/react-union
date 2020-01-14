@@ -8,12 +8,12 @@
     "node": ">=8"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.7.0",
+    "@babel/polyfill": "^7.8.3",
     "@union-monorepo/widget-content": "^0.15.0",
     "@union-monorepo/widget-hero": "^0.15.0",
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3",
-    "react-hot-loader": "^4.6.5",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-hot-loader": "^4.12.18",
     "react-union": "^0.15.1",
     "react-universal-component": "^4.0.0"
   }

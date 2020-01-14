@@ -18,6 +18,25 @@ import Widget from '../Widget';
  * in the actual mark-up.
  */
 class Union extends Component {
+	static scan = props => {
+		const { onScanStart, onScanEnd, onScanError, parent, routes } = props;
+
+		invariant(routes, 'Missing `routes` prop in <Union />.');
+
+		try {
+			onScanStart();
+			const scanResult = scan(parent);
+			const routeResult = route(routes, scanResult);
+			onScanEnd(routeResult);
+
+			return routeResult.widgetConfigs;
+		} catch (error) {
+			onScanError(error);
+
+			throw error;
+		}
+	};
+
 	static propTypes = {
 		/**
 		 * Children of the `Union` component.
@@ -45,32 +64,11 @@ class Union extends Component {
 		routes: PropTypes.arrayOf(PropTypes.shape(RouteShape)),
 	};
 
-	static contextType = PrescanContext;
-
 	static defaultProps = {
 		onScanEnd: noop,
 		onScanError: noop,
 		onScanStart: noop,
 		parent: IS_SERVER ? null : document,
-	};
-
-	static scan = props => {
-		const { onScanStart, onScanEnd, onScanError, parent, routes } = props;
-
-		invariant(routes, 'Missing `routes` prop in <Union />.');
-
-		try {
-			onScanStart();
-			const scanResult = scan(parent);
-			const routeResult = route(routes, scanResult);
-			onScanEnd(routeResult);
-
-			return routeResult.widgetConfigs;
-		} catch (error) {
-			onScanError(error);
-
-			throw error;
-		}
 	};
 
 	static getDerivedStateFromProps(nextProps, previousState) {
@@ -101,6 +99,8 @@ class Union extends Component {
 	componentWillUnmount() {
 		document.removeEventListener(RESCAN, this.rescan);
 	}
+
+	static contextType = PrescanContext;
 
 	rescan = () =>
 		this.setState({
