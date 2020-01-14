@@ -9,11 +9,11 @@ const getWidgetName = path(['props', 'config', 'widget']);
 
 const withErrorBoundary = NextComponent => {
 	class WithErrorBoundary extends Component {
+		static displayName = `WithErrorBoundary(${getDisplayName(NextComponent)})`;
+
 		static propTypes = {
 			config: PropTypes.shape(WidgetConfigShape).isRequired,
 		};
-
-		static displayName = `WithErrorBoundary(${getDisplayName(NextComponent)})`;
 
 		state = {
 			hasError: false,
