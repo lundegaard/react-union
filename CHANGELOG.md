@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [0.15.2] – 2019-12-12
+- [Updating dependencies](https://github.com/lundegaard/react-union/pull/461)
+
 ## [0.15.1] – 2019-12-12
 - [Updating dependencies](https://github.com/lundegaard/react-union/pull/458)
 
