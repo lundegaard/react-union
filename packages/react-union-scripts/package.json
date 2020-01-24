@@ -34,7 +34,7 @@
     "http-proxy-middleware": "^0.20.0",
     "invariant": "^2.2.4",
     "jest": "^24.0.0",
-    "mkdirp": "^0.5.1",
+    "mkdirp": "^1.0.0",
     "ncp": "^2.0.0",
     "ramda": "^0.26.1",
     "ramda-extension": "^0.10.1",
