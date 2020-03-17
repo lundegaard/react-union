@@ -44,7 +44,7 @@
     "react-universal-component": "^4.0.0",
     "resolve-url-loader": "^3.1.1",
     "terser-webpack-plugin": "^2.1.0",
-    "url-loader": "^2.1.0",
+    "url-loader": "^4.0.0",
     "webpack": "^4.29.0",
     "webpack-bundle-analyzer": "^3.0.4",
     "webpack-dev-middleware": "^3.5.1",
