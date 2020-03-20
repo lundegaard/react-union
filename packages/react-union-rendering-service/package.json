@@ -13,7 +13,7 @@
     "cheerio": "^1.0.0-rc.2",
     "connect": "^3.6.6",
     "invariant": "^2.2.4",
-    "morgan": "^1.9.1",
+    "morgan": "^1.10.0",
     "ramda": "^0.26.1",
     "ramda-extension": "^0.10.1",
     "webpack-flush-chunks": "^2.0.3"
