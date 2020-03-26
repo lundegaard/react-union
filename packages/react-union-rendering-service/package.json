@@ -14,8 +14,8 @@
     "connect": "^3.6.6",
     "invariant": "^2.2.4",
     "morgan": "^1.9.1",
-    "ramda": "^0.26.1",
-    "ramda-extension": "^0.10.1",
+    "ramda": "^0.27.0",
+    "ramda-extension": "^0.10.3",
     "webpack-flush-chunks": "^2.0.3"
   },
   "peerDependencies": {
@@ -25,9 +25,9 @@
     "react-universal-component": "^4.0.0"
   },
   "devDependencies": {
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-union": "^0.15.3",
-    "react-universal-component": "^4.0.0"
+    "react-universal-component": "^4.0.1"
   }
 }
