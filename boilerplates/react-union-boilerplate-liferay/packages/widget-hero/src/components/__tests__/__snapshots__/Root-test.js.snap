@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Root /> should match snapshot 1`] = `
+<div>
+  <img
+    src="logo.png"
+  />
+</div>
+`;

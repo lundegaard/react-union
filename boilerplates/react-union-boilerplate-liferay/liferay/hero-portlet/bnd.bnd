@@ -1,0 +1,4 @@
+Bundle-Name: hero-portlet
+Bundle-SymbolicName: eu.lundegaard.hero
+Bundle-Version: 1.0.0
+Export-Package: eu.lundegaard.hero.constants

@@ -1,0 +1,63 @@
+{
+	"name": "react-union-boilerplate-liferay",
+	"version": "0.15.3",
+	"private": true,
+	"license": "MIT",
+	"engines": {
+		"node": ">=8"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.8.3",
+		"babel-core": "^7.0.0-bridge",
+		"babel-eslint": "^10.0.1",
+		"babel-plugin-dynamic-import-node": "^2.2.0",
+		"babel-preset-react-union": "^0.15.2",
+		"enzyme": "^3.11.0",
+		"enzyme-adapter-react-16": "^1.15.2",
+		"enzyme-to-json": "^3.4.3",
+		"eslint": "^6.8.0",
+		"eslint-config-react-union": "^0.15.2",
+		"eslint-plugin-babel": "^5.3.0",
+		"eslint-plugin-import": "^2.20.0",
+		"eslint-plugin-react": "^7.17.0",
+		"husky": "^3.0.8",
+		"lint-staged": "^9.4.1",
+		"prettier": "^1.16.3",
+		"ramda": "^0.27.0",
+		"ramda-extension": "^0.10.3",
+		"react-union-liferay-build-tools": "^0.15.3",
+		"react-union-scripts": "^0.15.3",
+		"rimraf": "^3.0.0"
+	},
+	"scripts": {
+		"build": "yarn clean && yarn build:liferay && yarn bundle",
+		"build:dev": "yarn clean && yarn build:liferay-dev && yarn bundle",
+		"build:liferay": "react-union-scripts build --release --target liferay",
+		"build:liferay-dev": "react-union-scripts build --target liferay",
+		"bundle": "liferay-scripts bundle",
+		"clean": "rimraf build dist",
+		"start": "react-union-scripts start --app app-demo",
+		"start:proxy": "yarn start --proxy --target liferay",
+		"test": "react-union-scripts test",
+		"lint": "yarn lint:eslint",
+		"lint:eslint": "eslint --ext .js ./",
+		"widget-content": "yarn workspace @union-liferay/widget-content",
+		"widget-hero": "yarn workspace @union-liferay/widget-hero",
+		"ui-components": "yarn workspace @union-liferay/ui-components"
+	},
+	"workspaces": [
+		"packages/*"
+	],
+	"lint-staged": {
+		"**/*.js": [
+			"prettier --write",
+			"yarn lint --fix",
+			"git add"
+		]
+	},
+	"jest": {
+		"snapshotSerializers": [
+			"enzyme-to-json/serializer"
+		]
+	}
+}

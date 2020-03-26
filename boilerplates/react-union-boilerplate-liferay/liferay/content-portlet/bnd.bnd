@@ -1,0 +1,4 @@
+Bundle-Name: content-portlet
+Bundle-SymbolicName: eu.lundegaard.content
+Bundle-Version: 1.0.0
+Export-Package: eu.lundegaard.content.constants
