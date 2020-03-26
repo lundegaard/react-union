@@ -1,0 +1,17 @@
+{
+	"name": "@union-liferay/ui-components",
+	"version": "0.0.1",
+	"private": true,
+	"license": "UNLICENSED",
+	"main": "src/index.js",
+	"engines": {
+		"node": ">=8"
+	},
+	"dependencies": {
+		"prop-types": "^15.6.2",
+		"ramda": "^0.27.0",
+		"ramda-extension": "^0.10.3",
+		"react": "^16.12.0",
+		"react-dom": "^16.12.0"
+	}
+}

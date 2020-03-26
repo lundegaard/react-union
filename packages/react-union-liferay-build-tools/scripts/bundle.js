@@ -1,15 +1,13 @@
 const path = require('path');
 const fs = require('fs-extra');
-const glob = require('glob');
 const R = require('ramda');
+const execa = require('execa');
+
+const isDirectory = source => fs.lstatSync(source).isDirectory();
+const getDirectories = source =>
+	fs.readdirSync(source).filter(name => isDirectory(path.join(source, name)));
 
 const appDirectory = fs.realpathSync(process.cwd());
-const srcPackagesDirectory = path.join(appDirectory, 'packages');
-
-const getAvailableApps = R.compose(
-	R.map(R.unary(path.basename)),
-	R.curryN(2, glob.sync)
-);
 
 const vendorFileName = 'vendor.js';
 const runtimeFileName = 'runtime.js';
@@ -17,6 +15,13 @@ const mainFileName = 'main.js';
 const manifestFileName = 'assetManifest.json';
 
 const buildDirectory = path.join(appDirectory, 'build');
+
+const outputJson = R.curry((path, content) =>
+	fs.outputJSON(path, content, {
+		spaces: '\t',
+		encoding: 'utf8',
+	})
+);
 
 const getEntryBundlesFromManifest = manifest =>
 	R.filter(Boolean, {
@@ -27,7 +32,10 @@ const getEntryBundlesFromManifest = manifest =>
 
 const getLoadScriptsSrc = R.o(
 	R.values,
-	R.map(x => `Liferay.Loader._scriptLoader._loadScript({ url: '${x}' });`)
+	R.map(
+		x => `Liferay.Loader._scriptLoader._loadScript({ url: '${x}', modules: [] });
+		`
+	)
 );
 
 const joinByNewline = R.join('\n');
@@ -39,30 +47,67 @@ const getLoaderSource = (appName, manifest) => {
 	return `${joinByNewline(loadScripts)}\n`;
 };
 
-const createLiferayConfig = () => {
-	const appsAvailable = getAvailableApps('**/app-*/', {
-		cwd: srcPackagesDirectory,
-		ignore: ['node_modules/**'],
+const lfrBundler = async (cwd = __dirname) =>
+	execa('liferay-npm-bundler', [], {
+		cwd,
+		stdio: 'inherit',
+		preferLocal: true,
 	});
 
-	R.forEach(appName => {
-		const manifestFilePath = path.join(buildDirectory, appName, manifestFileName);
-		const manifest = fs.readJsonSync(manifestFilePath, 'utf8');
+const createLiferayConfig = async () => {
+	const appsAvailable = getDirectories(buildDirectory);
+	const packageJson = await fs.readJson(path.join(appDirectory, 'package.json'));
+
+	const dist = path.join(appDirectory, 'dist');
+
+	fs.ensureDirSync(dist);
+
+	R.forEach(async appName => {
+		const distApp = path.join(dist, appName);
+		const distAppBuild = path.join(distApp, 'build');
+		const distAppSrc = path.join(distAppBuild, 'build');
+
+		const isManifestProvided = fs.pathExists(path.join(distApp, manifestFileName));
+
+		if (!isManifestProvided) {
+			console.warn(`Skipping bundling of ${appName} due to lack of \`assetManifest.json\` file.`);
+			return;
+		}
+
+		await fs.copy(path.join(buildDirectory, appName), distAppSrc);
+
+		const manifest = await fs.readJson(path.join(distAppSrc, manifestFileName), 'utf8');
+		const templateNpmbundlerrc = await fs.readJson(
+			path.join(__dirname, '..', 'template-npmbundlerrc.json'),
+			'utf8'
+		);
+		await outputJson(path.join(distApp, 'package.json'), { ...packageJson, name: appName });
+		await outputJson(
+			path.join(distApp, '.npmbundlerrc'),
+			R.mergeDeepRight(templateNpmbundlerrc, {
+				ignore: ['build/**/*.js'],
+				'create-jar': {
+					features: {
+						'web-context': `/${appName}`,
+					},
+				},
+			})
+		);
 
 		fs.writeFileSync(
-			path.join(buildDirectory, `${appName}.js`),
+			path.join(distAppBuild, `${appName}.js`),
 			getLoaderSource(appName, manifest),
 			'utf8'
 		);
+
+		await lfrBundler(distApp);
 	})(appsAvailable);
 };
 
 async function bundle() {
 	console.log('Creating Liferay AMD configuration...');
-	createLiferayConfig();
+	await createLiferayConfig();
 	console.log('✨ Successfully finished ✨');
-
-	return Promise.resolve();
 }
 
 module.exports = bundle;

@@ -1,3 +1,5 @@
-# React Union Liferay Build Tools 
+# Liferay Build Tools 
 
-Scripts used in our Liferay boilerplates.
+Runs the [liferay-npm-bundler](https://www.npmjs.com/package/liferay-npm-bundler) in such way, that transforming into Liferay AMD is not done over your codebase.
+
+Scripts are used in our Liferay boilerplate.

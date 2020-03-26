@@ -1,6 +1,0 @@
-Bundle-Name: sample-content-portlet
-Bundle-SymbolicName: eu.reactunion.boilerplate.content-portlet
-Bundle-Version: 1.0.0
-Export-Package: eu.reactunion.boilerplate.constants
-Liferay-Configuration-Path: /configuration
--metatype: *

@@ -1,4 +1,0 @@
-rootProject.name = 'react-app'
-
-include 'liferay/hero-portlet'
-include 'liferay/content-portlet'

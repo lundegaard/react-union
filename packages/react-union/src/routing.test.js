@@ -62,15 +62,6 @@ describe('route', () => {
 		});
 	});
 
-	it('throws when a route is missing', () => {
-		const scanResult = {
-			commonDescriptors: [],
-			widgetDescriptors: [{ widget: 'foooooooooo', container: 'foo-container' }],
-		};
-
-		expect(() => route(routes, scanResult)).toThrow();
-	});
-
 	it('throws when INVALID_JSON is found in a common descriptor', () => {
 		const scanResult = {
 			commonDescriptors: [{ data: INVALID_JSON }],

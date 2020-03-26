@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  liferay:
+    image: liferay/portal:7.2.1-ga2
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./deploy:/etc/liferay/mount/deploy
