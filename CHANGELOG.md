@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 - [New liferay boilerplate](https://github.com/lundegaard/react-union/pull/477)
 - [Progress on react-union-liferay-build-tools](https://github.com/lundegaard/react-union/pull/477)
-- [fix]((https://github.com/lundegaard/react-union/pull/477)) of multiple warnings being thrown in dev console due to https://github.com/liferay/liferay-amd-loader/commit/30b6e56fb3464e0a68b1f0e2601314f308184edb#diff-5d3acecd98578daf8479f9970d40a347
+- [fix](https://github.com/lundegaard/react-union/pull/477) of multiple warnings being thrown in dev console due to https://github.com/liferay/liferay-amd-loader/commit/30b6e56fb3464e0a68b1f0e2601314f308184edb#diff-5d3acecd98578daf8479f9970d40a347
 
 ## [0.15.3] – 2020-02-26
 - [Fixing prop-type for routeShape](https://github.com/lundegaard/react-union/pull/468)
