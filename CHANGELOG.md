@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+- (_react-union-liferay-build-tools_) - [Fix](https://github.com/lundegaard/react-union/pull/478) of missing `template-npmbundlerrc.json` in packaging
+
 ## [0.16.0] – 2020-03-26
 - [New liferay boilerplate](https://github.com/lundegaard/react-union/pull/477)
 - [Progress on react-union-liferay-build-tools](https://github.com/lundegaard/react-union/pull/477)
