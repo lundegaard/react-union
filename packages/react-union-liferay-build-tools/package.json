@@ -7,7 +7,8 @@
 	"files": [
 		"scripts",
 		"bin",
-		"cli.js"
+		"cli.js",
+		"template-npmbundlerrc.json"
 	],
 	"bin": {
 		"liferay-scripts": "./bin/liferay-scripts.js"
