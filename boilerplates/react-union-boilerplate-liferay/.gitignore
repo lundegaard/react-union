@@ -1,6 +1,6 @@
 lerna-debug.log*
 build/
-.parcel-cache
+dist/
 
 # Created by https://www.gitignore.io/api/vim,node,emacs,linux,macos,gradle,windows,sublimetext,intellij+all,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=vim,node,emacs,linux,macos,gradle,windows,sublimetext,intellij+all,visualstudiocode
