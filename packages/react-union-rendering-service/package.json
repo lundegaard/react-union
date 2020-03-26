@@ -1,6 +1,6 @@
 {
   "name": "react-union-rendering-service",
-  "version": "0.15.3",
+  "version": "0.16.0",
   "description": "HTTP service for server-side rendering.",
   "main": "src/index.js",
   "repository": "https://github.com/lundegaard/react-union",
@@ -27,7 +27,7 @@
   "devDependencies": {
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-union": "^0.15.3",
+    "react-union": "^0.16.0",
     "react-universal-component": "^4.0.1"
   }
 }

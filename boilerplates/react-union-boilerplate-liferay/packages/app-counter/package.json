@@ -1,6 +1,6 @@
 {
 	"name": "@union-liferay/app-counter",
-	"version": "0.0.1",
+	"version": "0.16.0",
 	"private": true,
 	"license": "UNLICENSED",
 	"engines": {
@@ -8,13 +8,13 @@
 	},
 	"dependencies": {
 		"@babel/polyfill": "^7.8.7",
-		"@union-liferay/widget-counter": "^0.0.1",
+		"@union-liferay/widget-counter": "^0.16.0",
 		"document-ready": "^2.0.2",
 		"prop-types": "^15.6.2",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
 		"react-hot-loader": "^4.12.20",
-		"react-union": "^0.15.3",
+		"react-union": "^0.16.0",
 		"react-universal-component": "^4.0.1"
 	}
 }

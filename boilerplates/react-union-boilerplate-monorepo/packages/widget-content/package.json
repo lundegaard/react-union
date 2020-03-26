@@ -1,6 +1,6 @@
 {
   "name": "@union-monorepo/widget-content",
-  "version": "0.15.2",
+  "version": "0.16.0",
   "private": true,
   "license": "MIT",
   "main": "src/index.js",
