@@ -98,6 +98,7 @@ const createLiferayConfig = async () => {
 			R.mergeDeepRight(templateNpmbundlerrc, {
 				ignore: ['build/**/*.js'],
 				'create-jar': {
+					'output-filename': `${appName}.jar`,
 					features: {
 						'web-context': `/${appName}`,
 					},
