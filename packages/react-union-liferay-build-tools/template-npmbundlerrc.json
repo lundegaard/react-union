@@ -2,7 +2,7 @@
 {
 	"ignore": ["app-*/**/*.js"],
 	"create-jar": {
-		"output-dir": "dist",
+		"output-dir": "../",
 		"features": {
 			"js-extender": false,
 			"web-context": "/liferay-amd-loader"
