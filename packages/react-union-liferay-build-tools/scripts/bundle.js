@@ -13,6 +13,7 @@ const vendorFileName = 'vendor.js';
 const runtimeFileName = 'runtime.js';
 const mainFileName = 'main.js';
 const manifestFileName = 'assetManifest.json';
+const packagesFodler = 'packages';
 
 const buildDirectory = path.join(appDirectory, 'build');
 
@@ -54,9 +55,12 @@ const lfrBundler = async (cwd = __dirname) =>
 		preferLocal: true,
 	});
 
+const getAppPackageJson = async appName =>
+	await fs.readJson(path.join(appDirectory, packagesFodler, appName, 'package.json'));
+
 const createLiferayConfig = async () => {
 	const appsAvailable = getDirectories(buildDirectory);
-	const packageJson = await fs.readJson(path.join(appDirectory, 'package.json'));
+	const rootPackageJson = await fs.readJson(path.join(appDirectory, 'package.json'));
 
 	const dist = path.join(appDirectory, 'dist');
 
@@ -66,6 +70,9 @@ const createLiferayConfig = async () => {
 		const distApp = path.join(dist, appName);
 		const distAppBuild = path.join(distApp, 'build');
 		const distAppSrc = path.join(distAppBuild, 'build');
+		const appPackageJson = await getAppPackageJson(appName);
+
+		const packageJson = appPackageJson ? appPackageJson : rootPackageJson;
 
 		const isManifestProvided = fs.pathExists(path.join(distApp, manifestFileName));
 
@@ -81,7 +88,11 @@ const createLiferayConfig = async () => {
 			path.join(__dirname, '..', 'template-npmbundlerrc.json'),
 			'utf8'
 		);
-		await outputJson(path.join(distApp, 'package.json'), { ...packageJson, name: appName });
+		await outputJson(path.join(distApp, 'package.json'), {
+			name: appName,
+			version: packageJson.version,
+			description: packageJson.description,
+		});
 		await outputJson(
 			path.join(distApp, '.npmbundlerrc'),
 			R.mergeDeepRight(templateNpmbundlerrc, {
