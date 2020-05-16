@@ -5305,11 +5305,6 @@ escodegen@^1.9.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-react-union@^0.15.0:
-  version "0.15.2"
-  resolved "https://registry.yarnpkg.com/eslint-config-react-union/-/eslint-config-react-union-0.15.2.tgz#c9c110e5de6db8958b62c1293639ed17c37ed84c"
-  integrity sha512-16EDhEjkqAIPKpUcXFMilBMinIb/wtIKyl1Ubq9QH4ITdbuLo2TqNdHogPMacfNXSyJ31z+E0mhJnZ3HlNK0OQ==
-
 eslint-import-resolver-node@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/eslint-import-resolver-node/-/eslint-import-resolver-node-0.3.2.tgz#58f15fb839b8d0576ca980413476aab2472db66a"
@@ -12583,10 +12578,10 @@ webpack-hot-middleware@^2.24.3:
     querystring "^0.2.0"
     strip-ansi "^3.0.0"
 
-webpack-hot-server-middleware@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/webpack-hot-server-middleware/-/webpack-hot-server-middleware-0.6.0.tgz#7733d142a028049b84a60795ffa77e0b819d0104"
-  integrity sha512-yOlmPxxE/nlo5nmZDA2pLUIsqRu/uJn2T+WTQfezUO/pgbdwIN2jmTrbyGiNxiJdYKSAT9o9jYQPslikqkp60Q==
+webpack-hot-server-middleware@^0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/webpack-hot-server-middleware/-/webpack-hot-server-middleware-0.6.1.tgz#1515b2d5db3277b583b01fc59bb0d5b87dc46494"
+  integrity sha512-YOKwdS0hnmADsNCsReGkMOBkoz2YVrQZvnVcViM2TDXlK9NnaOGXmnrLFjzwsHFa0/iuJy/QJFEoMxzk8R1Mgg==
   dependencies:
     debug "^3.1.0"
     require-from-string "^2.0.1"
