@@ -21,7 +21,7 @@
   "peerDependencies": {
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
-    "react-union": "^0.17.0",
+    "react-union": "^0.18.0",
     "react-universal-component": "^4.0.0"
   },
   "devDependencies": {
