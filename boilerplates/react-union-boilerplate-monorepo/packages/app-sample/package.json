@@ -1,6 +1,6 @@
 {
   "name": "@union-monorepo/app-sample",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "private": true,
   "license": "MIT",
   "repository": "https://github.com/lundegaard/react-union",
@@ -9,12 +9,12 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.10.1",
-    "@union-monorepo/widget-content": "^0.17.0",
-    "@union-monorepo/widget-hero": "^0.17.0",
+    "@union-monorepo/widget-content": "^0.18.0",
+    "@union-monorepo/widget-hero": "^0.18.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hot-loader": "^4.12.21",
-    "react-union": "^0.17.0",
+    "react-union": "^0.18.0",
     "react-universal-component": "^4.0.1"
   }
 }
