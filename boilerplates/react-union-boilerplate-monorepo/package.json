@@ -1,6 +1,6 @@
 {
   "name": "react-union-boilerplate-monorepo",
-  "version": "0.16.0",
+  "version": "0.18.0",
   "private": true,
   "license": "MIT",
   "repository": "https://github.com/lundegaard/react-union",
@@ -11,23 +11,23 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@babel/core": "^7.9.0",
+    "@babel/core": "^7.10.2",
     "babel-core": "^7.0.0-bridge",
     "babel-eslint": "^10.1.0",
-    "babel-plugin-dynamic-import-node": "^2.2.0",
-    "babel-preset-react-union": "^0.16.0",
+    "babel-plugin-dynamic-import-node": "^2.3.3",
+    "babel-preset-react-union": "^0.18.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "enzyme-to-json": "^3.4.4",
-    "eslint": "^6.8.0",
-    "eslint-config-react-union": "^0.16.0",
+    "eslint": "^7.1.0",
+    "eslint-config-react-union": "^0.18.0",
     "eslint-plugin-babel": "^5.3.0",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-react": "^7.20.0",
     "husky": "^3.0.8",
     "lint-staged": "^9.4.1",
-    "prettier": "^1.16.3",
-    "react-union-scripts": "^0.16.0"
+    "prettier": "^2.0.5",
+    "react-union-scripts": "^0.18.0"
   },
   "scripts": {
     "build": "react-union-scripts build",

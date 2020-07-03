@@ -2,7 +2,7 @@
 
 <%--suppress JSUnresolvedVariable, JSUnresolvedFunction --%>
 <script type="text/javascript">
-Liferay.Loader.require("app-counter@0.16.0/app-counter");
+Liferay.Loader.require("app-counter@0.17.0/app-counter");
 </script>
 
 <div id="${ns}counter-root"></div>
