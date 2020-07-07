@@ -1,6 +1,6 @@
 {
 	"name": "react-union-boilerplate-liferay",
-	"version": "0.18.0",
+	"version": "0.19.0",
 	"private": true,
 	"license": "MIT",
 	"engines": {
@@ -11,12 +11,12 @@
 		"babel-core": "^7.0.0-bridge",
 		"babel-eslint": "^10.1.0",
 		"babel-plugin-dynamic-import-node": "^2.3.3",
-		"babel-preset-react-union": "^0.18.0",
+		"babel-preset-react-union": "^0.19.0",
 		"enzyme": "^3.11.0",
 		"enzyme-adapter-react-16": "^1.15.2",
 		"enzyme-to-json": "^3.5.0",
 		"eslint": "^7.4.0",
-		"eslint-config-react-union": "^0.18.0",
+		"eslint-config-react-union": "^0.19.0",
 		"eslint-plugin-babel": "^5.3.1",
 		"eslint-plugin-import": "^2.22.0",
 		"eslint-plugin-react": "^7.20.3",
@@ -25,8 +25,8 @@
 		"prettier": "^2.0.5",
 		"ramda": "^0.27.0",
 		"ramda-extension": "^0.10.3",
-		"react-union-liferay-build-tools": "^0.18.0",
-		"react-union-scripts": "^0.18.0",
+		"react-union-liferay-build-tools": "^0.19.0",
+		"react-union-scripts": "^0.19.0",
 		"rimraf": "^3.0.2"
 	},
 	"scripts": {
