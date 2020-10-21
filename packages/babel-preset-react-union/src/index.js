@@ -1,15 +1,20 @@
-module.exports = (api, { library = false, test = false, loose = true, universal = true }) => ({
+const defaultTargets = {
+	ie: 9,
+};
+
+module.exports = (
+	api,
+	{ targets = defaultTargets, library = false, test = false, loose = true, universal = true }
+) => ({
 	presets: [
 		[
 			'@babel/preset-env',
 			{
-				targets: {
-					ie: 9,
-				},
 				loose,
 				useBuiltIns: library ? false : 'entry',
 				corejs: '3.1.3',
 				modules: library ? false : 'auto',
+				...(targets ? { targets } : {}),
 			},
 		],
 		'@babel/preset-react',

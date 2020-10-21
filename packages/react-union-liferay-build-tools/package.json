@@ -1,5 +1,5 @@
 {
-	"version": "0.18.0",
+	"version": "0.19.0",
 	"name": "react-union-liferay-build-tools",
 	"description": "Tools used in Liferay's build pipeline.",
 	"license": "MIT",
@@ -18,7 +18,7 @@
 	},
 	"dependencies": {
 		"execa": "^4.0.0",
-		"fs-extra": "^9.0.0",
+		"fs-extra": "^9.0.1",
 		"glob": "^7.1.6",
 		"liferay-npm-bundler": "^2.13.2",
 		"ramda": "^0.27.0"

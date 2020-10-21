@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-react-union",
-  "version": "0.18.0",
+  "version": "0.19.0",
   "description": "ESLint for React Union",
   "main": "index.js",
   "repository": "https://github.com/lundegaard/react-union",
@@ -10,10 +10,10 @@
   "license": "MIT",
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.1.0",
-    "eslint-plugin-babel": "^5.3.0",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-react": "^7.20.0"
+    "eslint": "^7.4.0",
+    "eslint-plugin-babel": "^5.3.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-react": "^7.20.3"
   },
   "peerDependencies": {
     "babel-eslint": "^10.0.0",

@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [0.19.0] – 2020-07-07
+- [Configurable targets in babel-preset-react-union](https://github.com/lundegaard/react-union/pull/502)
+- [Updating dependencies](https://github.com/lundegaard/react-union/pull/502)
+- [Updating ESLint config](https://github.com/lundegaard/react-union/pull/502)
+
 ## [0.18.0] – 2020-02-06
 - [Updating dependencies](https://github.com/lundegaard/react-union/pull/496)
 
