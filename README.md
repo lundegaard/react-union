@@ -1,8 +1,55 @@
-# React Union
+<p align="center">
+  <a href="https://react-union.org">
+    <img alt="React Union" src="./logo.svg" width="300" />
+  </a>
+</p>
 
-[![build status](https://img.shields.io/travis/lundegaard/react-union/master.svg?style=flat-square)](https://travis-ci.org/lundegaard/react-union) [![Greenkeeper badge](https://badges.greenkeeper.io/lundegaard/react-union.svg)](https://greenkeeper.io/)
+<p align="center">
+  <a href="https://lundegaard.eu">
+    <img alt="by Lundegaard" src="./by-lundegaard.png" width="120" />
+  </a>
+</p>
 
+<h3 align="center">
+🖍️ 🛡  🚀
+</h3>
+
+<h3 align="center">
+Easy React integration into legacy systems 
+</h3>
+
+<p align="center">
 The React Union project is a collection of tools that allow you to build modern React applications for content management systems or enterprise portals.
+</p>
+
+<p align="center">
+<a href="https://react-union.org">See our documentation site.</a>
+</p>
+
+<p align="center">
+
+<a href="https://travis-ci.org/lundegaard/react-union">
+<img src="https://img.shields.io/travis/lundegaard/react-union/master.svg?style=flat-square" alt="Build status" />
+</a>
+
+<a href="https://greenkeeper.io/">
+<img src="https://badges.greenkeeper.io/lundegaard/react-union.svg" alt="Greenkeeper badge" />
+</a>
+
+<a href="https://github.com/lundegaard/react-union">
+<img src="https://flat.badgen.net/badge/-/github?icon=github&label" alt="Github" />
+</a>
+
+<img src="https://flat.badgen.net/badge/license/MIT/blue" alt="MIT License" />
+
+<a href="https://www.npmjs.com/package/react-union">
+<img src="https://flat.badgen.net/npm/dm/react-union" alt="Downloads" />
+</a>
+
+<a href="https://www.npmjs.com/package/react-union">
+<img src=" https://flat.badgen.net/npm/v/react-union" alt="Version" />
+</a>
+</p>
 
 ## Tools and libraries
 
@@ -10,6 +57,12 @@ The React Union project is a collection of tools that allow you to build modern 
 * [React Union Scripts](https://github.com/lundegaard/react-union/tree/master/packages/react-union-scripts) - JavaScript SDK focused on a large codebase. Supports multiple entry points, async code-splitting, sharing the code between modules, etc.
 * [ESLint config](https://github.com/lundegaard/react-union/tree/master/packages/eslint-config-react-union) - ESLint configuration that is used within the React Union project.
 * [Babel preset](https://github.com/lundegaard/react-union/tree/master/packages/babel-preset-react-union) - Babel preset used within the React Union project.
+
+## Talks
+
+- [React Union: Write once, plug anywhere](https://hero35.com/react-finland/2019/react-union-write-once-plug-anywhere) by [tommmyy](https://github.com/tommmyy)
+- [React Union: Way to OpenSource](https://www.youtube.com/watch?v=B9G_3UjYOYE&t=856s&ab_channel=Liferay) by [jamescoq](https://github.com/jamescoq)
+- [Live demo: React.js portals and modern js apps for cms](https://www.webexpo.net/prague2018/talk/live-demo-react-js-portals-and-modern-js-apps-for-cms) by [tommmyy](https://github.com/tommmyy)
 
 ## Examples
 
