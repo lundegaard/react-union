@@ -1,8 +1,53 @@
-# React Union
+<h1 align="center">
+  <a href="https://react-union.org"> React Union </a>
+</h1>
 
-[![build status](https://img.shields.io/travis/lundegaard/react-union/master.svg?style=flat-square)](https://travis-ci.org/lundegaard/react-union) [![Greenkeeper badge](https://badges.greenkeeper.io/lundegaard/react-union.svg)](https://greenkeeper.io/)
+<p align="center">
+  <a href="https://lundegaard.eu">
+    <img alt="by Lundegaard" src="./by-lundegaard.png" width="120" />
+  </a>
+</p>
 
+<h3 align="center">
+🖍️ 🛡  🚀
+</h3>
+
+<h3 align="center">
+Easy React integration into legacy systems 
+</h3>
+
+<p align="center">
 The React Union project is a collection of tools that allow you to build modern React applications for content management systems or enterprise portals.
+</p>
+
+<p align="center">
+<a href="https://react-union.org">See our documentation site.</a>
+</p>
+
+<p align="center">
+
+<a href="https://travis-ci.org/lundegaard/react-union">
+<img src="https://img.shields.io/travis/lundegaard/react-union/master.svg?style=flat-square" alt="Build status" />
+</a>
+
+<a href="https://greenkeeper.io/">
+<img src="https://badges.greenkeeper.io/lundegaard/react-union.svg" alt="Greenkeeper badge" />
+</a>
+
+<a href="https://github.com/lundegaard/react-union">
+<img src="https://flat.badgen.net/badge/-/github?icon=github&label" alt="Github" />
+</a>
+
+<img src="https://flat.badgen.net/badge/license/MIT/blue" alt="MIT License" />
+
+<a href="https://www.npmjs.com/package/react-union">
+<img src="https://flat.badgen.net/npm/dm/react-union" alt="Downloads" />
+</a>
+
+<a href="https://www.npmjs.com/package/react-union">
+<img src=" https://flat.badgen.net/npm/v/react-union" alt="Version" />
+</a>
+</p>
 
 ## Tools and libraries
 
