@@ -1,12 +1,12 @@
 <p align="center">
   <a href="https://react-union.org">
-    <img alt="React Union" src="./logo.svg" width="300" />
+    <img alt="React Union" src="https://github.com/lundegaard/react-union/raw/master/logo.svg" width="300" />
   </a>
 </p>
 
 <p align="center">
   <a href="https://lundegaard.eu">
-    <img alt="by Lundegaard" src="./by-lundegaard.png" width="120" />
+    <img alt="by Lundegaard" src="https://github.com/lundegaard/react-union/raw/master/by-lundegaard.png" width="120" />
   </a>
 </p>
 
@@ -19,7 +19,7 @@ Easy React integration into legacy systems
 </h3>
 
 <p align="center">
-Runs the [liferay-npm-bundler](https://www.npmjs.com/package/liferay-npm-bundler) in such way, that transforming into Liferay AMD is not done over your codebase.
+Shared babel config used in Lundegaard projects
 </p>
 
 <p align="center">
@@ -51,7 +51,4 @@ Runs the [liferay-npm-bundler](https://www.npmjs.com/package/liferay-npm-bundler
 </a>
 </p>
 
-# Liferay Build Tools 
-
-
-Scripts are used in our Liferay boilerplate.
+# Babel-preset-react-union

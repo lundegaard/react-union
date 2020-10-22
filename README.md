@@ -1,6 +1,8 @@
-<h1 align="center">
-  <a href="https://react-union.org"> React Union </a>
-</h1>
+<p align="center">
+  <a href="https://react-union.org">
+    <img alt="React Union" src="./logo.svg" width="300" />
+  </a>
+</p>
 
 <p align="center">
   <a href="https://lundegaard.eu">
@@ -55,6 +57,12 @@ The React Union project is a collection of tools that allow you to build modern 
 * [React Union Scripts](https://github.com/lundegaard/react-union/tree/master/packages/react-union-scripts) - JavaScript SDK focused on a large codebase. Supports multiple entry points, async code-splitting, sharing the code between modules, etc.
 * [ESLint config](https://github.com/lundegaard/react-union/tree/master/packages/eslint-config-react-union) - ESLint configuration that is used within the React Union project.
 * [Babel preset](https://github.com/lundegaard/react-union/tree/master/packages/babel-preset-react-union) - Babel preset used within the React Union project.
+
+## Talks
+
+- [React Union: Write once, plug anywhere](https://hero35.com/react-finland/2019/react-union-write-once-plug-anywhere) by [tommmyy](https://github.com/tommmyy)
+- [React Union: Way to OpenSource](https://www.youtube.com/watch?v=B9G_3UjYOYE&t=856s&ab_channel=Liferay) by [jamescoq](https://github.com/jamescoq)
+- [Live demo: React.js portals and modern js apps for cms](https://www.webexpo.net/prague2018/talk/live-demo-react-js-portals-and-modern-js-apps-for-cms) by [tommmyy](https://github.com/tommmyy)
 
 ## Examples
 
