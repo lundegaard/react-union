@@ -28,6 +28,6 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-union": "^0.20.0",
-    "react-universal-component": "^4.0.1"
+    "react-universal-component": "^4.5.0"
   }
 }
