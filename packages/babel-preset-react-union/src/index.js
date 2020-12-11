@@ -51,16 +51,17 @@ module.exports = (
 		'@babel/plugin-proposal-object-rest-spread',
 		'@babel/plugin-transform-react-constant-elements',
 		'@babel/plugin-transform-regenerator',
+		'@babel/plugin-transform-destructuring',
 		'@babel/plugin-transform-runtime',
 		'@babel/plugin-transform-spread',
 		'babel-plugin-dynamic-import-node',
 		'babel-plugin-macros',
 		'babel-plugin-transform-react-remove-prop-types',
 
-		// NOTE: This plugin is also used when building the server in `react-union-scripts`.
 		// NOTE: In order to allow passing e.g. `import * as reducers from './reducers'` as an object,
 		// loose option must be false.
 		test && ['@babel/plugin-transform-modules-commonjs', { loose: false }],
+		// NOTE: This plugin is also used when building the server in `react-union-scripts`.
 		universal && 'babel-plugin-universal-import',
 	]
 		.filter(Boolean)
