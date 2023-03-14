@@ -10,10 +10,10 @@ import { WidgetContext } from '../../contexts';
 import { WidgetConfigShape } from '../../shapes';
 import { INVALID_JSON, IS_SERVER } from '../../constants';
 
-const getGlobalInitialProps = props =>
+const getGlobalInitialProps = (props) =>
 	!IS_SERVER && window.__INITIAL_PROPS__ && window.__INITIAL_PROPS__[props.config.namespace];
 
-const memoizedClearContent = memoizeWith(prop('id'), element => (element.innerHTML = ''));
+const memoizedClearContent = memoizeWith(prop('id'), (element) => (element.innerHTML = ''));
 
 /**
  * An internal component of `Union`.
@@ -52,11 +52,11 @@ export class Widget extends Component {
 		}
 	}
 
-	getInitialProps = component => {
+	getInitialProps = (component) => {
 		const { config } = this.props;
 
 		if (isFunction(component.getInitialProps)) {
-			component.getInitialProps(config).then(initialProps => this.setState({ initialProps }));
+			component.getInitialProps(config).then((initialProps) => this.setState({ initialProps }));
 		}
 	};
 
@@ -72,6 +72,8 @@ export class Widget extends Component {
 		);
 
 		const widgetProps = { data, namespace };
+
+		console.log({ widgetProps });
 
 		const widgetElement = (
 			<WidgetContext.Provider value={widgetProps}>

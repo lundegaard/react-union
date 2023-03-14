@@ -18,7 +18,7 @@ import Widget from '../Widget';
  * in the actual mark-up.
  */
 class Union extends Component {
-	static scan = props => {
+	static scan = (props) => {
 		const { onScanStart, onScanEnd, onScanError, parent, routes } = props;
 
 		invariant(routes, 'Missing `routes` prop in <Union />.');
@@ -107,7 +107,7 @@ class Union extends Component {
 			widgetConfigs: Union.scan(this.props),
 		});
 
-	renderWidget = widgetConfig => {
+	renderWidget = (widgetConfig) => {
 		const { initialProps } = this.context || {};
 
 		return (
@@ -122,6 +122,7 @@ class Union extends Component {
 	render() {
 		const { children } = this.props;
 		const { widgetConfigs } = this.state;
+		console.log({ widgetConfigs });
 
 		return (
 			<Fragment>
